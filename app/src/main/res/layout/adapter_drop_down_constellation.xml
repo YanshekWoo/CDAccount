@@ -20,14 +20,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.xuexiang.xui.widget.spinner.DropDownMenu
-        android:id="@+id/ddm_content"
+    <TextView
+        android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_bg_tag_stroke"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/xui_selector_content_text_color" />
 
 </LinearLayout>
