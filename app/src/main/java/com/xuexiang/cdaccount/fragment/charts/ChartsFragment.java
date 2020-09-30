@@ -34,10 +34,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.adapter.dropdownmenu.CityDropDownAdapter;
-import com.xuexiang.cdaccount.adapter.dropdownmenu.ConstellationAdapter;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.utils.ResUtils;
@@ -63,18 +62,16 @@ public class ChartsFragment extends BaseFragment {
     LineChart mLineChart;
 
 
-    private String[] mHeaders = {"城市", "年龄", "性别", "星座"};
+    private String[] mHeaders = {"类别", "成员", "账户"};
     private List<View> mPopupViews = new ArrayList<>();
 
-    private CityDropDownAdapter mCityAdapter;
-    private ListDropDownAdapter mAgeAdapter;
-    private ListDropDownAdapter mSexAdapter;
-    private ConstellationAdapter mConstellationAdapter;
+    private ListDropDownAdapter mCategoryAdapter;
+    private ListDropDownAdapter mMemberAdapter;
+    private ListDropDownAdapter mAccountAdapter;
 
-    private String[] mCitys;
-    private String[] mAges;
-    private String[] mSexs;
-    private String[] mConstellations;
+    private String[] mCategories;
+    private String[] mMembers;
+    private String[] mAccounts;
 
 
 
@@ -147,59 +144,51 @@ public class ChartsFragment extends BaseFragment {
      * 下拉菜单设置
      */
     protected void initSpinner() {
-        final ListView cityView = new ListView(getContext());
-        mCityAdapter = new CityDropDownAdapter(getContext(), mCitys);
-        cityView.setDividerHeight(0);
-        cityView.setAdapter(mCityAdapter);
+        //init category menu
+        final ListView categoryView = new ListView(getContext());
+        mCategoryAdapter = new ListDropDownAdapter(getContext(), mCategories);
+        categoryView.setDividerHeight(0);
+        categoryView.setAdapter(mCategoryAdapter);
 
-        //init age menu
-        final ListView ageView = new ListView(getContext());
-        ageView.setDividerHeight(0);
-        mAgeAdapter = new ListDropDownAdapter(getContext(), mAges);
-        ageView.setAdapter(mAgeAdapter);
+        //init member menu
+        final ListView memberView = new ListView(getContext());
+        memberView.setDividerHeight(0);
+        mMemberAdapter = new ListDropDownAdapter(getContext(), mMembers);
+        memberView.setAdapter(mMemberAdapter);
 
-        //init sex menu
-        final ListView sexView = new ListView(getContext());
-        sexView.setDividerHeight(0);
-        mSexAdapter = new ListDropDownAdapter(getContext(), mSexs);
-        sexView.setAdapter(mSexAdapter);
-
-        //init constellation
-        final View constellationView = getLayoutInflater().inflate(R.layout.layout_drop_down_custom, null);
-        GridView constellation = constellationView.findViewById(R.id.constellation);
-        mConstellationAdapter = new ConstellationAdapter(getContext(), mConstellations);
-        constellation.setAdapter(mConstellationAdapter);
-        constellationView.findViewById(R.id.btn_ok).setOnClickListener(v -> {
-            mDropDownMenu.setTabMenuText(mConstellationAdapter.getSelectPosition() <= 0 ? mHeaders[3] : mConstellationAdapter.getSelectItem());
-            mDropDownMenu.closeMenu();
-        });
+        //init accout book menu
+        final ListView accoutView = new ListView(getContext());
+        accoutView.setDividerHeight(0);
+        mAccountAdapter = new ListDropDownAdapter(getContext(), mAccounts);
+        accoutView.setAdapter(mAccountAdapter);
 
         //init mPopupViews
-        mPopupViews.add(cityView);
-        mPopupViews.add(ageView);
-        mPopupViews.add(sexView);
-        mPopupViews.add(constellationView);
+        mPopupViews.add(categoryView);
+        mPopupViews.add(memberView);
+        mPopupViews.add(accoutView);
+
 
         //add item click event
-        cityView.setOnItemClickListener((parent, view, position, id) -> {
-            mCityAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mCitys[position]);
+        categoryView.setOnItemClickListener((parent, view, position, id) -> {
+            mCategoryAdapter.setSelectPosition(position);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mCategories[position]);
+            XToastUtils.toast("点击了:" + mCategories[position]);
             mDropDownMenu.closeMenu();
         });
 
-        ageView.setOnItemClickListener((parent, view, position, id) -> {
-            mAgeAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[1] : mAges[position]);
+        memberView.setOnItemClickListener((parent, view, position, id) -> {
+            mMemberAdapter.setSelectPosition(position);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[1] : mMembers[position]);
+            XToastUtils.toast("点击了:" + mMembers[position]);
             mDropDownMenu.closeMenu();
         });
 
-        sexView.setOnItemClickListener((parent, view, position, id) -> {
-            mSexAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[2] : mSexs[position]);
+        accoutView.setOnItemClickListener((parent, view, position, id) -> {
+            mAccountAdapter.setSelectPosition(position);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[2] : mAccounts[position]);
+            XToastUtils.toast("点击了:" + mAccounts[position]);
             mDropDownMenu.closeMenu();
         });
-
-        constellation.setOnItemClickListener((parent, view, position, id) -> mConstellationAdapter.setSelectPosition(position));
 
         //init context view
         TextView contentView = new TextView(getContext());
@@ -212,13 +201,19 @@ public class ChartsFragment extends BaseFragment {
         mDropDownMenu.setDropDownMenu(mHeaders, mPopupViews, contentView);
     }
 
+    protected void setDropDownMenuClickLisener() {
 
+    }
+
+
+    /**
+     * 用数组初始化菜单选项
+     */
     @Override
     protected void initArgs() {
-        mCitys = ResUtils.getStringArray(R.array.city_entry);
-        mAges = ResUtils.getStringArray(R.array.age_entry);
-        mSexs = ResUtils.getStringArray(R.array.sex_entry);
-        mConstellations = ResUtils.getStringArray(R.array.constellation_entry);
+        mCategories = ResUtils.getStringArray(R.array.category_entry);
+        mMembers = ResUtils.getStringArray(R.array.member_entry);
+        mAccounts = ResUtils.getStringArray(R.array.account_entry);
     }
 
     @Override
