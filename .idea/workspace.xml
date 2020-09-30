@@ -8,8 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +34,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="MERGE" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProjectId" id="1i8gipoLMVM9SFpPOVWOPGEacTO" />
   <component name="ProjectLevelVcsManager">
@@ -150,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601448661193</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add spinner">
+      <created>1601449309598</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1601449309598</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -171,6 +176,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="add spinner" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="617" y="215" key="#Notifications" timestamp="1601449384177">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="617" y="215" key="#Notifications/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449384177" />
     <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1601383636212">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -179,10 +188,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="755" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601446779609" />
-    <state x="665" y="150" key="CommitChangelistDialog2" timestamp="1601378850261">
+    <state x="665" y="150" key="CommitChangelistDialog2" timestamp="1601449308119">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601378850261" />
+    <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449308119" />
     <state x="881" y="431" key="FileChooserDialogImpl" timestamp="1601383584025">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -203,18 +212,18 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449211211" />
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1601447815413">
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1601449762037">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447815413" />
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601448611832">
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449762037" />
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601449621959">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601448611832" />
-    <state x="677" y="403" key="git4idea.ui.GitUnstashDialog" timestamp="1601448643331">
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449621959" />
+    <state x="677" y="403" key="git4idea.ui.GitUnstashDialog" timestamp="1601449642533">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="677" y="403" key="git4idea.ui.GitUnstashDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601448643331" />
+    <state x="677" y="403" key="git4idea.ui.GitUnstashDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449642533" />
     <state width="600" height="424" key="javadoc.popup" timestamp="1601447416074">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
