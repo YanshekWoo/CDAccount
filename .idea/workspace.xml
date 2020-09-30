@@ -7,22 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/adapter/dropdownmenu/CityDropDownAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/adapter/dropdownmenu/ConstellationAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/adapter/dropdownmenu/ListDropDownAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v17/selector_bg_tag_stroke.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v21/selector_bg_tag_stroke.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_checked_right.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/selector_bg_tag_stroke.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/adapter_drop_down_constellation.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/adapter_drop_down_list_item.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_drop_down_custom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_charts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_charts.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +49,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable-v21" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../XUItest" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -149,43 +136,75 @@
       <option name="presentableId" value="Default" />
       <updated>1601294762780</updated>
     </task>
+    <task id="LOCAL-00001" summary="add spinner">
+      <created>1601378852462</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1601378852462</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.md" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add spinner" />
+    <option name="LAST_COMMIT_MESSAGE" value="add spinner" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="755" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1601297076545">
+    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1601383636212">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="755" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601297076545" />
-    <state x="881" y="431" key="FileChooserDialogImpl" timestamp="1601375291789">
+    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601383636212" />
+    <state x="755" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1601446779609">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601375291789" />
-    <state width="2005" height="305" key="GridCell.Tab.0.bottom" timestamp="1601297459884">
+    <state x="755" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601446779609" />
+    <state x="665" y="150" key="CommitChangelistDialog2" timestamp="1601378850261">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601297459884" />
-    <state width="2005" height="305" key="GridCell.Tab.0.center" timestamp="1601297459883">
+    <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601378850261" />
+    <state x="881" y="431" key="FileChooserDialogImpl" timestamp="1601383584025">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601297459883" />
-    <state width="2005" height="305" key="GridCell.Tab.0.left" timestamp="1601297459883">
+    <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601383584025" />
+    <state width="2005" height="305" key="GridCell.Tab.0.bottom" timestamp="1601447801440">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601297459883" />
-    <state width="2005" height="305" key="GridCell.Tab.0.right" timestamp="1601297459884">
+    <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447801440" />
+    <state width="2005" height="305" key="GridCell.Tab.0.center" timestamp="1601447801440">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601297459884" />
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1601378215662">
+    <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447801440" />
+    <state width="2005" height="305" key="GridCell.Tab.0.left" timestamp="1601447801440">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601378215662" />
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601378789838">
+    <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447801440" />
+    <state width="2005" height="305" key="GridCell.Tab.0.right" timestamp="1601447801440">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601378789838" />
+    <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447801440" />
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1601447815413">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447815413" />
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601448611832">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601448611832" />
+    <state x="677" y="403" key="git4idea.ui.GitUnstashDialog" timestamp="1601448643331">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="677" y="403" key="git4idea.ui.GitUnstashDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601448643331" />
+    <state width="600" height="424" key="javadoc.popup" timestamp="1601447416074">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="600" height="424" key="javadoc.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447416074" />
+    <state x="681" y="259" key="run.anything.popup" timestamp="1601447004081">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="681" y="259" key="run.anything.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447004081" />
   </component>
 </project>
