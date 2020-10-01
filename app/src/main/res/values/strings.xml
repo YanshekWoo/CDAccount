@@ -2,6 +2,8 @@
     <string name="app_name">天龙记账</string>
     <string name="app_browser_name">通用浏览器</string>
 
+    <string name="no_data">无数据</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

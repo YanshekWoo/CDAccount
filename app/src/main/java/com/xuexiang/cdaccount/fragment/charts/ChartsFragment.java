@@ -24,15 +24,26 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
@@ -45,6 +56,7 @@ import com.xuexiang.xui.widget.spinner.DropDownMenu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 
@@ -61,6 +73,12 @@ public class ChartsFragment extends BaseFragment {
     @BindView(R.id.lineChart)
     LineChart mLineChart;
 
+    @BindView(R.id.barChart)
+    BarChart mBarChart;
+
+    @BindView(R.id.pieChart)
+    PieChart mPieChart;
+
 
     private String[] mHeaders = {"类别", "成员", "账户"};
     private List<View> mPopupViews = new ArrayList<>();
@@ -72,6 +90,7 @@ public class ChartsFragment extends BaseFragment {
     private String[] mCategories;
     private String[] mMembers;
     private String[] mAccounts;
+    private String[] mPieColors;
 
 
 
@@ -99,7 +118,6 @@ public class ChartsFragment extends BaseFragment {
      */
     @Override
     protected void initViews() {
-
         initChart();
         initSpinner();
     }
@@ -108,37 +126,179 @@ public class ChartsFragment extends BaseFragment {
      *  初始化图表
      */
     protected void initChart() {
-        //显示边界
-        mLineChart.setDrawBorders(true);
-        //设置数据
-        List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            entries.add(new Entry(i, (float) (Math.random()) * 80));
-        }
-        //一个LineDataSet就是一条线
-        LineDataSet lineDataSet = new LineDataSet(entries, "支出");
-        LineData data = new LineData(lineDataSet);
-        mLineChart.setData(data);
+        //柱状图
+        mBarChart = initBarChart(mBarChart);
+        BarData barData = setBardata();
+        mBarChart.setData(barData);
+        mBarChart.invalidate();
 
+        //折线图
+        mLineChart = initLineChart(mLineChart);
+        LineData lineData = setLinedata();
+        mLineChart.setData(lineData);
+        mLineChart.invalidate();
 
-        //得到X轴
-        XAxis xAxis = mLineChart.getXAxis();
-        //设置X轴的位置
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//值：BOTTOM,BOTH_SIDED,BOTTOM_INSIDE,TOP,TOP_INSIDE
-        //设置X轴坐标之间的最小距离
-        xAxis.setGranularity(1f);
-        //设置X轴的值
-        xAxis.setLabelCount(12, true);
+        //饼图
+        mPieChart = initPieChart(mPieChart);
+        PieData pieData = setPiedata();
+        mPieChart.setData(pieData);
+        mPieChart.invalidate();
+    }
 
+    /**
+     * 初始化柱状图
+     * @param barChart
+     * @return
+     */
+    protected BarChart initBarChart(BarChart barChart) {
+        barChart.setDescription(null);
+        barChart.setDrawBarShadow(false);
+        barChart.setDrawValueAboveBar(true);
+        barChart.setNoDataText(getResources().getString(R.string.no_data));
+        XAxis xAxis = barChart.getXAxis();
+        YAxis yAxisLeft = barChart.getAxisLeft();
+        YAxis yAxisRight = barChart.getAxisRight();
+        Legend legend = barChart.getLegend();
+        setBarChartAxis(xAxis, yAxisLeft, yAxisRight, legend);
+        return barChart;
+    }
 
-        //得到Lengend
-        Legend legend = mLineChart.getLegend();
+    protected void setBarChartAxis(XAxis xAxis, YAxis yAxisLeft, YAxis yAxisRight, Legend legend) {
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisLineWidth(1);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setEnabled(true);
+
+        yAxisLeft.setDrawGridLines(false);
+        yAxisLeft.setDrawAxisLine(true);
+        yAxisLeft.setAxisLineWidth(1);
+        yAxisLeft.setEnabled(true);
+
+        yAxisRight.setDrawGridLines(false);
+        yAxisRight.setDrawAxisLine(true);
+        yAxisRight.setAxisLineWidth(1);
+        yAxisRight.setEnabled(true);
+
         //设置Lengend位置
         legend.setTextColor(Color.CYAN); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
     }
+
+    protected BarData setBardata() {
+        List<BarEntry> entries = new ArrayList<>();
+        for(int i = 0;i < 12;i++) {
+            entries.add(new BarEntry(i, new Random().nextInt(200)));
+        }
+        BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
+        BarData bardata = new BarData(barDataSet);
+        bardata.setValueTextSize(12f);
+        return bardata;
+    }
+
+
+
+    /**
+     * 初始化折线图
+     * @param lineChart
+     * @return
+     */
+    protected LineChart initLineChart(LineChart lineChart) {
+        lineChart.setDescription(null);
+        lineChart.setDrawGridBackground(false);
+        lineChart.setNoDataText(getResources().getString(R.string.no_data));
+        XAxis xAxis = lineChart.getXAxis();
+        YAxis yAxisLeft = lineChart.getAxisLeft();
+        YAxis yAxisRight = lineChart.getAxisRight();
+        Legend legend = lineChart.getLegend();
+        setBarChartAxis(xAxis, yAxisLeft, yAxisRight, legend);
+        return lineChart;
+    }
+
+    protected void setLineChartAxis(XAxis xAxis, YAxis yAxisLeft, YAxis yAxisRight, Legend legend) {
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisLineWidth(1);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setEnabled(true);
+
+        yAxisLeft.setDrawGridLines(false);
+        yAxisLeft.setDrawAxisLine(true);
+        yAxisLeft.setAxisLineWidth(1);
+        yAxisLeft.setEnabled(true);
+
+        yAxisRight.setDrawGridLines(false);
+        yAxisRight.setDrawAxisLine(true);
+        yAxisRight.setAxisLineWidth(1);
+        yAxisRight.setEnabled(true);
+
+        //设置Lengend位置
+        legend.setTextColor(Color.CYAN); //设置Legend 文本颜色
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+    }
+
+    protected LineData setLinedata() {
+        //设置数据
+        List<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            entries.add(new Entry(i, (float) (Math.random()) * 80));
+        }
+        LineDataSet lineDataSet = new LineDataSet(entries, "支出");
+        LineData linedata = new LineData(lineDataSet);
+        linedata.setValueTextSize(12f);
+        return linedata;
+    }
+
+
+
+    /**
+     * 初始化折线图
+     * @param pieChart
+     * @return
+     */
+    protected PieChart initPieChart(PieChart pieChart) {
+        pieChart.setDescription(null);
+        pieChart.setUsePercentValues(true);
+        pieChart.animateY(1000, Easing.EasingOption.EaseInOutQuad); //设置动画
+        pieChart.setNoDataText(getResources().getString(R.string.no_data));
+        Legend legend = pieChart.getLegend();
+        setPieChartAxis(legend);
+        return pieChart;
+    }
+
+    protected void setPieChartAxis(Legend legend) {
+        //设置Lengend位置
+        legend.setTextColor(Color.CYAN); //设置Legend 文本颜色
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setWordWrapEnabled(true);
+    }
+
+    protected PieData setPiedata() {
+        Random myRandom = new Random();
+        //设置数据
+        List<PieEntry> entries = new ArrayList<>();
+        ArrayList<Integer> piecolors = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            entries.add(new PieEntry((float) (Math.random()) * 80));
+
+            piecolors.add(Color.parseColor(mPieColors[i%10]));
+        }
+        PieDataSet pieDataSet = new PieDataSet(entries, "支出");
+        pieDataSet.setColors(piecolors);
+        PieData piedata = new PieData(pieDataSet);
+        piedata.setDrawValues(true);
+        piedata.setValueTextSize(12f);
+        piedata.setValueTextColor(getResources().getColor(R.color.black));
+        return piedata;
+    }
+
+
 
     /**
      * 下拉菜单设置
@@ -193,7 +353,7 @@ public class ChartsFragment extends BaseFragment {
         //init context view
         TextView contentView = new TextView(getContext());
         contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        contentView.setText("");
+        contentView.setText("图表");
         contentView.setGravity(Gravity.CENTER);
         contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
@@ -214,6 +374,7 @@ public class ChartsFragment extends BaseFragment {
         mCategories = ResUtils.getStringArray(R.array.category_entry);
         mMembers = ResUtils.getStringArray(R.array.member_entry);
         mAccounts = ResUtils.getStringArray(R.array.account_entry);
+        mPieColors = ResUtils.getStringArray(R.array.pieColor);
     }
 
     @Override
