@@ -10,7 +10,7 @@ android {
     buildToolsVersion build_versions.build_tools
 
     defaultConfig {
-        applicationId "com.xuexiang.templateproject"
+        applicationId "com.xuexiang.cdaccount"
         minSdkVersion 17
         targetSdkVersion build_versions.target_sdk
         versionCode 1
@@ -127,7 +127,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     // MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
 //自动添加X-Library依赖
 apply from: 'x-library.gradle'
