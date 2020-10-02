@@ -17,7 +17,9 @@
 
 package com.xuexiang.cdaccount.fragment.charts;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -52,13 +54,21 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xui.widget.alpha.XUIAlphaButton;
+import com.xuexiang.xui.widget.picker.widget.TimePickerView;
+import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xui.widget.spinner.DropDownMenu;
+import com.xuexiang.xutil.data.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author Xinshuo Hu
@@ -79,6 +89,11 @@ public class ChartsFragment extends BaseFragment {
     @BindView(R.id.pieChart)
     PieChart mPieChart;
 
+    @BindView(R.id.btn_date_start)
+    XUIAlphaButton Btn_date_start;
+
+    @BindView(R.id.btn_date_end)
+    XUIAlphaButton Btn_date_end;
 
     private String[] mHeaders = {"类别", "成员", "账户"};
     private List<View> mPopupViews = new ArrayList<>();
@@ -93,6 +108,10 @@ public class ChartsFragment extends BaseFragment {
     private String[] mPieColors;
 
 
+    private TimePickerView mDatePickerStart;
+    private TimePickerView mDatePickerEnd;
+    private Date mDateStart;
+    private Date mDateEnd;
 
 
     /**
@@ -120,7 +139,9 @@ public class ChartsFragment extends BaseFragment {
     protected void initViews() {
         initChart();
         initSpinner();
+        initTimePicker();
     }
+
 
     /**
      *  初始化图表
@@ -247,7 +268,7 @@ public class ChartsFragment extends BaseFragment {
         for (int i = 0; i < 10; i++) {
             entries.add(new Entry(i, (float) (Math.random()) * 80));
         }
-        LineDataSet lineDataSet = new LineDataSet(entries, "支出");
+        LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
         LineData linedata = new LineData(lineDataSet);
         linedata.setValueTextSize(12f);
         return linedata;
@@ -289,7 +310,7 @@ public class ChartsFragment extends BaseFragment {
 
             piecolors.add(Color.parseColor(mPieColors[i%10]));
         }
-        PieDataSet pieDataSet = new PieDataSet(entries, "支出");
+        PieDataSet pieDataSet = new PieDataSet(entries, "饼图数据");
         pieDataSet.setColors(piecolors);
         PieData piedata = new PieData(pieDataSet);
         piedata.setDrawValues(true);
@@ -298,6 +319,33 @@ public class ChartsFragment extends BaseFragment {
         return piedata;
     }
 
+
+    /**
+     * 用数组初始化菜单选项
+     */
+    @Override
+    protected void initArgs() {
+        mCategories = ResUtils.getStringArray(R.array.category_entry);
+        mMembers = ResUtils.getStringArray(R.array.member_entry);
+        mAccounts = ResUtils.getStringArray(R.array.account_entry);
+        mPieColors = ResUtils.getStringArray(R.array.pieColor);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            handleBackPressed();
+        }
+        return true;
+    }
+
+    private void handleBackPressed() {
+        if (mDropDownMenu.isShowing()) {
+            mDropDownMenu.closeMenu();
+        } else {
+            popToBack();
+        }
+    }
 
 
     /**
@@ -353,44 +401,89 @@ public class ChartsFragment extends BaseFragment {
         //init context view
         TextView contentView = new TextView(getContext());
         contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        contentView.setText("图表");
+        contentView.setText("");
         contentView.setGravity(Gravity.CENTER);
-        contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 3);
 
         //init dropdownview
         mDropDownMenu.setDropDownMenu(mHeaders, mPopupViews, contentView);
     }
 
-    protected void setDropDownMenuClickLisener() {
-
-    }
 
 
     /**
-     * 用数组初始化菜单选项
+     * 初始化日期选择控件
      */
-    @Override
-    protected void initArgs() {
-        mCategories = ResUtils.getStringArray(R.array.category_entry);
-        mMembers = ResUtils.getStringArray(R.array.member_entry);
-        mAccounts = ResUtils.getStringArray(R.array.account_entry);
-        mPieColors = ResUtils.getStringArray(R.array.pieColor);
+    protected void initTimePicker() {
+        Calendar calendar = Calendar.getInstance();
+        mDateEnd = calendar.getTime();
+        Btn_date_end.setText(DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
+
+        calendar.roll(Calendar.MONTH, -1);
+        mDateStart = calendar.getTime();
+        Btn_date_start.setText(DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()));
+
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            handleBackPressed();
+    /**
+     * 日期选择控件
+     * @param view
+     */
+    @OnClick({R.id.btn_date_start, R.id.btn_date_end})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_date_start:
+                showDatePickerStart();
+                break;
+            case R.id.btn_date_end:
+                showDatePickerEnd();
+                break;
+            default:
+                break;
         }
-        return true;
     }
 
-    private void handleBackPressed() {
-        if (mDropDownMenu.isShowing()) {
-            mDropDownMenu.closeMenu();
-        } else {
-            popToBack();
+    private void showDatePickerStart() {
+        if (mDatePickerStart == null) {
+            //选择器初始化
+            Calendar calendar = Calendar.getInstance();
+            calendar.roll(Calendar.MONTH, -1);
+            mDatePickerStart = new TimePickerBuilder(Objects.requireNonNull(getContext()), (date, v) ->
+            {
+                //选择器监听
+                mDateStart = date;
+                Btn_date_start.setText(DateUtils.date2String(date, DateUtils.yyyyMMdd.get()));
+                if(mDateStart.after(mDateEnd)) {
+                    XToastUtils.error("开始日期不能晚于结束日期");
+                }
+            })
+                    .setDate(calendar)  //默认日期为当前的前一个月
+                    .setTimeSelectChangeListener(date -> Log.i("pvTime", Calendar.getInstance().toString()))
+                    .setTitleText("开始日期")
+                    .build();
         }
+        mDatePickerStart.show();
     }
+
+    private void showDatePickerEnd() {
+        if (mDatePickerEnd == null) {
+            //选择器初始化
+            mDatePickerEnd = new TimePickerBuilder(Objects.requireNonNull(getContext()), (date, v) ->
+            {
+                //选择器监听
+                mDateEnd = date;
+                Btn_date_end.setText(DateUtils.date2String(date, DateUtils.yyyyMMdd.get()));
+                if(mDateStart.after(mDateEnd)) {
+                    XToastUtils.error("结束日期不能早于开始日期");
+                }
+            })
+                    .setTimeSelectChangeListener(date -> Log.i("pvTime", Calendar.getInstance().toString()))
+                    .setTitleText("结束日期")
+                    .build();
+        }
+        mDatePickerEnd.show();
+    }
+
+
 
 }

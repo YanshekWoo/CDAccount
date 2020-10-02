@@ -5,8 +5,13 @@
       <config />
     </shared>
   </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="pvTime" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="info" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
+    <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="add spinner">
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.bin" afterDir="false" />
@@ -22,8 +27,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_charts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_charts.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +53,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="ProjectId" id="1i8gipoLMVM9SFpPOVWOPGEacTO" />
   <component name="ProjectLevelVcsManager">
@@ -200,46 +203,50 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="733" y="199" key="#app/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601535723191" />
-    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1601383636212">
+    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1601605899880">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601383636212" />
+    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601605899880" />
     <state x="755" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1601446779609">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="755" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601446779609" />
-    <state x="665" y="150" key="CommitChangelistDialog2" timestamp="1601449308119">
+    <state x="665" y="150" key="CommitChangelistDialog2" timestamp="1601625482575">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449308119" />
-    <state x="881" y="431" key="FileChooserDialogImpl" timestamp="1601383584025">
+    <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601625482575" />
+    <state x="881" y="431" key="FileChooserDialogImpl" timestamp="1601622154854">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601383584025" />
-    <state width="2005" height="305" key="GridCell.Tab.0.bottom" timestamp="1601534406863">
+    <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601622154854" />
+    <state width="2005" height="305" key="GridCell.Tab.0.bottom" timestamp="1601624497679">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601534406863" />
-    <state width="2005" height="305" key="GridCell.Tab.0.center" timestamp="1601534406860">
+    <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601624497679" />
+    <state width="2005" height="305" key="GridCell.Tab.0.center" timestamp="1601624497679">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601534406860" />
-    <state width="2005" height="305" key="GridCell.Tab.0.left" timestamp="1601534406860">
+    <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601624497679" />
+    <state width="2005" height="305" key="GridCell.Tab.0.left" timestamp="1601624497679">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601534406860" />
-    <state width="2005" height="305" key="GridCell.Tab.0.right" timestamp="1601534406863">
+    <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601624497679" />
+    <state width="2005" height="305" key="GridCell.Tab.0.right" timestamp="1601624497679">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601534406863" />
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1601537316082">
+    <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601624497679" />
+    <state x="617" y="289" key="Vcs.Push.Dialog.v2" timestamp="1601625306097">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601537316082" />
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601449621959">
+    <state x="617" y="289" key="Vcs.Push.Dialog.v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601625306097" />
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1601622104123">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449621959" />
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601622104123" />
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601625624464">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601625624464" />
     <state x="677" y="403" key="git4idea.ui.GitUnstashDialog" timestamp="1601449642533">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -248,9 +255,13 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="600" height="424" key="javadoc.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447416074" />
-    <state x="681" y="259" key="run.anything.popup" timestamp="1601447004081">
+    <state x="681" y="259" key="run.anything.popup" timestamp="1601623595760">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="681" y="259" key="run.anything.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447004081" />
+    <state x="681" y="259" key="run.anything.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601623595760" />
+    <state x="687" y="243" width="672" height="678" key="search.everywhere.popup" timestamp="1601624709340">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="687" y="243" width="672" height="678" key="search.everywhere.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601624709340" />
   </component>
 </project>
