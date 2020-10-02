@@ -48,6 +48,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
@@ -100,6 +102,7 @@ public class ChartsFragment extends BaseFragment {
     @BindView(R.id.btn_date_end)
     XUIAlphaButton Btn_date_end;
 
+    // 下拉菜单
     private String[] mHeaders = {"类别", "成员", "账户"};
     private List<View> mPopupViews = new ArrayList<>();
 
@@ -107,12 +110,13 @@ public class ChartsFragment extends BaseFragment {
     private ListDropDownAdapter mMemberAdapter;
     private ListDropDownAdapter mAccountAdapter;
 
+    // 图表数据
     private String[] mCategories;
     private String[] mMembers;
     private String[] mAccounts;
     private String[] mPieColors;
 
-
+    // 日期选择器
     private TimePickerView mDatePickerStart;
     private TimePickerView mDatePickerEnd;
     private Date mDateStart;
@@ -216,7 +220,7 @@ public class ChartsFragment extends BaseFragment {
     protected BarData setBardata() {
         List<BarEntry> entries = new ArrayList<>();
         for(int i = 0;i < 12;i++) {
-            entries.add(new BarEntry(i, new Random().nextInt(200)));
+            entries.add(new BarEntry(i, new Random().nextInt(2000)));
         }
         BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
 
@@ -337,10 +341,32 @@ public class ChartsFragment extends BaseFragment {
         pieChart.setTransparentCircleColor(Color.WHITE);
         pieChart.setTransparentCircleAlpha(110);
         pieChart.setTransparentCircleRadius(55f);
-
+        //无数据显示
         pieChart.setNoDataText(getResources().getString(R.string.no_data));
+        //标签颜色
+        pieChart.setEntryLabelColor(Color.BLACK);
+
         Legend legend = pieChart.getLegend();
         setPieChartAxis(legend);
+
+        //设置点击监听
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                if(e == null) {
+                    return;
+                }
+                int selecedindex = (int) h.getX();
+                XToastUtils.toast(Integer.toString(selecedindex));
+            }
+
+            @Override
+            public void onNothingSelected() {
+                // 图表外部点击事件 （二次点击事件）
+
+            }
+        });
         return pieChart;
     }
 
@@ -358,7 +384,7 @@ public class ChartsFragment extends BaseFragment {
         //设置数据
         List<PieEntry> entries = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            entries.add(new PieEntry((float) (Math.random()) * 80));
+            entries.add(new PieEntry((float) (Math.random()) * 80, Integer.toString(i)));
         }
 
         List<Integer> colors = new ArrayList<>();
