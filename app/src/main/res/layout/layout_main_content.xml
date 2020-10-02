@@ -52,7 +52,7 @@
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
         android:background="@color/xui_config_color_white"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="selected"
         app:menu="@menu/menu_navigation_bottom" />
 
 

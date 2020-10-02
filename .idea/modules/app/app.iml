@@ -118,7 +118,6 @@
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:disklrucache:4.11.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:annotations:4.11.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.PhilJay:MPAndroidChart:v3.0.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.aspectj:aspectjrt:1.8.9@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.5@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.10.0@jar" level="project" />
@@ -182,6 +181,7 @@
     <orderEntry type="library" name="Gradle: com.github.xuexiangjys:XUI:1.1.5@aar" level="project" />
     <orderEntry type="library" name="Gradle: io.github.inflationx:calligraphy3:3.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: io.github.inflationx:viewpump:2.0.3@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.PhilJay:MPAndroidChart:v3.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.xuexiangjys.XUtil:xutil-core:1.1.8@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.xuexiangjys.XAOP:xaop-runtime:1.0.5x@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.xuexiangjys.XAOP:xaop-annotation:1.0.5x@aar" level="project" />
