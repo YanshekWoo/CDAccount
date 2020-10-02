@@ -30,6 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -46,6 +48,9 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.model.GradientColor;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
@@ -202,7 +207,7 @@ public class ChartsFragment extends BaseFragment {
         yAxisRight.setEnabled(true);
 
         //设置Lengend位置
-        legend.setTextColor(Color.CYAN); //设置Legend 文本颜色
+        legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -214,8 +219,36 @@ public class ChartsFragment extends BaseFragment {
             entries.add(new BarEntry(i, new Random().nextInt(200)));
         }
         BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
+
+
+        barDataSet.setDrawIcons(false);
+
+        int startColor1 = ContextCompat.getColor(getContext(), android.R.color.holo_orange_light);
+        int startColor2 = ContextCompat.getColor(getContext(), android.R.color.holo_blue_light);
+        int startColor3 = ContextCompat.getColor(getContext(), android.R.color.holo_orange_light);
+        int startColor4 = ContextCompat.getColor(getContext(), android.R.color.holo_green_light);
+        int startColor5 = ContextCompat.getColor(getContext(), android.R.color.holo_red_light);
+        int endColor1 = ContextCompat.getColor(getContext(), android.R.color.holo_blue_dark);
+        int endColor2 = ContextCompat.getColor(getContext(), android.R.color.holo_purple);
+        int endColor3 = ContextCompat.getColor(getContext(), android.R.color.holo_green_dark);
+        int endColor4 = ContextCompat.getColor(getContext(), android.R.color.holo_red_dark);
+        int endColor5 = ContextCompat.getColor(getContext(), android.R.color.holo_orange_dark);
+
+        List<GradientColor> gradientColors = new ArrayList<>();
+        gradientColors.add(new GradientColor(startColor1, endColor1));
+        gradientColors.add(new GradientColor(startColor2, endColor2));
+        gradientColors.add(new GradientColor(startColor3, endColor3));
+        gradientColors.add(new GradientColor(startColor4, endColor4));
+        gradientColors.add(new GradientColor(startColor5, endColor5));
+
+        //设置渐变色
+        barDataSet.setGradientColors(gradientColors);
+
+
         BarData bardata = new BarData(barDataSet);
         bardata.setValueTextSize(12f);
+
+
         return bardata;
     }
 
@@ -229,12 +262,19 @@ public class ChartsFragment extends BaseFragment {
     protected LineChart initLineChart(LineChart lineChart) {
         lineChart.setDescription(null);
         lineChart.setDrawGridBackground(false);
+        // 开启手势触摸
+        lineChart.setTouchEnabled(true);
+        // enable scaling and dragging
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleEnabled(true);
+        //无数据时显示
         lineChart.setNoDataText(getResources().getString(R.string.no_data));
+
         XAxis xAxis = lineChart.getXAxis();
         YAxis yAxisLeft = lineChart.getAxisLeft();
         YAxis yAxisRight = lineChart.getAxisRight();
         Legend legend = lineChart.getLegend();
-        setBarChartAxis(xAxis, yAxisLeft, yAxisRight, legend);
+        setLineChartAxis(xAxis, yAxisLeft, yAxisRight, legend);
         return lineChart;
     }
 
@@ -256,7 +296,7 @@ public class ChartsFragment extends BaseFragment {
         yAxisRight.setEnabled(true);
 
         //设置Lengend位置
-        legend.setTextColor(Color.CYAN); //设置Legend 文本颜色
+        legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -269,6 +309,8 @@ public class ChartsFragment extends BaseFragment {
             entries.add(new Entry(i, (float) (Math.random()) * 80));
         }
         LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
+        lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
+        lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_7));
         LineData linedata = new LineData(lineDataSet);
         linedata.setValueTextSize(12f);
         return linedata;
@@ -282,9 +324,20 @@ public class ChartsFragment extends BaseFragment {
      * @return
      */
     protected PieChart initPieChart(PieChart pieChart) {
-        pieChart.setDescription(null);
+        //设置百分比显示
         pieChart.setUsePercentValues(true);
-        pieChart.animateY(1000, Easing.EasingOption.EaseInOutQuad); //设置动画
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5, 10, 5, 5);
+        //设置图标中心空白，空心
+        pieChart.setDrawHoleEnabled(true);
+        //设置空心圆的弧度百分比，最大100
+        pieChart.setHoleRadius(50f);
+        pieChart.setHoleColor(Color.WHITE);
+        //设置透明弧的样式
+        pieChart.setTransparentCircleColor(Color.WHITE);
+        pieChart.setTransparentCircleAlpha(110);
+        pieChart.setTransparentCircleRadius(55f);
+
         pieChart.setNoDataText(getResources().getString(R.string.no_data));
         Legend legend = pieChart.getLegend();
         setPieChartAxis(legend);
@@ -293,7 +346,7 @@ public class ChartsFragment extends BaseFragment {
 
     protected void setPieChartAxis(Legend legend) {
         //设置Lengend位置
-        legend.setTextColor(Color.CYAN); //设置Legend 文本颜色
+        legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -304,14 +357,36 @@ public class ChartsFragment extends BaseFragment {
         Random myRandom = new Random();
         //设置数据
         List<PieEntry> entries = new ArrayList<>();
-        ArrayList<Integer> piecolors = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             entries.add(new PieEntry((float) (Math.random()) * 80));
-
-            piecolors.add(Color.parseColor(mPieColors[i%10]));
         }
+
+        List<Integer> colors = new ArrayList<>();
+        for (int c : ColorTemplate.VORDIPLOM_COLORS) {
+            colors.add(c);
+        }
+        for (int c : ColorTemplate.JOYFUL_COLORS) {
+            colors.add(c);
+        }
+        for (int c : ColorTemplate.COLORFUL_COLORS) {
+            colors.add(c);
+        }
+        for (int c : ColorTemplate.LIBERTY_COLORS) {
+            colors.add(c);
+        }
+        for (int c : ColorTemplate.PASTEL_COLORS) {
+            colors.add(c);
+        }
+        colors.add(ColorTemplate.getHoloBlue());
+
+
         PieDataSet pieDataSet = new PieDataSet(entries, "饼图数据");
-        pieDataSet.setColors(piecolors);
+        pieDataSet.setDrawIcons(false);
+        pieDataSet.setSliceSpace(3f);
+        pieDataSet.setIconsOffset(new MPPointF(0, 40));
+        pieDataSet.setSelectionShift(5f);
+        pieDataSet.setColors(colors);
+
         PieData piedata = new PieData(pieDataSet);
         piedata.setDrawValues(true);
         piedata.setValueTextSize(12f);
