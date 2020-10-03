@@ -46,6 +46,7 @@ import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
 import com.xuexiang.xutil.data.DateUtils;
 import com.xuexiang.xutil.display.Colors;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -113,14 +114,21 @@ public class AddActivity extends AppCompatActivity {
 
 
         //记账属性——时间
+
+        Date cur_date = new Date();
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         mTvDateTime = findViewById(R.id.tv_datatime);
+        mTvDateTime.setText(dateFormat.format(cur_date));
         mTvDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDatePicker();
             }
-
         });
+
+        //记账属性——分类
+
+
 
 
     }
