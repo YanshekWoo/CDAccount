@@ -20,6 +20,8 @@ package com.xuexiang.cdaccount.fragment.charts;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -311,6 +313,10 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
         lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_7));
         lineDataSet.setLineWidth(2f);
+        //设置填充
+        //设置允许填充
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setFillAlpha(30);
 
         LineData linedata = new LineData(lineDataSet);
         linedata.setValueTextSize(12f);

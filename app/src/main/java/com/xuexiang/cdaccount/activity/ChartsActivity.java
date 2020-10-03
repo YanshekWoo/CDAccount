@@ -299,6 +299,10 @@ public class ChartsActivity extends BaseActivity {
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
         lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_7));
         lineDataSet.setLineWidth(2f);
+        //设置填充
+        //设置允许填充
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setFillAlpha(30);
 
         LineData linedata = new LineData(lineDataSet);
         linedata.setValueTextSize(12f);
