@@ -1,0 +1,22 @@
+<!--
+  ~ Copyright (C) 2019 xuexiangjys(xuexiangjys@163.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<vector android:height="24dp" android:viewportHeight="1024"
+    android:viewportWidth="1024" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#299EE3" android:pathData="M296.295 621.766H186.53a36.589 36.589 0 0 1 0-73.177h109.765a36.589 36.589 0 1 1 0 73.177z m292.47 0H442.41a36.589 36.589 0 0 1 0-73.177h146.354a36.589 36.589 0 0 1 0 73.177z m255.88 0H735.118a36.589 36.589 0 1 1 0-73.177h109.527a36.589 36.589 0 1 1 0 73.177z m-548.35 219.291H186.53a36.589 36.589 0 1 1 0-73.177h109.765a36.589 36.589 0 0 1 0 73.177z m292.47 0H442.41a36.589 36.589 0 0 1 0-73.177h146.354a36.589 36.589 0 0 1 0 73.177z m255.88 0H735.118a36.589 36.589 0 1 1 0-73.177h109.527a36.589 36.589 0 1 1 0 73.177z"/>
+    <path android:fillColor="#299EE3" android:pathData="M831.97 64.09H704.03V32.045a32.045 32.045 0 0 0-64.09 0V64.09H384.06V32.045a32.045 32.045 0 0 0-64.09 0V64.09H191.312A191.312 191.312 0 0 0 0 250.14v586.851a191.312 191.312 0 0 0 191.312 186.051H831.97a191.312 191.312 0 0 0 191.313-191.312v-575.85A191.312 191.312 0 0 0 831.97 64.09z m127.94 767.88a128.18 128.18 0 0 1-127.94 127.94H191.312a127.94 127.94 0 0 1-127.94-127.94V415.865H959.91z m0-479.955H64.09v-95.656A127.94 127.94 0 0 1 191.312 127.94h127.94v63.372a32.045 32.045 0 0 0 64.09 0V127.94h255.88v63.372a32.045 32.045 0 0 0 64.09 0V127.94h127.94a128.18 128.18 0 0 1 127.94 127.94z"/>
+</vector>

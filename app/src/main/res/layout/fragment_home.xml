@@ -27,65 +27,86 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:orientation="horizontal"
-            android:paddingVertical="10dp"
-            >
+            android:paddingVertical="10dp">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                app:srcCompat="@drawable/ic_income"
                 android:layout_gravity="center_vertical"
-                android:scaleType="fitCenter"/>
+                android:layout_weight="2"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_income" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="本月收入"
-                    android:textSize="15sp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorAccent"/>
+                    android:text="本月收入"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
                 <TextView
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="2"
-                    android:text="本月收入"
-                    android:textSize="18sp"
                     android:gravity="center"
-                    android:textColor="@color/colorAccent"/>
+                    android:text="本月收入"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
         </LinearLayout>
+        <!---
+                <com.xuexiang.xui.widget.button.RippleView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    app:rv_type="doubleRipple">
 
-        <com.xuexiang.xui.widget.button.RippleView
+                    <ImageButton
+                        android:id="@+id/ib_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_add_accounting"/>
+
+                </com.xuexiang.xui.widget.button.RippleView>
+
+        -->
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            app:rv_type="doubleRipple">
+            android:padding="5dp">
 
-            <ImageButton
+            <com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView
                 android:id="@+id/ib_add"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_add_accounting"/>
+                android:layout_weight="3"
+                android:gravity="center"
+                app:sb_shape_type="round"
+                app:srcCompat="@drawable/ic_add_accounting"
 
-        </com.xuexiang.xui.widget.button.RippleView>
-
+                />
+        </LinearLayout>
 
 
         <LinearLayout
@@ -93,39 +114,41 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:orientation="horizontal"
-            android:paddingVertical="10dp"
-            >
+            android:paddingVertical="10dp">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                app:srcCompat="@drawable/ic_outcome"
                 android:layout_gravity="center_vertical"
-                android:scaleType="fitCenter"/>
+                android:layout_weight="2"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_outcome" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="本月收入"
-                    android:textSize="15sp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorAccent"/>
+                    android:text="本月收入"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
                 <TextView
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="2"
-                    android:text="本月收入"
-                    android:textSize="18sp"
                     android:gravity="center"
-                    android:textColor="@color/colorAccent"/>
+                    android:text="本月收入"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
 
             </LinearLayout>
         </LinearLayout>
@@ -133,13 +156,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/record"
-        android:padding="5dp"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="4"
         android:background="@drawable/bg_record"
-        >
+        android:padding="5dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 

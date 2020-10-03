@@ -34,6 +34,7 @@ import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +47,7 @@ import java.util.List;
 public class HomeFragment extends BaseFragment {
 
     private RecyclerView mRvRecord;
-    private ImageButton mIbAdd;
+    private ShadowImageView mIbAdd;
 
     /**
      * @return 返回为 null意为不需要导航栏
