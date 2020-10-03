@@ -18,7 +18,9 @@
 package com.xuexiang.cdaccount.fragment.charts;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -31,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -56,6 +59,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.ChartsActivity;
+import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.XToastUtils;
@@ -104,19 +109,16 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @BindView(R.id.btn_date_end)
     XUIAlphaButton Btn_date_end;
 
-    // 下拉菜单
-    private String[] mHeaders = {"类别", "成员", "账户"};
-    private List<View> mPopupViews = new ArrayList<>();
 
-
-
-    private String[] mPieColors;
 
     // 日期选择器
     private TimePickerView mDatePickerStart;
     private TimePickerView mDatePickerEnd;
     private Date mDateStart;
     private Date mDateEnd;
+
+    //tab选择项
+    private CharSequence tabSelected;
 
 
     /**
@@ -143,8 +145,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @Override
     protected void initViews() {
         init_tab();
-        initChart();
         initTimePicker();
+        initChart();
     }
 
 
@@ -154,21 +156,12 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     protected void initChart() {
         //柱状图
         mBarChart = initBarChart(mBarChart);
-        BarData barData = setBardata();
-        mBarChart.setData(barData);
-        mBarChart.invalidate();
-
         //折线图
         mLineChart = initLineChart(mLineChart);
-        LineData lineData = setLinedata();
-        mLineChart.setData(lineData);
-        mLineChart.invalidate();
-
         //饼图
         mPieChart = initPieChart(mPieChart);
-        PieData pieData = setPiedata(mPieChart);
-        mPieChart.setData(pieData);
-        mPieChart.invalidate();
+
+        refreshCharts();
     }
 
     /**
@@ -181,34 +174,15 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
         barChart.setNoDataText(getResources().getString(R.string.no_data));
+        //设置动画
+        barChart.animateXY(1500, 1500);
+
         XAxis xAxis = barChart.getXAxis();
         YAxis yAxisLeft = barChart.getAxisLeft();
         YAxis yAxisRight = barChart.getAxisRight();
         Legend legend = barChart.getLegend();
         setBarChartAxis(xAxis, yAxisLeft, yAxisRight, legend);
 
-        barChart = setBarChartClickListener(barChart);
-        return barChart;
-    }
-
-    protected BarChart setBarChartClickListener(BarChart barChart) {
-        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                if(e == null) {
-                    return;
-                }
-                int selecedindex = (int) h.getX();
-                XToastUtils.toast(Integer.toString(selecedindex));
-            }
-
-            @Override
-            public void onNothingSelected() {
-                // 图表外部点击事件 （二次点击事件）
-                XToastUtils.toast("click edge");
-            }
-        });
         return barChart;
     }
 
@@ -292,6 +266,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         lineChart.setScaleEnabled(true);
         //无数据时显示
         lineChart.setNoDataText(getResources().getString(R.string.no_data));
+        //设置动画
+        lineChart.animateXY(1500, 1500);
 
         XAxis xAxis = lineChart.getXAxis();
         YAxis yAxisLeft = lineChart.getAxisLeft();
@@ -334,6 +310,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
         lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_7));
+        lineDataSet.setLineWidth(2f);
+
         LineData linedata = new LineData(lineDataSet);
         linedata.setValueTextSize(12f);
         return linedata;
@@ -364,6 +342,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         pieChart.setNoDataText(getResources().getString(R.string.no_data));
         //标签颜色
         pieChart.setEntryLabelColor(Color.BLACK);
+        //设置动画
+        pieChart.animateXY(1500, 1500);
 
         Legend legend = pieChart.getLegend();
         setPieChartAxis(legend);
@@ -381,14 +361,21 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 if(e == null) {
                     return;
                 }
-                int selecedindex = (int) h.getX();
-                XToastUtils.toast(Integer.toString(selecedindex));
+                if(mTabLayout.getSelectedTabPosition() == 0) {
+                    int selecedindex = (int) h.getX();
+                    XToastUtils.toast(Integer.toString(selecedindex));
+                    //跳转Acticity
+                    Intent intent = new Intent(getContext(), ChartsActivity.class);
+                    intent.putExtra("category", Integer.toString(selecedindex));
+                    intent.putExtra("datestart", DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()));
+                    intent.putExtra("dateend", DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
+                    startActivity(intent);
+                }
             }
 
             @Override
             public void onNothingSelected() {
                 // 图表外部点击事件 （二次点击事件）
-                XToastUtils.toast("click edge");
             }
         });
         return pieChart;
@@ -403,7 +390,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         legend.setWordWrapEnabled(false);
     }
 
-    protected PieData setPiedata(PieChart pieChart) {
+    protected PieData setPiedata() {
         Random myRandom = new Random();
         //设置数据
         List<PieEntry> entries = new ArrayList<>();
@@ -434,16 +421,44 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         pieDataSet.setDrawIcons(false);
         pieDataSet.setSliceSpace(3f);
         pieDataSet.setIconsOffset(new MPPointF(0, 40));
-        pieDataSet.setSelectionShift(5f);
+        pieDataSet.setSelectionShift(10f);
         pieDataSet.setColors(colors);
 
         PieData piedata = new PieData(pieDataSet);
-        piedata.setValueFormatter(new PercentFormatter(pieChart));
+        piedata.setValueFormatter(new PercentFormatter(mPieChart));
         piedata.setDrawValues(true);
         piedata.setValueTextSize(12f);
         piedata.setValueTextColor(getResources().getColor(R.color.black));
         return piedata;
     }
+
+
+    /**
+     * 更新所有图表数据
+     */
+    protected void refreshCharts() {
+        // 柱状图
+        BarData barData = setBardata();
+        mBarChart.setData(barData);
+        mBarChart.animateXY(1500, 1500);
+        mBarChart.invalidate();
+
+        //饼图
+        PieData pieData = setPiedata();
+        mPieChart.setData(pieData);
+        mPieChart.animateXY(1500, 1500);
+        mPieChart.invalidate();
+
+        //折线图
+        LineData lineData = setLinedata();
+        mLineChart.setData(lineData);
+        mLineChart.animateXY(1500, 1500);
+        mLineChart.invalidate();
+
+    }
+
+
+
 
 
     @Override
@@ -512,9 +527,14 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 if(mDateStart.after(mDateEnd)) {
                     XToastUtils.error("开始日期不能晚于结束日期");
                 }
+                refreshCharts();
             })
                     .setDate(calendar)  //默认日期为当前的前一个月
-                    .setTimeSelectChangeListener(date -> Log.i("pvTime", Calendar.getInstance().toString()))
+                    .setTimeSelectChangeListener(date -> {
+                        if(date.after(mDateEnd)) {
+                            XToastUtils.error("开始日期不能晚于结束日期");
+                        }
+                    })
                     .setTitleText("开始日期")
                     .build();
         }
@@ -532,13 +552,19 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 if(mDateStart.after(mDateEnd)) {
                     XToastUtils.error("结束日期不能早于开始日期");
                 }
+                refreshCharts();
             })
-                    .setTimeSelectChangeListener(date -> Log.i("pvTime", Calendar.getInstance().toString()))
+                    .setTimeSelectChangeListener(date -> {
+                        if(date.before(mDateStart)) {
+                            XToastUtils.error("结束日期不能早于开始日期");
+                        }
+                    })
                     .setTitleText("结束日期")
                     .build();
         }
         mDatePickerEnd.show();
     }
+
 
     /**
      * tab栏设置
@@ -555,6 +581,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         XToastUtils.toast("选中了:" + tab.getText());
+
+        refreshCharts();
     }
 
     @Override
@@ -564,6 +592,10 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
+        tabSelected = tab.getText();
 
+        XToastUtils.toast("选中了:" + tabSelected);
+
+        refreshCharts();
     }
 }
