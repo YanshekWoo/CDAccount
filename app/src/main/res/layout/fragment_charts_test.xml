@@ -21,11 +21,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/chart_tab"
-        style="@style/TabLayoutStyle"
+    <com.xuexiang.xui.widget.spinner.DropDownMenu
+        android:id="@+id/ddm_content"
         android:layout_width="match_parent"
-        android:layout_height="?attr/xui_actionbar_height" />
+        android:layout_height="wrap_content" />
 
 
     <LinearLayout

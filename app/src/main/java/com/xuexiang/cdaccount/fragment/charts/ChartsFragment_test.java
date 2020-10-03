@@ -17,7 +17,6 @@
 
 package com.xuexiang.cdaccount.fragment.charts;
 
-import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.util.Log;
 import android.util.TypedValue;
@@ -25,14 +24,11 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -54,7 +50,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
@@ -84,10 +79,10 @@ import butterknife.OnClick;
  * @since 2020-09-26 20:46
  */
 @Page(anim = CoreAnim.none)
-public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelectedListener{
+public class ChartsFragment_test extends BaseFragment {
 
-    @BindView(R.id.chart_tab)
-    TabLayout mTabLayout;
+    @BindView(R.id.ddm_content)
+    DropDownMenu mDropDownMenu;
 
     @BindView(R.id.lineChart)
     LineChart mLineChart;
@@ -108,8 +103,14 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     private String[] mHeaders = {"类别", "成员", "账户"};
     private List<View> mPopupViews = new ArrayList<>();
 
+    private ListDropDownAdapter mCategoryAdapter;
+    private ListDropDownAdapter mMemberAdapter;
+    private ListDropDownAdapter mAccountAdapter;
 
-
+    // 图表数据
+    private String[] mCategories;
+    private String[] mMembers;
+    private String[] mAccounts;
     private String[] mPieColors;
 
     // 日期选择器
@@ -142,8 +143,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      */
     @Override
     protected void initViews() {
-        init_tab();
         initChart();
+        initSpinner();
         initTimePicker();
     }
 
@@ -446,9 +447,15 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     }
 
 
+    /**
+     * 用数组初始化菜单选项
+     */
     @Override
     protected void initArgs() {
-
+        mCategories = ResUtils.getStringArray(R.array.category_entry);
+        mMembers = ResUtils.getStringArray(R.array.member_entry);
+        mAccounts = ResUtils.getStringArray(R.array.account_entry);
+        mPieColors = ResUtils.getStringArray(R.array.pieColor);
     }
 
     @Override
@@ -460,10 +467,74 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     }
 
     private void handleBackPressed() {
-
+        if (mDropDownMenu.isShowing()) {
+            mDropDownMenu.closeMenu();
+        } else {
+            popToBack();
+        }
     }
 
 
+    /**
+     * 下拉菜单设置
+     */
+    protected void initSpinner() {
+        //init category menu
+        final ListView categoryView = new ListView(getContext());
+        mCategoryAdapter = new ListDropDownAdapter(getContext(), mCategories);
+        categoryView.setDividerHeight(0);
+        categoryView.setAdapter(mCategoryAdapter);
+
+        //init member menu
+        final ListView memberView = new ListView(getContext());
+        memberView.setDividerHeight(0);
+        mMemberAdapter = new ListDropDownAdapter(getContext(), mMembers);
+        memberView.setAdapter(mMemberAdapter);
+
+        //init accout book menu
+        final ListView accoutView = new ListView(getContext());
+        accoutView.setDividerHeight(0);
+        mAccountAdapter = new ListDropDownAdapter(getContext(), mAccounts);
+        accoutView.setAdapter(mAccountAdapter);
+
+        //init mPopupViews
+        mPopupViews.add(categoryView);
+        mPopupViews.add(memberView);
+        mPopupViews.add(accoutView);
+
+
+        //add item click event
+        categoryView.setOnItemClickListener((parent, view, position, id) -> {
+            mCategoryAdapter.setSelectPosition(position);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mCategories[position]);
+            XToastUtils.toast("点击了:" + mCategories[position]);
+            mDropDownMenu.closeMenu();
+        });
+
+        memberView.setOnItemClickListener((parent, view, position, id) -> {
+            mMemberAdapter.setSelectPosition(position);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[1] : mMembers[position]);
+            XToastUtils.toast("点击了:" + mMembers[position]);
+            mDropDownMenu.closeMenu();
+        });
+
+        accoutView.setOnItemClickListener((parent, view, position, id) -> {
+            mAccountAdapter.setSelectPosition(position);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[2] : mAccounts[position]);
+            XToastUtils.toast("点击了:" + mAccounts[position]);
+            mDropDownMenu.closeMenu();
+        });
+
+        //init context view
+        TextView contentView = new TextView(getContext());
+        contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        contentView.setText("");
+        contentView.setGravity(Gravity.CENTER);
+        contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 3);
+
+        //init dropdownview
+        mDropDownMenu.setDropDownMenu(mHeaders, mPopupViews, contentView);
+    }
 
 
 
@@ -540,30 +611,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         mDatePickerEnd.show();
     }
 
-    /**
-     * tab栏设置
-     * @param
-     */
 
-    private void init_tab() {
-        mTabLayout.addTab(mTabLayout.newTab().setText("类别"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("成员"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("账户"));
-        mTabLayout.addOnTabSelectedListener(this);
-    }
 
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        XToastUtils.toast("选中了:" + tab.getText());
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
 }

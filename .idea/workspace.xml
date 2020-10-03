@@ -12,19 +12,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment_test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/color/selector_tab_text_color.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_charts_test.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_charts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_charts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles_widget.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles_widget.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,20 +68,20 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/color" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.xuexiang.cdaccount.fragment.charts" />
       <recent name="com.xuexiang.cdaccount.fragment.home" />
       <recent name="com.xuexiang.cdaccount.fragment.account" />
-      <recent name="com.xuexiang.cdaccount.fragment.charts" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\AS_workspace\CDAccount\app\src\main\res\color" />
+      <recent name="F:\AS_workspace\CDAccount\app\src\main\res\layout" />
       <recent name="F:\AS_workspace\CDAccount\app\src\main\res\drawable-v21" />
       <recent name="F:\AS_workspace\CDAccount\app\src\main\res\drawable-v17" />
       <recent name="F:\AS_workspace\CDAccount\app\src\main\res\drawable" />
-      <recent name="F:\AS_workspace\CDAccount\app\src\main\res\layout" />
-      <recent name="F:\AS_workspace\CDAccount\app\src\main\java\com\xuexiang\cdaccount\adapter" />
     </key>
   </component>
   <component name="RunManager">
@@ -186,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601634935070</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="PieChart add ClickListener">
+      <created>1601649379464</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1601649379464</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -206,7 +217,8 @@
     <MESSAGE value="add spinner" />
     <MESSAGE value="add timePicker" />
     <MESSAGE value="change MPAndroidChart version" />
-    <option name="LAST_COMMIT_MESSAGE" value="change MPAndroidChart version" />
+    <MESSAGE value="PieChart add ClickListener" />
+    <option name="LAST_COMMIT_MESSAGE" value="PieChart add ClickListener" />
   </component>
   <component name="WindowStateProjectService">
     <state x="617" y="215" key="#Notifications" timestamp="1601449384177">
@@ -217,54 +229,54 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="733" y="199" key="#app/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601535723191" />
-    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1601605899880">
+    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1601693258282">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601605899880" />
-    <state x="830" y="265" key="#com.intellij.ide.util.MemberChooser" timestamp="1601646423132">
+    <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601693258282" />
+    <state x="830" y="265" key="#com.intellij.ide.util.MemberChooser" timestamp="1601693596075">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="830" y="265" key="#com.intellij.ide.util.MemberChooser/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601646423132" />
+    <state x="830" y="265" key="#com.intellij.ide.util.MemberChooser/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601693596075" />
     <state x="755" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1601446779609">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="755" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601446779609" />
-    <state x="665" y="150" key="CommitChangelistDialog2" timestamp="1601634931951">
+    <state x="665" y="150" key="CommitChangelistDialog2" timestamp="1601649377157">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601634931951" />
+    <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601649377157" />
     <state x="881" y="431" key="FileChooserDialogImpl" timestamp="1601622154854">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601622154854" />
-    <state width="2005" height="305" key="GridCell.Tab.0.bottom" timestamp="1601648392262">
+    <state width="2005" height="305" key="GridCell.Tab.0.bottom" timestamp="1601690506588">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601648392262" />
-    <state width="2005" height="305" key="GridCell.Tab.0.center" timestamp="1601648392261">
+    <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601690506588" />
+    <state width="2005" height="305" key="GridCell.Tab.0.center" timestamp="1601690506588">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601648392261" />
-    <state width="2005" height="305" key="GridCell.Tab.0.left" timestamp="1601648392261">
+    <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601690506588" />
+    <state width="2005" height="305" key="GridCell.Tab.0.left" timestamp="1601690506588">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601648392261" />
-    <state width="2005" height="305" key="GridCell.Tab.0.right" timestamp="1601648392261">
+    <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601690506588" />
+    <state width="2005" height="305" key="GridCell.Tab.0.right" timestamp="1601690506588">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601648392261" />
-    <state x="617" y="289" key="Vcs.Push.Dialog.v2" timestamp="1601634951303">
+    <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601690506588" />
+    <state x="617" y="289" key="Vcs.Push.Dialog.v2" timestamp="1601649398580">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="289" key="Vcs.Push.Dialog.v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601634951303" />
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1601644274758">
+    <state x="617" y="289" key="Vcs.Push.Dialog.v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601649398580" />
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1601690709699">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601644274758" />
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601649331322">
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601690709699" />
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601693929655">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601649331322" />
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601693929655" />
     <state x="677" y="403" key="git4idea.ui.GitUnstashDialog" timestamp="1601449642533">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -273,10 +285,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="600" height="424" key="javadoc.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447416074" />
-    <state x="681" y="259" key="run.anything.popup" timestamp="1601623595760">
+    <state x="681" y="259" key="run.anything.popup" timestamp="1601690001450">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="681" y="259" key="run.anything.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601623595760" />
+    <state x="681" y="259" key="run.anything.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601690001450" />
     <state x="687" y="243" width="672" height="678" key="search.everywhere.popup" timestamp="1601647593713">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
