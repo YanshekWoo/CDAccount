@@ -37,6 +37,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -111,6 +112,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @BindView(R.id.btn_date_end)
     XUIAlphaButton Btn_date_end;
 
+    @BindView(R.id.fab_menu)
+    FloatingActionMenu mFloatingActionMenu;
 
 
     // 日期选择器
@@ -149,6 +152,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         init_tab();
         initTimePicker();
         initChart();
+        selectChart(0);
     }
 
 
@@ -163,6 +167,28 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         //饼图
         mPieChart = initPieChart(mPieChart);
 
+        refreshCharts();
+    }
+
+    //隐藏图表
+    protected void selectChart(int choice) {
+        switch (choice) {
+            case 0:
+                mPieChart.setVisibility(View.VISIBLE);
+                mBarChart.setVisibility(View.GONE);
+                mLineChart.setVisibility(View.GONE);
+                break;
+            case 1:
+                mPieChart.setVisibility(View.GONE);
+                mBarChart.setVisibility(View.VISIBLE);
+                mLineChart.setVisibility(View.GONE);
+                break;
+            case 2:
+                mPieChart.setVisibility(View.GONE);
+                mBarChart.setVisibility(View.GONE);
+                mLineChart.setVisibility(View.VISIBLE);
+                break;
+        }
         refreshCharts();
     }
 
@@ -185,8 +211,40 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         Legend legend = barChart.getLegend();
         setBarChartAxis(xAxis, yAxisLeft, yAxisRight, legend);
 
+        //设置监听
+        barChart = setPieChartClickListener(barChart);
         return barChart;
     }
+
+
+    protected BarChart setPieChartClickListener(BarChart barChart) {
+        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                if(e == null) {
+                    return;
+                }
+                if(mTabLayout.getSelectedTabPosition() == 0) {
+                    int selecedindex = (int) h.getX();
+                    XToastUtils.toast(Integer.toString(selecedindex));
+                    //跳转Acticity
+                    Intent intent = new Intent(getContext(), ChartsActivity.class);
+                    intent.putExtra("category", Integer.toString(selecedindex));
+                    intent.putExtra("datestart", DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()));
+                    intent.putExtra("dateend", DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected() {
+                // 图表外部点击事件 （二次点击事件）
+            }
+        });
+        return barChart;
+    }
+
 
     protected void setBarChartAxis(XAxis xAxis, YAxis yAxisLeft, YAxis yAxisRight, Legend legend) {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -207,7 +265,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
         //设置Lengend位置
         legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
     }
@@ -245,7 +303,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
 
         BarData bardata = new BarData(barDataSet);
-        bardata.setValueTextSize(12f);
+        bardata.setValueTextSize(11f);
 
 
         return bardata;
@@ -298,7 +356,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
         //设置Lengend位置
         legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
     }
@@ -319,7 +377,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         lineDataSet.setFillAlpha(30);
 
         LineData linedata = new LineData(lineDataSet);
-        linedata.setValueTextSize(12f);
+        linedata.setValueTextSize(11f);
         return linedata;
     }
 
@@ -390,7 +448,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     protected void setPieChartAxis(Legend legend) {
         //设置Lengend位置
         legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         legend.setWordWrapEnabled(false);
@@ -604,4 +662,30 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
         refreshCharts();
     }
+
+
+    /**
+     * 多选按钮监听
+     * @param v
+     */
+    @OnClick({R.id.fab_piechart, R.id.fab_barchart, R.id.fab_linechart})
+    void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_piechart:
+                selectChart(0);
+                break;
+            case R.id.fab_barchart:
+                selectChart(1);
+                break;
+            case R.id.fab_linechart:
+                selectChart(2);
+                break;
+            default:
+                selectChart(0);
+                break;
+        }
+        mFloatingActionMenu.toggle(false);
+    }
+
+
 }

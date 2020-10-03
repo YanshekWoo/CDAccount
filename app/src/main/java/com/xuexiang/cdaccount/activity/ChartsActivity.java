@@ -26,6 +26,7 @@ import android.view.View;
 import androidx.core.content.ContextCompat;
 
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -75,8 +76,6 @@ import butterknife.OnClick;
 public class ChartsActivity extends BaseActivity {
 
 
-
-
     @BindView(R.id.lineChart2)
     LineChart mLineChart;
 
@@ -94,6 +93,10 @@ public class ChartsActivity extends BaseActivity {
 
     @BindView(R.id.chart_title)
     TitleBar mTitleBar;
+
+    @BindView(R.id.fab_menu)
+    FloatingActionMenu mFloatingActionMenu;
+
 
     // 日期选择器
     private TimePickerView mDatePickerStart;
@@ -123,6 +126,7 @@ public class ChartsActivity extends BaseActivity {
         initTitleBar();
         initTimePicker();
         initChart();
+        selectChart(0);
     }
 
 
@@ -151,6 +155,29 @@ public class ChartsActivity extends BaseActivity {
 
         refreshCharts();
     }
+
+    //隐藏图表
+    protected void selectChart(int choice) {
+        switch (choice) {
+            case 0:
+                mPieChart.setVisibility(View.VISIBLE);
+                mBarChart.setVisibility(View.GONE);
+                mLineChart.setVisibility(View.GONE);
+                break;
+            case 1:
+                mPieChart.setVisibility(View.GONE);
+                mBarChart.setVisibility(View.VISIBLE);
+                mLineChart.setVisibility(View.GONE);
+                break;
+            case 2:
+                mPieChart.setVisibility(View.GONE);
+                mBarChart.setVisibility(View.GONE);
+                mLineChart.setVisibility(View.VISIBLE);
+                break;
+        }
+        refreshCharts();
+    }
+
 
     /**
      * 初始化柱状图
@@ -193,7 +220,7 @@ public class ChartsActivity extends BaseActivity {
 
         //设置Lengend位置
         legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
     }
@@ -231,7 +258,7 @@ public class ChartsActivity extends BaseActivity {
 
 
         BarData bardata = new BarData(barDataSet);
-        bardata.setValueTextSize(12f);
+        bardata.setValueTextSize(11f);
 
 
         return bardata;
@@ -284,7 +311,7 @@ public class ChartsActivity extends BaseActivity {
 
         //设置Lengend位置
         legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
     }
@@ -305,7 +332,7 @@ public class ChartsActivity extends BaseActivity {
         lineDataSet.setFillAlpha(30);
 
         LineData linedata = new LineData(lineDataSet);
-        linedata.setValueTextSize(12f);
+        linedata.setValueTextSize(11f);
         return linedata;
     }
 
@@ -347,7 +374,7 @@ public class ChartsActivity extends BaseActivity {
     protected void setPieChartAxis(Legend legend) {
         //设置Lengend位置
         legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         legend.setWordWrapEnabled(false);
@@ -509,6 +536,30 @@ public class ChartsActivity extends BaseActivity {
                     .build();
         }
         mDatePickerEnd.show();
+    }
+
+
+    /**
+     * 多选按钮监听
+     * @param v
+     */
+    @OnClick({R.id.fab_piechart, R.id.fab_barchart, R.id.fab_linechart})
+    void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_piechart:
+                selectChart(0);
+                break;
+            case R.id.fab_barchart:
+                selectChart(1);
+                break;
+            case R.id.fab_linechart:
+                selectChart(2);
+                break;
+            default:
+                selectChart(0);
+                break;
+        }
+        mFloatingActionMenu.toggle(false);
     }
 
 }
