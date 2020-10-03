@@ -17,10 +17,18 @@
 
 package com.xuexiang.cdaccount.fragment.home;
 
+import android.app.Notification;
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.view.View;
+import android.widget.ImageButton;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.AddActivity;
 import com.xuexiang.cdaccount.adapter.record.RecordAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.xpage.annotation.Page;
@@ -38,6 +46,7 @@ import java.util.List;
 public class HomeFragment extends BaseFragment {
 
     private RecyclerView mRvRecord;
+    private ImageButton mIbAdd;
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -64,13 +73,30 @@ public class HomeFragment extends BaseFragment {
     protected void initViews() {
 
 
+
         String[] data = new String[]{"2020/10/2", "2020/10/3"};
 
-        //流水
+        //流水显示
         mRvRecord = findViewById(R.id.record);
         mRvRecord.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvRecord.setAdapter(new RecordAdapter(getContext(), data));
 
 
+
+        //记账
+        mIbAdd = findViewById(R.id.ib_add);
+        mIbAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AddActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //TODO:Refresh
     }
 }
