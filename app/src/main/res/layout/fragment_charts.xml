@@ -21,10 +21,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.xuexiang.xui.widget.spinner.DropDownMenu
-        android:id="@+id/ddm_content"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/chart_tab"
+        style="@style/TabLayoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="38dp" />
 
 
     <LinearLayout
@@ -55,35 +56,41 @@
     </LinearLayout>
 
 
-    <com.xuexiang.xui.widget.StickyNestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="370dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp" />
 
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pieChart"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_margin="20dp" />
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="370dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barChart"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_margin="20dp" />
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="370dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp" />
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_margin="20dp" />
-
-        </LinearLayout>
-    </com.xuexiang.xui.widget.StickyNestedScrollView>
+        <include layout="@layout/menu_statelayout_fab"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="200dp"
+            android:layout_width="200dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            />
+    </RelativeLayout>
 
 
 
