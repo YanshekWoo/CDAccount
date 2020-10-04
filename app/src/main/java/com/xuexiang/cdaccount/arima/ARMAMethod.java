@@ -29,10 +29,9 @@ public class ARMAMethod
 	public double sumData(double [] originalData)
 	{
 		double sum = 0.0;
-		
-		for (int i = 0; i < originalData.length; ++i)
-		{
-			sum += originalData[i];
+
+		for (double originalDatum : originalData) {
+			sum += originalDatum;
 		}
 		return sum;
 	}
@@ -60,10 +59,9 @@ public class ARMAMethod
 		
 		double var = 0.0;
 		double mu = this.avgData(originalData);
-		
-		for (int i = 0; i < originalData.length; ++i)
-		{
-			var += (originalData[i] - mu) * (originalData[i] - mu);
+
+		for (double originalDatum : originalData) {
+			var += (originalDatum - mu) * (originalDatum - mu);
 		}
 		var /= (originalData.length - 1);		//�������ƫ����
 		
@@ -259,11 +257,8 @@ public class ARMAMethod
 				{
 					tmpMA += maCoe[j] * errData[j];
 				}
-				
-				for (int j = q - 1; j > 0; --j)
-				{
-					errData[j] = errData[j - 1];
-				}
+
+				if (q - 1 >= 0) System.arraycopy(errData, 0, errData, 1, q - 1);
 				errData[0] = random.nextGaussian() * Math.sqrt(maCoe[0]);
 				
 				sumErr += (data[i] - tmpAR - tmpMA) * (data[i] - tmpAR - tmpMA);
@@ -378,10 +373,7 @@ public class ARMAMethod
 		
 		double [][] result = this.LevinsonSolve(garma);		//(p + 1) * (p + 1)
 		double [] ARCoe = new double[p + 1];
-		for (int i = 0; i < p; ++i)
-		{
-			ARCoe[i] = result[p][i + 1];
-		}
+		if (p >= 0) System.arraycopy(result[p], 1, ARCoe, 0, p);
 		ARCoe[p] = result[0][p];		//��������
 		
 //		 return this.YWSolve(garma);

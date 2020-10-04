@@ -1,5 +1,9 @@
 package com.xuexiang.cdaccount.arima;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
@@ -10,6 +14,7 @@ public class RunARIMA
 	public RunARIMA() {
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.N)
 	public float predictNext(List<Entry> entries)
 	{
 		//获取entries数据
@@ -55,7 +60,7 @@ public class RunARIMA
 			sumPredict += (double)tmpPredict[k] / (double)cnt;
 		}
 		int predict = (int)Math.round(sumPredict);
-		System.out.println("Predict value="+predict);
+//		System.out.println("Predict value="+predict);
 		return (float) predict;
 	}
 }

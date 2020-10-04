@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public class ARMAModel
 {
-	private double [] data = {};
+	private double [] data;
 	private int p;		//AR����
 	private int q;		//MA����
 	

@@ -174,10 +174,7 @@ public class ARIMAModel
 					tmpMA += maCoe[i] * errData[i];
 				}
 				//��������ʱ�̵�����
-				for(int j = q; j > 0; --j)
-				{
-					errData[j] = errData[j - 1];
-				}
+				if (q >= 0) System.arraycopy(errData, 0, errData, 1, q);
 				errData[0] = random.nextGaussian()*Math.sqrt(maCoe[0]);
 			}
 			
