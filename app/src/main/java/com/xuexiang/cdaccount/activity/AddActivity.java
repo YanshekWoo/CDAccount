@@ -79,7 +79,7 @@ public class AddActivity extends AppCompatActivity {
     private int mIntRecordType;
 
     private EditText mEtAmount;
-    private double mAmount;
+    private double mAmount = -1;    //负数作空标志
 
     private TextView mTvDateTime;
     private TimePickerView mDatePicker;
@@ -175,8 +175,11 @@ public class AddActivity extends AppCompatActivity {
                     s.delete(posDot + 3, posDot + 4);
                     XToastUtils.error("小数点后不超过两位");
                 }
-
-                mAmount = Double.parseDouble(temp);
+                if(!temp.equals("")){
+                    mAmount = Double.parseDouble(temp);
+                }else {
+                    mAmount = -1;
+                }
             }
         });
 
