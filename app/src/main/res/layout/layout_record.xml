@@ -19,7 +19,8 @@
     xmlns:chat="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginVertical="5dp">
 
     <TextView
         android:id="@+id/tv_time"
@@ -28,7 +29,7 @@
         android:gravity="center_horizontal"
         android:text="日期"
         android:textColor="@color/app_color_theme_10"
-        android:textSize="15sp" />
+        android:textSize="14sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,7 +51,7 @@
             chat:arrow_height="12dp"
             chat:arrow_up_distance="10dp"
             chat:arrow_width="5dp"
-            chat:conner_radius="6dp"
+            chat:conner_radius="10dp"
             chat:is_arrow_center="true"
             chat:press_fill_color="#50111111"
             chat:press_stroke_color="#50111111"
@@ -64,7 +65,7 @@
                 android:layout_centerVertical="true"
                 android:text="这是箭头向左的聊天气泡"
                 android:textColor="#4a4a4a"
-                android:textSize="16dp" />
+                android:textSize="15sp" />
         </com.cxd.chatview.moudle.ChatView>
         <ImageView
             android:id="@+id/record_head"

@@ -12,8 +12,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_add.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_record.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_record.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601821207455</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="#主页UI设计&#10;##逆序显示&#10;##自动刷新&#10;#记账activity&#10;##修复bug：限制金额输入位数">
+      <created>1601822492542</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1601822492542</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -258,7 +265,8 @@
     <MESSAGE value="#主页UI设计&#10;#记账activity&#10;##选项&#10;##金额&#10;##日期时间&#10;##分类" />
     <MESSAGE value="#主页UI设计&#10;#记账activity" />
     <MESSAGE value="#主页UI设计&#10;##逆序显示&#10;##自动刷新&#10;#记账activity&#10;##完工" />
-    <option name="LAST_COMMIT_MESSAGE" value="#主页UI设计&#10;##逆序显示&#10;##自动刷新&#10;#记账activity&#10;##完工" />
+    <MESSAGE value="#主页UI设计&#10;##逆序显示&#10;##自动刷新&#10;#记账activity&#10;##修复bug：限制金额输入位数" />
+    <option name="LAST_COMMIT_MESSAGE" value="#主页UI设计&#10;##逆序显示&#10;##自动刷新&#10;#记账activity&#10;##修复bug：限制金额输入位数" />
   </component>
   <component name="WindowStateProjectService">
     <state x="463" y="142" key="#Notifications" timestamp="1601783200398">
@@ -332,10 +340,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="270" y="54" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1601782238236" />
-    <state x="361" y="134" key="Vcs.Push.Dialog.v2" timestamp="1601613670292">
+    <state x="361" y="134" key="Vcs.Push.Dialog.v2" timestamp="1601822541607">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="134" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1601613670292" />
+    <state x="361" y="134" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1601822541607" />
     <state x="93" y="93" width="1350" height="638" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601803976627">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -344,10 +352,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601537316082" />
-    <state x="608" y="350" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601638258366">
+    <state x="608" y="350" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601822526352">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="608" y="350" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1601638258366" />
+    <state x="608" y="350" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1601822526352" />
     <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449621959" />
     <state x="467" y="203" key="git4idea.merge.GitPullDialog" timestamp="1601638270511">
       <screen x="0" y="0" width="1536" height="824" />

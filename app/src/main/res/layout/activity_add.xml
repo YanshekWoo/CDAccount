@@ -137,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 >
 
                 <ImageView
@@ -149,7 +149,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="时间"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:gravity="center"
                     android:layout_marginHorizontal="5dp"/>
                 <TextView
@@ -159,7 +159,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:gravity="center_vertical"
                     android:text="时间"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="#000000"
                     android:background="@drawable/bg_amount"
                     android:paddingLeft="10dp"
@@ -173,7 +173,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 >
 
@@ -192,7 +192,7 @@
                     android:layout_toEndOf="@id/iv_type"
                     android:layout_centerVertical="true"
                     android:text="分类"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:gravity="center"
                     android:layout_marginHorizontal="5dp"/>
                 <TextView
@@ -204,7 +204,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:text="一级分类-二级分类"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="#000000"
                     android:background="@drawable/bg_amount"
                     android:paddingLeft="10dp"
@@ -214,8 +214,8 @@
                     android:focusable="true" />
                 <com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView
                     android:id="@+id/btn_new_type"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
@@ -227,7 +227,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 >
 
@@ -246,7 +246,7 @@
                     android:layout_toEndOf="@id/iv_account"
                     android:layout_centerVertical="true"
                     android:text="账户"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:gravity="center"
                     android:layout_marginHorizontal="5dp"/>
                 <TextView
@@ -258,7 +258,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:text="现金账户-现金"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="#000000"
                     android:background="@drawable/bg_amount"
                     android:paddingLeft="10dp"
@@ -268,8 +268,8 @@
                     android:focusable="true" />
                 <com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView
                     android:id="@+id/btn_new_account"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
@@ -281,7 +281,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 >
 
@@ -300,7 +300,7 @@
                     android:layout_toEndOf="@id/iv_member"
                     android:layout_centerVertical="true"
                     android:text="成员"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:gravity="center"
                     android:layout_marginHorizontal="5dp"/>
                 <TextView
@@ -312,7 +312,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:text="本人"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="#000000"
                     android:background="@drawable/bg_amount"
                     android:paddingLeft="10dp"
@@ -322,8 +322,8 @@
                     android:focusable="true" />
                 <com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView
                     android:id="@+id/btn_new_member"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
@@ -335,7 +335,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 >
 
@@ -354,7 +354,7 @@
                     android:layout_toEndOf="@id/iv_remark"
                     android:layout_centerVertical="true"
                     android:text="备注"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:gravity="center"
                     android:layout_marginHorizontal="5dp"/>
                 <EditText
@@ -366,7 +366,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:hint="商家/地点/项目/其他"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="#000000"
                     android:background="@drawable/bg_amount"
                     android:paddingLeft="10dp"
