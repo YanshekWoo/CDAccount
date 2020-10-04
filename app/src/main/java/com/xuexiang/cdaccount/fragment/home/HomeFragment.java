@@ -48,6 +48,9 @@ public class HomeFragment extends BaseFragment {
 
     private RecyclerView mRvRecord;
     private ShadowImageView mIbAdd;
+    private int mIntAmountIn;
+    private int mIntAmountOut;
+
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -76,6 +79,8 @@ public class HomeFragment extends BaseFragment {
 
 
         String[] data = new String[]{"2020/10/2", "2020/10/3"};
+
+
 
         //流水显示
         mRvRecord = findViewById(R.id.record);
