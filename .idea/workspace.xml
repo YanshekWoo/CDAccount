@@ -11,19 +11,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_account.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_member.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_remark.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_new.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_new_account.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_new_member.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/spinner_item.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/adapter/record/RecordAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/adapter/record/RecordAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/home/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/home/HomeFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_add.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_add.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_add.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +69,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="92b86094" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-04T09:35:40.290Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
@@ -86,6 +81,7 @@
       <recent name="com.xuexiang.cdaccount.activity" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.xuexiang.cdaccount.utils" />
       <recent name="com.xuexiang.cdaccount.activity" />
       <recent name="com.xuexiang.cdaccount.fragment.home" />
       <recent name="com.xuexiang.cdaccount.fragment.account" />
@@ -226,7 +222,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601717695603</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="#主页UI设计&#10;#记账activity">
+      <created>1601800812624</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1601800812624</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -249,7 +252,8 @@
     <MESSAGE value="#主页UI初步设计_v2&#10;##尝试水波纹&#10;#记账activity创建" />
     <MESSAGE value="#主页UI设计&#10;#记账activity&#10;##选项&#10;##金额&#10;##日期时间" />
     <MESSAGE value="#主页UI设计&#10;#记账activity&#10;##选项&#10;##金额&#10;##日期时间&#10;##分类" />
-    <option name="LAST_COMMIT_MESSAGE" value="#主页UI设计&#10;#记账activity&#10;##选项&#10;##金额&#10;##日期时间&#10;##分类" />
+    <MESSAGE value="#主页UI设计&#10;#记账activity" />
+    <option name="LAST_COMMIT_MESSAGE" value="#主页UI设计&#10;#记账activity" />
   </component>
   <component name="WindowStateProjectService">
     <state x="463" y="142" key="#Notifications" timestamp="1601783200398">
@@ -265,6 +269,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601383636212" />
+    <state x="151" y="84" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1601804063992">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="151" y="84" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1601804063992" />
     <state x="574" y="122" key="#com.intellij.ide.util.MemberChooser" timestamp="1601713340026">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -277,35 +285,35 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="622" y="225" key="AndroidCreateXmlResourceDialog/0.0.1536.824@0.0.1536.824" timestamp="1601623209688" />
-    <state x="499" y="0" key="CommitChangelistDialog2" timestamp="1601717694356">
+    <state x="499" y="0" key="CommitChangelistDialog2" timestamp="1601800808132">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1601717694356" />
+    <state x="499" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1601800808132" />
     <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601449308119" />
     <state x="661" y="307" key="FileChooserDialogImpl" timestamp="1601781788656">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="661" y="307" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1601781788656" />
     <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601383584025" />
-    <state width="1493" height="176" key="GridCell.Tab.0.bottom" timestamp="1601800578423">
+    <state width="1493" height="71" key="GridCell.Tab.0.bottom" timestamp="1601808441683">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="176" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1601800578422" />
+    <state width="1493" height="71" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1601808441683" />
     <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601534406863" />
-    <state width="1493" height="176" key="GridCell.Tab.0.center" timestamp="1601800578422">
+    <state width="1493" height="71" key="GridCell.Tab.0.center" timestamp="1601808441683">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="176" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1601800578422" />
+    <state width="1493" height="71" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1601808441683" />
     <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601534406860" />
-    <state width="1493" height="176" key="GridCell.Tab.0.left" timestamp="1601800578422">
+    <state width="1493" height="71" key="GridCell.Tab.0.left" timestamp="1601808441683">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="176" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1601800578422" />
+    <state width="1493" height="71" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1601808441683" />
     <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601534406860" />
-    <state width="1493" height="176" key="GridCell.Tab.0.right" timestamp="1601800578422">
+    <state width="1493" height="71" key="GridCell.Tab.0.right" timestamp="1601808441683">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="176" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1601800578422" />
+    <state width="1493" height="71" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1601808441683" />
     <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601534406863" />
     <state x="477" y="128" key="MultipleFileMergeDialog" timestamp="1601638201939">
       <screen x="0" y="0" width="1536" height="824" />
@@ -323,10 +331,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="134" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1601613670292" />
-    <state x="93" y="93" width="1350" height="638" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601732403314">
+    <state x="93" y="93" width="1350" height="638" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601803976627">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="93" y="93" width="1350" height="638" key="com.android.tools.idea.avdmanager.AvdListDialog/0.0.1536.824@0.0.1536.824" timestamp="1601732403314" />
+    <state x="93" y="93" width="1350" height="638" key="com.android.tools.idea.avdmanager.AvdListDialog/0.0.1536.824@0.0.1536.824" timestamp="1601803976627" />
     <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1601537316082">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -357,9 +365,9 @@
     </state>
     <state x="511" y="192" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1601616853543" />
     <state x="681" y="259" key="run.anything.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601447004081" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1601800424691">
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1601803364293">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1601800424691" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1601803364293" />
   </component>
 </project>

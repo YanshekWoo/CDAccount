@@ -33,12 +33,13 @@ import java.util.List;
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordViewHolder> {
 
     private Context mContext;
-    private String[] mData;
+    private String[] mDate,mMessage;
 
 
-    public RecordAdapter(Context context, String[] Data){
+    public RecordAdapter(Context context, String[] Date, String[] Message){
         this.mContext = context;
-        this.mData = Data;
+        this.mMessage = Message;
+        this.mDate = Date;
     }
     @NonNull
     @Override
@@ -48,21 +49,24 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
 
     @Override
     public void onBindViewHolder(@NonNull RecordAdapter.RecordViewHolder holder, int position) {
-        String str = mData[position];
-        holder.time.setText(str);
+        String Date = mDate[position];
+        String Message = mMessage[position];
+        holder.time.setText(Date);
+        holder.message.setText(Message);
     }
 
     @Override
     public int getItemCount() {
-        return mData.length;
+        return Math.min(mDate.length,20);       //至多展示20条数据
     }
 
     class RecordViewHolder extends RecyclerView.ViewHolder{
-        private TextView time;
+        private TextView time,message;
 
         public RecordViewHolder(@NonNull View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.tv_time);
+            message = itemView.findViewById(R.id.tv_record);
         }
     }
 }
