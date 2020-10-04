@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2020 xuexiangjys(xuexiangjys@163.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
+    <path
+        android:fillColor="#000"
+        android:pathData="M 0 366.933 h 1013.33 v 55.4667 h -341.333 v 405.333 c 0 36.2667 6.4 59.7333 17.0667 70.4 c 10.6667 12.8 34.1333 19.2 68.2667 19.2 h 78.9333 c 68.2667 4.26667 106.667 -25.6 113.067 -87.4667 c 6.4 -29.8667 10.6667 -74.6667 14.9333 -132.267 c 25.6 8.53333 44.8 14.9333 57.6 17.0667 c -6.4 59.7333 -10.6667 100.267 -14.9333 125.867 c -10.6667 96 -66.1333 140.8 -168.533 136.533 H 748.8 c -91.7333 2.13333 -138.667 -40.5333 -134.4 -132.267 V 422.4 H 371.2 c 0 6.4 0 19.2 -2.13333 34.1333 c 0 17.0667 0 27.7333 -2.13333 34.1333 v 32 c 0 226.133 -106.667 388.267 -320 488.533 c -10.6667 -14.9333 -25.6 -32 -42.6667 -51.2 c 123.733 -66.1333 202.667 -128 236.8 -187.733 c 38.4 -55.4667 59.7333 -149.333 64 -279.467 c 0 -8.53333 2.13333 -23.4667 2.13333 -46.9333 c 0 -12.8 0 -21.3333 2.13333 -25.6 H 0 v -53.3333 Z M 104.533 53.3333 h 810.667 v 55.4667 h -810.667 V 53.3333 Z" />
+
+</vector>

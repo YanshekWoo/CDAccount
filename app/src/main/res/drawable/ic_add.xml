@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 xuexiangjys(xuexiangjys@163.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
+    <path
+        android:fillColor="@color/colorAccent"
+        android:pathData="M895.955484 460.757942l-326.173098 0L569.782386 134.597511c0-23.736611-19.243057-42.97886-42.980664-42.97886s-42.980664 19.24225-42.980664 42.97886l0 326.160431-326.174121 0c-23.737607 0-42.980664 19.24225-42.980664 42.97886s19.243057 42.97886 42.980664 42.97886l326.174121 0 0 326.159408c0 23.736611 19.243057 42.97886 42.980664 42.97886s42.980664-19.24225 42.980664-42.97886L569.782386 546.715663l326.173098 0c23.737607 0 42.980664-19.24225 42.980664-42.97886S919.693091 460.757942 895.955484 460.757942z"/>
+</vector>
+

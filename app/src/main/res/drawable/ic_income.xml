@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 xuexiangjys(xuexiangjys@163.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
+
+    <path
+        android:fillColor="?attr/colorAccent"
+        android:pathData="M429.623339 570.399061c8.639774-22.061458 22.442128-42.00365 40.644699-59.283198-117.261681-4.130064-208.658274-35.210943-208.658274-83.517135L261.609765 480.57836C261.608741 523.17962 332.683497 558.715975 429.623339 570.399061z"
+        />
+    <path
+        android:fillColor="?attr/colorAccent"
+        android:pathData="M497.274112 260.780375c-130.141012 0-235.665371 42.166355-235.665371 94.167706l0 31.461549c0 52.001351 105.524358 94.167706 235.665371 94.167706 4.998851 0 9.726525-0.434905 14.671141-0.597611 34.885532-19.290345 77.159334-30.755468 122.80493-30.755468 10.866489 0 21.354354 1.249457 31.732725 2.553149 41.026392-16.953114 66.455551-39.937594 66.455551-65.3688l0-31.461549C732.93846 302.94673 627.414101 260.780375 497.274112 260.780375z"
+        />
+    <path
+        android:fillColor="?attr/colorAccent"
+        android:pathData="M425.982416 664.187121c-4.29277-13.58439-7.281847-27.603685-7.281847-42.275849 0-6.845918 1.575892-13.313214 2.554172-19.996426-92.64605-10.161431-159.646-38.742373-159.646-80.094176l0 52.978609C261.608741 616.859209 330.889641 652.014894 425.982416 664.187121z"
+        />
+    <path
+        android:fillColor="?attr/colorAccent"
+        android:pathData="M643.715369 509.10609 599.15857 509.10609 599.15857 598.111217 510.152421 598.111217 510.152421 642.669038 599.15857 642.669038 599.15857 731.675188 643.715369 731.675188 643.715369 642.669038 732.721519 642.669038 732.721519 598.111217 643.715369 598.111217Z"
+        />
+    <path
+        android:fillColor="?attr/colorAccent"
+        android:pathData="M441.794543 698.147584c-103.243409-7.878434-180.185802-37.764092-180.185802-82.10395l0 53.033867c0 52.001351 105.524358 94.195336 235.665371 94.195336 4.455475 0 8.638751-0.434905 13.041014-0.543376C481.13555 746.236835 457.7704 723.959459 441.794543 698.147584z"
+        />
+
+</vector>
