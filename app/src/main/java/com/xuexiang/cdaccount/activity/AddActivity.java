@@ -23,7 +23,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -152,7 +154,7 @@ public class AddActivity extends AppCompatActivity {
         Drawable drawable1 = getResources().getDrawable(R.drawable.ic_yuan);
         drawable1.setBounds(0, 0, 50, 50);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
         mEtAmount.setCompoundDrawables(null, null, drawable1, null);//只放右边
-
+        mEtAmount.setFilters(new InputFilter[]{new LengthFilter(10)});
         mEtAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -173,10 +175,7 @@ public class AddActivity extends AppCompatActivity {
                     s.delete(posDot + 3, posDot + 4);
                     XToastUtils.error("小数点后不超过两位");
                 }
-                else if(temp.length()>10){
-                    s.delete(10,11);
-                    XToastUtils.error("最多不超过10位（含小数点）");
-                }
+
                 mAmount = Double.parseDouble(temp);
             }
         });
@@ -561,6 +560,41 @@ public class AddActivity extends AppCompatActivity {
             InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    /**
+     * 限制最大长度
+     */
+    public class LengthFilter implements InputFilter {
+        public LengthFilter(int max) {
+            mMax = max;
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            int keep = mMax - (dest.length() - (dend - dstart));
+
+            if (keep <= 0) {
+                XToastUtils.error("最多仅可输入10位（含小数点）");
+                return "";
+            } else if (keep >= end - start) {
+                return null; // keep original
+            } else {
+                keep += start;
+                XToastUtils.error("最多仅可输入10位（含小数点）");
+                if (Character.isHighSurrogate(source.charAt(keep - 1))) {
+                    --keep;
+                    if (keep == start) {
+                        return "";
+                    }
+                }
+                return source.subSequence(start, keep);
+            }
+        }
+
+        private int mMax;
+
     }
 
 }
