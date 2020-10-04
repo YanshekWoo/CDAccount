@@ -17,25 +17,13 @@
 
 package com.xuexiang.cdaccount.fragment.charts;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentTransaction;
+
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.mikephil.charting.animation.Easing;
@@ -63,18 +51,15 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.ChartsActivity;
-import com.xuexiang.cdaccount.activity.MainActivity;
-import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
+import com.xuexiang.cdaccount.arima.RunARIMA;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
-import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.alpha.XUIAlphaButton;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
-import com.xuexiang.xui.widget.spinner.DropDownMenu;
 import com.xuexiang.xutil.data.DateUtils;
 
 import java.util.ArrayList;
@@ -364,17 +349,37 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     protected LineData setLinedata() {
         //设置数据
         List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            entries.add(new Entry(i, (float) (Math.random()) * 80));
+//        for (int i = 0; i < 10; i++) {
+//            entries.add(new Entry(i, (float) (Math.random()) * 80));
+//        }
+        entries.add(new Entry(0, (float) 2285));
+        entries.add(new Entry(1, (float) 1670));
+        entries.add(new Entry(2, (float) 2341));
+        entries.add(new Entry(3, (float) 1781));
+        entries.add(new Entry(4, (float) 1737));
+        entries.add(new Entry(5, (float) 2210));
+        entries.add(new Entry(6, (float) 2824));
+        entries.add(new Entry(7, (float) 3141));
+        entries.add(new Entry(8, (float) 2089));
+        entries.add(new Entry(9, (float) 1989));
+        //预测 predict
+        RunARIMA ra = new RunARIMA();
+        for(int i=10; i < 13; i++) {
+            float predict = ra.predictNext(entries);
+            entries.add(new Entry(i, predict));
         }
+
+
+
         LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
-        lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
+//        lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
         lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_7));
         lineDataSet.setLineWidth(2f);
         //设置填充
-        //设置允许填充
+        //设置允许填充，渐变
         lineDataSet.setDrawFilled(true);
-        lineDataSet.setFillAlpha(30);
+        lineDataSet.setFillAlpha(80);
+        lineDataSet.setFillDrawable(getResources().getDrawable(R.drawable.line_gradient_bg_shape));
 
         LineData linedata = new LineData(lineDataSet);
         linedata.setValueTextSize(11f);
