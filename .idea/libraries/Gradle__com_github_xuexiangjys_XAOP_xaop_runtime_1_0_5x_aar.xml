@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.xuexiangjys.XAOP:xaop-runtime:1.0.5x@aar">
     <CLASSES>
-      <root url="file://D:/Program Files/Gradle/caches/transforms-2/files-2.1/d5f89bec489b04d6bf345342e10ac81f/jetified-xaop-runtime-1.0.5x/AndroidManifest.xml" />
-      <root url="jar://D:/Program Files/Gradle/caches/transforms-2/files-2.1/d5f89bec489b04d6bf345342e10ac81f/jetified-xaop-runtime-1.0.5x/jars/classes.jar!/" />
-      <root url="file://D:/Program Files/Gradle/caches/transforms-2/files-2.1/d5f89bec489b04d6bf345342e10ac81f/jetified-xaop-runtime-1.0.5x/res" />
+      <root url="file://D:/gradle/caches/transforms-2/files-2.1/d5f89bec489b04d6bf345342e10ac81f/jetified-xaop-runtime-1.0.5x/AndroidManifest.xml" />
+      <root url="jar://D:/gradle/caches/transforms-2/files-2.1/d5f89bec489b04d6bf345342e10ac81f/jetified-xaop-runtime-1.0.5x/jars/classes.jar!/" />
+      <root url="file://D:/gradle/caches/transforms-2/files-2.1/d5f89bec489b04d6bf345342e10ac81f/jetified-xaop-runtime-1.0.5x/res" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/Program Files/Gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.XAOP/xaop-runtime/1.0.5x/49ea13a3ad38ab18a0e291e42c250eb5878910/xaop-runtime-1.0.5x-javadoc.jar!/" />
+      <root url="jar://D:/gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.XAOP/xaop-runtime/1.0.5x/49ea13a3ad38ab18a0e291e42c250eb5878910/xaop-runtime-1.0.5x-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/Program Files/Gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.XAOP/xaop-runtime/1.0.5x/13885253f2a9bd1344c27bf60cfda549378737e0/xaop-runtime-1.0.5x-sources.jar!/" />
+      <root url="jar://D:/gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.XAOP/xaop-runtime/1.0.5x/13885253f2a9bd1344c27bf60cfda549378737e0/xaop-runtime-1.0.5x-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
