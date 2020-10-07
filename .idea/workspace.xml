@@ -17,12 +17,15 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_clans_fab_1_6_4_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_clans_fab_1_6_4_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_add.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,14 +86,14 @@
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="android.template.1751090428">
+      <recent name="com.xuexiang.cdaccount.activity" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.xuexiang.cdaccount.activity" />
       <recent name="com.xuexiang.cdaccount.fragment.charts" />
       <recent name="com.xuexiang.cdaccount.fragment.home" />
       <recent name="com.xuexiang.cdaccount.fragment.account" />
-    </key>
-    <key name="android.template.1751090428">
-      <recent name="com.xuexiang.cdaccount.activity" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\AS_workspace\CDAccount\app\src\main\res\layout" />
@@ -255,7 +258,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601787921614</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="#修复：金额空字符串bug">
+      <created>1601829340553</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1601829340553</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -280,7 +290,8 @@
     <MESSAGE value="add ChartsActivity" />
     <MESSAGE value="add charts switch button" />
     <MESSAGE value="add ARIMA for linechart" />
-    <option name="LAST_COMMIT_MESSAGE" value="add ARIMA for linechart" />
+    <MESSAGE value="#修复：金额空字符串bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="#修复：金额空字符串bug" />
   </component>
   <component name="WindowStateProjectService">
     <state x="617" y="215" key="#Notifications" timestamp="1601449384177">
@@ -323,33 +334,34 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601794735603" />
-    <state width="1493" height="271" key="GridCell.Tab.0.bottom" timestamp="1601829225738">
+    <state width="746" height="154" key="GridCell.Tab.0.bottom" timestamp="1602088810587">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="271" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1601829225738" />
+    <state width="746" height="154" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602088810587" />
     <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601810494321" />
-    <state width="1493" height="271" key="GridCell.Tab.0.center" timestamp="1601829225737">
+    <state width="746" height="154" key="GridCell.Tab.0.center" timestamp="1602088810587">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="271" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1601829225737" />
+    <state width="746" height="154" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602088810587" />
     <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601810494321" />
-    <state width="1493" height="271" key="GridCell.Tab.0.left" timestamp="1601829225737">
+    <state width="746" height="154" key="GridCell.Tab.0.left" timestamp="1602088810587">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="271" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1601829225737" />
+    <state width="746" height="154" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602088810587" />
     <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601810494320" />
-    <state width="1493" height="271" key="GridCell.Tab.0.right" timestamp="1601829225737">
+    <state width="746" height="154" key="GridCell.Tab.0.right" timestamp="1602088810587">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="271" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1601829225737" />
+    <state width="746" height="154" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602088810587" />
     <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601810494321" />
     <state x="526" y="198" key="SettingsEditor" timestamp="1601786810787">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="526" y="198" key="SettingsEditor/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601786810787" />
-    <state x="617" y="289" key="Vcs.Push.Dialog.v2" timestamp="1601787949276">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="463" y="214" key="Vcs.Push.Dialog.v2" timestamp="1601829409489">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="463" y="214" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1601829409489" />
     <state x="617" y="289" key="Vcs.Push.Dialog.v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601787949276" />
     <state x="93" y="93" width="1862" height="926" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601732689586">
       <screen x="0" y="0" width="2048" height="1112" />

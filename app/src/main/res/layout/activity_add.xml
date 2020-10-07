@@ -257,7 +257,7 @@
                     android:layout_toEndOf="@+id/tv_account_title"
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
-                    android:text="现金账户-现金"
+                    android:text="现金账户"
                     android:textSize="18sp"
                     android:textColor="#000000"
                     android:background="@drawable/bg_amount"
