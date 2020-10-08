@@ -1,18 +1,18 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.xuexiangjys.XUtil:xutil-core:1.1.8@aar">
     <ANNOTATIONS>
-      <root url="jar://D:/Android studio/gradle-6.1.1/caches/transforms-2/files-2.1/d996c8e361fa7655693261729579098a/jetified-xutil-core-1.1.8/annotations.zip!/" />
+      <root url="jar://D:/gradle/caches/transforms-2/files-2.1/ea7ba8aa933f37d1a8863025e64c68cc/jetified-xutil-core-1.1.8/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://D:/Android studio/gradle-6.1.1/caches/transforms-2/files-2.1/d996c8e361fa7655693261729579098a/jetified-xutil-core-1.1.8/AndroidManifest.xml" />
-      <root url="jar://D:/Android studio/gradle-6.1.1/caches/transforms-2/files-2.1/d996c8e361fa7655693261729579098a/jetified-xutil-core-1.1.8/jars/classes.jar!/" />
-      <root url="file://D:/Android studio/gradle-6.1.1/caches/transforms-2/files-2.1/d996c8e361fa7655693261729579098a/jetified-xutil-core-1.1.8/res" />
+      <root url="file://D:/gradle/caches/transforms-2/files-2.1/ea7ba8aa933f37d1a8863025e64c68cc/jetified-xutil-core-1.1.8/AndroidManifest.xml" />
+      <root url="jar://D:/gradle/caches/transforms-2/files-2.1/ea7ba8aa933f37d1a8863025e64c68cc/jetified-xutil-core-1.1.8/jars/classes.jar!/" />
+      <root url="file://D:/gradle/caches/transforms-2/files-2.1/ea7ba8aa933f37d1a8863025e64c68cc/jetified-xutil-core-1.1.8/res" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/Android studio/gradle-6.1.1/caches/modules-2/files-2.1/com.github.xuexiangjys.XUtil/xutil-core/1.1.8/aa82e9159356415bfd51bb0ec46f2fd3e5e69dcc/xutil-core-1.1.8-javadoc.jar!/" />
+      <root url="jar://D:/gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.XUtil/xutil-core/1.1.8/aa82e9159356415bfd51bb0ec46f2fd3e5e69dcc/xutil-core-1.1.8-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/Android studio/gradle-6.1.1/caches/modules-2/files-2.1/com.github.xuexiangjys.XUtil/xutil-core/1.1.8/7df812441c05926eda3364b5322048f70722e3be/xutil-core-1.1.8-sources.jar!/" />
+      <root url="jar://D:/gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.XUtil/xutil-core/1.1.8/7df812441c05926eda3364b5322048f70722e3be/xutil-core-1.1.8-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

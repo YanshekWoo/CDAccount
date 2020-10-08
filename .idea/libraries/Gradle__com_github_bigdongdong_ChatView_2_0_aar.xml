@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.bigdongdong:ChatView:2.0@aar">
     <CLASSES>
-      <root url="file://D:/Android studio/gradle-6.1.1/caches/transforms-2/files-2.1/8c5b43514ac6003b1c30bb53731be481/jetified-ChatView-2.0/AndroidManifest.xml" />
-      <root url="jar://D:/Android studio/gradle-6.1.1/caches/transforms-2/files-2.1/8c5b43514ac6003b1c30bb53731be481/jetified-ChatView-2.0/jars/classes.jar!/" />
-      <root url="file://D:/Android studio/gradle-6.1.1/caches/transforms-2/files-2.1/8c5b43514ac6003b1c30bb53731be481/jetified-ChatView-2.0/res" />
+      <root url="file://D:/gradle/caches/transforms-2/files-2.1/8c5b43514ac6003b1c30bb53731be481/jetified-ChatView-2.0/AndroidManifest.xml" />
+      <root url="jar://D:/gradle/caches/transforms-2/files-2.1/8c5b43514ac6003b1c30bb53731be481/jetified-ChatView-2.0/jars/classes.jar!/" />
+      <root url="file://D:/gradle/caches/transforms-2/files-2.1/8c5b43514ac6003b1c30bb53731be481/jetified-ChatView-2.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://D:/Android studio/gradle-6.1.1/caches/modules-2/files-2.1/com.github.bigdongdong/ChatView/2.0/e1903d18e9024186b6362b081e8dd7ae47277a3f/ChatView-2.0-sources.jar!/" />
+      <root url="jar://D:/gradle/caches/modules-2/files-2.1/com.github.bigdongdong/ChatView/2.0/e1903d18e9024186b6362b081e8dd7ae47277a3f/ChatView-2.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
