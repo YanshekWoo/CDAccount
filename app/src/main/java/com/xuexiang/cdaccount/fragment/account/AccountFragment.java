@@ -17,11 +17,35 @@
 
 package com.xuexiang.cdaccount.fragment.account;
 
+import android.content.Context;
+import android.content.Intent;
+import android.text.InputType;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.alibaba.android.vlayout.DelegateAdapter;
+import com.alibaba.android.vlayout.VirtualLayoutManager;
+import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
+import com.xuexiang.cdaccount.adapter.base.delegate.SimpleDelegateAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
+import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
+import butterknife.BindView;
 
 /**
  * @author Tingwei Wen
@@ -29,6 +53,16 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
  */
 @Page(anim = CoreAnim.none)
 public class AccountFragment extends BaseFragment {
+
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
+    ImageView img;
+
+    private SimpleDelegateAdapter<String> adapter;
+    private ArrayList<String> datas;
+    private Context TrendingFragment;
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -53,6 +87,84 @@ public class AccountFragment extends BaseFragment {
      */
     @Override
     protected void initViews() {
+        VirtualLayoutManager virtualLayoutManager = new VirtualLayoutManager(Objects.requireNonNull(getContext()));
+        recyclerView.setLayoutManager(virtualLayoutManager);
+        RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+        recyclerView.setRecycledViewPool(viewPool);
+        viewPool.setMaxRecycledViews(0, 10);
+        datas = new ArrayList<String>();
+        for(int i = 0; i < 9 ;i++){
+            datas.add("" + i);
+        }
 
+        adapter = new SimpleDelegateAdapter<String>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
+            @Override
+            protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
+                holder.text(R.id.account_name,"温腿");
+                holder.text(R.id.account_money,datas.get(position));
+
+                holder.click(R.id.account_card,view -> click(getContext(),datas.get(position)));
+            }
+        };
+
+        DelegateAdapter delegateAdapter = new DelegateAdapter(virtualLayoutManager);
+        delegateAdapter.addAdapter(adapter);
+
+        recyclerView.setAdapter(delegateAdapter);
+
+        img = findViewById(R.id.account_add);
+        img.setOnClickListener(view -> {
+            showInputDialog();
+            //Toast.makeText(getContext(),"温腿 ",Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    protected void initListeners() {
+        //下拉刷新
+        refreshLayout.setOnRefreshListener(refreshLayout -> {
+            refreshLayout.getLayout().postDelayed(() -> {
+                adapter.refresh(datas);
+                refreshLayout.finishRefresh();
+            }, 1000);
+        });
+        //上拉加载
+        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            refreshLayout.getLayout().postDelayed(() -> {
+                adapter.loadMore(datas);
+                refreshLayout.finishLoadMore();
+            }, 1000);
+        });
+        refreshLayout.autoRefresh();//第一次进入触发自动刷新，演示效果
+    }
+
+    public void click(Context context, String position){
+        Intent intent = new Intent(context, AccountDetailsActivity.class);
+        String account = "账户";
+        intent.putExtra("account", account);
+        startActivity(intent);
+        //Toast.makeText(context,"温腿 "+position+"号",Toast.LENGTH_SHORT).show();
+    }
+
+    private void showInputDialog() {
+        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                //.iconRes(R.drawable.icon_warning)
+                //.title(R.string.tip_warning)
+                .content(R.string.account_content)
+                .inputType(
+                        InputType.TYPE_CLASS_TEXT)
+                .input(
+                        getString(R.string.account_content),
+                        "",
+                        false,
+                        ((dialog, input) -> XToastUtils.toast(input.toString())))
+                .inputRange(1, 10)
+                .positiveText(R.string.button_confirm)
+                .negativeText(R.string.button_cancel)
+                .onPositive((dialog, which) -> {
+                    assert dialog.getInputEditText() != null;
+                    XToastUtils.toast("你输入了:" + dialog.getInputEditText().getText().toString());
+                })
+                .cancelable(false)
+                .show();
     }
 }

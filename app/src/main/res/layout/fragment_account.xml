@@ -16,14 +16,79 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        style="@style/TextStyle.Title"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:text="这是账户" />
+        app:srlEnableAutoLoadMore="true"
+        app:srlEnableLoadMore="true">
+
+        <com.scwang.smartrefresh.header.MaterialHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="净资产"
+                        android:textSize="20sp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginStart="30dp"/>
+                    <TextView
+                        android:id="@+id/total1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account_origin"
+                        android:textSize="50sp"
+                        android:layout_marginStart="30dp"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/account_add"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/add_circle"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginStart="90dp"
+                    android:contentDescription="@string/todo" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                tools:listitem="@layout/adapter_account_list_item"
+                />
+        </LinearLayout>
+
+        <com.xuexiang.cdaccount.widget.MaterialFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>
