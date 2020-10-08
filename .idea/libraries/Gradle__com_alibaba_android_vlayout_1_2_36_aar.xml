@@ -1,18 +1,18 @@
 <component name="libraryTable">
   <library name="Gradle: com.alibaba.android:vlayout:1.2.36@aar">
     <ANNOTATIONS>
-      <root url="jar://D:/Program Files/Gradle/caches/transforms-2/files-2.1/728e32ae8e71e6787e60079ae0761121/jetified-vlayout-1.2.36/annotations.zip!/" />
+      <root url="jar://D:/gradle/caches/transforms-2/files-2.1/cb09f9d1c3dcc3aeee634a551301bcc9/jetified-vlayout-1.2.36/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://D:/Program Files/Gradle/caches/transforms-2/files-2.1/728e32ae8e71e6787e60079ae0761121/jetified-vlayout-1.2.36/AndroidManifest.xml" />
-      <root url="jar://D:/Program Files/Gradle/caches/transforms-2/files-2.1/728e32ae8e71e6787e60079ae0761121/jetified-vlayout-1.2.36/jars/classes.jar!/" />
-      <root url="file://D:/Program Files/Gradle/caches/transforms-2/files-2.1/728e32ae8e71e6787e60079ae0761121/jetified-vlayout-1.2.36/res" />
+      <root url="file://D:/gradle/caches/transforms-2/files-2.1/cb09f9d1c3dcc3aeee634a551301bcc9/jetified-vlayout-1.2.36/AndroidManifest.xml" />
+      <root url="jar://D:/gradle/caches/transforms-2/files-2.1/cb09f9d1c3dcc3aeee634a551301bcc9/jetified-vlayout-1.2.36/jars/classes.jar!/" />
+      <root url="file://D:/gradle/caches/transforms-2/files-2.1/cb09f9d1c3dcc3aeee634a551301bcc9/jetified-vlayout-1.2.36/res" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/Program Files/Gradle/caches/modules-2/files-2.1/com.alibaba.android/vlayout/1.2.36/79889ced5f27efdb14d4761fc8f4f67728f590e6/vlayout-1.2.36-javadoc.jar!/" />
+      <root url="jar://D:/gradle/caches/modules-2/files-2.1/com.alibaba.android/vlayout/1.2.36/79889ced5f27efdb14d4761fc8f4f67728f590e6/vlayout-1.2.36-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/Program Files/Gradle/caches/modules-2/files-2.1/com.alibaba.android/vlayout/1.2.36/3aea9d7df824f04b1ac9ff886f7760412a3e4135/vlayout-1.2.36-sources.jar!/" />
+      <root url="jar://D:/gradle/caches/modules-2/files-2.1/com.alibaba.android/vlayout/1.2.36/3aea9d7df824f04b1ac9ff886f7760412a3e4135/vlayout-1.2.36-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
