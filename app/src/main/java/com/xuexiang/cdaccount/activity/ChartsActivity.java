@@ -139,7 +139,6 @@ public class ChartsActivity extends BaseActivity {
     }
 
 
-
     /**
      *  初始化图表
      */
