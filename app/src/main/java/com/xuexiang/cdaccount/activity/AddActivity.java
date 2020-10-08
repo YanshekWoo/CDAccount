@@ -95,7 +95,7 @@ public class AddActivity extends AppCompatActivity {
     private TextView mTvAccount;
     private List<String> Accounts1Item = new ArrayList<>();
     private List<List<String>> Accounts2Item = new ArrayList<>();
-    private String mAccount1, mAccount2, mAccount;
+    private String mAccount;
     private ShadowImageView mBtnNewAccount;
 
     private TextView mTvMember;
@@ -267,36 +267,32 @@ public class AddActivity extends AppCompatActivity {
         mBtnNewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                LayoutInflater inflater = AddActivity.this.getLayoutInflater();
-                View dialog=inflater.inflate(R.layout.dialog_new,null);
-
-                MaterialDialog.Builder materialDialog = new MaterialDialog.Builder(AddActivity.this)
-                        .customView(dialog, true)
+                new MaterialDialog.Builder(AddActivity.this)
                         .title("添加账户")
+                        .inputType(
+                                InputType.TYPE_CLASS_TEXT)
+                        .input(
+                                "",
+                                "",
+                                false,
+                                new MaterialDialog.InputCallback() {
+                                    @Override
+                                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                    }
+                                })
                         .positiveText("确定")
-                        .negativeText("取消");
-
-                mTvDialogItem1 = dialog.findViewById(R.id.item_title1);
-                mTvDialogItem2 = dialog.findViewById(R.id.item_title2);
-                mEsDialog = dialog.findViewById(R.id.es_item1);
-                mEtDialog = dialog.findViewById(R.id.et_item2);
-                mTvDialogItem1.setText("一级账户");
-                mTvDialogItem2.setText("二级账户");
-                mEsDialog.setHint("选择已有账户或新建");
-                mEsDialog.setItems(Accounts1Item);
-                materialDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mStrNewItem1 = mEsDialog.getText();
-                        mStrNewItem2 = mEtDialog.getText().toString();
-                        mAccount = mStrNewItem1+"-"+mStrNewItem2;
-                        mTvAccount.setText(mAccount);
-                    }
-                });
-                materialDialog.show();
+                        .negativeText("取消")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                mAccount = dialog.getInputEditText().getText().toString();
+                                mTvAccount.setText(mAccount);
+                            }
+                        })
+                        .show();
             }
-        });
+            }
+        );
 
 
         //记账属性——成员
@@ -444,23 +440,15 @@ public class AddActivity extends AppCompatActivity {
     //记账属性——账户
     private void loadAccountData(){
         String[] str1 = {"现金账户","银行卡账户","信用卡账户"};
-        String[] str2_1 = {"现金","微信","支付宝"};
-        String[] str2_2 = {"工商银行","农业银行",};
-        String[] str2_3 = {"平安银行","交通银行",};
         Accounts1Item = Arrays.asList(str1);
-        Accounts2Item.add(Arrays.asList(str2_1));
-        Accounts2Item.add(Arrays.asList(str2_2));
-        Accounts2Item.add(Arrays.asList(str2_3));
     }
 
     private void showAccountPickerView(boolean isDialog) {// 弹出选择器
-        int[] defaultSelectOptions = {0,0};
+        int[] defaultSelectOptions = {0};
 
         OptionsPickerView pvOptions = new OptionsPickerBuilder(AddActivity.this, (v, accounts1, accounts2, accounts3) -> {
             //返回的分别是三个级别的选中位置
-            mAccount1 = Accounts1Item.get(accounts1);
-            mAccount2 = Accounts2Item.get(accounts1).get(accounts2);
-            mAccount = mAccount1+"-"+mAccount2;
+            mAccount = Accounts1Item.get(accounts1);
             mTvAccount.setText(mAccount);
             return false;
         })
@@ -473,11 +461,11 @@ public class AddActivity extends AppCompatActivity {
                 .setTextColorCenter(Color.BLACK)
                 .setContentTextSize(20)
                 .isDialog(isDialog)
-                .setSelectOptions(defaultSelectOptions[0], defaultSelectOptions[1])
+                .setSelectOptions(defaultSelectOptions[0])
                 .build();
 
-        /*pvOptions.setPicker(options1Items);//一级选择器*/
-        pvOptions.setPicker(Accounts1Item, Accounts2Item);//二级选择器
+        pvOptions.setPicker(Accounts1Item);//一级选择器
+//        pvOptions.setPicker(Accounts1Item, Accounts2Item);//二级选择器
         //pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
         pvOptions.show();
     }
