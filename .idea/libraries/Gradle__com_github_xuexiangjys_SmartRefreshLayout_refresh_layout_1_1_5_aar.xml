@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.xuexiangjys.SmartRefreshLayout:refresh-layout:1.1.5@aar">
     <CLASSES>
-      <root url="file://D:/gradle/caches/transforms-2/files-2.1/7bb242ad8b6f680446f189a6585d2043/jetified-refresh-layout-1.1.5/AndroidManifest.xml" />
-      <root url="jar://D:/gradle/caches/transforms-2/files-2.1/7bb242ad8b6f680446f189a6585d2043/jetified-refresh-layout-1.1.5/jars/classes.jar!/" />
-      <root url="file://D:/gradle/caches/transforms-2/files-2.1/7bb242ad8b6f680446f189a6585d2043/jetified-refresh-layout-1.1.5/res" />
+      <root url="file://D:/Program Files/Gradle/caches/transforms-2/files-2.1/3a53615048dd897f3d663a5842d5bde1/jetified-refresh-layout-1.1.5/AndroidManifest.xml" />
+      <root url="jar://D:/Program Files/Gradle/caches/transforms-2/files-2.1/3a53615048dd897f3d663a5842d5bde1/jetified-refresh-layout-1.1.5/jars/classes.jar!/" />
+      <root url="file://D:/Program Files/Gradle/caches/transforms-2/files-2.1/3a53615048dd897f3d663a5842d5bde1/jetified-refresh-layout-1.1.5/res" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.SmartRefreshLayout/refresh-layout/1.1.5/94d1c339221e9776714a3aef8b0e277390f8b9b7/refresh-layout-1.1.5-javadoc.jar!/" />
+      <root url="jar://D:/Program Files/Gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.SmartRefreshLayout/refresh-layout/1.1.5/94d1c339221e9776714a3aef8b0e277390f8b9b7/refresh-layout-1.1.5-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.SmartRefreshLayout/refresh-layout/1.1.5/f9085453c80c4267f607deafedf28a276fde994f/refresh-layout-1.1.5-sources.jar!/" />
+      <root url="jar://D:/Program Files/Gradle/caches/modules-2/files-2.1/com.github.xuexiangjys.SmartRefreshLayout/refresh-layout/1.1.5/f9085453c80c4267f607deafedf28a276fde994f/refresh-layout-1.1.5-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
