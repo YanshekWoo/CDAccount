@@ -70,5 +70,14 @@
     <string name="lab_service_protocol"><![CDATA[<用户协议>]]></string>
     <string name="lab_logout_confirm">是否确认退出账号？</string>
     <string name="title_jump_login">跳过</string>
-
+    <string name="account_origin">000.00</string>
+    <string name="todo">TODO</string>
+    <string name="item_example_number_month">第%02d月</string>
+    <string name="item_example_number_date">第%02d天</string>
+    <string name="account_content">请输入新建账户名称</string>
+    <string name="button_cancel">取消</string>
+    <string name="button_confirm">确认</string>
+    <string name="item_example_number_abstract">这是测试的第%02d条数据</string>
+    <string name="account_details_title">详细</string>
+    <string name="account_details_content">这里是流水详细情况</string>
 </resources>
