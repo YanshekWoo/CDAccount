@@ -119,7 +119,7 @@ public class LoginNumberFragment extends BaseFragment {
                 }
                 else
                 {
-                    XToastUtils.success("密码错误");
+                    XToastUtils.error("密码错误");
                 }
             }
         });
@@ -131,7 +131,6 @@ public class LoginNumberFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_other_login2:
-                XToastUtils.info("其他登录方式");
                 openPage(LoginGestureFragment.class, getActivity().getIntent().getExtras());
                 break;
             case R.id.tv_forget_password:

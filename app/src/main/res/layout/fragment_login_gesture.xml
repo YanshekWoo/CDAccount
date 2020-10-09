@@ -4,19 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_color_theme_6"
-    android:orientation="vertical"
-    android:padding="30dp">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="84dp"
         android:layout_height="84dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:background="@color/app_color_theme_6"
+        android:layout_marginTop="70dp"
+        android:background="@color/white"
         android:src="@drawable/ic_gesture_lock"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -24,9 +23,10 @@
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
         android:maxLines="1"
-        android:text="请绘制手势密码登录"
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
+        android:text="@string/gesture_login"
+        android:textColor="@color/app_color_theme_5"
+        android:textSize="16sp" />
+
 
     <com.andrognito.patternlockview.PatternLockView
         android:id="@+id/login_patter_lock_view"
@@ -34,13 +34,13 @@
         android:layout_height="280dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:background="@color/app_color_theme_6"
+        android:background="@color/white"
         app:aspectRatio="square"
         app:aspectRatioEnabled="true"
         app:dotAnimationDuration="150"
         app:dotCount="3"
-        app:normalStateColor="@color/white"
-        app:correctStateColor="#238E23"
+        app:normalStateColor="@color/app_color_theme_6"
+        app:correctStateColor="@color/app_color_theme_7"
         app:wrongStateColor="@color/pomegranate"
         app:dotSelectedSize="50dp"
         />
@@ -58,9 +58,16 @@
     <!--    app:dotAnimationDuration="200"                          // 更改动画点-->
     <!--    app:pathEndAnimationDuration="100"                      // 更改路径结束动画的持续时间-->
 
+
+
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginEnd="44dp"
+        >
 
         <com.xuexiang.xui.widget.alpha.XUIAlphaTextView
             android:id="@+id/tv_other_login1"
@@ -70,8 +77,8 @@
             android:paddingTop="5dp"
             android:paddingEnd="10dp"
             android:paddingBottom="5dp"
-            android:text="其他登录方式"
-            android:textColor="@color/white" />
+            android:text="密码登录"
+            android:textColor="@color/black" />
 
         <com.xuexiang.xui.widget.alpha.XUIAlphaTextView
             android:id="@+id/tv_forget_password"
@@ -82,9 +89,10 @@
             android:paddingEnd="10dp"
             android:paddingBottom="5dp"
             android:text="忘记密码"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
     </FrameLayout>
+
 
 
     <FrameLayout

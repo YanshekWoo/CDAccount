@@ -91,7 +91,6 @@ public class LoginGestureFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_other_login1:
-                XToastUtils.info("其他登录方式");
                 openPage(LoginNumberFragment.class, getActivity().getIntent().getExtras());
                 break;
             case R.id.tv_forget_password:
@@ -196,7 +195,7 @@ public class LoginGestureFragment extends BaseFragment {
                     getActivity().finish();
                 }else {
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
-                    XToastUtils.success("密码错误");
+                    XToastUtils.error("密码错误");
                 }
             }
             //1s后清除图案
