@@ -37,6 +37,7 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -51,15 +52,19 @@ import static android.content.Context.MODE_PRIVATE;
 @Page(anim = CoreAnim.none)
 public class LoginNumberFragment extends BaseFragment {
 
+    @BindView(R.id.login_commit)
+    Button BtLogin;
 
-    private Button BtLogin;
-    private SharedPreferences mSharedPreferences_login;
-    private EditText etlogin;
-    private String login;
-    private Handler handler;
-    private Runnable delayRun;
+    @BindView(R.id.login_passwd)
+    EditText etlogin_passwd;
+    @BindView(R.id.login_user)
+    EditText etlogin_user;
+
+
     private String password;
-    private String editString;
+    private String user_name;
+    private SharedPreferences mSharedPreferences_user;
+    private SharedPreferences mSharedPreferences_passwd;
 
 
     /**
@@ -76,14 +81,50 @@ public class LoginNumberFragment extends BaseFragment {
     }
 
 
-
     @Override
     protected void initViews() {
         initSP();
-        initHandler();
-        initTextView();
+        initEditText();
         setButtomClickListener();
     }
+
+
+    private void initSP() {
+        mSharedPreferences_user = getActivity().getSharedPreferences("user",MODE_PRIVATE);
+        mSharedPreferences_passwd = getActivity().getSharedPreferences("password",MODE_PRIVATE);
+        user_name = mSharedPreferences_user.getString("user","");
+        password = mSharedPreferences_passwd.getString("password","");
+    }
+
+
+    private void initEditText() {
+        etlogin_user.setText(user_name);
+        etlogin_user.setFocusable(false);
+    }
+
+
+    /**
+     * 登录按钮监听
+     */
+    private void setButtomClickListener() {
+        BtLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(password.equals(etlogin_passwd.getText().toString()))
+                {
+//                    XToastUtils.success("密码正确");
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+                else
+                {
+                    XToastUtils.success("密码错误");
+                }
+            }
+        });
+    }
+
 
     @SingleClick
     @OnClick({R.id.tv_other_login2, R.id.tv_forget_password, R.id.tv_user_protocol, R.id.tv_privacy_protocol})
@@ -107,76 +148,6 @@ public class LoginNumberFragment extends BaseFragment {
         }
     }
 
-
-    private void initSP() {
-        mSharedPreferences_login = getActivity().getSharedPreferences("password",MODE_PRIVATE);
-        password = mSharedPreferences_login.getString("password","");
-    }
-
-
-    private void initHandler() {
-        handler = new Handler();
-        delayRun = new Runnable() {
-            @Override
-            public void run() {
-                Log.d("password_login",editString);
-                login = editString;
-            }
-        };
-
-
-    }
-
-
-    private void initTextView() {
-
-
-        etlogin = (EditText)findViewById(R.id.login_passwd);
-        etlogin.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(delayRun!=null){
-                    //每次editText有变化的时候，则移除上次发出的延迟线程
-                    handler.removeCallbacks(delayRun);
-                }
-                editString = s.toString();
-
-                //延迟800ms，如果不再输入字符，则执行该线程的run方法
-                handler.postDelayed(delayRun, 800);
-            }
-        });
-    }
-
-
-    private void setButtomClickListener() {
-        BtLogin = (Button)findViewById(R.id.login_commit);
-        BtLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(password.equals(login))
-                {
-                    XToastUtils.success("密码正确，开锁成功");
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();
-                }
-                else
-                {
-                    XToastUtils.success("密码错误，请重新绘制");
-                }
-            }
-        });
-    }
 
 }
 

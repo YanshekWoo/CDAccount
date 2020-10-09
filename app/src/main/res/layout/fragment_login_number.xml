@@ -46,12 +46,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
-                android:hint="User Name"
+
                 android:inputType="none"
                 android:maxLines="1"
-                app:met_clearButton="true"
-                app:met_floatingLabel="normal"
-                app:met_floatingLabelText="用户名" />
+                app:met_clearButton="false" />
 
 
         </FrameLayout>

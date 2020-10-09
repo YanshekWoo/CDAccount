@@ -21,17 +21,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import androidx.appcompat.widget.Toolbar;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
@@ -39,42 +32,36 @@ import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.Utils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
-import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.display.Colors;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * 登录页面
  *
- * @author xuexiang
- * @since 2019-11-17 22:21
+ * @author LaMeloBall
+ * @since 2020-10-09 20:22
  */
 public class RegiterNumberActivity extends BaseActivity implements ClickUtils.OnClick2ExitListener {
 
-    private Button mBtSign;
-    private EditText mEt_user;
-    private EditText mEt_password;
-    private EditText mEt_password_2;
-    private Handler handler;
-    private Runnable delayRun;
-    private Handler handler_2;
-    private Runnable delayRun_2;
-    private Handler handler_3;
-    private Runnable delayRun_3;
-    private String editString;
-    private String editString_2;
-    private String editString_3;
-    private String password_save;
-    private String user_save;
-    private String password_sure_save;
-    private SharedPreferences mSharedPreferences_user;
-    private SharedPreferences mSharedPreferences_password;
+    @BindView(R.id.register_commit)
+    Button mBtSign;
+
+    @BindView(R.id.register_user)
+    EditText mEt_user;
+    @BindView(R.id.register_passwd)
+    EditText mEt_password;
+    @BindView(R.id.register_passwd_again)
+    EditText mEt_password_again;
+
+
     private SharedPreferences.Editor mEditor_user;
     private SharedPreferences.Editor mEditor_password;
+
 
 
     @Override
@@ -86,8 +73,6 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initSP();
-        initHandler();
-        initTextView();
         setButtomClickListener();
         showPrivacy();
     }
@@ -105,142 +90,34 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
 
     @SuppressLint("CommitPrefEdits")
     private void initSP() {
-        mSharedPreferences_user = getSharedPreferences("user",MODE_PRIVATE);
-        mSharedPreferences_password = getSharedPreferences("password",MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_user = getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_password = getSharedPreferences("password", MODE_PRIVATE);
         mEditor_user = mSharedPreferences_user.edit();
         mEditor_password = mSharedPreferences_password.edit();
     }
 
 
-    private void initHandler() {
-        handler = new Handler();
-        delayRun = new Runnable() {
-            @Override
-            public void run() {
-                Log.i("user",editString);
-                user_save = editString;
-            }
-        };
-        handler_2 = new Handler();
-        delayRun_2 = new Runnable() {
-            @Override
-            public void run() {
-                Log.i("password",editString_2);
-                password_save = editString_2;
-            }
-        };
-        handler_3 = new Handler();
-        delayRun_3 = new Runnable() {
-            @Override
-            public void run() {
-                Log.i("password_sure",editString_3);
-                password_sure_save = editString_3;
-            }
-        };
-    }
-
-
-    private void initTextView() {
-        mEt_user = (EditText)findViewById(R.id.register_user);
-        mEt_password = (EditText)findViewById(R.id.register_passwd);
-        mEt_password_2 = (EditText)findViewById(R.id.register_passwd_again);
-
-        mEt_user.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if(delayRun!=null){
-                    //每次editText有变化的时候，则移除上次发出的延迟线程
-                    handler.removeCallbacks(delayRun);
-                }
-                editString = s.toString();
-
-                //延迟800ms，如果不再输入字符，则执行该线程的run方法
-                handler.postDelayed(delayRun, 200);
-            }
-        });
-
-        mEt_password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if(delayRun_2!=null){
-                    //每次editText有变化的时候，则移除上次发出的延迟线程
-                    handler_2.removeCallbacks(delayRun_2);
-                }
-                editString_2 = s.toString();
-
-                //延迟800ms，如果不再输入字符，则执行该线程的run方法
-                handler_2.postDelayed(delayRun_2, 800);
-            }
-        });
-
-        mEt_password_2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if(delayRun_3!=null){
-                    //每次editText有变化的时候，则移除上次发出的延迟线程
-                    handler_3.removeCallbacks(delayRun_3);
-                }
-                editString_3 = s.toString();
-
-                //延迟800ms，如果不再输入字符，则执行该线程的run方法
-                handler_3.postDelayed(delayRun_3, 800);
-            }
-        });
-    }
 
 
     public void setButtomClickListener() {
-        mBtSign = (Button) findViewById(R.id.register_commit);
         mBtSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!password_save.equals(password_sure_save))
-                {
-                    XToastUtils.error("两次输入的密码不一致");
-                }
-                else
-                {
-                    mEditor_user.putString("user",user_save);
+                if(mEt_password.getText().toString().equals(mEt_password_again.getText().toString())) {
+                    mEditor_user.putString("user", mEt_user.getText().toString());
                     mEditor_user.apply();
-                    mEditor_password.putString("password",password_save);
+                    mEditor_password.putString("password", mEt_password.getText().toString());
                     mEditor_password.apply();
+
                     XToastUtils.success("注册成功");
+
                     Intent intent = new Intent(RegiterNumberActivity.this, RegiterGestureActivity.class);
                     startActivity(intent);
                     finish();
+                }
+                else
+                {
+                    XToastUtils.error("两次输入的密码不一致");
                 }
             }
         });
@@ -272,6 +149,7 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
             });
         }
     }
+
 
     /**
      * 菜单、返回键响应

@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.TextView;
 
 import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
@@ -44,6 +45,7 @@ import com.xuexiang.xutil.display.Colors;
 
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -54,12 +56,17 @@ import io.reactivex.functions.Consumer;
  */
 public class RegiterGestureActivity extends BaseActivity {
 
+    @BindView(R.id.register_patter_lock_view)
+    PatternLockView mPatternLockView;
+
+    @BindView(R.id.register_gesture_text)
+    TextView tv_register_gesture;
+
     private String GestureSignUp;
     private String GestureSignUp_sure;
     private int state = 1;
     private SharedPreferences mSharedPreferences_gesture;
     private SharedPreferences.Editor mEditor_gesture;
-    private PatternLockView mPatternLockView;
 
     @Override
     protected int getLayoutId() {
@@ -102,8 +109,6 @@ public class RegiterGestureActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void initLock() {
-        //获取控件对象
-        mPatternLockView = (PatternLockView) findViewById(R.id.register_patter_lock_view);
         // n*n大小   3*3
         mPatternLockView.setDotCount(3);
         //没有点击时点的大小
@@ -176,6 +181,7 @@ public class RegiterGestureActivity extends BaseActivity {
                 {
                     GestureSignUp = patternToString;
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
+                    tv_register_gesture.setText("请再次输入密码");
                     XToastUtils.info("请再次输入密码");
                     state = 2;
                 }
@@ -193,6 +199,7 @@ public class RegiterGestureActivity extends BaseActivity {
                     else//两次输入密码不一致
                     {
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
+                        tv_register_gesture.setText("请输入手势密码");
                         XToastUtils.error("两次输入的密码不一致");
                         state = 1;
                     }

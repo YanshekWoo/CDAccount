@@ -190,13 +190,13 @@ public class LoginGestureFragment extends BaseFragment {
                 if(login_gesture.equals(password_gesture)){
                     //判断为正确
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
-                    XToastUtils.success("密码正确，开锁成功");
+//                    XToastUtils.success("密码正确");
                     Intent intent = new Intent(getContext(), MainActivity.class);
                     startActivity(intent);
                     getActivity().finish();
                 }else {
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
-                    XToastUtils.success("密码错误，请重新绘制");
+                    XToastUtils.success("密码错误");
                 }
             }
             //1s后清除图案
