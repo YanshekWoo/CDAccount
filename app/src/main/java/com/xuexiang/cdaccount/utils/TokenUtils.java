@@ -21,6 +21,7 @@ import android.content.Context;
 
 import com.umeng.analytics.MobclickAgent;
 import com.xuexiang.cdaccount.activity.LoginActivity;
+import com.xuexiang.cdaccount.activity.RegiterNumberActivity;
 import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.common.StringUtils;
 
@@ -94,7 +95,7 @@ public final class TokenUtils {
         clearToken();
         XToastUtils.success("登出成功！");
         //跳转到登录页
-        ActivityUtils.startActivity(LoginActivity.class);
+        ActivityUtils.startActivity(RegiterNumberActivity.class);
     }
 
 }

@@ -35,6 +35,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
+import com.xuexiang.cdaccount.utils.SettingUtils;
+import com.xuexiang.cdaccount.utils.Utils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.utils.KeyboardUtils;
@@ -42,6 +44,8 @@ import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.display.Colors;
+
+import butterknife.OnClick;
 
 /**
  * 登录页面
@@ -85,6 +89,7 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
         initHandler();
         initTextView();
         setButtomClickListener();
+        showPrivacy();
     }
 
     @Override
@@ -161,7 +166,7 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
                 editString = s.toString();
 
                 //延迟800ms，如果不再输入字符，则执行该线程的run方法
-                handler.postDelayed(delayRun, 800);
+                handler.postDelayed(delayRun, 200);
             }
         });
 
@@ -224,7 +229,7 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
             public void onClick(View v) {
                 if (!password_save.equals(password_sure_save))
                 {
-                    Toast.makeText(RegiterNumberActivity.this,"两次输入的密码不一致",Toast.LENGTH_SHORT).show();
+                    XToastUtils.error("两次输入的密码不一致");
                 }
                 else
                 {
@@ -232,12 +237,40 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
                     mEditor_user.apply();
                     mEditor_password.putString("password",password_save);
                     mEditor_password.apply();
-                    Toast.makeText(RegiterNumberActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
+                    XToastUtils.success("注册成功");
                     Intent intent = new Intent(RegiterNumberActivity.this, RegiterGestureActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
+    }
+
+
+    @SingleClick
+    @OnClick({R.id.tv_user_protocol, R.id.tv_privacy_protocol})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_user_protocol:
+                XToastUtils.info("用户协议");
+                break;
+            case R.id.tv_privacy_protocol:
+                XToastUtils.info("隐私政策");
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    private void showPrivacy() {
+        //隐私政策弹窗
+        if (!SettingUtils.isAgreePrivacy()) {
+            Utils.showPrivacyDialog(RegiterNumberActivity.this, (dialog, which) -> {
+                dialog.dismiss();
+                SettingUtils.setIsAgreePrivacy(true);
+            });
+        }
     }
 
     /**

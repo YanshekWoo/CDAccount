@@ -21,9 +21,11 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.xuexiang.cdaccount.core.BaseActivity;
-import com.xuexiang.cdaccount.fragment.LoginFragment;
-import com.xuexiang.xui.utils.KeyboardUtils;
+import com.xuexiang.cdaccount.fragment.login.LoginGestureFragment;
+import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
+import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.display.Colors;
 
 /**
@@ -32,12 +34,12 @@ import com.xuexiang.xutil.display.Colors;
  * @author xuexiang
  * @since 2019-11-17 22:21
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements ClickUtils.OnClick2ExitListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        openPage(LoginFragment.class, getIntent().getExtras());
+        openPage(LoginGestureFragment.class, getIntent().getExtras());
     }
 
     @Override
@@ -50,8 +52,25 @@ public class LoginActivity extends BaseActivity {
         StatusBarUtils.initStatusBarStyle(this, false, Colors.WHITE);
     }
 
+
+    /**
+     * 菜单、返回键响应
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return KeyboardUtils.onDisableBackKeyDown(keyCode) && super.onKeyDown(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            ClickUtils.exitBy2Click(2000, this);
+        }
+        return true;
+    }
+
+    @Override
+    public void onRetry() {
+        XToastUtils.toast("再按一次退出程序");
+    }
+
+    @Override
+    public void onExit() {
+        XUtil.exitApp();
     }
 }

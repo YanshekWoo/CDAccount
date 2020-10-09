@@ -25,7 +25,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
@@ -36,7 +35,9 @@ import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent;
 import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
-import com.xuexiang.cdaccount.fragment.LoginFragment;
+import com.xuexiang.cdaccount.utils.RandomUtils;
+import com.xuexiang.cdaccount.utils.TokenUtils;
+import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xutil.display.Colors;
@@ -102,7 +103,7 @@ public class RegiterGestureActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void initLock() {
         //获取控件对象
-        mPatternLockView = (PatternLockView) findViewById(R.id.patter_lock_view);
+        mPatternLockView = (PatternLockView) findViewById(R.id.register_patter_lock_view);
         // n*n大小   3*3
         mPatternLockView.setDotCount(3);
         //没有点击时点的大小
@@ -175,7 +176,7 @@ public class RegiterGestureActivity extends BaseActivity {
                 {
                     GestureSignUp = patternToString;
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
-                    Toast.makeText(RegiterGestureActivity.this,"您绘制的密码是："+patternToString+"\n"+"请再次输入密码",Toast.LENGTH_SHORT).show();
+                    XToastUtils.info("请再次输入密码");
                     state = 2;
                 }
                 else if(state == 2)//第二次输入确认密码
@@ -186,14 +187,13 @@ public class RegiterGestureActivity extends BaseActivity {
                         mEditor_gesture.putString("gesture_sign",GestureSignUp);
                         mEditor_gesture.apply();
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
-                        Toast.makeText(RegiterGestureActivity.this,"您绘制的密码是："+patternToString+"\n"+"注册成功",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(RegiterGestureActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        XToastUtils.success("注册成功");
+                        onLoginSuccess();
                     }
                     else//两次输入密码不一致
                     {
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
-                        Toast.makeText(RegiterGestureActivity.this,"您绘制的密码是："+patternToString+"\n"+"两次密码输入不一致请重新注册",Toast.LENGTH_SHORT).show();
+                        XToastUtils.error("两次输入的密码不一致");
                         state = 1;
                     }
                 }
@@ -210,10 +210,24 @@ public class RegiterGestureActivity extends BaseActivity {
 
         @Override
         public void onCleared() {
-            Log.d(getClass().getName(), "Pattern has been cleared");
+//            Log.d(getClass().getName(), "Pattern has been cleared");
         }
 
     };
+
+
+
+    /**
+     * 登录成功的处理
+     */
+    private void onLoginSuccess() {
+        String token = RandomUtils.getRandomNumbersAndLetters(16);
+        if (TokenUtils.handleLoginSuccess(token)) {
+            Intent intent = new Intent(RegiterGestureActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
 
 

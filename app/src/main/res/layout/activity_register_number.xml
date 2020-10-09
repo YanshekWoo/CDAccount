@@ -50,10 +50,8 @@
                 android:inputType="text"
                 android:maxLines="1"
                 app:met_clearButton="true"
-                app:met_errorMessage="@string/tip_phone_number_error"
                 app:met_floatingLabel="normal"
-                app:met_floatingLabelText="@string/title_phone_number"
-                app:met_regexp="@string/regex_phone_number" />
+                app:met_floatingLabelText="用户名" />
 
         </FrameLayout>
 
@@ -75,13 +73,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
-                android:hint="Password"
+                android:hint="密码"
                 android:inputType="textPassword"
-                app:met_clearButton="false"
-                app:met_errorMessage="@string/tip_verify_code_error"
+                app:met_clearButton="true"
                 app:met_floatingLabel="normal"
-                app:met_floatingLabelText="@string/lab_verify_code"
-                app:met_regexp="@string/regex_verify_code" />
+                app:met_floatingLabelText="密码" />
 
 
         </FrameLayout>
@@ -103,42 +99,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
-                android:hint="Password"
+                android:hint="确认密码"
                 android:inputType="textPassword"
-                app:met_clearButton="false"
-                app:met_errorMessage="@string/tip_verify_code_error"
+                app:met_clearButton="true"
                 app:met_floatingLabel="normal"
-                app:met_floatingLabelText="@string/lab_verify_code"
-                app:met_regexp="@string/regex_verify_code" />
-
-        </FrameLayout>
-
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.xuexiang.xui.widget.alpha.XUIAlphaTextView
-                android:id="@+id/tv_other_login"
-                style="@style/TextStyle.Explain"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:text="其他登录方式"
-                android:textColor="@color/xui_config_color_primary_text" />
-
-            <com.xuexiang.xui.widget.alpha.XUIAlphaTextView
-                android:id="@+id/tv_forget_password"
-                style="@style/TextStyle.Explain"
-                android:layout_gravity="end"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:text="忘记密码"
-                android:textColor="@color/xui_config_color_primary_text" />
+                app:met_floatingLabelText="确认密码" />
 
         </FrameLayout>
 
@@ -149,7 +114,7 @@
         android:id="@+id/register_commit"
         style="@style/SuperButton.Primary.Login"
         android:layout_marginTop="16dp"
-        android:text="@string/title_login_register" />
+        android:text="注册" />
 
 
     <FrameLayout
