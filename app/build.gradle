@@ -135,6 +135,10 @@ dependencies {
     //ChatView
     implementation 'com.github.bigdongdong:ChatView:2.0'
 
+    /*手势解锁依赖：两个*/
+    implementation 'com.andrognito.patternlockview:patternlockview:1.0.0'
+    // Optional, for RxJava2 adapter
+    implementation 'com.andrognito.patternlockview:patternlockview-reactive:1.0.0'
 
 }
 //自动添加X-Library依赖
