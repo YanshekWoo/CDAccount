@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/ic_gesture_lock"/>
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="36dp"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="请绘制手势密码完成注册"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+
+    <com.andrognito.patternlockview.PatternLockView
+        android:id="@+id/patter_lock_view"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        app:aspectRatio="square"
+        app:aspectRatioEnabled="true"
+        app:dotAnimationDuration="150"
+        app:dotCount="3"
+        app:normalStateColor="@color/white"
+        app:correctStateColor="#238E23"
+        app:wrongStateColor="@color/pomegranate"
+        app:dotSelectedSize="50dp"
+        />
+
+    <!--    自定义属性-->
+    <!--     app:dotCount="3"                                        // 更改行（或列）-->
+    <!--    app:dotNormalSize="12dp"                                // 更改正常状态-->
+    <!--    app:dotSelectedSize="24dp"                              // 更改选定状态-->
+    <!--    app:pathWidth="4dp"                                     // 更改路径-->
+    <!--    app:aspectRatioEnabled="true"                           // 设置视图是否应该遵循自定义宽高比-->
+    <!--    app:aspectRatio="square"                                // 设置在“square”，“width_bias”，“height_bias”-->
+    <!--    app:normalStateColor="@color/white"                     // 设置正常状态下图案视图的颜色-->
+    <!--    app:correctStateColor="@color/primary"                  // 将图案视图的颜色设置为正确状态-->
+    <!--    app:wrongStateColor="@color/pomegranate"                // 设置错误状态-->
+    <!--    app:dotAnimationDuration="200"                          // 更改动画点-->
+    <!--    app:pathEndAnimationDuration="100"                      // 更改路径结束动画的持续时间-->
+
+</LinearLayout>
