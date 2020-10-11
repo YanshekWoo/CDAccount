@@ -4,18 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_color_theme_6"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="30dp">
 
-    <ImageView
+    <com.xuexiang.xui.widget.alpha.XUIAlphaImageView
         android:layout_width="84dp"
         android:layout_height="84dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_gesture_lock"/>
+        android:layout_marginTop="70dp"
+        android:src="@drawable/ic_gesture_lock" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/register_gesture_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,23 +24,23 @@
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
         android:maxLines="1"
-        android:text="请输入手势密码"
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
+        android:text="@string/gesture_register"
+        android:textColor="@color/app_color_theme_5"
+        android:textSize="16sp" />
 
     <com.andrognito.patternlockview.PatternLockView
         android:id="@+id/register_patter_lock_view"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:background="@color/app_color_theme_6"
+        android:background="@color/white"
         app:aspectRatio="square"
         app:aspectRatioEnabled="true"
         app:dotAnimationDuration="150"
         app:dotCount="3"
-        app:normalStateColor="@color/white"
-        app:correctStateColor="#238E23"
+        app:normalStateColor="@color/app_color_theme_6"
+        app:correctStateColor="@color/app_color_theme_7"
         app:wrongStateColor="@color/pomegranate"
         app:dotSelectedSize="50dp"
         />
