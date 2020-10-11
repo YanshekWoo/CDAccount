@@ -45,13 +45,13 @@
                 android:id="@+id/account_img"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_praise"
+                android:src="@drawable/icon_star"
                 android:layout_marginStart="20dp"
                 android:contentDescription="@string/todo" />
 
             <TextView
                 android:id="@+id/account_name"
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:text="信用卡"
                 android:textSize="20sp"
@@ -61,16 +61,18 @@
                 android:id="@+id/account_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
+                android:layout_marginStart="20dp"
                 android:text="@string/account_origin"
                 android:textSize="20sp" />
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="20dp"
+                android:gravity="right|center_vertical"
                 android:contentDescription="@string/todo"
-                app:srcCompat="@drawable/icon_arrow_right_grey" />
+                app:srcCompat="@drawable/icon_arrow_right_grey"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
     </FrameLayout>
