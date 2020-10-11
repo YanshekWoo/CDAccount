@@ -110,6 +110,15 @@
         <item>股票</item>
     </string-array>
 
+    <string-array name="inout_param_option">
+        <item>支出</item>
+        <item>收入</item>
+    </string-array>
+
+    <string-array name="inout_param_value">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 
     <!--  修改这里的图标  -->
     <array name="grid_icons_entry">

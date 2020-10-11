@@ -11,8 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_gesture_lock.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/classAnalysis.bin" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_1_1_0_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_1_1_0_jar.xml" afterDir="false" />
@@ -120,14 +119,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_reactivestreams_reactive_streams_1_0_2_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_reactivestreams_reactive_streams_1_0_2_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/login/LoginGestureFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/login/LoginGestureFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/login/LoginNumberFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/login/LoginNumberFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_gesture_lock.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_register_gesture.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_register_gesture.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_register_number.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_register_number.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_login_gesture.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_login_gesture.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_login_number.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_login_number.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/charts/ChartsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_charts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_charts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -135,7 +129,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="35090846" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel3aXL" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -163,7 +157,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="XinshuoHu" />
+        <entry key="$PROJECT_DIR$" value="ZiangCheng" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -183,7 +177,7 @@
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-03T13:39:15.848Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable-hdpi" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MyApplicationDB" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -383,7 +377,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602243168271</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="beautify login pages">
+      <created>1602261033821</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1602261033821</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -411,7 +412,8 @@
     <MESSAGE value="#修复：金额空字符串bug" />
     <MESSAGE value="delete test pages in charts" />
     <MESSAGE value="add log-in pages" />
-    <option name="LAST_COMMIT_MESSAGE" value="add log-in pages" />
+    <MESSAGE value="beautify login pages" />
+    <option name="LAST_COMMIT_MESSAGE" value="beautify login pages" />
   </component>
   <component name="WindowStateProjectService">
     <state x="617" y="215" key="#Notifications" timestamp="1601449384177">
@@ -446,67 +448,71 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="878" y="369" key="AndroidCreateXmlResourceDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602259712068" />
-    <state x="665" y="150" key="CommitChangelistDialog2" timestamp="1602243165829">
+    <state x="665" y="150" key="CommitChangelistDialog2" timestamp="1602261029203">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602243165829" />
+    <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602261029203" />
     <state x="93" y="93" width="1862" height="926" key="DiffContextDialog" timestamp="1601707321950">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="93" y="93" width="1862" height="926" key="DiffContextDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601707321950" />
-    <state x="881" y="431" key="FileChooserDialogImpl" timestamp="1602237480463">
+    <state x="881" y="431" key="FileChooserDialogImpl" timestamp="1602303780941">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602237480463" />
-    <state width="2005" height="305" key="GridCell.Tab.0.bottom" timestamp="1602259980278">
+    <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602303780941" />
+    <state width="2005" height="305" key="GridCell.Tab.0.bottom" timestamp="1602298172465">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="746" height="154" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602088810587" />
-    <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602259980278" />
-    <state width="2005" height="305" key="GridCell.Tab.0.center" timestamp="1602259980278">
+    <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602298172465" />
+    <state width="2005" height="305" key="GridCell.Tab.0.center" timestamp="1602298172464">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="746" height="154" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602088810587" />
-    <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602259980278" />
-    <state width="2005" height="305" key="GridCell.Tab.0.left" timestamp="1602259980278">
+    <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602298172464" />
+    <state width="2005" height="305" key="GridCell.Tab.0.left" timestamp="1602298172464">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="746" height="154" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602088810587" />
-    <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602259980278" />
-    <state width="2005" height="305" key="GridCell.Tab.0.right" timestamp="1602259980278">
+    <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602298172464" />
+    <state width="2005" height="305" key="GridCell.Tab.0.right" timestamp="1602298172464">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="746" height="154" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602088810587" />
-    <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602259980278" />
-    <state x="643" y="311" key="MultipleFileMergeDialog" timestamp="1602172866211">
+    <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602298172464" />
+    <state x="643" y="311" key="MultipleFileMergeDialog" timestamp="1602297605701">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="643" y="311" key="MultipleFileMergeDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602172866211" />
+    <state x="643" y="311" key="MultipleFileMergeDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602297605701" />
     <state x="526" y="198" key="SettingsEditor" timestamp="1601786810787">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="526" y="198" key="SettingsEditor/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601786810787" />
-    <state x="617" y="289" key="Vcs.Push.Dialog.v2" timestamp="1602243183489">
+    <state x="617" y="289" key="Vcs.Push.Dialog.v2" timestamp="1602261069853">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="463" y="214" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1601829409489" />
-    <state x="617" y="289" key="Vcs.Push.Dialog.v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602243183489" />
+    <state x="617" y="289" key="Vcs.Push.Dialog.v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602261069853" />
     <state x="93" y="93" width="1862" height="926" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601732689586">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="93" y="93" width="1862" height="926" key="com.android.tools.idea.avdmanager.AvdListDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601732689586" />
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1602257679789">
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog" timestamp="1602402771292">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602257679789" />
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602260961814">
+    <state x="587" y="420" key="com.intellij.ide.util.TipDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602402771292" />
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602402783900">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602260961814" />
-    <state x="620" y="386" key="git4idea.merge.GitPullDialog" timestamp="1602234066022">
+    <state x="810" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602402783900" />
+    <state x="782" y="268" key="git4idea.branch.GitSmartOperationDialog" timestamp="1602297598504">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="620" y="386" key="git4idea.merge.GitPullDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602234066022" />
+    <state x="782" y="268" key="git4idea.branch.GitSmartOperationDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602297598504" />
+    <state x="620" y="386" key="git4idea.merge.GitPullDialog" timestamp="1602382937829">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="620" y="386" key="git4idea.merge.GitPullDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602382937829" />
     <state x="677" y="403" key="git4idea.ui.GitUnstashDialog" timestamp="1601449642533">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
