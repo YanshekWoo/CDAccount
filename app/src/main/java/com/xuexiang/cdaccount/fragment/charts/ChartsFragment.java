@@ -45,10 +45,12 @@ import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
+import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.alpha.XUIAlphaButton;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
+import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xutil.data.DateUtils;
 
 import java.util.Calendar;
@@ -86,6 +88,9 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFloatingActionMenu;
+
+    @BindView(R.id.inout_select)
+    TabControlView mTabControlView;
 
 
     // 日期选择器
@@ -131,12 +136,28 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void initViews() {
+        initTabControlView();
         init_tab();
         initTimePicker();
         initChart();
         selectChart(0);
     }
 
+
+    /**
+     * 初始化收入支出单选按钮
+     */
+    private void initTabControlView() {
+        try {
+            mTabControlView.setItems(ResUtils.getStringArray(R.array.inout_param_option), ResUtils.getStringArray(R.array.inout_param_value));
+            mTabControlView.setDefaultSelection(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mTabControlView.setOnTabSelectionChangedListener((title, value) -> {
+            XToastUtils.toast("选中了：" + title + ", 选中的值为：" + value);
+        });
+    }
 
 
     /**
