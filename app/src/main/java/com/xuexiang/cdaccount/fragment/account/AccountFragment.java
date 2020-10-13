@@ -167,4 +167,15 @@ public class AccountFragment extends BaseFragment {
                 .cancelable(false)
                 .show();
     }
+
+//    private void showCustomDialog() {
+//        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+//                .customView(R.layout.add_account, true)
+//                .title("新建账户")
+//                .positiveText(R.string.button_confirm)
+//                .negativeText(R.string.button_cancel)
+//                .cancelable(false)
+//                .show();
+//
+//    }
 }

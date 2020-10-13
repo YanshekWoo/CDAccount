@@ -36,7 +36,7 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<String> {
     private RecyclerView mRecyclerView;
     private Context context;
 
-    public ExpandableItemAdapter(Context context, RecyclerView recyclerView, Collection<String> data) {
+    public ExpandableItemAdapter(Context context, RecyclerView recyclerView,Collection<String> data) {
         super(data);
         mRecyclerView = recyclerView;
         this.context = context;
@@ -49,7 +49,7 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<String> {
 
     @Override
     protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-        holder.text(R.id.tv_date, ResUtils.getResources().getString(R.string.item_example_number_date, position + 1));
+        holder.text(R.id.tv_date, ResUtils.getResources().getString(R.string.item_example_number, position + 1));
         holder.text(R.id.tv_money,"000");
         holder.click(R.id.account_detail, new View.OnClickListener() {
             @Override

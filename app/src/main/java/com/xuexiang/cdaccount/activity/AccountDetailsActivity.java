@@ -28,10 +28,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.adapter.ExpandableListAdapter;
+import com.xuexiang.cdaccount.adapter.ExpandableYearAdapter;
+import com.xuexiang.cdaccount.adapter.ExpendableAdapter;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.DemoDataProvider;
@@ -57,16 +61,18 @@ import butterknife.BindView;
 public class AccountDetailsActivity extends BaseActivity {
 
 
-    private String[] mHeaders = {"类别", "成员", "账户"};
+    private String[] mHeaders = {"年", "类别", "成员", "账户"};
     private List<View> mPopupViews = new ArrayList<>();
 
     private ListDropDownAdapter mCategoryAdapter;
     private ListDropDownAdapter mMemberAdapter;
     private ListDropDownAdapter mAccountAdapter;
+    private ListDropDownAdapter mTimeAdapter;
 
     private String[] mCategories;
     private String[] mMembers;
     private String[] mAccounts;
+    private String[] mTimes;
 
 
     private TimePickerView mDatePickerStart;
@@ -75,6 +81,9 @@ public class AccountDetailsActivity extends BaseActivity {
     private Date mDateEnd;
 
     private Collection<String> datas;
+
+    SmartRefreshLayout refreshLayout;
+    private ExpandableYearAdapter adapter;
 
     @BindView(R.id.account_title)
     TitleBar mTitleBar;
@@ -88,7 +97,6 @@ public class AccountDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_account_details);
-
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         DropDownMenu mDropDownMenu = findViewById(R.id.ddm_content);
@@ -140,14 +148,19 @@ public class AccountDetailsActivity extends BaseActivity {
      *初始化Recycle布局
      */
     protected void initRecyclerViews(RecyclerView recyclerView) {
+        adapter = new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, DemoDataProvider.getDemoData1());
         WidgetUtils.initRecyclerView(recyclerView);
-        recyclerView.setAdapter(new ExpandableListAdapter(AccountDetailsActivity.this,recyclerView, DemoDataProvider.getDemoData1()));
+        recyclerView.setAdapter(adapter);
+
+//        recyclerView.setLayoutManager(new LinearLayoutManager(AccountDetailsActivity.this));
+//        recyclerView.setAdapter(new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, DemoDataProvider.getDemoData1()));
     }
 
     /**
      * 用数组初始化菜单选项
      */
     protected void initArgs() {
+        mTimes = ResUtils.getStringArray(R.array.time_entry);
         mCategories = ResUtils.getStringArray(R.array.category_entry);
         mMembers = ResUtils.getStringArray(R.array.member_entry);
         mAccounts = ResUtils.getStringArray(R.array.account_entry);
@@ -171,6 +184,12 @@ public class AccountDetailsActivity extends BaseActivity {
      * 下拉菜单设置
      */
     protected void initSpinner(DropDownMenu mDropDownMenu) {
+        //init time menu
+        final ListView timeView = new ListView(AccountDetailsActivity.this);
+        mTimeAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mTimes);
+        timeView.setDividerHeight(0);
+        timeView.setAdapter(mTimeAdapter);
+
         //init category menu
         final ListView categoryView = new ListView(AccountDetailsActivity.this);
         mCategoryAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mCategories);
@@ -189,33 +208,44 @@ public class AccountDetailsActivity extends BaseActivity {
         mAccountAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mAccounts);
         accoutView.setAdapter(mAccountAdapter);
 
+
         //init mPopupViews
+        mPopupViews.add(timeView);
         mPopupViews.add(categoryView);
         mPopupViews.add(memberView);
         mPopupViews.add(accoutView);
 
 
+
         //add item click event
+        timeView.setOnItemClickListener((parent, view, position, id) -> {
+            mTimeAdapter.setSelectPosition(position);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mTimes[position]);
+            XToastUtils.toast("点击了:" + mTimes[position]);
+            mDropDownMenu.closeMenu();
+        });
+
         categoryView.setOnItemClickListener((parent, view, position, id) -> {
             mCategoryAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mCategories[position]);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[1] : mCategories[position]);
             XToastUtils.toast("点击了:" + mCategories[position]);
             mDropDownMenu.closeMenu();
         });
 
         memberView.setOnItemClickListener((parent, view, position, id) -> {
             mMemberAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[1] : mMembers[position]);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[2] : mMembers[position]);
             XToastUtils.toast("点击了:" + mMembers[position]);
             mDropDownMenu.closeMenu();
         });
 
         accoutView.setOnItemClickListener((parent, view, position, id) -> {
             mAccountAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[2] : mAccounts[position]);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[3] : mAccounts[position]);
             XToastUtils.toast("点击了:" + mAccounts[position]);
             mDropDownMenu.closeMenu();
         });
+
 
         //init context view
         TextView contentView = new TextView(AccountDetailsActivity.this);
@@ -301,5 +331,23 @@ public class AccountDetailsActivity extends BaseActivity {
                     .build();
         }
         mDatePickerEnd.show();
+    }
+
+    protected void initListeners() {
+        //下拉刷新
+        refreshLayout.setOnRefreshListener(refreshLayout -> {
+            refreshLayout.getLayout().postDelayed(() -> {
+                adapter.refresh(datas);
+                refreshLayout.finishRefresh();
+            }, 500);
+        });
+        //上拉加载
+        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            refreshLayout.getLayout().postDelayed(() -> {
+                adapter.loadMore(datas);
+                refreshLayout.finishLoadMore();
+            }, 1000);
+        });
+        refreshLayout.autoRefresh();//第一次进入触发自动刷新，演示效果
     }
 }
