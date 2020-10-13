@@ -50,12 +50,12 @@ public class MyPieChart {
         //设置图标中心空白，空心
         pieChart.setDrawHoleEnabled(true);
         //设置空心圆的弧度百分比，最大100
-        pieChart.setHoleRadius(50f);
+        pieChart.setHoleRadius(45f);
         pieChart.setHoleColor(Color.WHITE);
         //设置透明弧的样式
         pieChart.setTransparentCircleColor(Color.WHITE);
         pieChart.setTransparentCircleAlpha(110);
-        pieChart.setTransparentCircleRadius(55f);
+        pieChart.setTransparentCircleRadius(52f);
         //无数据显示
         pieChart.setNoDataText(getResources().getString(R.string.no_data));
         //标签颜色
@@ -112,6 +112,8 @@ public class MyPieChart {
         pieDataSet.setIconsOffset(new MPPointF(0, 40));
         pieDataSet.setSelectionShift(10f);
         pieDataSet.setColors(colors);
+//        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
         PieData piedata = new PieData(pieDataSet);
         piedata.setValueFormatter(new PercentFormatter(pieChart));
