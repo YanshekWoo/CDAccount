@@ -114,15 +114,15 @@ public class RegisterVerifyActivity extends BaseActivity {
     private void initSpinner() {
         mMaterialSpinner1.setItems(ResUtils.getStringArray(R.array.verify_question1));
 //        mMaterialSpinner1.setOnNothingSelectedListener(spinner -> SnackbarUtils.Long(spinner, "Nothing selected").show());
-        mMaterialSpinner1.setSelectedItem("你的父亲是谁");
+        mMaterialSpinner1.setSelectedItem("你的父亲的名字是什么");
 
-        mMaterialSpinner2.setItems(ResUtils.getStringArray(R.array.verify_question1));
+        mMaterialSpinner2.setItems(ResUtils.getStringArray(R.array.verify_question2));
 //        mMaterialSpinner2.setOnNothingSelectedListener(spinner -> SnackbarUtils.Long(spinner, "Nothing selected").show());
-        mMaterialSpinner2.setSelectedItem("你的父亲是谁");
+        mMaterialSpinner2.setSelectedItem("你最喜欢的运动是什么");
 
-        mMaterialSpinner3.setItems(ResUtils.getStringArray(R.array.verify_question1));
+        mMaterialSpinner3.setItems(ResUtils.getStringArray(R.array.verify_question3));
 //        mMaterialSpinner3.setOnNothingSelectedListener(spinner -> SnackbarUtils.Long(spinner, "Nothing selected").show());
-        mMaterialSpinner3.setSelectedItem("你的父亲是谁");
+        mMaterialSpinner3.setSelectedItem("毕业于哪个初中");
     }
 
 
