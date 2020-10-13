@@ -72,8 +72,10 @@
     <string name="title_jump_login">跳过</string>
     <string name="account_origin">000.00</string>
     <string name="todo">TODO</string>
+    <string name="item_example_number_year">第%02d年</string>
     <string name="item_example_number_month">第%02d月</string>
-    <string name="item_example_number_date">第%02d天</string>
+    <string name="item_example_number_day">第%02d天</string>
+    <string name="item_example_number">第%02d笔</string>
     <string name="account_content">请输入新建账户名称</string>
     <string name="button_cancel">取消</string>
     <string name="button_confirm">确认</string>
