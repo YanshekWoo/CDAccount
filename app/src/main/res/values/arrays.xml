@@ -27,6 +27,12 @@
         <item>@string/menu_account</item>
     </string-array>
 
+    <string-array name="verify_question1">
+        <item>你的父亲是谁</item>
+        <item>你的母亲是谁</item>
+        <item>你的是谁</item>
+    </string-array>
+
     <string-array name="pieColor">
         <item>"#FFA500"</item>
         <item>"#FF69B4"</item>
@@ -110,6 +116,21 @@
         <item>股票</item>
     </string-array>
 
+    <string-array name="time_entry">
+        <item>年</item>
+        <item>月</item>
+        <item>日</item>
+    </string-array>
+
+    <string-array name="inout_param_option">
+        <item>支出</item>
+        <item>收入</item>
+    </string-array>
+
+    <string-array name="inout_param_value">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 
     <!--  修改这里的图标  -->
     <array name="grid_icons_entry">

@@ -100,7 +100,7 @@ public class AccountFragment extends BaseFragment {
         adapter = new SimpleDelegateAdapter<String>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
             @Override
             protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-                holder.text(R.id.account_name,"温腿");
+                holder.text(R.id.account_name,"帐户名称");
                 holder.text(R.id.account_money,datas.get(position));
 
                 holder.click(R.id.account_card,view -> click(getContext(),datas.get(position)));
@@ -167,4 +167,15 @@ public class AccountFragment extends BaseFragment {
                 .cancelable(false)
                 .show();
     }
+
+//    private void showCustomDialog() {
+//        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+//                .customView(R.layout.add_account, true)
+//                .title("新建账户")
+//                .positiveText(R.string.button_confirm)
+//                .negativeText(R.string.button_cancel)
+//                .cancelable(false)
+//                .show();
+//
+//    }
 }

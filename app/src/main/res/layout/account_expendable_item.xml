@@ -28,22 +28,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/xui_config_list_item_selector"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/tv_date"
             style="@style/TextStyle.Content"
             android:text="日期"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="30dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="5dp"
             android:padding="16dp" />
 
         <TextView
             android:id="@+id/tv_money"
             style="@style/TextStyle.Content"
             android:text="金额"
+            android:layout_marginStart="100dp"
+            android:layout_gravity="start"
+            android:padding="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_accounttest"
+            style="@style/TextStyle.Content"
+            android:text="账户"
             android:layout_marginStart="200dp"
-            android:layout_gravity="start|center_vertical"
+            android:layout_gravity="start"
+            android:padding="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_acceptaccout"
+            style="@style/TextStyle.Content"
+            android:text="账户2"
+            android:layout_marginStart="280dp"
+            android:layout_gravity="start"
             android:padding="16dp"/>
 
 
