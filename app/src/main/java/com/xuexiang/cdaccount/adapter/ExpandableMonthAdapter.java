@@ -90,6 +90,7 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(new ExpandableDayAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
 
+
         holder.select(R.id.account_expendable_month, isSelected);
         holder.text(R.id.account_expendable_month_maintime,ResUtils.getResources().getString(R.string.item_example_number_month, position + 1));
         holder.text(R.id.account_expendable_month_subtime,"0000");

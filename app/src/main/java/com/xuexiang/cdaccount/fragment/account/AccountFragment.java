@@ -97,6 +97,7 @@ public class AccountFragment extends BaseFragment {
             datas.add("" + i);
         }
 
+
         adapter = new SimpleDelegateAdapter<String>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
             @Override
             protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
