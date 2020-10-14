@@ -132,7 +132,7 @@
             <TextView
                 style="@style/TextStyle.Explain"
                 android:layout_width="wrap_content"
-                android:text="登陆/注册代表您已阅读并同意"
+                android:text="登录/注册代表您已阅读并同意"
                 android:textColor="@color/xui_config_color_primary_text" />
 
             <com.xuexiang.xui.widget.alpha.XUIAlphaTextView

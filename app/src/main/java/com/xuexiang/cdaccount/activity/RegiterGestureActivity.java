@@ -194,6 +194,7 @@ public class RegiterGestureActivity extends BaseActivity {
                         mEditor_gesture.apply();
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
                         XToastUtils.success("注册成功");
+
                         onLoginSuccess();
                     }
                     else//两次输入密码不一致
@@ -211,7 +212,7 @@ public class RegiterGestureActivity extends BaseActivity {
                 public void run() {
                     mPatternLockView.clearPattern();
                 }
-            },1000);
+            },200);
         }
 
 
@@ -222,18 +223,13 @@ public class RegiterGestureActivity extends BaseActivity {
 
     };
 
-
-
     /**
      * 登录成功的处理
      */
     private void onLoginSuccess() {
-        String token = RandomUtils.getRandomNumbersAndLetters(16);
-        if (TokenUtils.handleLoginSuccess(token)) {
-            Intent intent = new Intent(RegiterGestureActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        Intent intent = new Intent(RegiterGestureActivity.this, RegisterVerifyActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 

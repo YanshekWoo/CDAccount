@@ -6,12 +6,6 @@
     android:orientation="vertical">
 
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="70dp"
-        app:srcCompat="@mipmap/ic_launcher" />
 
 
 
@@ -25,6 +19,26 @@
 
         <FrameLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:tint="?attr/colorAccent"
+                app:srcCompat="@drawable/ic_verify_question" />
+
+            <com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner
+                android:id="@+id/verify_question1"
+                android:layout_width="match_parent"
+                style="@style/Material.SpinnerStyle"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="?attr/xui_config_content_spacing_vertical" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -32,20 +46,22 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
                 android:tint="?attr/colorAccent"
-                app:srcCompat="@drawable/ic_phone" />
+                app:srcCompat="@drawable/ic_verify_answer" />
 
             <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
-                android:id="@+id/register_user"
+                android:id="@+id/verify_answer1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
-                android:hint="用户名"
+                android:hint="密保问题1"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textSize="16sp"
+                app:met_minCharacters="1"
+                app:met_maxCharacters="10"
                 app:met_clearButton="true"
                 app:met_floatingLabel="normal"
-                app:met_floatingLabelText="用户名" />
+                app:met_floatingLabelText="密保问题1" />
 
         </FrameLayout>
 
@@ -53,64 +69,111 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="20dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
                 android:tint="?attr/colorAccent"
-                app:srcCompat="@drawable/ic_password" />
+                app:srcCompat="@drawable/ic_verify_question" />
 
-            <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
-                android:id="@+id/register_passwd"
+            <com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner
+                android:id="@+id/verify_question2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Material.SpinnerStyle"
                 android:layout_marginStart="36dp"
-                android:hint="密码"
-                android:textSize="16sp"
-                android:inputType="textPassword"
-                app:met_clearButton="true"
-                app:met_floatingLabel="normal"
-                app:met_floatingLabelText="密码" />
-
-
+                android:layout_marginTop="?attr/xui_config_content_spacing_vertical" />
         </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
                 android:tint="?attr/colorAccent"
-                app:srcCompat="@drawable/ic_password" />
+                app:srcCompat="@drawable/ic_verify_answer" />
 
             <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
-                android:id="@+id/register_passwd_again"
+                android:id="@+id/verify_answer2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
-                android:hint="确认密码"
+                android:hint="密保问题2"
+                android:inputType="text"
+                android:maxLines="1"
                 android:textSize="16sp"
-                android:inputType="textPassword"
+                app:met_minCharacters="1"
+                app:met_maxCharacters="10"
                 app:met_clearButton="true"
                 app:met_floatingLabel="normal"
-                app:met_floatingLabelText="确认密码" />
+                app:met_floatingLabelText="密保问题2" />
 
         </FrameLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:tint="?attr/colorAccent"
+                app:srcCompat="@drawable/ic_verify_question" />
+
+            <com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner
+                android:id="@+id/verify_question3"
+                android:layout_width="match_parent"
+                style="@style/Material.SpinnerStyle"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="?attr/xui_config_content_spacing_vertical" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:tint="?attr/colorAccent"
+                app:srcCompat="@drawable/ic_verify_answer" />
+
+            <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
+                android:id="@+id/verify_answer3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:hint="密保问题3"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="16sp"
+                app:met_minCharacters="1"
+                app:met_maxCharacters="10"
+                app:met_clearButton="true"
+                app:met_floatingLabel="normal"
+                app:met_floatingLabelText="密保问题3" />
+
+        </FrameLayout>
+
+
+
 
     </LinearLayout>
 
 
     <com.xuexiang.xui.widget.textview.supertextview.SuperButton
-        android:id="@+id/register_commit"
+        android:id="@+id/register_verify_commit"
         style="@style/SuperButton.Primary.Login"
         android:layout_marginTop="40dp"
-        android:text="注册" />
+        android:text="确认" />
 
 
     <FrameLayout

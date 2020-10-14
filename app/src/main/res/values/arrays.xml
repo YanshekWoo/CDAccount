@@ -27,6 +27,24 @@
         <item>@string/menu_account</item>
     </string-array>
 
+    <string-array name="verify_question1">
+        <item>你的父亲的名字是什么</item>
+        <item>你的母亲的名字是什么</item>
+        <item>你的爷爷的名字是什么</item>
+    </string-array>
+
+    <string-array name="verify_question2">
+        <item>你最喜欢的运动是什么</item>
+        <item>你最喜欢的电影是什么</item>
+        <item>你最喜欢的水果是什么</item>
+    </string-array>
+
+    <string-array name="verify_question3">
+        <item>你毕业于哪个初中</item>
+        <item>你出生在什么地方</item>
+        <item>你第一次坐飞机去哪里</item>
+    </string-array>
+
     <string-array name="pieColor">
         <item>"#FFA500"</item>
         <item>"#FF69B4"</item>
