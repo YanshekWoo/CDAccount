@@ -117,9 +117,11 @@ public class AccountFragment extends BaseFragment {
             showInputDialog();
             //Toast.makeText(getContext(),"温腿 ",Toast.LENGTH_SHORT).show();
         });
+
+        accountInitListeners();
     }
 
-    protected void initListeners() {
+    protected void accountInitListeners() {
         //下拉刷新
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             refreshLayout.getLayout().postDelayed(() -> {
