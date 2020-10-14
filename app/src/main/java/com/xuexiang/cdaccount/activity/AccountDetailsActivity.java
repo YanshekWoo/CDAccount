@@ -32,10 +32,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.adapter.ExpandableListAdapter;
 import com.xuexiang.cdaccount.adapter.ExpandableYearAdapter;
 import com.xuexiang.cdaccount.adapter.ExpendableAdapter;
+import com.xuexiang.cdaccount.adapter.TestItem;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.DemoDataProvider;
@@ -82,11 +84,26 @@ public class AccountDetailsActivity extends BaseActivity {
 
     private Collection<String> datas;
 
+    @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
     private ExpandableYearAdapter adapter;
 
+    private boolean year_expendable = true, month_expendable = false, day_expendable = false;
+
     @BindView(R.id.account_title)
     TitleBar mTitleBar;
+
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.ddm_content)
+    DropDownMenu mDropDownMenu;
+
+    @BindView(R.id.btn_date_start)
+    XUIAlphaButton Btn_date_start;
+
+    @BindView(R.id.btn_date_end)
+    XUIAlphaButton Btn_date_end;
 
     @Override
     protected int getLayoutId() {
@@ -98,10 +115,10 @@ public class AccountDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_account_details);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        DropDownMenu mDropDownMenu = findViewById(R.id.ddm_content);
-        XUIAlphaButton Btn_date_start = findViewById(R.id.btn_date_start);
-        XUIAlphaButton Btn_date_end = findViewById(R.id.btn_date_end);
+//        recyclerView = findViewById(R.id.recycler_view);
+//        DropDownMenu mDropDownMenu = findViewById(R.id.ddm_content);
+//        XUIAlphaButton Btn_date_start = findViewById(R.id.btn_date_start);
+//        XUIAlphaButton Btn_date_end = findViewById(R.id.btn_date_end);
 
         Btn_date_start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,21 +133,21 @@ public class AccountDetailsActivity extends BaseActivity {
             }
         });
 
-        initData(datas);
+//        initData(datas);
         initTitleBar();
         initArgs();
-        initSpinner(mDropDownMenu);
-        initTimePicker(Btn_date_start,Btn_date_end);
-        initRecyclerViews(recyclerView);
+        initSpinner();
+        initTimePicker();
+        initRecyclerViews();
 
     }
 
-    protected void initData(Collection<String> datas){
-        datas = new ArrayList<String>();
-        for(int i = 0; i < 9 ;i++){
-            datas.add("" + i);
-        }
-    }
+//    protected void initData(Collection<String> datas){
+//        datas = new ArrayList<String>();
+//        for(int i = 0; i < 9 ;i++){
+//            datas.add("" + i);
+//        }
+//    }
 
     protected void initTitleBar() {
         String account = getIntent().getStringExtra("account");
@@ -147,10 +164,44 @@ public class AccountDetailsActivity extends BaseActivity {
     /**
      *初始化Recycle布局
      */
-    protected void initRecyclerViews(RecyclerView recyclerView) {
-        adapter = new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, DemoDataProvider.getDemoData1());
+    protected void initRecyclerViews() {
+        adapter = new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, year_expendable, month_expendable, day_expendable);
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
+
+
+
+//        RefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
+        refreshLayout.setEnableAutoLoadMore(true);//开启自动加载功能（非必须）
+        //下拉刷新
+        refreshLayout.setOnRefreshListener(refreshLayout12 -> refreshLayout12.getLayout().postDelayed(() -> {
+//            datas = DemoDataProvider.getDemoData();
+            TestItem t = new TestItem(1,true);
+            List<TestItem> datas = new ArrayList<>();
+            datas.add(t);
+
+            adapter.refresh(datas);
+            refreshLayout12.finishRefresh();
+            refreshLayout12.resetNoMoreData();//setNoMoreData(false);
+        }, 2000));
+        //上拉加载
+        refreshLayout.setOnLoadMoreListener(refreshLayout1 -> refreshLayout1.getLayout().postDelayed(() -> {
+            if (adapter.getItemCount() > 30) {
+                XToastUtils.toast("数据全部加载完毕");
+                refreshLayout1.finishLoadMoreWithNoMoreData();//将不会再次触发加载更多事件
+            } else {
+//                adapter.loadMore(DemoDataProvider.getDemoData());
+//                datas = DemoDataProvider.getDemoData();
+                TestItem t2 = new TestItem(0,false);
+                List<TestItem> datas2 = new ArrayList<>();
+                datas2.add(t2);
+                adapter.loadMore(datas2);
+                refreshLayout1.finishLoadMore();
+            }
+        }, 2000));
+
+        //触发自动刷新
+        refreshLayout.autoRefresh();
 
 //        recyclerView.setLayoutManager(new LinearLayoutManager(AccountDetailsActivity.this));
 //        recyclerView.setAdapter(new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, DemoDataProvider.getDemoData1()));
@@ -183,7 +234,7 @@ public class AccountDetailsActivity extends BaseActivity {
     /**
      * 下拉菜单设置
      */
-    protected void initSpinner(DropDownMenu mDropDownMenu) {
+    protected void initSpinner() {
         //init time menu
         final ListView timeView = new ListView(AccountDetailsActivity.this);
         mTimeAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mTimes);
@@ -215,13 +266,38 @@ public class AccountDetailsActivity extends BaseActivity {
         mPopupViews.add(memberView);
         mPopupViews.add(accoutView);
 
-
-
         //add item click event
         timeView.setOnItemClickListener((parent, view, position, id) -> {
             mTimeAdapter.setSelectPosition(position);
             mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mTimes[position]);
-            XToastUtils.toast("点击了:" + mTimes[position]);
+            switch (position){
+                case 0:
+                    year_expendable = true;
+                    month_expendable = false;
+                    day_expendable = false;
+                    break;
+                case 1:
+                    month_expendable = true;
+                    year_expendable = false;
+                    day_expendable = false;
+                    break;
+                case 2:
+                    day_expendable = true;
+                    year_expendable = false;
+                    month_expendable = false;
+                    break;
+            }
+
+//            datas = DemoDataProvider.getDemoData();
+//            adapter.refresh(datas);
+            refreshLayout.autoRefresh();
+
+//            refreshLayout.autoRefresh();
+//            refreshLayout12.finishRefresh();
+//            refreshLayout12.resetNoMoreData();//setNoMoreData(false);
+
+//            XToastUtils.toast("点击了:" + mTimes[position]);
+
             mDropDownMenu.closeMenu();
         });
 
@@ -263,7 +339,7 @@ public class AccountDetailsActivity extends BaseActivity {
     /**
      * 初始化日期选择控件
      */
-    protected void initTimePicker(XUIAlphaButton Btn_date_start, XUIAlphaButton Btn_date_end) {
+    protected void initTimePicker() {
         Calendar calendar = Calendar.getInstance();
         mDateEnd = calendar.getTime();
         Btn_date_end.setText(DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
@@ -333,21 +409,21 @@ public class AccountDetailsActivity extends BaseActivity {
         mDatePickerEnd.show();
     }
 
-    protected void initListeners() {
-        //下拉刷新
-        refreshLayout.setOnRefreshListener(refreshLayout -> {
-            refreshLayout.getLayout().postDelayed(() -> {
-                adapter.refresh(datas);
-                refreshLayout.finishRefresh();
-            }, 500);
-        });
-        //上拉加载
-        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            refreshLayout.getLayout().postDelayed(() -> {
-                adapter.loadMore(datas);
-                refreshLayout.finishLoadMore();
-            }, 1000);
-        });
-        refreshLayout.autoRefresh();//第一次进入触发自动刷新，演示效果
-    }
+//    protected void initListeners() {
+//        //下拉刷新
+//        refreshLayout.setOnRefreshListener(refreshLayout -> {
+//            refreshLayout.getLayout().postDelayed(() -> {
+//                adapter.refresh(datas);
+//                refreshLayout.finishRefresh();
+//            }, 500);
+//        });
+//        //上拉加载
+//        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+//            refreshLayout.getLayout().postDelayed(() -> {
+//                adapter.loadMore(datas);
+//                refreshLayout.finishLoadMore();
+//            }, 1000);
+//        });
+//        refreshLayout.autoRefresh();//第一次进入触发自动刷新，演示效果
+//    }
 }
