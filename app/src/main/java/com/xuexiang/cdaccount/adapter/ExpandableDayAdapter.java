@@ -90,6 +90,7 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<String> {
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(new ExpandableItemAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
 
+
         holder.select(R.id.account_expendable_day, isSelected);
         holder.text(R.id.account_expendable_day_maintime,ResUtils.getResources().getString(R.string.item_example_number_day, position + 1));
         holder.text(R.id.account_expendable_day_subtime,"0000");

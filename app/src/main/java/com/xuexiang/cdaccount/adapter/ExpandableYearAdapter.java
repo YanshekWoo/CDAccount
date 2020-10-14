@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.utils.DemoDataProvider;
 import com.xuexiang.cdaccount.utils.XToastUtils;
@@ -43,15 +44,21 @@ import java.util.Collection;
  * @author xuexiang
  * @since 2019-11-22 15:38
  */
-public class ExpandableYearAdapter extends BaseRecyclerAdapter<String> {
+public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
 
     private RecyclerView mRecyclerView;
     private Context context;
+    private ExpandableMonthAdapter mAdapter;
+    private boolean year_expendable,  month_expendable,  day_expendable;
+    boolean isSelected;
 
-    public ExpandableYearAdapter(Context context, RecyclerView recyclerView, Collection<String> data) {
-        super(data);
+    public ExpandableYearAdapter(Context context, RecyclerView recyclerView, boolean temp_year_expendable, boolean temp_month_expendable, boolean temp_day_expendable) {
+//        super(data);
         mRecyclerView = recyclerView;
         this.context = context;
+        year_expendable = temp_year_expendable;
+        month_expendable = temp_month_expendable;
+        day_expendable = temp_day_expendable;
     }
 
     /**
@@ -71,7 +78,7 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<String> {
      * @param item     列表项
      */
     @Override
-    protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
+    protected void bindData(@NonNull RecyclerViewHolder holder, int position, TestItem item) {
         ExpandableLayout expandableLayout = holder.findViewById(R.id.expandable_year_layout);
         AppCompatImageView ivIndicator = holder.findViewById(R.id.year_indicator);
         expandableLayout.setInterpolator(new OvershootInterpolator());
@@ -84,12 +91,52 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<String> {
             }
         });
 
-        boolean isSelected = position == mSelectPosition;
-        expandableLayout.setExpanded(isSelected, false);
+        if(item.getRefresh()){
+            if(item.getFlag()==0){
+//            mSelectPosition = 0;                        //开
+                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
+                mSelectPosition = position;
+            }else {
+//            mSelectPosition = -1;
+//            isSelected = position == mSelectPosition;
+                expandableLayout.setExpanded(false, true);
+                mSelectPosition = -1;
+            }
+        }
+        else {
+//            mSelectPosition = -1;
+            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+            isSelected = position == mSelectPosition;         //false
+            expandableLayout.setExpanded(isSelected, true);
+        }
+
+
+
+
         
         RecyclerView recyclerView = holder.findViewById(R.id.year_expand_recycler_view);
         WidgetUtils.initRecyclerView(recyclerView);
-        recyclerView.setAdapter(new ExpandableMonthAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
+        recyclerView.setAdapter(mAdapter = new ExpandableMonthAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
+
+//        final RefreshLayout refreshLayout = holder.findViewById(R.id.refreshLayout_year);
+//        refreshLayout.setEnableAutoLoadMore(true);
+//        //下拉刷新
+//        refreshLayout.setOnRefreshListener(refreshLayout12 -> refreshLayout12.getLayout().postDelayed(() -> {
+//            mAdapter.refresh(DemoDataProvider.getDemoData());
+//            refreshLayout12.finishRefresh();
+//            refreshLayout12.resetNoMoreData();//setNoMoreData(false);
+//        }, 2000));
+//        //上拉加载
+//        refreshLayout.setOnLoadMoreListener(refreshLayout1 -> refreshLayout1.getLayout().postDelayed(() -> {
+//            if (mAdapter.getItemCount() > 30) {
+//                XToastUtils.toast("数据全部加载完毕");
+//                refreshLayout1.finishLoadMoreWithNoMoreData();//将不会再次触发加载更多事件
+//            } else {
+//                mAdapter.loadMore(DemoDataProvider.getDemoData());
+//                refreshLayout1.finishLoadMore();
+//            }
+//        }, 2000));
+
 
         holder.select(R.id.account_expendable_year, isSelected);
         holder.text(R.id.account_expendable_year_maintime,ResUtils.getResources().getString(R.string.item_example_number_year, position + 1));
@@ -103,7 +150,7 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<String> {
             @Override
             public void onClick(View v) {
                 onClickItem(v, expandableLayout, position);
-                XToastUtils.toast("点击了:" + mSelectPosition);
+                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
             }
         });
     }
@@ -123,4 +170,6 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<String> {
             mSelectPosition = position;
         }
     }
+
+
 }
