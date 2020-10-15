@@ -24,6 +24,8 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,6 +40,7 @@ import com.xuexiang.cdaccount.adapter.ExpandableListAdapter;
 import com.xuexiang.cdaccount.adapter.ExpandableYearAdapter;
 import com.xuexiang.cdaccount.adapter.ExpendableAdapter;
 import com.xuexiang.cdaccount.adapter.TestItem;
+import com.xuexiang.cdaccount.adapter.dropdownmenu.ConstellationAdapter;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.DemoDataProvider;
@@ -63,7 +66,7 @@ import butterknife.BindView;
 public class AccountDetailsActivity extends BaseActivity {
 
 
-    private String[] mHeaders = {"年", "类别", "成员", "账户"};
+    private String[] mHeaders = {"年", "类别", "成员", "账户","测试"};
     private List<View> mPopupViews = new ArrayList<>();
 
 //    private ListDropDownAdapter mCategoryAdapter;
@@ -297,11 +300,13 @@ public class AccountDetailsActivity extends BaseActivity {
         accoutView.setAdapter(mAccountAdapter);
 
 
+
         //init mPopupViews
         mPopupViews.add(timeView);
         mPopupViews.add(categoryListView);
         mPopupViews.add(memberView);
         mPopupViews.add(accoutView);
+        mPopupViews.add(categoryListView);
 
         //add item click event
         timeView.setOnItemClickListener((parent, view, position, id) -> {

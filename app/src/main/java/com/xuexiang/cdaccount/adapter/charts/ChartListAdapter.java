@@ -18,6 +18,7 @@
 package com.xuexiang.cdaccount.adapter.charts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ProgressBar;
@@ -27,6 +28,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.ExpandableMonthAdapter;
 import com.xuexiang.cdaccount.utils.DemoDataProvider;
 import com.xuexiang.cdaccount.utils.XToastUtils;
@@ -38,6 +40,9 @@ import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.layout.ExpandableLayout;
 
 import java.util.Collection;
+
+import static com.xuexiang.xutil.XUtil.getContext;
+import static com.xuexiang.xutil.app.ActivityUtils.startActivity;
 
 /**
  * 可伸缩布局适配器
@@ -52,7 +57,7 @@ public class ChartListAdapter extends BaseRecyclerAdapter<String> {
 
     public ChartListAdapter(Context context, RecyclerView recyclerView, Collection<String> data) {
         super(data);
-        mRecyclerView = recyclerView;
+        this.mRecyclerView = recyclerView;
         this.context = context;
     }
 
@@ -86,6 +91,8 @@ public class ChartListAdapter extends BaseRecyclerAdapter<String> {
             @Override
             public void onClick(View v) {
                 XToastUtils.toast("点击了:" + mSelectPosition);
+                Intent intent = new Intent(context, AccountDetailsActivity.class);
+                context.startActivity(intent);
             }
         });
     }

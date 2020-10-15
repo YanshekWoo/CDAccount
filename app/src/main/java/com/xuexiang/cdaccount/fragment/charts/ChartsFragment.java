@@ -47,9 +47,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.charts.ChartListAdapter;
-import com.xuexiang.cdaccount.charts.MyBarChart;
-import com.xuexiang.cdaccount.charts.MyLineChart;
-import com.xuexiang.cdaccount.charts.MyPieChart;
+import com.xuexiang.cdaccount.chartsclass.MyBarChart;
+import com.xuexiang.cdaccount.chartsclass.MyLineChart;
+import com.xuexiang.cdaccount.chartsclass.MyPieChart;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.DemoDataProvider;
 import com.xuexiang.cdaccount.utils.XToastUtils;
@@ -70,8 +70,6 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.google.android.material.tabs.TabLayout.MODE_SCROLLABLE;
 
 
 /**
@@ -214,13 +212,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                     return;
                 }
                     XToastUtils.toast(Integer.toString(1));
-//                    //跳转Acticity
-//                    Intent intent = new Intent(getContext(), ChartsActivity.class);
-//                    intent.putExtra("category", Integer.toString(selecedindex));
-//                    intent.putExtra("datestart", DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()));
-//                    intent.putExtra("dateend", DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
-//                    startActivity(intent);
-
             }
 
             @Override
@@ -248,13 +239,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                     return;
                 }
                     XToastUtils.toast(Integer.toString(2));
-//                    //跳转Acticity
-//                    Intent intent = new Intent(getContext(), ChartsActivity.class);
-//                    intent.putExtra("category", Integer.toString(selecedindex));
-//                    intent.putExtra("datestart", DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()));
-//                    intent.putExtra("dateend", DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
-//                    startActivity(intent);
-
             }
 
             @Override
