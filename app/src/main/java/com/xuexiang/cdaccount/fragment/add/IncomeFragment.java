@@ -106,6 +106,14 @@ public class IncomeFragment  extends BaseFragment {
 
     public interface IncomeMessage{
         void InsertIncome(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark);
+        void getIncomeAmount(double Amount);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        XToastUtils.toast("income");
     }
 
     @Override
@@ -171,6 +179,8 @@ public class IncomeFragment  extends BaseFragment {
                 } else {
                     mAmount = -1;
                 }
+                Income.getIncomeAmount(mAmount);
+
             }
         });
 

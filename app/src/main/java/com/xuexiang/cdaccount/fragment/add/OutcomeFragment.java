@@ -99,7 +99,11 @@ public class OutcomeFragment extends BaseFragment {
 
     public interface OutcomeMessage{
         void InsertOutcome(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark);
+        void getOutcomeAmount(double Amount);
     }
+
+
+
 
     @Override
     public void onDetach() {
@@ -165,6 +169,7 @@ public class OutcomeFragment extends BaseFragment {
                 } else {
                     mAmount = -1;
                 }
+                Outcome.getOutcomeAmount(mAmount);
             }
         });
 

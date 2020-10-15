@@ -100,6 +100,14 @@ public class TransferFragment extends BaseFragment {
 
     public interface TransferMessage{
         void InsertTransfer(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark);
+        void getTransferAmount(double Amount);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        XToastUtils.toast("transfer");
     }
 
     @Override
@@ -163,6 +171,8 @@ public class TransferFragment extends BaseFragment {
                 } else {
                     mAmount = -1;
                 }
+                Transfer.getTransferAmount(mAmount);
+
             }
         });
 

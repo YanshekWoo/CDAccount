@@ -90,30 +90,20 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     private ViewPager mVpAdd;
     private Boolean mBlConfirm = false;     //标识变量
 
+    private double mIncomeAmount;
+    private double mOutcomeAmount;
+    private double mTransferAmount;
 
+    boolean IsAmountFill = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-
-        mIvBack = findViewById(R.id.iv_back);
-        mIvBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        mBtnConfirm = findViewById(R.id.btn_confirm);
-        mBtnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBlConfirm = true;      //置为true，表示需要插入新数据
-                finish();
-            }
-        });
+        mIncomeAmount = -1;
+        mOutcomeAmount = -1;
+        mTransferAmount = -1;
 
         /**
          *设置viewpager
@@ -130,6 +120,7 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         titles.add("收入");
         titles.add("转账");
         mTlAdd = findViewById(R.id.tl_add);
+
         BaseFragment[] fragments = new BaseFragment[]{
                 new OutcomeFragment(),
                 new IncomeFragment(),
@@ -155,9 +146,48 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
             }
         });
         mTlAdd.setupWithViewPager(mVpAdd);
-
-
         WidgetUtils.setTabLayoutTextFont(mTlAdd);
+
+    /**
+     * 返回按钮
+     */
+
+        mIvBack = findViewById(R.id.iv_back);
+        mIvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        /**
+         * 确认按钮
+         */
+        mBtnConfirm = findViewById(R.id.btn_confirm);
+        mBtnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (mVpAdd.getCurrentItem()){               //判断金额是否已填入
+                    case 0:
+                        IsAmountFill = mOutcomeAmount == -1;
+                        break;
+                    case 1:
+                        IsAmountFill = mIncomeAmount == -1;
+                        break;
+                    case 2:
+                        IsAmountFill = mTransferAmount == -1;
+                        break;
+                }
+                if(IsAmountFill){
+                    XToastUtils.error("请填写金额");
+                }else{
+                    mBlConfirm = true;      //置为true，表示需要插入新数据
+                    finish();               //利用生命周期的回调函数完成写入数据库
+                }
+
+            }
+        });
+
 
     }
 
@@ -224,14 +254,30 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     }
 
     @Override
+    public void getOutcomeAmount(double Amount) {
+        mOutcomeAmount = Amount;
+    }
+
+    @Override
     public void InsertIncome(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark) {
         if(mBlConfirm && mVpAdd.getCurrentItem()==1)XToastUtils.toast("Income");
 
     }
 
     @Override
+    public void getIncomeAmount(double Amount) {
+        mIncomeAmount = Amount;
+    }
+
+    @Override
     public void InsertTransfer(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark) {
         if(mBlConfirm && mVpAdd.getCurrentItem()==2)XToastUtils.toast("Transfer");
+
+    }
+
+    @Override
+    public void getTransferAmount(double Amount) {
+        mTransferAmount = Amount;
 
     }
 }
