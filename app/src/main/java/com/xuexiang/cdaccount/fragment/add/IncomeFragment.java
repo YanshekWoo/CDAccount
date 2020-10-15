@@ -110,11 +110,6 @@ public class IncomeFragment  extends BaseFragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        XToastUtils.toast("income");
-    }
 
     @Override
     public void onDetach() {

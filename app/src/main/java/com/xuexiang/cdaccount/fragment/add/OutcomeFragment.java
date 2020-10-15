@@ -51,6 +51,7 @@ import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
 import com.xuexiang.xui.widget.spinner.editspinner.EditSpinner;
 import com.xuexiang.xutil.data.DateUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -69,6 +70,7 @@ public class OutcomeFragment extends BaseFragment {
     private TimePickerView mDatePicker;
     private TimePickerView mTimePicker;
     private Date mDate, mTime;
+    String mStrYear, mStrMonth, mStrDay, mStrTime;
 
     private TextView mTvType;
     private List<String> options1Item = new ArrayList<>();
@@ -87,7 +89,7 @@ public class OutcomeFragment extends BaseFragment {
     private ShadowImageView mBtnNewMember;
 
     private MaterialEditText mEtRemark;
-    private String mRemark;
+    private String mRemark = null;
 
 
     private TextView mTvDialogItem1, mTvDialogItem2;
@@ -98,17 +100,14 @@ public class OutcomeFragment extends BaseFragment {
     private OutcomeMessage Outcome;
 
     public interface OutcomeMessage{
-        void InsertOutcome(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark);
+        void InsertOutcome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark);
         void getOutcomeAmount(double Amount);
     }
-
-
-
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Outcome.InsertOutcome(0,mDate,mTime,"测试0",null,null,null,null,null);
+        Outcome.InsertOutcome(mAmount, mStrYear, mStrMonth, mStrDay, mStrTime,mOption2,mAccount,null,mMember,mRemark);
 
     }
 
@@ -188,7 +187,12 @@ public class OutcomeFragment extends BaseFragment {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
-        mTvDateTime.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + " " + String.format("%02d", hour) + ":" + String.format("%02d", minute));
+        mStrYear = String.valueOf(year);
+        mStrMonth = String.valueOf(month);
+        mStrDay = String.valueOf(day);
+        mStrTime = String.format("%02d", hour) + ":" + String.format("%02d", minute);
+
+        mTvDateTime.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + "  "+mStrTime );
         mTvDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,6 +205,10 @@ public class OutcomeFragment extends BaseFragment {
         loadOptionData();
 
         mTvType = findViewById(R.id.tv_type);
+        mOption1 = options1Item.get(0);
+        mOption2 = options2Item.get(0).get(0);
+        mOption = mOption1+'-'+mOption2;
+        mTvType.setText(mOption);
         mTvType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,7 +229,6 @@ public class OutcomeFragment extends BaseFragment {
                         .title("添加分类")
                         .positiveText("确定")
                         .negativeText("取消");
-
                 mTvDialogItem1 = dialog.findViewById(R.id.item_title1);
                 mTvDialogItem2 = dialog.findViewById(R.id.item_title2);
                 mEsDialog = dialog.findViewById(R.id.es_item1);
@@ -237,6 +244,7 @@ public class OutcomeFragment extends BaseFragment {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mStrNewItem1 = mEsDialog.getText();
                         mStrNewItem2 = mEtDialog.getText().toString();
+                        //TODO:Insert_Category
                         mOption = mStrNewItem1 + "-" + mStrNewItem2;
                         mTvType.setText(mOption);
 
@@ -249,12 +257,15 @@ public class OutcomeFragment extends BaseFragment {
 
         //记账属性——账户
         loadAccountData();
+
         mTvAccount = findViewById(R.id.tv_account);
+        mAccount = Accounts1Item.get(0);
+        mTvAccount.setText(mAccount);               //初始化
+
         mTvAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAccountPickerView(false);
-
             }
         });
         mBtnNewAccount = findViewById(R.id.btn_new_account);
@@ -282,6 +293,7 @@ public class OutcomeFragment extends BaseFragment {
                                                               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                                   mAccount = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount.setText(mAccount);
+                                                                  //TODO:insert_new_account
                                                               }
                                                           })
                                                           .show();
@@ -293,6 +305,9 @@ public class OutcomeFragment extends BaseFragment {
         //记账属性——成员
         loadMemberData();
         mTvMember = findViewById(R.id.tv_member);
+        mMember = MembersItem.get(0);
+        mTvMember.setText(mMember);
+        mTvMember.setTextColor(this.getResources().getColor(R.color.app_color_theme_10));
         mTvMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -324,6 +339,13 @@ public class OutcomeFragment extends BaseFragment {
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 mMember = dialog.getInputEditText().getText().toString();
                                 mTvMember.setText(mMember);
+                                //TODO:insert new member
+                                if(mMember.equals(MembersItem.get(0))){
+                                    mTvMember.setTextColor(0xFF6E6E6E);
+                                }else{
+                                    mTvMember.setTextColor(0xFF000000 );
+                                }
+
                             }
                         })
                         .show();
@@ -380,7 +402,12 @@ public class OutcomeFragment extends BaseFragment {
                 @Override
                 public void onTimeSelected(Date date, View v) {
                     mTime = date;
-                    mTvDateTime.setText(DateUtils.date2String(mDate, DateUtils.yyyyMMdd.get()) + " " + DateUtils.date2String(mTime, DateUtils.HHmm.get()));
+                    mStrYear = DateUtils.date2String(mDate, new SimpleDateFormat("yyyy"));
+                    mStrMonth = DateUtils.date2String(mDate, new SimpleDateFormat("MM"));
+                    mStrDay = DateUtils.date2String(mDate, new SimpleDateFormat("dd"));
+                    mStrTime = DateUtils.date2String(mTime, DateUtils.HHmm.get());
+
+                    mTvDateTime.setText(DateUtils.date2String(mDate, DateUtils.yyyyMMdd.get()) + "  " + mStrTime);
                 }
             })
                     .setType(false, false, false, true, true, false)     //只显示时分
@@ -468,7 +495,7 @@ public class OutcomeFragment extends BaseFragment {
 
     //记账属性——成员
     private void loadMemberData() {
-        String[] str1 = {"本人", "配偶", "子女"};
+        String[] str1 = {"无成员","本人", "配偶", "子女"};
         MembersItem = Arrays.asList(str1);
     }
 
@@ -479,6 +506,13 @@ public class OutcomeFragment extends BaseFragment {
             //返回的分别是三个级别的选中位置
             mMember = MembersItem.get(member1);
             mTvMember.setText(mMember);
+            if(member1 == 0){
+                mTvMember.setTextColor(this.getResources().getColor(R.color.app_color_theme_10));
+            }else{
+                mTvMember.setTextColor(this.getResources().getColor(R.color.black));
+            }
+
+
             return false;
         })
 

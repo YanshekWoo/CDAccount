@@ -248,9 +248,13 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     }
 
 
+
     @Override
-    public void InsertOutcome(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark) {
-        if(mBlConfirm && mVpAdd.getCurrentItem()==0)XToastUtils.toast("Outcome");
+    public void InsertOutcome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
+        if(mBlConfirm && mVpAdd.getCurrentItem()==0){
+            XToastUtils.info(String.valueOf(Amount)+" "+Year+" "+Month+" "+Day+" "+Time+" "+Subcategory+" "+Account+" "+toAccount+" "+Member+" "+Remark);
+            //TODO:Insert Bill
+        }
     }
 
     @Override

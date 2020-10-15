@@ -104,11 +104,6 @@ public class TransferFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        XToastUtils.toast("transfer");
-    }
 
     @Override
     public void onDetach() {
