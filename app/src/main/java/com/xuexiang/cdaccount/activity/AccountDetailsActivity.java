@@ -75,8 +75,6 @@ public class AccountDetailsActivity extends BaseActivity {
     private ListDropDownAdapter mMemberAdapter;
     private ListDropDownAdapter mAccountAdapter;
     private ListDropDownAdapter mTimeAdapter;
-    private ListDropDownAdapter mTopCategoryAdapter;
-    private ListDropDownAdapter mSubCategoryAdapter;
 
 //    private String[] mCategories;
     private String[] mTopCategory;
@@ -84,8 +82,6 @@ public class AccountDetailsActivity extends BaseActivity {
     private String[] mMembers;
     private String[] mAccounts;
     private String[] mTimes;
-    private String[] mTopCategory;
-    private String[] mSubCategory;
 
 
     private TimePickerView mDatePickerStart;
@@ -236,8 +232,6 @@ public class AccountDetailsActivity extends BaseActivity {
         mSubCategory = ResUtils.getStringArray(R.array.member_entry);
         mMembers = ResUtils.getStringArray(R.array.member_entry);
         mAccounts = ResUtils.getStringArray(R.array.account_entry);
-        mTopCategory = ResUtils.getStringArray(R.array.category_entry);
-        mSubCategory = ResUtils.getStringArray(R.array.account_entry);
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event, DropDownMenu mDropDownMenu) {
@@ -304,26 +298,6 @@ public class AccountDetailsActivity extends BaseActivity {
         accoutView.setDividerHeight(0);
         mAccountAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mAccounts);
         accoutView.setAdapter(mAccountAdapter);
-
-        //init category
-        final View categoryListView = getLayoutInflater().inflate(R.layout.layout_drop_down_category, null);
-        ListView topListView = categoryListView.findViewById(R.id.dorp_down_topcategory);
-        ListView subListView = categoryListView.findViewById(R.id.dorp_down_subcategory);
-        mTopCategoryAdapter = new ListDropDownAdapter(this, mTopCategory);
-        mSubCategoryAdapter = new ListDropDownAdapter(this, mSubCategory);
-        topListView.setAdapter(mTopCategoryAdapter);
-        subListView.setAdapter(mSubCategoryAdapter);
-        categoryListView.findViewById(R.id.btn_ok).setOnClickListener(v -> {
-            mDropDownMenu.setTabMenuText(mTopCategoryAdapter.getSelectPosition() <= 0 ? mHeaders[3] : mTopCategoryAdapter.getSelectItem());
-            mDropDownMenu.closeMenu();
-        });
-        topListView.setOnItemClickListener((parent, view, position, id) -> {
-            mTopCategoryAdapter.setSelectPosition(position);
-        });
-        subListView.setOnItemClickListener((parent, view, position, id) -> {
-            mSubCategoryAdapter.setSelectPosition(position);
-            mDropDownMenu.closeMenu();
-        });
 
 
 
