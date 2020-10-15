@@ -82,6 +82,7 @@
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
                 tools:listitem="@layout/adapter_account_list_item"
+                android:paddingBottom="15dp"
                 />
         </LinearLayout>
 

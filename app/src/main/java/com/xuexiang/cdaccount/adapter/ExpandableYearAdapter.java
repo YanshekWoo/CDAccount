@@ -49,16 +49,16 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
     private RecyclerView mRecyclerView;
     private Context context;
     private ExpandableMonthAdapter mAdapter;
-    private boolean year_expendable,  month_expendable,  day_expendable;
+//    private boolean year_expendable,  month_expendable,  day_expendable;
     boolean isSelected;
 
-    public ExpandableYearAdapter(Context context, RecyclerView recyclerView, boolean temp_year_expendable, boolean temp_month_expendable, boolean temp_day_expendable) {
+    public ExpandableYearAdapter(Context context, RecyclerView recyclerView) {
 //        super(data);
         mRecyclerView = recyclerView;
         this.context = context;
-        year_expendable = temp_year_expendable;
-        month_expendable = temp_month_expendable;
-        day_expendable = temp_day_expendable;
+//        year_expendable = temp_year_expendable;
+//        month_expendable = temp_month_expendable;
+//        day_expendable = temp_day_expendable;
     }
 
     /**
@@ -91,32 +91,12 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
             }
         });
 
-        if(item.getRefresh()){
-            if(item.getFlag()==0){
-//            mSelectPosition = 0;                        //开
-                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
-                mSelectPosition = position;
-            }else {
-//            mSelectPosition = -1;
-//            isSelected = position == mSelectPosition;
-                expandableLayout.setExpanded(false, true);
-                mSelectPosition = -1;
-            }
-        }
-        else {
-//            mSelectPosition = -1;
-            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
-            isSelected = position == mSelectPosition;         //false
-            expandableLayout.setExpanded(isSelected, true);
-        }
 
 
 
-
-        
         RecyclerView recyclerView = holder.findViewById(R.id.year_expand_recycler_view);
         WidgetUtils.initRecyclerView(recyclerView);
-        recyclerView.setAdapter(mAdapter = new ExpandableMonthAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
+        recyclerView.setAdapter(mAdapter = new ExpandableMonthAdapter(context, recyclerView, DemoDataProvider.getDemoData1(),item));
 
 //        final RefreshLayout refreshLayout = holder.findViewById(R.id.refreshLayout_year);
 //        refreshLayout.setEnableAutoLoadMore(true);
@@ -137,7 +117,6 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
 //            }
 //        }, 2000));
 
-
         holder.select(R.id.account_expendable_year, isSelected);
         holder.text(R.id.account_expendable_year_maintime,ResUtils.getResources().getString(R.string.item_example_number_year, position + 1));
         holder.text(R.id.account_expendable_year_subtime,"0000");
@@ -153,6 +132,28 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
                 XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
             }
         });
+
+        if(item.getRefresh()){
+            if(item.getYear()){
+                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
+                mSelectPosition = position;
+            }else {
+//            isSelected = position == mSelectPosition;
+                expandableLayout.setExpanded(false, true);
+                mSelectPosition = -1;
+            }
+        }
+        else {
+//            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+            isSelected = position == mSelectPosition;         //false
+            expandableLayout.setExpanded(isSelected, true);
+        }
+
+        if(item.getYear() && item.getMonth() && !item.getDay()){
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(5);
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextColor(0xD2CACA);
+        }
+
     }
 
     private void onClickItem(View view, final ExpandableLayout expandableLayout, final int position) {
