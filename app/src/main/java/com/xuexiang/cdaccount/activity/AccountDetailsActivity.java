@@ -24,6 +24,8 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,6 +40,7 @@ import com.xuexiang.cdaccount.adapter.ExpandableListAdapter;
 import com.xuexiang.cdaccount.adapter.ExpandableYearAdapter;
 import com.xuexiang.cdaccount.adapter.ExpendableAdapter;
 import com.xuexiang.cdaccount.adapter.TestItem;
+import com.xuexiang.cdaccount.adapter.dropdownmenu.ConstellationAdapter;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.DemoDataProvider;
@@ -63,18 +66,22 @@ import butterknife.BindView;
 public class AccountDetailsActivity extends BaseActivity {
 
 
-    private String[] mHeaders = {"年", "类别", "成员", "账户"};
+    private String[] mHeaders = {"年", "类别", "成员", "账户","测试"};
     private List<View> mPopupViews = new ArrayList<>();
 
     private ListDropDownAdapter mCategoryAdapter;
     private ListDropDownAdapter mMemberAdapter;
     private ListDropDownAdapter mAccountAdapter;
     private ListDropDownAdapter mTimeAdapter;
+    private ListDropDownAdapter mTopCategoryAdapter;
+    private ListDropDownAdapter mSubCategoryAdapter;
 
     private String[] mCategories;
     private String[] mMembers;
     private String[] mAccounts;
     private String[] mTimes;
+    private String[] mTopCategory;
+    private String[] mSubCategory;
 
 
     private TimePickerView mDatePickerStart;
@@ -215,6 +222,8 @@ public class AccountDetailsActivity extends BaseActivity {
         mCategories = ResUtils.getStringArray(R.array.category_entry);
         mMembers = ResUtils.getStringArray(R.array.member_entry);
         mAccounts = ResUtils.getStringArray(R.array.account_entry);
+        mTopCategory = ResUtils.getStringArray(R.array.category_entry);
+        mSubCategory = ResUtils.getStringArray(R.array.account_entry);
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event, DropDownMenu mDropDownMenu) {
@@ -259,12 +268,34 @@ public class AccountDetailsActivity extends BaseActivity {
         mAccountAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mAccounts);
         accoutView.setAdapter(mAccountAdapter);
 
+        //init category
+        final View categoryListView = getLayoutInflater().inflate(R.layout.layout_drop_down_category, null);
+        ListView topListView = categoryListView.findViewById(R.id.dorp_down_topcategory);
+        ListView subListView = categoryListView.findViewById(R.id.dorp_down_subcategory);
+        mTopCategoryAdapter = new ListDropDownAdapter(this, mTopCategory);
+        mSubCategoryAdapter = new ListDropDownAdapter(this, mSubCategory);
+        topListView.setAdapter(mTopCategoryAdapter);
+        subListView.setAdapter(mSubCategoryAdapter);
+        categoryListView.findViewById(R.id.btn_ok).setOnClickListener(v -> {
+            mDropDownMenu.setTabMenuText(mTopCategoryAdapter.getSelectPosition() <= 0 ? mHeaders[3] : mTopCategoryAdapter.getSelectItem());
+            mDropDownMenu.closeMenu();
+        });
+        topListView.setOnItemClickListener((parent, view, position, id) -> {
+            mTopCategoryAdapter.setSelectPosition(position);
+        });
+        subListView.setOnItemClickListener((parent, view, position, id) -> {
+            mSubCategoryAdapter.setSelectPosition(position);
+            mDropDownMenu.closeMenu();
+        });
+
+
 
         //init mPopupViews
         mPopupViews.add(timeView);
         mPopupViews.add(categoryView);
         mPopupViews.add(memberView);
         mPopupViews.add(accoutView);
+        mPopupViews.add(categoryListView);
 
         //add item click event
         timeView.setOnItemClickListener((parent, view, position, id) -> {

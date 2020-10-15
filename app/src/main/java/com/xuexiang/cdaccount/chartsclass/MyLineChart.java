@@ -15,7 +15,7 @@
  *
  */
 
-package com.xuexiang.cdaccount.charts;
+package com.xuexiang.cdaccount.chartsclass;
 
 import android.os.Build;
 
