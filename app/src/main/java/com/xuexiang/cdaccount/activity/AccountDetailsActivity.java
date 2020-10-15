@@ -66,12 +66,16 @@ public class AccountDetailsActivity extends BaseActivity {
     private String[] mHeaders = {"年", "类别", "成员", "账户"};
     private List<View> mPopupViews = new ArrayList<>();
 
-    private ListDropDownAdapter mCategoryAdapter;
+//    private ListDropDownAdapter mCategoryAdapter;
+    private ListDropDownAdapter mTopCategoryAdapter;
+    private ListDropDownAdapter mSubCategoryAdapter;
     private ListDropDownAdapter mMemberAdapter;
     private ListDropDownAdapter mAccountAdapter;
     private ListDropDownAdapter mTimeAdapter;
 
-    private String[] mCategories;
+//    private String[] mCategories;
+    private String[] mTopCategory;
+    private String[] mSubCategory;
     private String[] mMembers;
     private String[] mAccounts;
     private String[] mTimes;
@@ -83,12 +87,13 @@ public class AccountDetailsActivity extends BaseActivity {
     private Date mDateEnd;
 
     private Collection<String> datas;
+    private TestItem t;
 
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
     private ExpandableYearAdapter adapter;
 
-    private boolean year_expendable = true, month_expendable = false, day_expendable = false;
+//    private boolean year_expendable = true, month_expendable = false, day_expendable = false;
 
     @BindView(R.id.account_title)
     TitleBar mTitleBar;
@@ -133,6 +138,8 @@ public class AccountDetailsActivity extends BaseActivity {
             }
         });
 
+        t = new TestItem();
+
 //        initData(datas);
         initTitleBar();
         initArgs();
@@ -151,7 +158,7 @@ public class AccountDetailsActivity extends BaseActivity {
 
     protected void initTitleBar() {
         String account = getIntent().getStringExtra("account");
-        mTitleBar.setTitle(account);
+//        mTitleBar.setTitle(account);
         mTitleBar.setLeftClickListener(view -> {
             finish();
         });
@@ -165,7 +172,7 @@ public class AccountDetailsActivity extends BaseActivity {
      *初始化Recycle布局
      */
     protected void initRecyclerViews() {
-        adapter = new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, year_expendable, month_expendable, day_expendable);
+        adapter = new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView);
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
 
@@ -176,7 +183,11 @@ public class AccountDetailsActivity extends BaseActivity {
         //下拉刷新
         refreshLayout.setOnRefreshListener(refreshLayout12 -> refreshLayout12.getLayout().postDelayed(() -> {
 //            datas = DemoDataProvider.getDemoData();
-            TestItem t = new TestItem(1,true);
+//            TestItem t = new TestItem(0,true);
+            t.addYear(true);
+            t.addMonth(false);
+            t.addDay(false);
+            t.addRefresh(true);
             List<TestItem> datas = new ArrayList<>();
             datas.add(t);
 
@@ -192,9 +203,10 @@ public class AccountDetailsActivity extends BaseActivity {
             } else {
 //                adapter.loadMore(DemoDataProvider.getDemoData());
 //                datas = DemoDataProvider.getDemoData();
-                TestItem t2 = new TestItem(0,false);
+//                TestItem t2 = new TestItem(1,false);
+                t.addRefresh(true);
                 List<TestItem> datas2 = new ArrayList<>();
-                datas2.add(t2);
+                datas2.add(t);
                 adapter.loadMore(datas2);
                 refreshLayout1.finishLoadMore();
             }
@@ -212,7 +224,9 @@ public class AccountDetailsActivity extends BaseActivity {
      */
     protected void initArgs() {
         mTimes = ResUtils.getStringArray(R.array.time_entry);
-        mCategories = ResUtils.getStringArray(R.array.category_entry);
+//        mCategories = ResUtils.getStringArray(R.array.category_entry);
+        mTopCategory = ResUtils.getStringArray(R.array.category_entry);
+        mSubCategory = ResUtils.getStringArray(R.array.member_entry);
         mMembers = ResUtils.getStringArray(R.array.member_entry);
         mAccounts = ResUtils.getStringArray(R.array.account_entry);
     }
@@ -241,11 +255,34 @@ public class AccountDetailsActivity extends BaseActivity {
         timeView.setDividerHeight(0);
         timeView.setAdapter(mTimeAdapter);
 
-        //init category menu
-        final ListView categoryView = new ListView(AccountDetailsActivity.this);
-        mCategoryAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mCategories);
-        categoryView.setDividerHeight(0);
-        categoryView.setAdapter(mCategoryAdapter);
+//        //init category menu
+//        final ListView categoryView = new ListView(AccountDetailsActivity.this);
+//        mCategoryAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mCategories);
+//        categoryView.setDividerHeight(0);
+//        categoryView.setAdapter(mCategoryAdapter);
+        //init category
+        final View categoryListView = getLayoutInflater().inflate(R.layout.layout_drop_down_category, null);
+        ListView topListView = categoryListView.findViewById(R.id.dorp_down_topcategory);
+        ListView subListView = categoryListView.findViewById(R.id.dorp_down_subcategory);
+        mTopCategoryAdapter = new ListDropDownAdapter(this, mTopCategory);
+        mSubCategoryAdapter = new ListDropDownAdapter(this, mSubCategory);
+        topListView.setAdapter(mTopCategoryAdapter);
+        subListView.setAdapter(mSubCategoryAdapter);
+        categoryListView.findViewById(R.id.btn_ok).setOnClickListener(v -> {
+            mDropDownMenu.setTabMenuText(mTopCategoryAdapter.getSelectPosition() <= 0 ? mHeaders[3] : mTopCategoryAdapter.getSelectItem());
+            mDropDownMenu.closeMenu();
+        });
+        topListView.setOnItemClickListener((parent, view, position, id) -> {
+            mTopCategoryAdapter.setSelectPosition(position);
+            if(position==0) {
+                mDropDownMenu.closeMenu();
+            }
+        });
+        subListView.setOnItemClickListener((parent, view, position, id) -> {
+            mSubCategoryAdapter.setSelectPosition(position);
+            mDropDownMenu.closeMenu();
+        });
+
 
         //init member menu
         final ListView memberView = new ListView(AccountDetailsActivity.this);
@@ -262,7 +299,7 @@ public class AccountDetailsActivity extends BaseActivity {
 
         //init mPopupViews
         mPopupViews.add(timeView);
-        mPopupViews.add(categoryView);
+        mPopupViews.add(categoryListView);
         mPopupViews.add(memberView);
         mPopupViews.add(accoutView);
 
@@ -272,19 +309,28 @@ public class AccountDetailsActivity extends BaseActivity {
             mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mTimes[position]);
             switch (position){
                 case 0:
-                    year_expendable = true;
-                    month_expendable = false;
-                    day_expendable = false;
+//                    year_expendable = true;
+//                    month_expendable = false;
+//                    day_expendable = false;
+                    t.addYear(true);
+                    t.addMonth(false);
+                    t.addDay(false);
                     break;
                 case 1:
-                    month_expendable = true;
-                    year_expendable = false;
-                    day_expendable = false;
+//                    month_expendable = true;
+//                    year_expendable = false;
+//                    day_expendable = false;
+                    t.addYear(true);
+                    t.addMonth(true);
+                    t.addDay(false);
                     break;
                 case 2:
-                    day_expendable = true;
-                    year_expendable = false;
-                    month_expendable = false;
+//                    day_expendable = true;
+//                    year_expendable = false;
+//                    month_expendable = false;
+                    t.addYear(true);
+                    t.addMonth(true);
+                    t.addDay(true);
                     break;
             }
 
@@ -301,12 +347,13 @@ public class AccountDetailsActivity extends BaseActivity {
             mDropDownMenu.closeMenu();
         });
 
-        categoryView.setOnItemClickListener((parent, view, position, id) -> {
-            mCategoryAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[1] : mCategories[position]);
-            XToastUtils.toast("点击了:" + mCategories[position]);
-            mDropDownMenu.closeMenu();
-        });
+//        原一级categoryview
+//        categoryView.setOnItemClickListener((parent, view, position, id) -> {
+//            mCategoryAdapter.setSelectPosition(position);
+//            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[1] : mCategories[position]);
+//            XToastUtils.toast("点击了:" + mCategories[position]);
+//            mDropDownMenu.closeMenu();
+//        });
 
         memberView.setOnItemClickListener((parent, view, position, id) -> {
             mMemberAdapter.setSelectPosition(position);
