@@ -204,7 +204,7 @@ public class AccountDetailsActivity extends BaseActivity {
 //                adapter.loadMore(DemoDataProvider.getDemoData());
 //                datas = DemoDataProvider.getDemoData();
 //                TestItem t2 = new TestItem(1,false);
-                t.addRefresh(true);
+                t.addRefresh(false);
                 List<TestItem> datas2 = new ArrayList<>();
                 datas2.add(t);
                 adapter.loadMore(datas2);

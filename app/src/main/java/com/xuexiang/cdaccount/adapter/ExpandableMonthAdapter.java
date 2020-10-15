@@ -88,7 +88,24 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
             }
         });
 
-
+        if(t.getRefresh()){
+            if(t.getMonth()){
+                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
+                mSelectPosition = position;
+//                t.addRefresh(false);
+            }else {
+//            isSelected = position == mSelectPosition;
+            XToastUtils.toast("点击了:");
+                expandableLayout.setExpanded(false, true);
+                mSelectPosition = -1;
+            }
+        }
+        else {
+            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+            isSelected = position == mSelectPosition;         //false
+            expandableLayout.setExpanded(isSelected, true);
+        }
 
 //        boolean isSelected = position == mSelectPosition;
 //        expandableLayout.setExpanded(isSelected, false);
@@ -114,23 +131,7 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
             }
         });
 
-        if(t.getRefresh()){
-            if(t.getMonth()){
-//                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
-                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
-                mSelectPosition = position;
-                t.addRefresh(false);
-            }else {
-//            isSelected = position == mSelectPosition;
-                expandableLayout.setExpanded(false, true);
-                mSelectPosition = -1;
-            }
-        }
-        else {
-            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
-            isSelected = position == mSelectPosition;         //false
-            expandableLayout.setExpanded(isSelected, true);
-        }
+
     }
 
     private void onClickItem(View view, final ExpandableLayout expandableLayout, final int position) {

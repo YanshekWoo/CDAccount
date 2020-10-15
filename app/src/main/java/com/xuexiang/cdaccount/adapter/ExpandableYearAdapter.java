@@ -91,7 +91,21 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
             }
         });
 
-
+        if(item.getRefresh()){
+            if(item.getYear()){
+                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
+                mSelectPosition = position;
+            }else {
+//            isSelected = position == mSelectPosition;
+                expandableLayout.setExpanded(false, true);
+                mSelectPosition = -1;
+            }
+        }
+        else {
+//            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+            isSelected = position == mSelectPosition;         //false
+            expandableLayout.setExpanded(isSelected, true);
+        }
 
 
         RecyclerView recyclerView = holder.findViewById(R.id.year_expand_recycler_view);
@@ -133,26 +147,12 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
             }
         });
 
-        if(item.getRefresh()){
-            if(item.getYear()){
-                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
-                mSelectPosition = position;
-            }else {
-//            isSelected = position == mSelectPosition;
-                expandableLayout.setExpanded(false, true);
-                mSelectPosition = -1;
-            }
-        }
-        else {
-//            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
-            isSelected = position == mSelectPosition;         //false
-            expandableLayout.setExpanded(isSelected, true);
-        }
 
-        if(item.getYear() && item.getMonth() && !item.getDay()){
-            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(5);
-            holder.getTextView(R.id.account_expendable_year_maintime).setTextColor(0xD2CACA);
-        }
+
+//        if(item.getYear() && item.getMonth() && !item.getDay()){
+//            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(5);
+//            holder.getTextView(R.id.account_expendable_year_maintime).setTextColor(0xD2CACA);
+//        }
 
     }
 
