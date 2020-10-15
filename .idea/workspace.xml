@@ -11,8 +11,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/IncomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/IncomeFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/OutcomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/OutcomeFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/TransferFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/TransferFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_backup.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_backup.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_new.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_income.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_income.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_outcome.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_outcome.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_transfer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_transfer.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +55,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="dev_CH_v4" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -67,22 +75,22 @@
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-03T13:39:15.848Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../XUI-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RecentsManager">
-    <key name="android.template.1751090428">
-      <recent name="com.xuexiang.cdaccount.activity" />
-    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.xuexiang.cdaccount.fragment.add" />
       <recent name="com.xuexiang.cdaccount.fragment.login" />
       <recent name="com.xuexiang.cdaccount.activity" />
       <recent name="com.xuexiang.cdaccount.fragment.charts" />
       <recent name="com.xuexiang.cdaccount.fragment.home" />
+    </key>
+    <key name="android.template.1751090428">
+      <recent name="com.xuexiang.cdaccount.activity" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\project\AndroidProjects\CDAccount\app\src\main\res\drawable" />
@@ -298,6 +306,50 @@
       </list>
     </option>
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/dev_CH" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add spinner" />
     <MESSAGE value="add timePicker" />
@@ -369,43 +421,44 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="93" y="93" width="1862" height="926" key="DiffContextDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601707321950" />
-    <state x="661" y="319" key="FileChooserDialogImpl" timestamp="1602425854401">
+    <state x="661" y="319" key="FileChooserDialogImpl" timestamp="1602726286625">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="661" y="319" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1602425854401" />
+    <state x="661" y="319" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1602726286625" />
     <state x="881" y="431" key="FileChooserDialogImpl/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602303780941" />
-    <state width="1493" height="139" key="GridCell.Tab.0.bottom" timestamp="1602521455660">
+    <state width="1493" height="139" key="GridCell.Tab.0.bottom" timestamp="1602769339022">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="139" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602521455660" />
+    <state width="1493" height="139" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602769339022" />
     <state width="2005" height="305" key="GridCell.Tab.0.bottom/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602298172465" />
-    <state width="1493" height="139" key="GridCell.Tab.0.center" timestamp="1602521455660">
+    <state width="1493" height="139" key="GridCell.Tab.0.center" timestamp="1602769339022">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="139" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602521455660" />
+    <state width="1493" height="139" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602769339022" />
     <state width="2005" height="305" key="GridCell.Tab.0.center/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602298172464" />
-    <state width="1493" height="139" key="GridCell.Tab.0.left" timestamp="1602521455660">
+    <state width="1493" height="139" key="GridCell.Tab.0.left" timestamp="1602769339022">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="139" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602521455660" />
+    <state width="1493" height="139" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602769339022" />
     <state width="2005" height="305" key="GridCell.Tab.0.left/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602298172464" />
-    <state width="1493" height="139" key="GridCell.Tab.0.right" timestamp="1602521455660">
+    <state width="1493" height="139" key="GridCell.Tab.0.right" timestamp="1602769339022">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="139" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602521455660" />
+    <state width="1493" height="139" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602769339022" />
     <state width="2005" height="305" key="GridCell.Tab.0.right/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602298172464" />
     <state x="643" y="311" key="MultipleFileMergeDialog" timestamp="1602297605701">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="643" y="311" key="MultipleFileMergeDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602297605701" />
-    <state x="526" y="198" key="SettingsEditor" timestamp="1601786810787">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="395" y="109" key="SettingsEditor" timestamp="1602587696185">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="395" y="109" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1602587696185" />
     <state x="526" y="198" key="SettingsEditor/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601786810787" />
-    <state x="617" y="289" key="Vcs.Push.Dialog.v2" timestamp="1602261069853">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="463" y="214" key="Vcs.Push.Dialog.v2" timestamp="1602521897936">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="463" y="214" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1601829409489" />
+    <state x="463" y="214" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1602521897936" />
     <state x="617" y="289" key="Vcs.Push.Dialog.v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602261069853" />
     <state x="93" y="93" width="1862" height="926" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601732689586">
       <screen x="0" y="0" width="2048" height="1112" />
@@ -439,15 +492,15 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="736" y="406" key="psd.add.jar.dependency.panel.dimension/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601780945603" />
-    <state x="511" y="192" key="run.anything.popup" timestamp="1602426359882">
+    <state x="511" y="192" key="run.anything.popup" timestamp="1602766641987">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="511" y="192" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1602426359882" />
+    <state x="511" y="192" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1602766641987" />
     <state x="681" y="259" key="run.anything.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601732646045" />
-    <state x="515" y="180" width="672" height="503" key="search.everywhere.popup" timestamp="1602429709765">
+    <state x="515" y="180" width="672" height="503" key="search.everywhere.popup" timestamp="1602769196076">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="515" y="180" width="672" height="503" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1602429709765" />
+    <state x="515" y="180" width="672" height="503" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1602769196076" />
     <state x="687" y="243" width="672" height="678" key="search.everywhere.popup/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602234098217" />
   </component>
 </project>

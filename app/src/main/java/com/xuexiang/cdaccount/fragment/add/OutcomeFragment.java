@@ -41,6 +41,7 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xui.widget.picker.widget.OptionsPickerView;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
 import com.xuexiang.xui.widget.picker.widget.builder.OptionsPickerBuilder;
@@ -77,7 +78,6 @@ public class OutcomeFragment extends BaseFragment {
 
     private TextView mTvAccount;
     private List<String> Accounts1Item = new ArrayList<>();
-    private List<List<String>> Accounts2Item = new ArrayList<>();
     private String mAccount;
     private ShadowImageView mBtnNewAccount;
 
@@ -86,7 +86,7 @@ public class OutcomeFragment extends BaseFragment {
     private String mMember;
     private ShadowImageView mBtnNewMember;
 
-    private EditText mEtRemark;
+    private MaterialEditText mEtRemark;
     private String mRemark;
 
 
@@ -183,7 +183,7 @@ public class OutcomeFragment extends BaseFragment {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
-        mTvDateTime.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + " " + String.format("%02d", hour) + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second));
+        mTvDateTime.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + " " + String.format("%02d", hour) + ":" + String.format("%02d", minute));
         mTvDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,6 +225,8 @@ public class OutcomeFragment extends BaseFragment {
                 mTvDialogItem2.setText("二级分类");
                 mEsDialog.setHint("选择已有分类或新建");
                 mEsDialog.setItems(options1Item);
+                mEsDialog.getEditText().setFilters(new InputFilter[]{new LengthFilter(10)});
+                mEtDialog.setFilters(new InputFilter[]{new LengthFilter(10)});
                 materialDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -232,7 +234,6 @@ public class OutcomeFragment extends BaseFragment {
                         mStrNewItem2 = mEtDialog.getText().toString();
                         mOption = mStrNewItem1 + "-" + mStrNewItem2;
                         mTvType.setText(mOption);
-                        mTvType.setBackgroundResource(R.drawable.bg_bottom_border);
 
                     }
                 });
@@ -326,6 +327,7 @@ public class OutcomeFragment extends BaseFragment {
 
         //记账属性——备注
         mEtRemark = findViewById(R.id.et_remark);
+        mEtRemark.setFilters(new InputFilter[]{new LengthFilter(12)});
         mEtRemark.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -373,10 +375,10 @@ public class OutcomeFragment extends BaseFragment {
                 @Override
                 public void onTimeSelected(Date date, View v) {
                     mTime = date;
-                    mTvDateTime.setText(DateUtils.date2String(mDate, DateUtils.yyyyMMdd.get()) + " " + DateUtils.date2String(mTime, DateUtils.HHmmss.get()));
+                    mTvDateTime.setText(DateUtils.date2String(mDate, DateUtils.yyyyMMdd.get()) + " " + DateUtils.date2String(mTime, DateUtils.HHmm.get()));
                 }
             })
-                    .setType(TimePickerType.TIME)
+                    .setType(false, false, false, true, true, false)     //只显示时分
                     .setTitleText("时间选择")
                     .setDate(calendar)
                     .build();
@@ -508,13 +510,13 @@ public class OutcomeFragment extends BaseFragment {
             int keep = mMax - (dest.length() - (dend - dstart));
 
             if (keep <= 0) {
-                XToastUtils.error("最多仅可输入10位（含小数点）");
+                XToastUtils.error("最多仅可输入"+mMax+"个字符");
                 return "";
             } else if (keep >= end - start) {
                 return null; // keep original
             } else {
                 keep += start;
-                XToastUtils.error("最多仅可输入10位（含小数点）");
+                XToastUtils.error("最多仅可输入"+mMax+"个字符");
                 if (Character.isHighSurrogate(source.charAt(keep - 1))) {
                     --keep;
                     if (keep == start) {

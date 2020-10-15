@@ -88,7 +88,7 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     private ShadowButton mBtnConfirm;
     private TabLayout mTlAdd;
     private ViewPager mVpAdd;
-
+    private Boolean mBlConfirm = false;     //标识变量
 
 
 
@@ -110,6 +110,7 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         mBtnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mBlConfirm = true;      //置为true，表示需要插入新数据
                 finish();
             }
         });
@@ -219,18 +220,18 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
 
     @Override
     public void InsertOutcome(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark) {
-        if(mVpAdd.getCurrentItem()==0)XToastUtils.toast("Outcome");
+        if(mBlConfirm && mVpAdd.getCurrentItem()==0)XToastUtils.toast("Outcome");
     }
 
     @Override
     public void InsertIncome(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark) {
-        if(mVpAdd.getCurrentItem()==1)XToastUtils.toast("Income");
+        if(mBlConfirm && mVpAdd.getCurrentItem()==1)XToastUtils.toast("Income");
 
     }
 
     @Override
     public void InsertTransfer(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark) {
-        if(mVpAdd.getCurrentItem()==2)XToastUtils.toast("Transfer");
+        if(mBlConfirm && mVpAdd.getCurrentItem()==2)XToastUtils.toast("Transfer");
 
     }
 }
