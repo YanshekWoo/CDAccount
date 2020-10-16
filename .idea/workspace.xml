@@ -12,9 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/IncomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/IncomeFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/OutcomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/OutcomeFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/TransferFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/TransferFragment.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -70,7 +68,7 @@
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-03T13:39:15.848Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../XUI-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -300,7 +298,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602773774269</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="#记账：数据鲁棒性初步">
+      <created>1602779883775</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1602779883775</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -327,7 +332,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="master" />
+                        <option value="dev_CH_v5" />
                       </list>
                     </value>
                   </entry>
@@ -344,6 +349,11 @@
         <entry key="Branch">
           <value>
             <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="dev_CH_v5" />
+                </option>
+              </RecentGroup>
               <RecentGroup>
                 <option name="FILTER_VALUES">
                   <option value="master" />
@@ -376,7 +386,8 @@
     <MESSAGE value="#新增：转账页面&#10;#新增：记账页面实现3个fragment分别控制&#10;#新增：利用回调函数传送数据&#10;#修改：记账页面UI调整" />
     <MESSAGE value="#优化：记账界面&#10;##全面加入字符长度限制" />
     <MESSAGE value="#修改：记账页面&#10;##金额未填写时将不能点击确定并弹错误" />
-    <option name="LAST_COMMIT_MESSAGE" value="#修改：记账页面&#10;##金额未填写时将不能点击确定并弹错误" />
+    <MESSAGE value="#记账：数据鲁棒性初步" />
+    <option name="LAST_COMMIT_MESSAGE" value="#记账：数据鲁棒性初步" />
   </component>
   <component name="WindowStateProjectService">
     <state x="617" y="215" key="#Notifications" timestamp="1601449384177">
@@ -428,14 +439,15 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="878" y="369" key="AndroidCreateXmlResourceDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602259712068" />
-    <state x="499" y="0" key="CommitChangelistDialog2" timestamp="1602773772812">
+    <state x="499" y="0" key="CommitChangelistDialog2" timestamp="1602779880822">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1602773772812" />
+    <state x="499" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1602779880822" />
     <state x="665" y="150" key="CommitChangelistDialog2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602261029203" />
-    <state x="93" y="93" width="1862" height="926" key="DiffContextDialog" timestamp="1601707321950">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="-6" y="0" width="781" height="830" key="DiffContextDialog" timestamp="1602817573451">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="-6" y="0" width="781" height="830" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1602817573451" />
     <state x="93" y="93" width="1862" height="926" key="DiffContextDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601707321950" />
     <state x="661" y="319" key="FileChooserDialogImpl" timestamp="1602726286625">
       <screen x="0" y="0" width="1536" height="824" />
