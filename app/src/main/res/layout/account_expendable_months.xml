@@ -76,6 +76,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/account_expendable_month_text_income"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="收入"
@@ -95,6 +96,7 @@
                     tools:ignore="SmallSp" />
 
                 <TextView
+                    android:id="@+id/account_expendable_month_text_outcome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="支出"
@@ -125,8 +127,9 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/month_indicator"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="end|center"
                 app:srcCompat="@drawable/icon_arrow_right_grey" />
 
         </LinearLayout>

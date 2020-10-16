@@ -92,14 +92,14 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
         });
 
         if(item.getRefresh()){
-            if(item.getYear()){
+//            if(item.getYear()){
                 expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
                 mSelectPosition = position;
-            }else {
-//            isSelected = position == mSelectPosition;
-                expandableLayout.setExpanded(false, true);
-                mSelectPosition = -1;
-            }
+//            }else {
+////            isSelected = position == mSelectPosition;
+//                expandableLayout.setExpanded(false, true);
+//                mSelectPosition = -1;
+//            }
         }
         else {
 //            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
@@ -133,7 +133,7 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
 
         holder.select(R.id.account_expendable_year, isSelected);
         holder.text(R.id.account_expendable_year_maintime,ResUtils.getResources().getString(R.string.item_example_number_year, position + 1));
-        holder.text(R.id.account_expendable_year_subtime,"0000");
+//        holder.text(R.id.account_expendable_year_subtime,"0000");
         holder.text(R.id.account_expendable_year_totalmoney,"000");
         holder.text(R.id.account_expendable_year_income,"00");
         holder.text(R.id.account_expendable_year_outcome,"0");
@@ -147,12 +147,46 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
             }
         });
 
+        //设置选择年的卡片样式
+        if(item.getYear() && !item.getMonth() && !item.getDay()){
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(20);
+            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(20);
+//            holder.getImageView(R.id.year_indicator).setMaxHeight(10);
+            holder.getTextView(R.id.account_expendable_year_subtime).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_year_income).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_year_outcome).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_year_text_income).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_year_text_outcome).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextColor(context.getResources().getColor(R.color.black));
+            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextColor(context.getResources().getColor(R.color.black));
+        }
 
+        //设置选择月的卡片样式
+        if(item.getYear() && item.getMonth() && !item.getDay()){
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(10);
+            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(10);
+//            holder.getImageView(R.id.year_indicator).setMaxHeight(10);
+            holder.getTextView(R.id.account_expendable_year_subtime).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_year_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_year_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_year_text_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_year_text_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextColor(context.getResources().getColor(R.color.grey));
+            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextColor(context.getResources().getColor(R.color.grey));
+        }
 
-//        if(item.getYear() && item.getMonth() && !item.getDay()){
-//            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(5);
-//            holder.getTextView(R.id.account_expendable_year_maintime).setTextColor(0xD2CACA);
-//        }
+        //设置选择天的卡片样式
+        if(item.getYear() && item.getMonth() && !item.getDay()){
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(10);
+            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(10);
+//            holder.getImageView(R.id.year_indicator).setMaxHeight(10);
+            holder.getTextView(R.id.account_expendable_year_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_year_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_year_text_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_year_text_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextColor(context.getResources().getColor(R.color.grey));
+            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextColor(context.getResources().getColor(R.color.grey));
+        }
 
     }
 
