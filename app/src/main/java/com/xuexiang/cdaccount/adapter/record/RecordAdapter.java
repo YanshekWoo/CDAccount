@@ -29,42 +29,88 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cxd.chatview.moudle.ChatView;
 import com.xuexiang.cdaccount.R;
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordViewHolder> {
+import java.util.List;
+
+public class RecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private String[] mDate,mMessage;
+    private List<String> mRecentDate, mRecentInfo;
+    private List<Integer> mRecentType;
 
-
-    public RecordAdapter(Context context, String[] Date, String[] Message){
-        this.mContext = context;
-        this.mMessage = Message;
-        this.mDate = Date;
+    public enum ItemType {
+        OUT,IN
     }
+
+    public RecordAdapter(Context context, List<String> Date, List<String> Info, List<Integer> Type){
+        this.mContext = context;
+        this.mRecentInfo = Info;
+        this.mRecentDate = Date;
+        this.mRecentType = Type;
+    }
+
     @NonNull
     @Override
-    public RecordAdapter.RecordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RecordViewHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_record,parent,false));
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == ItemType.OUT.ordinal()){
+            return new RecordViewHolder1(LayoutInflater.from(mContext).inflate(R.layout.layout_record_out,parent,false));
+        }else if(viewType == ItemType.IN.ordinal()){
+            return new RecordViewHolder2(LayoutInflater.from(mContext).inflate(R.layout.layout_record_in,parent,false));
+        }
+        return null;
+
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecordAdapter.RecordViewHolder holder, int position) {
-        String Date = mDate[position];
-        String Message = mMessage[position];
-        holder.time.setText(Date);
-        holder.message.setText(Message);
-//        holder.chatView.
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        String Date = mRecentDate.get(position);
+        String Message = mRecentInfo.get(position);
+        Boolean IsTimeHide = false;
+        if(position < mRecentDate.size()-2 && Date.equals(mRecentDate.get(position+1))){
+            IsTimeHide = true;
+        }
+
+        if (holder instanceof RecordViewHolder1) {
+            ((RecordViewHolder1) holder).time.setText(Date);
+            if(IsTimeHide){
+                ((RecordViewHolder1) holder).time.setHeight(0);
+            }
+            ((RecordViewHolder1) holder).message.setText(Message);
+        } else if (holder instanceof RecordViewHolder2) {
+            ((RecordViewHolder2) holder).time.setText(Date);
+            if(IsTimeHide){
+                ((RecordViewHolder2) holder).time.setHeight(0);
+            }
+            ((RecordViewHolder2) holder).message.setText(Message);        }
     }
 
     @Override
     public int getItemCount() {
-        return Math.min(mDate.length,20);       //至多展示20条数据
+        return mRecentDate.size();       //至多展示20条数据
     }
 
-    class RecordViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public int getItemViewType(int position) {
+        return (mRecentType.get(position));
+    }
+
+    public static class RecordViewHolder1 extends RecyclerView.ViewHolder{
         private TextView time,message;
         private ChatView chatView;
 
-        public RecordViewHolder(@NonNull View itemView) {
+        public RecordViewHolder1(@NonNull View itemView) {
+            super(itemView);
+            time = itemView.findViewById(R.id.tv_time);
+            message = itemView.findViewById(R.id.tv_record);
+            chatView = itemView.findViewById(R.id.chatview);
+        }
+    }
+
+    public static class RecordViewHolder2 extends RecyclerView.ViewHolder{
+        private TextView time,message;
+        private ChatView chatView;
+
+        public RecordViewHolder2(@NonNull View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.tv_time);
             message = itemView.findViewById(R.id.tv_record);

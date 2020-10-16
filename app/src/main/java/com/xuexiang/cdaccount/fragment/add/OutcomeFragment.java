@@ -25,6 +25,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -34,6 +35,7 @@ import androidx.annotation.NonNull;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
@@ -46,14 +48,12 @@ import com.xuexiang.xui.widget.picker.widget.OptionsPickerView;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
 import com.xuexiang.xui.widget.picker.widget.builder.OptionsPickerBuilder;
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
-import com.xuexiang.xui.widget.picker.widget.configure.TimePickerType;
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
 import com.xuexiang.xui.widget.spinner.editspinner.EditSpinner;
 import com.xuexiang.xutil.data.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -89,7 +89,7 @@ public class OutcomeFragment extends BaseFragment {
     private ShadowImageView mBtnNewMember;
 
     private MaterialEditText mEtRemark;
-    private String mRemark = null;
+    private String mRemark = "";
 
 
     private TextView mTvDialogItem1, mTvDialogItem2;
@@ -99,24 +99,33 @@ public class OutcomeFragment extends BaseFragment {
 
     private OutcomeMessage Outcome;
 
-    public interface OutcomeMessage{
+    private BillDao mDatabaseHelper;
+
+    public interface OutcomeMessage {
         void InsertOutcome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark);
+
         void getOutcomeAmount(double Amount);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        Outcome.InsertOutcome(mAmount, mStrYear, mStrMonth, mStrDay, mStrTime,mOption2,mAccount,null,mMember,mRemark);
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("---OutcomeFragment", "DestoryView");
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Outcome.InsertOutcome(mAmount, mStrYear, mStrMonth, mStrDay, mStrTime, mOption2, mAccount, null, mMember, mRemark);
+    }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
             Outcome = (OutcomeMessage) context;
-        }catch (ClassCastException e){
+        } catch (ClassCastException e) {
             throw new ClassCastException("Activity必须实现");
         }
     }
@@ -134,6 +143,8 @@ public class OutcomeFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+
+        mDatabaseHelper = new BillDao(getContext());
 
         //记账金额
 
@@ -164,14 +175,13 @@ public class OutcomeFragment extends BaseFragment {
                     XToastUtils.error("小数点后不超过两位");
                 }
                 if (!temp.equals("")) {
-                    mAmount = Double.parseDouble(temp);
+                    mAmount = Double.parseDouble(s.toString());
                 } else {
                     mAmount = -1;
                 }
                 Outcome.getOutcomeAmount(mAmount);
             }
         });
-
 
 
         //记账属性——时间
@@ -192,7 +202,7 @@ public class OutcomeFragment extends BaseFragment {
         mStrDay = String.valueOf(day);
         mStrTime = String.format("%02d", hour) + ":" + String.format("%02d", minute);
 
-        mTvDateTime.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + "  "+mStrTime );
+        mTvDateTime.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + "  " + mStrTime);
         mTvDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,7 +217,7 @@ public class OutcomeFragment extends BaseFragment {
         mTvType = findViewById(R.id.tv_type);
         mOption1 = options1Item.get(0);
         mOption2 = options2Item.get(0).get(0);
-        mOption = mOption1+'-'+mOption2;
+        mOption = mOption1 + '-' + mOption2;
         mTvType.setText(mOption);
         mTvType.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,10 +254,12 @@ public class OutcomeFragment extends BaseFragment {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mStrNewItem1 = mEsDialog.getText();
                         mStrNewItem2 = mEtDialog.getText().toString();
-                        //TODO:Insert_Category
+
                         mOption = mStrNewItem1 + "-" + mStrNewItem2;
                         mTvType.setText(mOption);
-
+                        //TODO:Insert_Category
+                        mDatabaseHelper.InsertCategory(mStrNewItem1, mStrNewItem2, 0);
+                        loadOptionData();
                     }
                 });
                 materialDialog.show();
@@ -285,7 +297,7 @@ public class OutcomeFragment extends BaseFragment {
                                                                       public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                                                       }
                                                                   })
-                                                          .inputRange(1,10)
+                                                          .inputRange(1, 10)
                                                           .positiveText("确定")
                                                           .negativeText("取消")
                                                           .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -294,6 +306,8 @@ public class OutcomeFragment extends BaseFragment {
                                                                   mAccount = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount.setText(mAccount);
                                                                   //TODO:insert_new_account
+                                                                  mDatabaseHelper.InsertAccount(mAccount);
+                                                                  loadAccountData();
                                                               }
                                                           })
                                                           .show();
@@ -331,7 +345,7 @@ public class OutcomeFragment extends BaseFragment {
                                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                     }
                                 })
-                        .inputRange(1,10)
+                        .inputRange(1, 10)
                         .positiveText("确定")
                         .negativeText("取消")
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -339,12 +353,17 @@ public class OutcomeFragment extends BaseFragment {
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 mMember = dialog.getInputEditText().getText().toString();
                                 mTvMember.setText(mMember);
-                                //TODO:insert new member
-                                if(mMember.equals(MembersItem.get(0))){
+
+
+                                if (mMember.equals(MembersItem.get(0))) {
                                     mTvMember.setTextColor(0xFF6E6E6E);
-                                }else{
-                                    mTvMember.setTextColor(0xFF000000 );
+                                } else {
+                                    mTvMember.setTextColor(0xFF000000);
                                 }
+                                //TODO:insert new member
+                                mDatabaseHelper.InsertMember(mMember);
+                                loadMemberData();
+
 
                             }
                         })
@@ -420,14 +439,17 @@ public class OutcomeFragment extends BaseFragment {
 
     //记账属性——分类
     private void loadOptionData() {
-        String[] str1 = {"餐饮", "交通", "购物"};
-        String[] str2_1 = {"早餐", "午餐", "晚餐"};
-        String[] str2_2 = {"公交", "火车", "飞机"};
-        String[] str2_3 = {"服饰", "生活", "数码"};
-        options1Item = Arrays.asList(str1);
-        options2Item.add(Arrays.asList(str2_1));
-        options2Item.add(Arrays.asList(str2_2));
-        options2Item.add(Arrays.asList(str2_3));
+//        String[] str1 = {"餐饮", "交通", "购物"};
+//        String[] str2_1 = {"早餐", "午餐", "晚餐"};
+//        String[] str2_2 = {"公交", "火车", "飞机"};
+//        String[] str2_3 = {"服饰", "生活", "数码"};
+
+//        options1Item = Arrays.asList(str1);
+//        options2Item.add(Arrays.asList(str2_1));
+//        options2Item.add(Arrays.asList(str2_2));
+//        options2Item.add(Arrays.asList(str2_3));
+        options1Item = mDatabaseHelper.QueryOutTopCategory();
+        options2Item = mDatabaseHelper.QueryOutSubCategory();
     }
 
     private void showOptionPickerView(boolean isDialog) {// 弹出选择器
@@ -462,8 +484,9 @@ public class OutcomeFragment extends BaseFragment {
 
     //记账属性——账户
     private void loadAccountData() {
-        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
-        Accounts1Item = Arrays.asList(str1);
+//        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
+//        Accounts1Item = Arrays.asList(str1);
+        Accounts1Item = mDatabaseHelper.QueryAccount();
     }
 
     private void showAccountPickerView(boolean isDialog) {// 弹出选择器
@@ -495,8 +518,9 @@ public class OutcomeFragment extends BaseFragment {
 
     //记账属性——成员
     private void loadMemberData() {
-        String[] str1 = {"无成员","本人", "配偶", "子女"};
-        MembersItem = Arrays.asList(str1);
+//        String[] str1 = {"无成员","本人", "配偶", "子女"};
+//        MembersItem = Arrays.asList(str1);
+        MembersItem = mDatabaseHelper.QueryMember();
     }
 
     private void showMemberPickerView(boolean isDialog) {// 弹出选择器
@@ -506,9 +530,9 @@ public class OutcomeFragment extends BaseFragment {
             //返回的分别是三个级别的选中位置
             mMember = MembersItem.get(member1);
             mTvMember.setText(mMember);
-            if(member1 == 0){
+            if (member1 == 0) {
                 mTvMember.setTextColor(this.getResources().getColor(R.color.app_color_theme_10));
-            }else{
+            } else {
                 mTvMember.setTextColor(this.getResources().getColor(R.color.black));
             }
 
@@ -534,7 +558,6 @@ public class OutcomeFragment extends BaseFragment {
     }
 
 
-
     /**
      * 限制最大长度
      */
@@ -549,13 +572,13 @@ public class OutcomeFragment extends BaseFragment {
             int keep = mMax - (dest.length() - (dend - dstart));
 
             if (keep <= 0) {
-                XToastUtils.error("最多仅可输入"+mMax+"个字符");
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
                 return "";
             } else if (keep >= end - start) {
                 return null; // keep original
             } else {
                 keep += start;
-                XToastUtils.error("最多仅可输入"+mMax+"个字符");
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
                 if (Character.isHighSurrogate(source.charAt(keep - 1))) {
                     --keep;
                     if (keep == start) {

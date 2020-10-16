@@ -3,27 +3,99 @@ package com.xuexiang.cdaccount.somethingDao.Dao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.xuexiang.cdaccount.somethingDao.DatabaseHelper;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
- * 收支明细Dao
+ * Bill账单
  */
 public class BillDao {
     private final DatabaseHelper mHelper;
     public BillDao(Context context) {
         mHelper = new DatabaseHelper(context);
     }
+    public int id_num = 0;
 
-    public void InsertBill(int id, int type, int subcategory, int account, int toaccount, int member, String year, String month, String day, String time, String remark, double money){//通过测试
+    public void test(){// 通过测试
+      /*  SQLiteDatabase db = mHelper.getWritableDatabase();
+        String sql = "select * from OutSubCategory";
+        Cursor cursor = db.rawQuery(sql,null);
+        while(cursor.moveToNext()){
+            String tmp = cursor.getString(cursor.getColumnIndex("OutSubCategory_Name"));
+            int tmp1 = cursor.getInt(cursor.getColumnIndex("OutSubCategory_ID"));
+            int tmp2 = cursor.getInt(cursor.getColumnIndex("OutSubCategory_Parent"));
+            Log.d("MainActivity!!!!!", "name: " +tmp);
+            Log.d("MainActivity!!!!!", "ID: " +tmp1 );
+            Log.d("MainActivity!!!!!", "Parent: " +tmp2);
+        }*/
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        String sql = "select * from Bill";
+        Cursor cursor = db.rawQuery(sql,null);
+        while(cursor.moveToNext()){
+            int sub = cursor.getInt(cursor.getColumnIndex("Bill_SubCategory"));
+            int acc = cursor.getInt(cursor.getColumnIndex("Bill_Account"));
+            int mem = cursor.getInt(cursor.getColumnIndex("Bill_Member"));
+            String time = cursor.getString(cursor.getColumnIndex("time"));
+            int money = cursor.getInt(cursor.getColumnIndex("Bill_Money"));
+            String rem = cursor.getString(cursor.getColumnIndex("Bill_Remark"));
+          //  int tmp2 = cursor.getInt(cursor.getColumnIndex("OutSubCategory_Parent"));
+            Log.d("MainActivity!!!!!", "sub: " +sub);
+            Log.d("MainActivity!!!!!", "account: "+acc );
+            Log.d("MainActivity!!!!!", "member: " +mem);
+            Log.d("MainActivity!!!!!", "time: " +time);
+            Log.d("MainActivity!!!!!", "money: " +money);
+            Log.d("MainActivity!!!!!", "remark: " +rem);
+          //  Log.d("MainActivity!!!!!", "Parent: " +tmp2);
+        }
+       // db.close();
+    }
+
+    public void insertBill(int type, int subcategory, int account, int toaccount, int member, String year, String month, String day, String time, String remark, double money){//通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "insert into Bill(Bill_ID, Bill_TYPE, Bill_SubCategory, Bill_Account, Bill_toAccount, Bill_Member, year, month, day, time, Bill_Remark, Bill_Money) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-        db.execSQL(sql, new Object[]{id, type, subcategory, account, toaccount, member, year, month, day, time, remark, money});
+        db.execSQL(sql, new Object[]{id_num, type, subcategory, account, toaccount, member, year, month, day, time, remark, money});
+        id_num++;
         db.close();
+    }
+
+    public void InsertBill(int type, String subcategory, String account, String toaccount, String member, String year, String month, String day, String time, String remark, double money){
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        int sub = 0, acc = 0, toa = 0, mem = 0;
+        if(type == 0){
+            String sql = "select * from OutSubCategory where OutSubCategory_Name = '"+subcategory+"'";
+            Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext())
+                sub = cursor.getInt(cursor.getColumnIndex("OutSubCategory_ID"));
+        }
+        else{
+            String sql = "select * from InSubCategory where InSubCategory_Name = '"+subcategory+"'";
+            Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext())
+                sub = cursor.getInt(cursor.getColumnIndex("InSubCategory_ID"));
+        }
+        String sql = "select * from Account where Account_Name = '"+account+"'";
+        Cursor cursor = db.rawQuery(sql,null);
+        while (cursor.moveToNext())
+            acc = cursor.getInt(cursor.getColumnIndex("Account_ID"));
+
+        sql = "select * from Account where Account_Name = '"+toaccount+"'";
+        cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext())
+            toa = cursor.getInt(cursor.getColumnIndex("Account_ID"));
+
+        sql = "select * from Member where Member_Name = '"+member+"'";
+        cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext())
+            mem = cursor.getInt(cursor.getColumnIndex("Member_ID"));
+        db.close();
+        insertBill(type, sub, acc, toa, mem, year, month, day, time, remark, money);
     }
 
     public void InsertCategory(String Top, String sub, int type){   //通过测试
@@ -67,14 +139,14 @@ public class BillDao {
             Cursor cursor = db.query("InTopCategory",null,null,null,null,null,null);
             int cnt = 0;
             while (cursor.moveToNext()){
-                cnt = cursor.getInt(cursor.getColumnIndex("OutTopCategory_ID"));
+                cnt = cursor.getInt(cursor.getColumnIndex("InTopCategory_ID"));
                 cnt++;
             }
 
             cursor = db.query("InSubCategory",null,null,null,null,null,null);
             int cnt1 = 0;
             while (cursor.moveToNext()){
-                cnt1 = cursor.getInt(cursor.getColumnIndex("OutSubCategory_ID"));
+                cnt1 = cursor.getInt(cursor.getColumnIndex("InSubCategory_ID"));
                 cnt1++;
             }
 
@@ -82,17 +154,17 @@ public class BillDao {
             cursor = db.rawQuery(sql,null);
             int tmp = -1;
             while (cursor.moveToNext()){
-                tmp = cursor.getInt(cursor.getColumnIndex("OutTopCategory_ID"));
+                tmp = cursor.getInt(cursor.getColumnIndex("InTopCategory_ID"));
             }
             if(tmp == -1)  //没有找到一级目录
             {
                 sql = "insert into InTopCategory(InTopCategory_Id, InTopCategory_name) values(?,?)";
                 db.execSQL(sql, new Object[] {cnt, Top});
 
-                sql = "insert into InSubCategory(OutSubCategory_Id, InSubCategory_Parent,InSubCategory_name) values(?,?,?)";
+                sql = "insert into InSubCategory(InSubCategory_Id, InSubCategory_Parent,InSubCategory_name) values(?,?,?)";
                 db.execSQL(sql, new Object[] {cnt1, cnt, sub});
             }else{    //找到一级目录，tmp是标号
-                sql = "insert into InSubCategory(OutSubCategory_Id, InSubCategory_Parent, InSubCategory_name) values(?,?,?)";
+                sql = "insert into InSubCategory(InSubCategory_Id, InSubCategory_Parent, InSubCategory_name) values(?,?,?)";
                 db.execSQL(sql, new Object[] {cnt1, tmp, sub});
             }
         }
@@ -123,20 +195,6 @@ public class BillDao {
         db.execSQL(sql, new Object[] {tmp, name});
         db.close();
     }
-    public void test(){// 通过测试
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-    /*    Cursor cursor = db.query("Bill", null, null,null,null,null,null);
-        if(cursor.moveToNext()){
-            do{
-                String name = cursor.getString(cursor.getColumnIndex("month"));
-                int num = cursor.getInt(cursor.getColumnIndex("Bill_SubCategory"));
-                Log.d("MainActivity", "name: " +name);
-                Log.d("MainActivity", "ID: " +num);
-
-            }while (cursor.moveToNext());
-        }*/
-    }
-
 
     public List<String> QueryMember(){  //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -194,9 +252,9 @@ public class BillDao {
         return re;
     }
 
-    public List<String> GetRecentDate(){  //未测试
+    public List<String> GetRecentDate(){  //通过测试
         SQLiteDatabase db = mHelper.getReadableDatabase();
-        String sql = "select * from Bill order by concat(year, month, day, time) DESC";
+        String sql = "select * from Bill order by year || month || day || time DESC";
         Cursor cursor = db.rawQuery(sql, null);
         List<String> re = new LinkedList<String>();
         int cnt = 0;
@@ -207,31 +265,67 @@ public class BillDao {
             String M = cursor.getString(cursor.getColumnIndex("month"));
             String D = cursor.getString(cursor.getColumnIndex("day"));
             String T = cursor.getString(cursor.getColumnIndex("time"));
-            String ans = Y+M+D+T;
+            String ans = Y+"-"+M+"-"+D+" "+T;
             re.add(ans);
         }
         return re;
     }
 
-    public List<String> GetRecentInformation(){   //未测试
+    public List<String> GetRecentInformation(){   //通过测试
         SQLiteDatabase db = mHelper.getReadableDatabase();
-        String sql = "select * from Bill order by concat(year, month, day, time) DESC";
+        String sql = "select * from Bill order by year || month || day || time DESC";
         Cursor cursor = db.rawQuery(sql, null);
         List<String> re = new LinkedList<String>();
         int cnt = 0;
         while(cursor.moveToNext() && cnt < 20){
             if(cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) == 2) continue;
             cnt++;
-            String IO = ""+cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) + " ";
-            String txt = ""+cursor.getString(cursor.getColumnIndex("Bill_SubCategory"))+" ";
-            String Mon = ""+cursor.getDouble(cursor.getColumnIndex("Money"));
-            String ans = IO+txt+Mon;
+            String IO = cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) == 0 ? ("支出" + "："):("收入" + "：");
+            int txt = cursor.getInt(cursor.getColumnIndex("Bill_SubCategory"));
+            String nametmp = "";
+            if(cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) == 0)
+            {
+                sql = "select * from OutSubCategory where OutSubCategory_ID ="+txt+"";
+                Cursor cursor1 = db.rawQuery(sql, null);
+                while(cursor1.moveToNext())
+                {
+                    nametmp = cursor1.getString(cursor1.getColumnIndex("OutSubCategory_Name"));
+                }
+            }
+            else{
+                sql = "select * from InSubCategory where InSubCategory_ID ="+txt+"";
+                Cursor cursor1 = db.rawQuery(sql, null);
+                while(cursor1.moveToNext())
+                {
+                    nametmp = cursor1.getString(cursor1.getColumnIndex("InSubCategory_Name"));
+                }
+            }
+            String Mon = String.valueOf(cursor.getDouble(cursor.getColumnIndex("Bill_Money")));
+            String ans = IO+nametmp+Mon+"元";
             re.add(ans);
         }
         return re;
     }
 
-    public List<String> QueryOutTopCategory(){  //未测试
+    public List<Integer> GetRecentIO(){
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String sql = "select * from Bill order by year || month || day || time DESC";
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Integer> re = new LinkedList<Integer>();
+        int cnt = 0;
+        while(cursor.moveToNext() && cnt < 20){
+            if(cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) == 2) continue;
+            cnt++;
+            Integer IO = cursor.getInt(cursor.getColumnIndex("Bill_TYPE"));
+//            String txt = cursor.getString(cursor.getColumnIndex("Bill_SubCategory"))+" ";
+//            String Mon = String.valueOf(cursor.getDouble(cursor.getColumnIndex("Bill_Money")));
+//            String ans = IO+txt+Mon;
+            re.add(IO);
+        }
+        return re;
+    }
+
+    public List<String> QueryOutTopCategory(){  //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select OutTopCategory_Name from OutTopCategory";
         Cursor cursor = db.rawQuery(sql,null);
@@ -244,27 +338,27 @@ public class BillDao {
         return re;
     }
 
-    public List<List<String>> QueryOutSubCategory(){   //未测试
+    public List<List<String>> QueryOutSubCategory(){   //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        SQLiteDatabase db1 = mHelper.getWritableDatabase();
-        String sql = "select OutTopCategory_Name from OutTopCategory";
+        String sql = "select * from OutTopCategory";
         Cursor cursor = db.rawQuery(sql,null);
         List<List<String>> re = new LinkedList<List<String>>();
 
-        while(cursor.moveToNext()){
+       while(cursor.moveToNext()){
             int tmp1 = cursor.getInt(cursor.getColumnIndex("OutTopCategory_ID"));
-            String sql1 = "selet OutSubCategory_Name from OutSubCategory where OutSubCategory_Parent = "+tmp1+"";
-            Cursor cursor1 = db1.rawQuery(sql1, null);
+            String sql1 = "select OutSubCategory_Name from OutSubCategory where OutSubCategory_Parent = "+tmp1+"";
+            Cursor cursor1 = db.rawQuery(sql1, null);
             List<String> tmp = new LinkedList<String>();
-            while (cursor1.moveToNext()){
+           while (cursor1.moveToNext()){
                 String tmp3 = cursor1.getString(cursor1.getColumnIndex("OutSubCategory_Name"));
                 tmp.add(tmp3);
             }
             re.add(tmp);
-        }
+       }
+        db.close();
         return re;
     }
-    public List<String> QueryInTopCategory(){  //未测试
+    public List<String> QueryInTopCategory(){  //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select InTopCategory_Name from InTopCategory";
         Cursor cursor = db.rawQuery(sql,null);
@@ -277,22 +371,222 @@ public class BillDao {
         return re;
     }
 
-    public List<List<String>> QueryInSubCategory(){   //未测试
+    public List<List<String>> QueryInSubCategory(){   //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        SQLiteDatabase db1 = mHelper.getWritableDatabase();
-        String sql = "select InTopCategory_Name from InTopCategory";
+        String sql = "select * from InTopCategory";
         Cursor cursor = db.rawQuery(sql,null);
         List<List<String>> re = new LinkedList<List<String>>();
 
         while(cursor.moveToNext()){
-            int tmp1 = cursor.getInt(cursor.getColumnIndex("OutTopCategory_ID"));
-            String sql1 = "selet InSubCategory_Name from InSubCategory where InSubCategory_Parent = "+tmp1+"";
-            Cursor cursor1 = db1.rawQuery(sql1, null);
+            int tmp1 = cursor.getInt(cursor.getColumnIndex("InTopCategory_ID"));
+            String sql1 = "select InSubCategory_Name from InSubCategory where InSubCategory_Parent = "+tmp1+"";
+            Cursor cursor1 = db.rawQuery(sql1, null);
             List<String> tmp = new LinkedList<String>();
             while (cursor1.moveToNext()){
                 String tmp3 = cursor1.getString(cursor1.getColumnIndex("InSubCategory_Name"));
                 tmp.add(tmp3);
             }
+            re.add(tmp);
+        }
+        db.close();
+        return re;
+    }
+
+    public class OutTopCategory_Sum{
+        private String OutTopCategory_Name;
+        private double sum;
+
+        public OutTopCategory_Sum(String name, double s){
+            this.OutTopCategory_Name = name;
+            this.sum = s;
+        }
+    }
+
+    public List<OutTopCategory_Sum> GetDateByOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){
+        String st = start_year+start_month+start_day;
+        String ed = end_year+end_month+end_day;
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+
+        Map<Integer, Integer> mp1 = new HashMap<Integer, Integer>();
+        String sql2 = "select * from OutSubCategory";
+        Cursor cursor2 = db.rawQuery(sql2, null);
+        while(cursor2.moveToNext()){
+            mp1.put(cursor2.getInt(cursor2.getColumnIndex("OutSubCategory_ID")),cursor2.getInt(cursor2.getColumnIndex("OutSubCategory_Parent")));
+        }
+
+        Map<Integer, String> mp = new HashMap<Integer, String>();
+        String sql1 = "select * from OutTopCategory";
+        Cursor cursor1 = db.rawQuery(sql1, null);
+        while(cursor1.moveToNext()){
+            mp.put(cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutTopCategory_Name")));
+        }
+
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by Bill_OutSubCategory";
+        Cursor cursor = db.rawQuery(sql, null);
+        List<OutTopCategory_Sum> re = new LinkedList<OutTopCategory_Sum>();
+
+        while(cursor.moveToNext()){
+            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_OutSubCategory")));
+            Integer tmp3 =  new Integer(mp1.get(tmp1));
+            String tmp2 = mp.get(tmp3);
+            OutTopCategory_Sum tmp = new OutTopCategory_Sum(tmp2,cursor.getDouble(cursor.getColumnIndex("nums")));
+            re.add(tmp);
+        }
+        return re;
+    }
+
+    public class OutSubCategory_Sum{
+        private String OutSubCategory_Name;
+        private double sum;
+
+        public OutSubCategory_Sum(String name, double s){
+            this.OutSubCategory_Name = name;
+            this.sum = s;
+        }
+    }
+
+    public List<OutSubCategory_Sum> GetDateByOutSubCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){
+        String st = start_year+start_month+start_day;
+        String ed = end_year+end_month+end_day;
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+
+        Map<Integer, String> mp = new HashMap<Integer, String>();
+        String sql1 = "select * from OutSubCategory";
+        Cursor cursor1 = db.rawQuery(sql1, null);
+        while(cursor1.moveToNext()){
+            mp.put(cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutTopCategory_Name")));
+        }
+
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by Bill_SubCategory";
+        Cursor cursor = db.rawQuery(sql, null);
+        List<OutSubCategory_Sum> re = new LinkedList<OutSubCategory_Sum>();
+
+        while(cursor.moveToNext()){
+            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_SubCategory")));
+            OutSubCategory_Sum tmp = new OutSubCategory_Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
+            re.add(tmp);
+        }
+        return re;
+    }
+
+    public class Member_Sum{
+        private String Member_Name;
+        private double sum;
+
+        public Member_Sum(String name, double s){
+            this.Member_Name = name;
+            this.sum = s;
+        }
+    }
+
+    public List<Member_Sum> GetDateByMember(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){
+        String st = start_year+start_month+start_day;
+        String ed = end_year+end_month+end_day;
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+
+        Map<Integer, String> mp = new HashMap<Integer, String>();
+        String sql1 = "select * from Memeber";
+        Cursor cursor1 = db.rawQuery(sql1, null);
+        while(cursor1.moveToNext()){
+            mp.put(cursor1.getInt(cursor1.getColumnIndex("Member_ID")),cursor1.getString(cursor1.getColumnIndex("Member_Name")));
+        }
+
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by Bill_Member";
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Member_Sum> re = new LinkedList<Member_Sum>();
+
+        while(cursor.moveToNext()){
+            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_Member")));
+            Member_Sum tmp = new Member_Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
+            re.add(tmp);
+        }
+        return re;
+    }
+
+    public class Account_Sum{
+        private String Account_Name;
+        private double sum;
+
+        public Account_Sum(String name, double s){
+            this.Account_Name = name;
+            this.sum = s;
+        }
+    }
+
+    public List<Account_Sum> GetDateByAccount(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){
+        String st = start_year+start_month+start_day;
+        String ed = end_year+end_month+end_day;
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+
+        Map<Integer, String> mp = new HashMap<Integer, String>();
+        String sql1 = "select * from Account";
+        Cursor cursor1 = db.rawQuery(sql1, null);
+        while(cursor1.moveToNext()){
+            mp.put(cursor1.getInt(cursor1.getColumnIndex("Account_ID")),cursor1.getString(cursor1.getColumnIndex("Account_Name")));
+        }
+
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by Bill_Account";
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Account_Sum> re = new LinkedList<Account_Sum>();
+
+        while(cursor.moveToNext()){
+            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_Account")));
+            Account_Sum tmp = new Account_Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
+            re.add(tmp);
+        }
+        return re;
+    }
+
+    public class Date_Sum{
+        private String date;
+        private double sum;
+
+        public Date_Sum(String name, double s){
+            this.date = name;
+            this.sum = s;
+        }
+    }
+
+    public List<Date_Sum> GetSumByDate(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){ //按天求和
+        String st = start_year+start_month+start_day;
+        String ed = end_year+end_month+end_day;
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+
+        String sql = "select concat(year,month,day) as date, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by date";
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Date_Sum> re = new LinkedList<Date_Sum>();
+
+        while(cursor.moveToNext()){
+            Date_Sum tmp = new Date_Sum(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
+            re.add(tmp);
+        }
+        return re;
+    }
+
+    public List<Date_Sum> GetSumByDateAndOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day, String category){
+        String st = start_year+start_month+start_day;
+        String ed = end_year+end_month+end_day;
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+
+        Map<String, Integer> mpTop = new HashMap<String, Integer>();
+        String sql1 = "select * from OutTopCategory where OutTopCategory_Name = "+category+"";
+        Cursor cursor1 = db.rawQuery(sql1, null);
+        int id_parent = cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID"));
+
+        Map<Integer, Integer> mpSub = new HashMap<Integer, Integer>();
+        String sql2 = "select * from OutSubCategory";
+        Cursor cursor2 = db.rawQuery(sql2, null);
+        while (cursor2.moveToNext()){
+            mpSub.put(cursor2.getInt(cursor1.getColumnIndex("OutSubCategory_Parent")), cursor2.getInt(cursor1.getColumnIndex("OutSubCategory_ID")));
+        }
+
+        int top = mpSub.get(id_parent);
+        String sql = "select concat(year,month,day) as date, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' AND id = "+top+" group by date";
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Date_Sum> re = new LinkedList<Date_Sum>();
+
+        while(cursor.moveToNext()){
+            Date_Sum tmp = new Date_Sum(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;

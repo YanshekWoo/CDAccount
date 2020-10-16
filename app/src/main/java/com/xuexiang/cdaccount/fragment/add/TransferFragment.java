@@ -33,6 +33,7 @@ import androidx.annotation.NonNull;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
@@ -87,7 +88,7 @@ public class TransferFragment extends BaseFragment {
     private ShadowImageView mBtnNewMember;
 
     private MaterialEditText mEtRemark;
-    private String mRemark = null;
+    private String mRemark = "";
 
 
     private TextView mTvDialogItem1, mTvDialogItem2;
@@ -96,6 +97,8 @@ public class TransferFragment extends BaseFragment {
     private String mStrNewItem1, mStrNewItem2;
 
     private TransferMessage Transfer;
+
+    private BillDao mDatabaseHelper;
 
 
     public interface TransferMessage{
@@ -106,8 +109,8 @@ public class TransferFragment extends BaseFragment {
 
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onPause() {
+        super.onPause();
         Transfer.InsertTransfer(mAmount, mStrYear, mStrMonth, mStrDay, mStrTime,null,mAccount1,mAccount2,mMember,mRemark);
 
     }
@@ -133,6 +136,9 @@ public class TransferFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+
+        mDatabaseHelper = new BillDao(getContext());
+
 
         //记账金额
 
@@ -162,7 +168,7 @@ public class TransferFragment extends BaseFragment {
                     XToastUtils.error("小数点后不超过两位");
                 }
                 if (!temp.equals("")) {
-                    mAmount = Double.parseDouble(temp);
+                    mAmount = Double.parseDouble(s.toString());
                 } else {
                     mAmount = -1;
                 }
@@ -254,7 +260,7 @@ public class TransferFragment extends BaseFragment {
         mTvAccount1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAccountPickerView(false);
+                showAccountPickerView1(false);
 
             }
         });
@@ -284,7 +290,8 @@ public class TransferFragment extends BaseFragment {
                                                                   mAccount1 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount1.setText(mAccount1);
                                                                   //TODO:insert_new_account
-
+                                                                  mDatabaseHelper.InsertAccount(mAccount1);
+                                                                  loadAccountData();
                                                               }
                                                           })
                                                           .show();
@@ -300,7 +307,7 @@ public class TransferFragment extends BaseFragment {
         mTvAccount2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAccountPickerView(false);
+                showAccountPickerView2(false);
 
             }
         });
@@ -330,6 +337,8 @@ public class TransferFragment extends BaseFragment {
                                                                   mAccount2 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount2.setText(mAccount2);
                                                                   //TODO:insert_new_account
+                                                                  mDatabaseHelper.InsertAccount(mAccount2);
+                                                                  loadAccountData();
 
                                                               }
                                                           })
@@ -376,12 +385,16 @@ public class TransferFragment extends BaseFragment {
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 mMember = dialog.getInputEditText().getText().toString();
                                 mTvMember.setText(mMember);
-                                //TODO:insert new member
+
                                 if(mMember.equals(MembersItem.get(0))){
                                     mTvMember.setTextColor(0xFF6E6E6E);
                                 }else{
                                     mTvMember.setTextColor(0xFF000000 );
                                 }
+                                //TODO:insert new member
+                                mDatabaseHelper.InsertMember(mMember);
+                                loadMemberData();
+
                             }
                         })
                         .show();
@@ -497,8 +510,10 @@ public class TransferFragment extends BaseFragment {
 
     //记账属性——账户1
     private void loadAccountData() {                        //仅重复一次
-        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
-        Accounts1Item = Arrays.asList(str1);
+//        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
+//        Accounts1Item = Arrays.asList(str1);
+        Accounts1Item = mDatabaseHelper.QueryAccount();
+
     }
 
     private void showAccountPickerView1(boolean isDialog) {// 弹出选择器
@@ -530,7 +545,7 @@ public class TransferFragment extends BaseFragment {
 
     //记账属性——账户2
 
-    private void showAccountPickerView(boolean isDialog) {// 弹出选择器
+    private void showAccountPickerView2(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {0};
 
         OptionsPickerView pvOptions = new OptionsPickerBuilder(getContext(), (v, accounts1, accounts2, accounts3) -> {
@@ -559,8 +574,10 @@ public class TransferFragment extends BaseFragment {
 
     //记账属性——成员
     private void loadMemberData() {
-        String[] str1 = {"无成员","本人", "配偶", "子女"};
-        MembersItem = Arrays.asList(str1);
+//        String[] str1 = {"无成员","本人", "配偶", "子女"};
+//        MembersItem = Arrays.asList(str1);
+        MembersItem = mDatabaseHelper.QueryMember();
+
     }
 
     private void showMemberPickerView(boolean isDialog) {// 弹出选择器
