@@ -36,6 +36,7 @@ import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.layout.ExpandableLayout;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 可伸缩布局适配器
@@ -88,14 +89,31 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
             }
         });
 
-
+        if(t.getRefresh()){
+//            if(t.getMonth()){
+//                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
+                mSelectPosition = position;
+//                t.addRefresh(false);
+//            }else {
+////            isSelected = position == mSelectPosition;
+////                XToastUtils.toast("点击了:");
+//                expandableLayout.setExpanded(false, true);
+//                mSelectPosition = -1;
+//            }
+        }
+        else {
+//            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+            isSelected = position == mSelectPosition;         //false
+            expandableLayout.setExpanded(isSelected, true);
+        }
 
 //        boolean isSelected = position == mSelectPosition;
 //        expandableLayout.setExpanded(isSelected, false);
         
         RecyclerView recyclerView = holder.findViewById(R.id.month_expand_recycler_view);
         WidgetUtils.initRecyclerView(recyclerView);
-        recyclerView.setAdapter(new ExpandableDayAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
+        recyclerView.setAdapter(new ExpandableDayAdapter(context, recyclerView, DemoDataProvider.getDemoData1(),t));
 
 
         holder.select(R.id.account_expendable_month, isSelected);
@@ -114,22 +132,46 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
             }
         });
 
-        if(t.getRefresh()){
-            if(t.getMonth()){
-//                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
-                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
-                mSelectPosition = position;
-                t.addRefresh(false);
-            }else {
-//            isSelected = position == mSelectPosition;
-                expandableLayout.setExpanded(false, true);
-                mSelectPosition = -1;
-            }
+        //设置选择年的卡片样式
+        if(t.getYear() && !t.getMonth() && !t.getDay()){
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextSize(10);
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextSize(10);
+//            holder.getImageView(R.id.month_indicator).setMaxHeight(10);
+            holder.getTextView(R.id.account_expendable_month_subtime).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_text_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_text_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextColor(context.getResources().getColor(R.color.grey));
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextColor(context.getResources().getColor(R.color.grey));
         }
-        else {
-            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
-            isSelected = position == mSelectPosition;         //false
-            expandableLayout.setExpanded(isSelected, true);
+
+        //设置选择月的卡片样式
+        if(t.getYear() && t.getMonth() && !t.getDay()){
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextSize(20);
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextSize(20);
+//            holder.getImageView(R.id.month_indicator).setMaxHeight(10);
+            holder.getTextView(R.id.account_expendable_month_subtime).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_income).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_outcome).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_text_income).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_text_outcome).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextColor(context.getResources().getColor(R.color.black));
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextColor(context.getResources().getColor(R.color.black));
+        }
+
+        //设置选择天的卡片样式
+        if(t.getYear() && t.getMonth() && t.getDay()){
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextSize(10);
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextSize(10);
+//            holder.getImageView(R.id.month_indicator).setMaxHeight(10);
+            holder.getTextView(R.id.account_expendable_month_subtime).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_text_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_text_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextColor(context.getResources().getColor(R.color.grey));
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextColor(context.getResources().getColor(R.color.grey));
         }
     }
 

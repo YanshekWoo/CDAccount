@@ -2,13 +2,13 @@ package com.xuexiang.cdaccount.adapter;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class TestItem {
-    private boolean myear,mmonth,mday;
+    private boolean myear = true, mmonth = false, mday = false;
     private boolean mrefresh;
 
     public TestItem(){
-
     }
 
     public void addYear(boolean year) {
@@ -46,4 +46,14 @@ public class TestItem {
         return Arrays.asList("1", "2", "3", "4", "5");
 //        return Arrays.asList("1", "2", "3");
     }
+
+//    public List<String> getMonth(int year){
+//
+//    }
+//
+//    public List<String> getDay (int year, int month){
+//
+//    }
+//
+//    public
 }

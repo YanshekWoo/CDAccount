@@ -23,7 +23,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/account_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         <TextView
             android:id="@+id/tv_date"
             style="@style/TextStyle.Content"
-            android:text="日期"
+            android:text="shijain "
             android:layout_gravity="start"
             android:layout_marginStart="5dp"
             android:padding="16dp" />
@@ -64,6 +64,6 @@
             android:padding="16dp"/>
 
 
-    </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>

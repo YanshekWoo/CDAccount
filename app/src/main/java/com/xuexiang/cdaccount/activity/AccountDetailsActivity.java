@@ -66,7 +66,7 @@ import butterknife.BindView;
 public class AccountDetailsActivity extends BaseActivity {
 
 
-    private String[] mHeaders = {"年", "类别", "成员", "账户","测试"};
+    private String[] mHeaders = {"年", "类别", "成员", "账户"};
     private List<View> mPopupViews = new ArrayList<>();
 
 //    private ListDropDownAdapter mCategoryAdapter;
@@ -187,9 +187,8 @@ public class AccountDetailsActivity extends BaseActivity {
         refreshLayout.setOnRefreshListener(refreshLayout12 -> refreshLayout12.getLayout().postDelayed(() -> {
 //            datas = DemoDataProvider.getDemoData();
 //            TestItem t = new TestItem(0,true);
-            t.addYear(true);
-            t.addMonth(false);
-            t.addDay(false);
+//            t.addMonth(false);
+//            t.addDay(false);
             t.addRefresh(true);
             List<TestItem> datas = new ArrayList<>();
             datas.add(t);
@@ -207,7 +206,7 @@ public class AccountDetailsActivity extends BaseActivity {
 //                adapter.loadMore(DemoDataProvider.getDemoData());
 //                datas = DemoDataProvider.getDemoData();
 //                TestItem t2 = new TestItem(1,false);
-                t.addRefresh(true);
+                t.addRefresh(false);
                 List<TestItem> datas2 = new ArrayList<>();
                 datas2.add(t);
                 adapter.loadMore(datas2);
@@ -306,7 +305,6 @@ public class AccountDetailsActivity extends BaseActivity {
         mPopupViews.add(categoryListView);
         mPopupViews.add(memberView);
         mPopupViews.add(accoutView);
-        mPopupViews.add(categoryListView);
 
         //add item click event
         timeView.setOnItemClickListener((parent, view, position, id) -> {
