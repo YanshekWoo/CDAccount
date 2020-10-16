@@ -60,7 +60,7 @@ public class ExpandableListAdapter extends BaseRecyclerAdapter<String> {
      * @return
      */
     @Override
-    protected int getItemLayoutId(int viewType) { return R.layout.account_expendable_list_item; }
+    protected int getItemLayoutId(int viewType) { return R.layout.account_expendable_years; }
 
     /**
      * 绑定数据
@@ -71,8 +71,8 @@ public class ExpandableListAdapter extends BaseRecyclerAdapter<String> {
      */
     @Override
     protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-        ExpandableLayout expandableLayout = holder.findViewById(R.id.expandable_layout);
-        AppCompatImageView ivIndicator = holder.findViewById(R.id.iv_indicator);
+        ExpandableLayout expandableLayout = holder.findViewById(R.id.expandable_year_layout);
+        AppCompatImageView ivIndicator = holder.findViewById(R.id.year_indicator);
         expandableLayout.setInterpolator(new OvershootInterpolator());
         expandableLayout.setOnExpansionChangedListener((expansion, state) -> {
             if (mRecyclerView != null && state == ExpandableLayout.State.EXPANDING) {
@@ -86,15 +86,18 @@ public class ExpandableListAdapter extends BaseRecyclerAdapter<String> {
         boolean isSelected = position == mSelectPosition;
         expandableLayout.setExpanded(isSelected, false);
         
-        RecyclerView recyclerView = holder.findViewById(R.id.expand_recycler_view);
+        RecyclerView recyclerView = holder.findViewById(R.id.year_expand_recycler_view);
         WidgetUtils.initRecyclerView(recyclerView);
-        recyclerView.setAdapter(new ExpandableItemAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
+        //recyclerView.setAdapter(new ExpandableItemAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
 
-        holder.select(R.id.fl_title, isSelected);
-        holder.text(R.id.tv_date, ResUtils.getResources().getString(R.string.item_example_number_month, position + 1));
-        holder.text(R.id.tv_money,"000");
+        holder.select(R.id.account_expendable_year, isSelected);
+        holder.text(R.id.account_expendable_year_maintime,ResUtils.getResources().getString(R.string.item_example_number_month, position + 1));
+        holder.text(R.id.account_expendable_year_subtime,"0000");
+        holder.text(R.id.account_expendable_year_totalmoney,"000");
+        holder.text(R.id.account_expendable_year_income,"00");
+        holder.text(R.id.account_expendable_year_outcome,"0");
         //holder.text(R.id.tv_content, ResUtils.getResources().getString(R.string.item_example_number_abstract, position + 1));
-        holder.click(R.id.fl_title, new View.OnClickListener() {
+        holder.click(R.id.account_expendable_year, new View.OnClickListener() {
             @SingleClick
             @Override
             public void onClick(View v) {
@@ -106,8 +109,8 @@ public class ExpandableListAdapter extends BaseRecyclerAdapter<String> {
     private void onClickItem(View view, final ExpandableLayout expandableLayout, final int position) {
         RecyclerViewHolder holder = (RecyclerViewHolder) mRecyclerView.findViewHolderForAdapterPosition(mSelectPosition);
         if (holder != null) {
-            holder.select(R.id.fl_title, false);
-            ((ExpandableLayout) holder.findViewById(R.id.expandable_layout)).collapse();
+            holder.select(R.id.account_expendable_year, false);
+            ((ExpandableLayout) holder.findViewById(R.id.expandable_year_layout)).collapse();
         }
 
         if (position == mSelectPosition) {

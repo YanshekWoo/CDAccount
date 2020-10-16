@@ -40,13 +40,9 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     SuperTextView menuCommon;
     @BindView(R.id.menu_privacy)
     SuperTextView menuPrivacy;
-    @BindView(R.id.menu_push)
-    SuperTextView menuPush;
-    @BindView(R.id.menu_helper)
-    SuperTextView menuHelper;
-    @BindView(R.id.menu_change_account)
+    @BindView(R.id.menu_change_passwd)
     SuperTextView menuChangeAccount;
-    @BindView(R.id.menu_logout)
+    @BindView(R.id.menu_clear_data)
     SuperTextView menuLogout;
 
     @Override
@@ -58,8 +54,6 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     protected void initViews() {
         menuCommon.setOnSuperTextViewClickListener(this);
         menuPrivacy.setOnSuperTextViewClickListener(this);
-        menuPush.setOnSuperTextViewClickListener(this);
-        menuHelper.setOnSuperTextViewClickListener(this);
         menuChangeAccount.setOnSuperTextViewClickListener(this);
         menuLogout.setOnSuperTextViewClickListener(this);
     }
@@ -70,14 +64,10 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
         switch (superTextView.getId()) {
             case R.id.menu_common:
             case R.id.menu_privacy:
-            case R.id.menu_push:
-            case R.id.menu_helper:
-                XToastUtils.toast(superTextView.getLeftString());
-                break;
-            case R.id.menu_change_account:
+            case R.id.menu_change_passwd:
                 XToastUtils.toast(superTextView.getCenterString());
                 break;
-            case R.id.menu_logout:
+            case R.id.menu_clear_data:
                 DialogLoader.getInstance().showConfirmDialog(
                         getContext(),
                         getString(R.string.lab_logout_confirm),

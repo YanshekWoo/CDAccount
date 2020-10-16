@@ -17,13 +17,21 @@
 
 package com.xuexiang.cdaccount.fragment.charts;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.mikephil.charting.charts.BarChart;
@@ -37,22 +45,25 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.ChartsActivity;
-import com.xuexiang.cdaccount.charts.MyBarChart;
-import com.xuexiang.cdaccount.charts.MyLineChart;
-import com.xuexiang.cdaccount.charts.MyPieChart;
+import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
+import com.xuexiang.cdaccount.adapter.charts.ChartListAdapter;
+import com.xuexiang.cdaccount.chartsclass.MyBarChart;
+import com.xuexiang.cdaccount.chartsclass.MyLineChart;
+import com.xuexiang.cdaccount.chartsclass.MyPieChart;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.utils.DemoDataProvider;
 import com.xuexiang.cdaccount.utils.XToastUtils;
+import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
-import com.xuexiang.xui.utils.ResUtils;
+import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.alpha.XUIAlphaButton;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
-import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xutil.data.DateUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -68,8 +79,12 @@ import butterknife.OnClick;
 @Page(anim = CoreAnim.none)
 public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelectedListener{
 
-    @BindView(R.id.chart_tab)
-    TabLayout mTabLayout;
+//    @BindView(R.id.chart_tab_selector)
+//    TabLayout mTabLayoutSelector;
+
+    @BindView(R.id.chart_recyclerView)
+    RecyclerView chart_recyclerView;
+
 
     @BindView(R.id.lineChart)
     LineChart mLineChart;
@@ -89,9 +104,19 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFloatingActionMenu;
 
-    @BindView(R.id.inout_select)
-    TabControlView mTabControlView;
+    @BindView(R.id.chart_tab_inout)
+    TabLayout mTabLayoutInout;
 
+    @BindView(R.id.ll_navigation_view)
+    LinearLayout llNavigationView;
+    @BindView(R.id.chart_tab_selector)
+    TabLayout mTabLayout;
+    @BindView(R.id.chart_tab_title)
+    TextView chartTabTitle;
+    @BindView(R.id.iv_switch)
+    AppCompatImageView ivSwitch;
+
+    private boolean mIsShowNavigationView;
 
     // 日期选择器
     private TimePickerView mDatePickerStart;
@@ -107,9 +132,12 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
 
     //tab选择项
-    private CharSequence tabSelected;
+    private int tabSelected;
+    private int tabInout;
 
-
+    private ChartListAdapter madapter;
+    private ArrayList<String> datas;
+    private Context TrendingFragment;
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -136,28 +164,14 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void initViews() {
-        initTabControlView();
         init_tab();
         initTimePicker();
         initChart();
         selectChart(0);
+        initRecycleView();
+
     }
 
-
-    /**
-     * 初始化收入支出单选按钮
-     */
-    private void initTabControlView() {
-        try {
-            mTabControlView.setItems(ResUtils.getStringArray(R.array.inout_param_option), ResUtils.getStringArray(R.array.inout_param_value));
-            mTabControlView.setDefaultSelection(1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mTabControlView.setOnTabSelectionChangedListener((title, value) -> {
-            XToastUtils.toast("选中了：" + title + ", 选中的值为：" + value);
-        });
-    }
 
 
     /**
@@ -197,16 +211,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 if(e == null) {
                     return;
                 }
-                if(mTabLayout.getSelectedTabPosition() == 0) {
-                    int selecedindex = (int) h.getX();
-                    XToastUtils.toast(Integer.toString(selecedindex));
-                    //跳转Acticity
-                    Intent intent = new Intent(getContext(), ChartsActivity.class);
-                    intent.putExtra("category", Integer.toString(selecedindex));
-                    intent.putExtra("datestart", DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()));
-                    intent.putExtra("dateend", DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
-                    startActivity(intent);
-                }
+                    XToastUtils.toast(Integer.toString(1));
             }
 
             @Override
@@ -233,16 +238,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 if(e == null) {
                     return;
                 }
-                if(mTabLayout.getSelectedTabPosition() == 0) {
-                    int selecedindex = (int) h.getX();
-                    XToastUtils.toast(Integer.toString(selecedindex));
-                    //跳转Acticity
-                    Intent intent = new Intent(getContext(), ChartsActivity.class);
-                    intent.putExtra("category", Integer.toString(selecedindex));
-                    intent.putExtra("datestart", DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()));
-                    intent.putExtra("dateend", DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
-                    startActivity(intent);
-                }
+                    XToastUtils.toast(Integer.toString(2));
             }
 
             @Override
@@ -286,7 +282,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     protected void initArgs() {
 
     }
-
 
 
     @Override
@@ -401,10 +396,41 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      * tab栏设置
      */
     private void init_tab() {
-        mTabLayout.addTab(mTabLayout.newTab().setText("类别"));
+        mTabLayoutInout.addTab(mTabLayoutInout.newTab().setText("支出"));
+        mTabLayoutInout.addTab(mTabLayoutInout.newTab().setText("收入"));
+        mTabLayoutInout.addOnTabSelectedListener(this);
+
+        mTabLayout.addTab(mTabLayout.newTab().setText("主类"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("次类"));
         mTabLayout.addTab(mTabLayout.newTab().setText("成员"));
         mTabLayout.addTab(mTabLayout.newTab().setText("账户"));
         mTabLayout.addOnTabSelectedListener(this);
+    }
+
+
+    /**
+     * 初始化RecycleView
+     */
+    private void initRecycleView() {
+        madapter = new ChartListAdapter(getContext(), chart_recyclerView, DemoDataProvider.getDemoData1());
+        WidgetUtils.initRecyclerView(chart_recyclerView);
+        chart_recyclerView.setAdapter(madapter);
+    }
+
+
+
+    /**
+     * recycleView点击监听
+     * @param context
+     * 上下文
+     * @param position
+     * 点击位置
+     */
+    public void recycleviewClick(Context context, String position){
+        Intent intent = new Intent(context, AccountDetailsActivity.class);
+        String account = "账户";
+        intent.putExtra("account", account);
+        startActivity(intent);
     }
 
 
@@ -416,26 +442,68 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        XToastUtils.toast("选中了:" + tab.getText());
+//        XToastUtils.toast("选中了:" + tab.getText());
+        assert tab.parent != null;
+        switch (tab.parent.getId()) {
+            case R.id.chart_tab_inout:
+                tabInout = tab.getPosition();
+                XToastUtils.toast("选中了:" + Integer.toString(tabInout));
+                break;
+//            case R.id.chart_tab_selector:
+//                tabSelected = tab.getPosition();
+//                XToastUtils.toast("选中了:" + Integer.toString(tabSelected));
+//                break;
+            case R.id.chart_tab_selector:
+                int i = tab.getPosition();
+                XToastUtils.toast("选中了:" + Integer.toString(i));
+                break;
+            default:
+                break;
+        }
 
         refreshCharts();
     }
-
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
 
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-        tabSelected = tab.getText();
-
-        XToastUtils.toast("选中了:" + tabSelected);
+        XToastUtils.toast("选中了:" + tab.getText());
 
         refreshCharts();
+    }
+
+    /**
+     * Tab栏点击刷新状态
+     * @param isShow
+     * 是否打开
+     */
+    private void refreshStatus(final boolean isShow) {
+        ObjectAnimator rotation;
+        ObjectAnimator tabAlpha;
+        ObjectAnimator textAlpha;
+        if (isShow) {
+            rotation = ObjectAnimator.ofFloat(ivSwitch, "rotation", 0, -45);
+            tabAlpha = ObjectAnimator.ofFloat(mTabLayout, "alpha", 0, 1);
+            textAlpha = ObjectAnimator.ofFloat(chartTabTitle, "alpha", 1, 0);
+        } else {
+            rotation = ObjectAnimator.ofFloat(ivSwitch, "rotation", -45, 0);
+            tabAlpha = ObjectAnimator.ofFloat(mTabLayout, "alpha", 1, 0);
+            textAlpha = ObjectAnimator.ofFloat(chartTabTitle, "alpha", 0, 1);
+        }
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(rotation).with(textAlpha).with(tabAlpha);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                chartTabTitle.setVisibility(isShow ? View.GONE : View.VISIBLE);
+            }
+        });
+        animatorSet.setDuration(600).start();
     }
 
 
@@ -469,28 +537,35 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
 
     /**
-     * 悬浮按钮监听
+     * 按钮监听
      * @param v
      * 当前视图
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @OnClick({R.id.fab_piechart, R.id.fab_barchart, R.id.fab_linechart})
+    @SingleClick
+    @OnClick({R.id.fab_piechart, R.id.fab_barchart, R.id.fab_linechart, R.id.iv_switch})
     void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab_piechart:
                 selectChart(0);
+                mFloatingActionMenu.toggle(false);
                 break;
             case R.id.fab_barchart:
                 selectChart(1);
+                mFloatingActionMenu.toggle(false);
                 break;
             case R.id.fab_linechart:
                 selectChart(2);
+                mFloatingActionMenu.toggle(false);
+                break;
+            case R.id.iv_switch:
+                refreshStatus(mIsShowNavigationView = !mIsShowNavigationView);
                 break;
             default:
                 selectChart(0);
                 break;
         }
-        mFloatingActionMenu.toggle(false);
+
     }
 
 }

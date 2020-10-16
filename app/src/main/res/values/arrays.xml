@@ -27,6 +27,24 @@
         <item>@string/menu_account</item>
     </string-array>
 
+    <string-array name="verify_question1">
+        <item>你的父亲的名字是什么</item>
+        <item>你的母亲的名字是什么</item>
+        <item>你的爷爷的名字是什么</item>
+    </string-array>
+
+    <string-array name="verify_question2">
+        <item>你最喜欢的运动是什么</item>
+        <item>你最喜欢的电影是什么</item>
+        <item>你最喜欢的水果是什么</item>
+    </string-array>
+
+    <string-array name="verify_question3">
+        <item>你毕业于哪个初中</item>
+        <item>你出生在什么地方</item>
+        <item>你第一次坐飞机去哪里</item>
+    </string-array>
+
     <string-array name="pieColor">
         <item>"#FFA500"</item>
         <item>"#FF69B4"</item>
@@ -92,6 +110,12 @@
         <item>娱乐</item>
         <item>教育</item>
         <item>生活</item>
+        <item>不限</item>
+        <item>餐饮</item>
+        <item>交通</item>
+        <item>娱乐</item>
+        <item>教育</item>
+        <item>生活</item>
     </string-array>
 
     <string-array name="member_entry">
@@ -108,6 +132,12 @@
         <item>银行卡</item>
         <item>信用卡</item>
         <item>股票</item>
+    </string-array>
+
+    <string-array name="time_entry">
+        <item>年</item>
+        <item>月</item>
+        <item>日</item>
     </string-array>
 
     <string-array name="inout_param_option">
