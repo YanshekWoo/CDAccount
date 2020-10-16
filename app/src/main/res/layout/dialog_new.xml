@@ -48,7 +48,7 @@
     <LinearLayout
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
         <TextView
@@ -62,16 +62,18 @@
             android:layout_marginRight="10dp"
             />
 
-        <EditText
+        <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
             android:id="@+id/et_item2"
             android:layout_gravity="center"
             style="@style/EditText.Normal"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:singleLine="true"
             android:textSize="14sp"
             android:textColor="@color/black"
-            android:inputType="text"/>
+            android:inputType="text"
+            app:met_maxCharacters="10"
+            app:met_minCharacters="1"/>
     </LinearLayout>
 
 

@@ -25,7 +25,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,15 +40,16 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xui.widget.picker.widget.OptionsPickerView;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
 import com.xuexiang.xui.widget.picker.widget.builder.OptionsPickerBuilder;
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
-import com.xuexiang.xui.widget.picker.widget.configure.TimePickerType;
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
 import com.xuexiang.xui.widget.spinner.editspinner.EditSpinner;
 import com.xuexiang.xutil.data.DateUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -68,6 +68,7 @@ public class TransferFragment extends BaseFragment {
     private TimePickerView mDatePicker;
     private TimePickerView mTimePicker;
     private Date mDate, mTime;
+    String mStrYear, mStrMonth, mStrDay, mStrTime;
 
     private TextView mTvType;
     private List<String> options1Item = new ArrayList<>();
@@ -85,8 +86,8 @@ public class TransferFragment extends BaseFragment {
     private String mMember;
     private ShadowImageView mBtnNewMember;
 
-    private EditText mEtRemark;
-    private String mRemark;
+    private MaterialEditText mEtRemark;
+    private String mRemark = null;
 
 
     private TextView mTvDialogItem1, mTvDialogItem2;
@@ -98,13 +99,16 @@ public class TransferFragment extends BaseFragment {
 
 
     public interface TransferMessage{
-        void InsertTransfer(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark);
+        void InsertTransfer(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark);
+        void getTransferAmount(double Amount);
+
     }
+
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Transfer.InsertTransfer(0, mDate, mTime, "测试", null, null, null, null, null);
+        Transfer.InsertTransfer(mAmount, mStrYear, mStrMonth, mStrDay, mStrTime,null,mAccount1,mAccount2,mMember,mRemark);
 
     }
     @Override
@@ -162,6 +166,8 @@ public class TransferFragment extends BaseFragment {
                 } else {
                     mAmount = -1;
                 }
+                Transfer.getTransferAmount(mAmount);
+
             }
         });
 
@@ -179,7 +185,12 @@ public class TransferFragment extends BaseFragment {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
-        mTvDateTime.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + " " + String.format("%02d", hour) + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second));
+        mStrYear = String.valueOf(year);
+        mStrMonth = String.valueOf(month);
+        mStrDay = String.valueOf(day);
+        mStrTime = String.format("%02d", hour) + ":" + String.format("%02d", minute);
+
+        mTvDateTime.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + "  "+mStrTime );
         mTvDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -238,6 +249,8 @@ public class TransferFragment extends BaseFragment {
         //记账属性——账户1
         loadAccountData();
         mTvAccount1 = findViewById(R.id.tv_account1);
+        mAccount1 = Accounts1Item.get(0);
+        mTvAccount1.setText(mAccount1);               //初始化
         mTvAccount1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -270,6 +283,8 @@ public class TransferFragment extends BaseFragment {
                                                               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                                   mAccount1 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount1.setText(mAccount1);
+                                                                  //TODO:insert_new_account
+
                                                               }
                                                           })
                                                           .show();
@@ -280,6 +295,8 @@ public class TransferFragment extends BaseFragment {
         //记账属性——账户2
         loadAccountData();
         mTvAccount2 = findViewById(R.id.tv_account2);
+        mAccount2 = Accounts1Item.get(0);
+        mTvAccount2.setText(mAccount2);               //初始化
         mTvAccount2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -312,6 +329,8 @@ public class TransferFragment extends BaseFragment {
                                                               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                                   mAccount2 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount2.setText(mAccount2);
+                                                                  //TODO:insert_new_account
+
                                                               }
                                                           })
                                                           .show();
@@ -323,6 +342,9 @@ public class TransferFragment extends BaseFragment {
         //记账属性——成员
         loadMemberData();
         mTvMember = findViewById(R.id.tv_member);
+        mMember = MembersItem.get(0);
+        mTvMember.setText(mMember);
+        mTvMember.setTextColor(this.getResources().getColor(R.color.app_color_theme_10));
         mTvMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -354,6 +376,12 @@ public class TransferFragment extends BaseFragment {
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 mMember = dialog.getInputEditText().getText().toString();
                                 mTvMember.setText(mMember);
+                                //TODO:insert new member
+                                if(mMember.equals(MembersItem.get(0))){
+                                    mTvMember.setTextColor(0xFF6E6E6E);
+                                }else{
+                                    mTvMember.setTextColor(0xFF000000 );
+                                }
                             }
                         })
                         .show();
@@ -362,6 +390,7 @@ public class TransferFragment extends BaseFragment {
 
         //记账属性——备注
         mEtRemark = findViewById(R.id.et_remark);
+        mEtRemark.setFilters(new InputFilter[]{new LengthFilter(12)});
         mEtRemark.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -409,10 +438,14 @@ public class TransferFragment extends BaseFragment {
                 @Override
                 public void onTimeSelected(Date date, View v) {
                     mTime = date;
-                    mTvDateTime.setText(DateUtils.date2String(mDate, DateUtils.yyyyMMdd.get()) + " " + DateUtils.date2String(mTime, DateUtils.HHmmss.get()));
-                }
+                    mStrYear = DateUtils.date2String(mDate, new SimpleDateFormat("yyyy"));
+                    mStrMonth = DateUtils.date2String(mDate, new SimpleDateFormat("MM"));
+                    mStrDay = DateUtils.date2String(mDate, new SimpleDateFormat("dd"));
+                    mStrTime = DateUtils.date2String(mTime, DateUtils.HHmm.get());
+
+                    mTvDateTime.setText(DateUtils.date2String(mDate, DateUtils.yyyyMMdd.get()) + "  " + mStrTime);                }
             })
-                    .setType(TimePickerType.TIME)
+                    .setType(false, false, false, true, true, false)     //只显示时分
                     .setTitleText("时间选择")
                     .setDate(calendar)
                     .build();
@@ -526,7 +559,7 @@ public class TransferFragment extends BaseFragment {
 
     //记账属性——成员
     private void loadMemberData() {
-        String[] str1 = {"本人", "配偶", "子女"};
+        String[] str1 = {"无成员","本人", "配偶", "子女"};
         MembersItem = Arrays.asList(str1);
     }
 
@@ -537,6 +570,11 @@ public class TransferFragment extends BaseFragment {
             //返回的分别是三个级别的选中位置
             mMember = MembersItem.get(member1);
             mTvMember.setText(mMember);
+            if(member1 == 0){
+                mTvMember.setTextColor(this.getResources().getColor(R.color.app_color_theme_10));
+            }else{
+                mTvMember.setTextColor(this.getResources().getColor(R.color.black));
+            }
             return false;
         })
 
@@ -573,13 +611,13 @@ public class TransferFragment extends BaseFragment {
             int keep = mMax - (dest.length() - (dend - dstart));
 
             if (keep <= 0) {
-                XToastUtils.error("最多仅可输入10位（含小数点）");
+                XToastUtils.error("最多仅可输入"+mMax+"个字符");
                 return "";
             } else if (keep >= end - start) {
                 return null; // keep original
             } else {
                 keep += start;
-                XToastUtils.error("最多仅可输入10位（含小数点）");
+                XToastUtils.error("最多仅可输入"+mMax+"个字符");
                 if (Character.isHighSurrogate(source.charAt(keep - 1))) {
                     --keep;
                     if (keep == start) {

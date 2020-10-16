@@ -33,7 +33,9 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="#000000"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:clickable="true"
+            android:focusable="true"/>
     </LinearLayout>
 
     <ScrollView
@@ -336,10 +338,10 @@
                     android:text="    备注    "
                     android:textSize="18sp" />
 
-                <EditText
+                <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
                     android:id="@+id/et_remark"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginHorizontal="5dp"
                     android:layout_toEndOf="@+id/tv_remark_title"
@@ -349,9 +351,11 @@
                     android:hint="商家/地点/项目/其他"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:layout_marginRight="10dp"
                     android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:met_maxCharacters="12"
+                    />
             </RelativeLayout>
 
 
