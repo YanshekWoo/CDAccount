@@ -21,6 +21,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -320,6 +321,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      * @param view
      * 当前视图
      */
+    @SuppressLint("NonConstantResourceId")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @OnClick({R.id.btn_date_start, R.id.btn_date_end})
     public void onViewClicked(View view) {
