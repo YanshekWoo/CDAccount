@@ -37,6 +37,7 @@
 
         >
         <com.cxd.chatview.moudle.ChatView
+            android:id="@+id/chatview"
             android:layout_toLeftOf="@+id/record_head"
             android:layout_gravity="right"
             android:layout_width="wrap_content"

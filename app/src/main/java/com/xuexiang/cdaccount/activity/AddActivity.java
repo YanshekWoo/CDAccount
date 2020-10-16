@@ -18,63 +18,30 @@
 package com.xuexiang.cdaccount.activity;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseFragment;
-import com.xuexiang.cdaccount.fragment.account.AccountFragment;
 import com.xuexiang.cdaccount.fragment.add.IncomeFragment;
 import com.xuexiang.cdaccount.fragment.add.OutcomeFragment;
 import com.xuexiang.cdaccount.fragment.add.TransferFragment;
-import com.xuexiang.cdaccount.fragment.charts.ChartsFragment;
-import com.xuexiang.cdaccount.fragment.home.HomeFragment;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowButton;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
-import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
-import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
-import com.xuexiang.xui.widget.picker.widget.OptionsPickerView;
-import com.xuexiang.xui.widget.picker.widget.TimePickerView;
-import com.xuexiang.xui.widget.picker.widget.builder.OptionsPickerBuilder;
-import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
-import com.xuexiang.xui.widget.picker.widget.configure.TimePickerType;
-import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
-import com.xuexiang.xui.widget.spinner.editspinner.EditSpinner;
-import com.xuexiang.xutil.data.DateUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import static android.text.InputType.TYPE_CLASS_TEXT;
 
 /**
  * 记账页面
@@ -262,10 +229,14 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         mOutcomeAmount = Amount;
     }
 
-    @Override
-    public void InsertIncome(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark) {
-        if(mBlConfirm && mVpAdd.getCurrentItem()==1)XToastUtils.toast("Income");
 
+
+    @Override
+    public void InsertIncome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
+        if(mBlConfirm && mVpAdd.getCurrentItem()==1){
+            XToastUtils.info(String.valueOf(Amount)+" "+Year+" "+Month+" "+Day+" "+Time+" "+Subcategory+" "+Account+" "+toAccount+" "+Member+" "+Remark);
+            //TODO:Insert Bill
+        }
     }
 
     @Override
@@ -273,10 +244,14 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         mIncomeAmount = Amount;
     }
 
-    @Override
-    public void InsertTransfer(double Amount, Date Date, Date Time, String FirstCategory, String SecondCategory, String AccountOut, String AccountIn, String Member, String Remark) {
-        if(mBlConfirm && mVpAdd.getCurrentItem()==2)XToastUtils.toast("Transfer");
 
+
+    @Override
+    public void InsertTransfer(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
+        if(mBlConfirm && mVpAdd.getCurrentItem()==2){
+            XToastUtils.info(String.valueOf(Amount)+" "+Year+" "+Month+" "+Day+" "+Time+" "+Subcategory+" "+Account+" "+toAccount+" "+Member+" "+Remark);
+            //TODO:Insert Bill
+        }
     }
 
     @Override

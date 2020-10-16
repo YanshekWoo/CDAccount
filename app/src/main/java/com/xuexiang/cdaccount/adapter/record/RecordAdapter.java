@@ -26,9 +26,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cxd.chatview.moudle.ChatView;
 import com.xuexiang.cdaccount.R;
-
-import java.util.List;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordViewHolder> {
 
@@ -53,6 +52,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         String Message = mMessage[position];
         holder.time.setText(Date);
         holder.message.setText(Message);
+//        holder.chatView.
     }
 
     @Override
@@ -62,11 +62,13 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
 
     class RecordViewHolder extends RecyclerView.ViewHolder{
         private TextView time,message;
+        private ChatView chatView;
 
         public RecordViewHolder(@NonNull View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.tv_time);
             message = itemView.findViewById(R.id.tv_record);
+            chatView = itemView.findViewById(R.id.chatview);
         }
     }
 }

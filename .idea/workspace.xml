@@ -12,13 +12,18 @@
   <component name="ChangeListManager">
     <list default="true" id="f8850fe0-bd67-4077-8381-5eb6085df18b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/IncomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/IncomeFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/activity/AddActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/adapter/record/RecordAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/adapter/record/RecordAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/TransferFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xuexiang/cdaccount/fragment/add/TransferFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_record.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_record.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_30" />
   <component name="ExternalProjectsData">
@@ -76,6 +81,9 @@
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
+    <key name="android.template.1751090428">
+      <recent name="com.xuexiang.cdaccount.activity" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.xuexiang.cdaccount.fragment.add" />
       <recent name="com.xuexiang.cdaccount.fragment.login" />
@@ -83,15 +91,12 @@
       <recent name="com.xuexiang.cdaccount.fragment.charts" />
       <recent name="com.xuexiang.cdaccount.fragment.home" />
     </key>
-    <key name="android.template.1751090428">
-      <recent name="com.xuexiang.cdaccount.activity" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\project\AndroidProjects\CDAccount\app\src\main\java\com\xuexiang\cdaccount" />
       <recent name="E:\project\AndroidProjects\CDAccount\app\src\main\res\drawable" />
       <recent name="E:\project\AndroidProjects\CDAccount\app\src\main\res\layout" />
       <recent name="F:\AS_workspace\CDAccount\app\src\main\res\drawable-hdpi" />
       <recent name="F:\AS_workspace\CDAccount\app\src\main\res\layout" />
-      <recent name="F:\AS_workspace\CDAccount\app\src\main\res\drawable" />
     </key>
   </component>
   <component name="RunManager">
@@ -406,10 +411,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="755" y="311" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602230067105" />
-    <state x="623" y="196" key="#com.intellij.ide.util.MemberChooser" timestamp="1602777339728">
+    <state x="623" y="196" key="#com.intellij.ide.util.MemberChooser" timestamp="1602818738201">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="623" y="196" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1602777339728" />
+    <state x="623" y="196" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1602818738201" />
     <state x="830" y="265" key="#com.intellij.ide.util.MemberChooser/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602229731746" />
     <state x="526" y="271" width="486" height="291" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1602514545570">
       <screen x="0" y="0" width="1536" height="824" />
@@ -483,10 +488,10 @@
     </state>
     <state x="395" y="109" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1602775417347" />
     <state x="526" y="198" key="SettingsEditor/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1601786810787" />
-    <state x="463" y="214" key="Vcs.Push.Dialog.v2" timestamp="1602769824752">
+    <state x="463" y="214" key="Vcs.Push.Dialog.v2" timestamp="1602818298915">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="463" y="214" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1602769824752" />
+    <state x="463" y="214" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1602818298915" />
     <state x="617" y="289" key="Vcs.Push.Dialog.v2/2560.0.1536.824/0.0.2048.1112@0.0.2048.1112" timestamp="1602261069853" />
     <state x="93" y="93" width="1862" height="926" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601732689586">
       <screen x="0" y="0" width="2048" height="1112" />
