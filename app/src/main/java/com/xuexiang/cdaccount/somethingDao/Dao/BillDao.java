@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.xuexiang.cdaccount.database.Sum;
 import com.xuexiang.cdaccount.somethingDao.DatabaseHelper;
 
 import java.util.Calendar;
@@ -392,17 +393,7 @@ public class BillDao {
         return re;
     }
 
-    public class OutTopCategory_Sum{
-        private String OutTopCategory_Name;
-        private double sum;
-
-        public OutTopCategory_Sum(String name, double s){
-            this.OutTopCategory_Name = name;
-            this.sum = s;
-        }
-    }
-
-    public List<OutTopCategory_Sum> GetDateByOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){
+    public List<Sum> GetDateByOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){//通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -421,31 +412,31 @@ public class BillDao {
             mp.put(cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutTopCategory_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by Bill_OutSubCategory";
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
         Cursor cursor = db.rawQuery(sql, null);
-        List<OutTopCategory_Sum> re = new LinkedList<OutTopCategory_Sum>();
+        List<Sum> re = new LinkedList<Sum>();
 
+        Map<String,Double> ans =  new HashMap<String,Double>();
         while(cursor.moveToNext()){
-            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_OutSubCategory")));
+            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_SubCategory")));
             Integer tmp3 =  new Integer(mp1.get(tmp1));
             String tmp2 = mp.get(tmp3);
-            OutTopCategory_Sum tmp = new OutTopCategory_Sum(tmp2,cursor.getDouble(cursor.getColumnIndex("nums")));
+            double tmp4 = cursor.getDouble(cursor.getColumnIndex("nums"));
+            if(ans.containsKey(tmp2)){
+                double tmp5 = ans.get(tmp2);
+                ans.put(tmp2, tmp4+tmp5);
+            }
+            else
+                ans.put(tmp2, tmp4);
+        }
+        for (Map.Entry<String, Double> entry : ans.entrySet()) {
+            Sum tmp = new Sum(entry.getKey(), entry.getValue());
             re.add(tmp);
         }
         return re;
     }
 
-    public class OutSubCategory_Sum{
-        private String OutSubCategory_Name;
-        private double sum;
-
-        public OutSubCategory_Sum(String name, double s){
-            this.OutSubCategory_Name = name;
-            this.sum = s;
-        }
-    }
-
-    public List<OutSubCategory_Sum> GetDateByOutSubCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){
+    public List<Sum> GetDateByOutSubCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){  //通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -454,66 +445,46 @@ public class BillDao {
         String sql1 = "select * from OutSubCategory";
         Cursor cursor1 = db.rawQuery(sql1, null);
         while(cursor1.moveToNext()){
-            mp.put(cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutTopCategory_Name")));
+            mp.put(cursor1.getInt(cursor1.getColumnIndex("OutSubCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutSubCategory_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by Bill_SubCategory";
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
         Cursor cursor = db.rawQuery(sql, null);
-        List<OutSubCategory_Sum> re = new LinkedList<OutSubCategory_Sum>();
+        List<Sum> re = new LinkedList<Sum>();
 
         while(cursor.moveToNext()){
             Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_SubCategory")));
-            OutSubCategory_Sum tmp = new OutSubCategory_Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
+            Sum tmp = new Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
     }
 
-    public class Member_Sum{
-        private String Member_Name;
-        private double sum;
-
-        public Member_Sum(String name, double s){
-            this.Member_Name = name;
-            this.sum = s;
-        }
-    }
-
-    public List<Member_Sum> GetDateByMember(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){
+    public List<Sum> GetDateByMember(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){ //通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
         Map<Integer, String> mp = new HashMap<Integer, String>();
-        String sql1 = "select * from Memeber";
+        String sql1 = "select * from Member";
         Cursor cursor1 = db.rawQuery(sql1, null);
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("Member_ID")),cursor1.getString(cursor1.getColumnIndex("Member_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by Bill_Member";
+        String sql = "select Bill_ID, Bill_Member, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_Member";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Member_Sum> re = new LinkedList<Member_Sum>();
+        List<Sum> re = new LinkedList<Sum>();
 
         while(cursor.moveToNext()){
             Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_Member")));
-            Member_Sum tmp = new Member_Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
+            Sum tmp = new Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
     }
 
-    public class Account_Sum{
-        private String Account_Name;
-        private double sum;
-
-        public Account_Sum(String name, double s){
-            this.Account_Name = name;
-            this.sum = s;
-        }
-    }
-
-    public List<Account_Sum> GetDateByAccount(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){
+    public List<Sum> GetDateByAccount(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){//通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -525,68 +496,51 @@ public class BillDao {
             mp.put(cursor1.getInt(cursor1.getColumnIndex("Account_ID")),cursor1.getString(cursor1.getColumnIndex("Account_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by Bill_Account";
+        String sql = "select Bill_ID, Bill_Account, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_Account";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Account_Sum> re = new LinkedList<Account_Sum>();
+        List<Sum> re = new LinkedList<Sum>();
 
         while(cursor.moveToNext()){
             Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_Account")));
-            Account_Sum tmp = new Account_Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
+            Sum tmp = new Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
     }
 
-    public class Date_Sum{
-        private String date;
-        private double sum;
-
-        public Date_Sum(String name, double s){
-            this.date = name;
-            this.sum = s;
-        }
-    }
-
-    public List<Date_Sum> GetSumByDate(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){ //按天求和
+    public List<Sum> GetSumByDate(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){ //按天求和 通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
-        String sql = "select concat(year,month,day) as date, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' group by date";
+        String sql = "select year || month || day as date, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by date";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Date_Sum> re = new LinkedList<Date_Sum>();
+        List<Sum> re = new LinkedList<Sum>();
 
         while(cursor.moveToNext()){
-            Date_Sum tmp = new Date_Sum(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
+            Sum tmp = new Sum(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
     }
 
-    public List<Date_Sum> GetSumByDateAndOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day, String category){
+    public List<Sum> GetSumByDateAndOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day, String category){    //通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
-        Map<String, Integer> mpTop = new HashMap<String, Integer>();
-        String sql1 = "select * from OutTopCategory where OutTopCategory_Name = "+category+"";
+        String sql1 = "select * from OutTopCategory where OutTopCategory_Name = '"+category+"'";
         Cursor cursor1 = db.rawQuery(sql1, null);
-        int id_parent = cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID"));
+        int id_parent = 0;
+        while(cursor1.moveToNext())
+            id_parent = cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID"));
 
-        Map<Integer, Integer> mpSub = new HashMap<Integer, Integer>();
-        String sql2 = "select * from OutSubCategory";
-        Cursor cursor2 = db.rawQuery(sql2, null);
-        while (cursor2.moveToNext()){
-            mpSub.put(cursor2.getInt(cursor1.getColumnIndex("OutSubCategory_Parent")), cursor2.getInt(cursor1.getColumnIndex("OutSubCategory_ID")));
-        }
-
-        int top = mpSub.get(id_parent);
-        String sql = "select concat(year,month,day) as date, sum(Bill_Money) as nums from Bill where concat(year, month, day) >= '"+st+"' AND concat(year, month, day) <= '"+ed+"' AND id = "+top+" group by date";
+        String sql = "select year || month || day as date, sum(Bill_Money)as nums, Bill_SubCategory, OutSubCategory_ID, OutSubCategory_Parent from Bill inner join OutSubCategory on OutSubCategory_ID = Bill_SubCategory where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND OutSubCategory_Parent = "+id_parent+" group by date";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Date_Sum> re = new LinkedList<Date_Sum>();
+        List<Sum> re = new LinkedList<Sum>();
 
         while(cursor.moveToNext()){
-            Date_Sum tmp = new Date_Sum(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
+            Sum tmp = new Sum(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
