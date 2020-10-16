@@ -25,14 +25,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.xuexiang.cdaccount.ExpanableBill.BillDataYear;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.utils.DemoDataProvider;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
-import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.layout.ExpandableLayout;
 
@@ -44,7 +42,7 @@ import java.util.Collection;
  * @author xuexiang
  * @since 2019-11-22 15:38
  */
-public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
+public class ExpandableYearAdapter extends BaseRecyclerAdapter<BillDataYear> {
 
     private RecyclerView mRecyclerView;
     private Context context;
@@ -52,9 +50,9 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
 //    private boolean year_expendable,  month_expendable,  day_expendable;
     boolean isSelected;
 
-    public ExpandableYearAdapter(Context context, RecyclerView recyclerView) {
-//        super(data);
-        mRecyclerView = recyclerView;
+    public ExpandableYearAdapter(Context context, RecyclerView recyclerView, Collection<BillDataYear> data) {
+        super(data);
+        this.mRecyclerView = recyclerView;
         this.context = context;
 //        year_expendable = temp_year_expendable;
 //        month_expendable = temp_month_expendable;
@@ -78,7 +76,7 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
      * @param item     列表项
      */
     @Override
-    protected void bindData(@NonNull RecyclerViewHolder holder, int position, TestItem item) {
+    protected void bindData(@NonNull RecyclerViewHolder holder, int position, BillDataYear item) {
         ExpandableLayout expandableLayout = holder.findViewById(R.id.expandable_year_layout);
         AppCompatImageView ivIndicator = holder.findViewById(R.id.year_indicator);
         expandableLayout.setInterpolator(new OvershootInterpolator());
@@ -91,26 +89,31 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
             }
         });
 
-        if(item.getRefresh()){
-//            if(item.getYear()){
-                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
-                mSelectPosition = position;
-//            }else {
-////            isSelected = position == mSelectPosition;
-//                expandableLayout.setExpanded(false, true);
-//                mSelectPosition = -1;
-//            }
-        }
-        else {
-//            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
-            isSelected = position == mSelectPosition;         //false
-            expandableLayout.setExpanded(isSelected, true);
+//        if(item.ismExpanded()){
+////            if(item.getYear()){
+//                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
+//                mSelectPosition = position;
+////            }else {
+//////            isSelected = position == mSelectPosition;
+////                expandableLayout.setExpanded(false, true);
+////                mSelectPosition = -1;
+////            }
+//        }
+//        else {
+////            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+//            isSelected = position == mSelectPosition;         //false
+//            expandableLayout.setExpanded(isSelected, true);
+//        }
+        if(position == 0)
+        {
+            expandableLayout.setExpanded(true,true);
+            mSelectPosition = position;
         }
 
 
         RecyclerView recyclerView = holder.findViewById(R.id.year_expand_recycler_view);
         WidgetUtils.initRecyclerView(recyclerView);
-        recyclerView.setAdapter(mAdapter = new ExpandableMonthAdapter(context, recyclerView, DemoDataProvider.getDemoData1(),item));
+        recyclerView.setAdapter(mAdapter = new ExpandableMonthAdapter(context, recyclerView, item.getmBillDataMonthList()));
 
 //        final RefreshLayout refreshLayout = holder.findViewById(R.id.refreshLayout_year);
 //        refreshLayout.setEnableAutoLoadMore(true);
@@ -132,11 +135,11 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
 //        }, 2000));
 
         holder.select(R.id.account_expendable_year, isSelected);
-        holder.text(R.id.account_expendable_year_maintime,ResUtils.getResources().getString(R.string.item_example_number_year, position + 1));
+        holder.text(R.id.account_expendable_year_maintime, item.getmYear()+"年");
 //        holder.text(R.id.account_expendable_year_subtime,"0000");
-        holder.text(R.id.account_expendable_year_totalmoney,"000");
-        holder.text(R.id.account_expendable_year_income,"00");
-        holder.text(R.id.account_expendable_year_outcome,"0");
+        holder.text(R.id.account_expendable_year_totalmoney,Double.toString(item.getmYearIncome()-item.getmYearOutcome()));
+        holder.text(R.id.account_expendable_year_income, Double.toString(item.getmYearIncome()));
+        holder.text(R.id.account_expendable_year_outcome,Double.toString(item.getmYearOutcome()));
         //holder.text(R.id.tv_content, ResUtils.getResources().getString(R.string.item_example_number_abstract, position + 1));
         holder.click(R.id.account_expendable_year, new View.OnClickListener() {
             @SingleClick
@@ -148,7 +151,7 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
         });
 
         //设置选择年的卡片样式
-        if(item.getYear() && !item.getMonth() && !item.getDay()){
+        if(item.ismYearSelected()){
             holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(20);
             holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(20);
 //            holder.getImageView(R.id.year_indicator).setMaxHeight(10);
@@ -160,9 +163,7 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
             holder.getTextView(R.id.account_expendable_year_maintime).setTextColor(context.getResources().getColor(R.color.black));
             holder.getTextView(R.id.account_expendable_year_totalmoney).setTextColor(context.getResources().getColor(R.color.black));
         }
-
-        //设置选择月的卡片样式
-        if(item.getYear() && item.getMonth() && !item.getDay()){
+        else {
             holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(10);
             holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(10);
 //            holder.getImageView(R.id.year_indicator).setMaxHeight(10);
@@ -175,18 +176,6 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
             holder.getTextView(R.id.account_expendable_year_totalmoney).setTextColor(context.getResources().getColor(R.color.grey));
         }
 
-        //设置选择天的卡片样式
-        if(item.getYear() && item.getMonth() && item.getDay()){
-            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(10);
-            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(10);
-//            holder.getImageView(R.id.year_indicator).setMaxHeight(10);
-            holder.getTextView(R.id.account_expendable_year_income).setVisibility(View.GONE);
-            holder.getTextView(R.id.account_expendable_year_outcome).setVisibility(View.GONE);
-            holder.getTextView(R.id.account_expendable_year_text_income).setVisibility(View.GONE);
-            holder.getTextView(R.id.account_expendable_year_text_outcome).setVisibility(View.GONE);
-            holder.getTextView(R.id.account_expendable_year_maintime).setTextColor(context.getResources().getColor(R.color.grey));
-            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextColor(context.getResources().getColor(R.color.grey));
-        }
 
     }
 
