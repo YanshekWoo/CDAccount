@@ -20,6 +20,7 @@ package com.xuexiang.cdaccount.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -34,6 +35,7 @@ import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.fragment.add.IncomeFragment;
 import com.xuexiang.cdaccount.fragment.add.OutcomeFragment;
 import com.xuexiang.cdaccount.fragment.add.TransferFragment;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.WidgetUtils;
@@ -63,11 +65,18 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
 
     boolean IsAmountFill = false;
 
+    private BillDao mDataBaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+        mDataBaseHelper = new BillDao(this);
+//        initDate();
+        /**
+         * 金额初始值
+         */
         mIncomeAmount = -1;
         mOutcomeAmount = -1;
         mTransferAmount = -1;
@@ -219,9 +228,8 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     @Override
     public void InsertOutcome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
         if(mBlConfirm && mVpAdd.getCurrentItem()==0){
-            XToastUtils.info(String.valueOf(Amount)+" "+Year+" "+Month+" "+Day+" "+Time+" "+Subcategory+" "+Account+" "+toAccount+" "+Member+" "+Remark);
-            //TODO:Insert Bill
-        }
+            Log.d("---InsertIncome---",String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
+            mDataBaseHelper.InsertBill(0, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);        }
     }
 
     @Override
@@ -234,8 +242,8 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     @Override
     public void InsertIncome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
         if(mBlConfirm && mVpAdd.getCurrentItem()==1){
-            XToastUtils.info(String.valueOf(Amount)+" "+Year+" "+Month+" "+Day+" "+Time+" "+Subcategory+" "+Account+" "+toAccount+" "+Member+" "+Remark);
-            //TODO:Insert Bill
+            Log.d("---InsertIncome---",String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
+            mDataBaseHelper.InsertBill(1, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
         }
     }
 
@@ -249,8 +257,8 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     @Override
     public void InsertTransfer(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
         if(mBlConfirm && mVpAdd.getCurrentItem()==2){
-            XToastUtils.info(String.valueOf(Amount)+" "+Year+" "+Month+" "+Day+" "+Time+" "+Subcategory+" "+Account+" "+toAccount+" "+Member+" "+Remark);
-            //TODO:Insert Bill
+            Log.d("---InsertTransfer---",String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
+            mDataBaseHelper.InsertBill(2, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
         }
     }
 
@@ -258,6 +266,37 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     public void getTransferAmount(double Amount) {
         mTransferAmount = Amount;
 
+    }
+
+    public void initDate(){
+        mDataBaseHelper.InsertCategory("餐饮食品","",0);
+        mDataBaseHelper.InsertCategory("餐饮食品","早午晚餐",0);
+        mDataBaseHelper.InsertCategory("餐饮食品","水果零食",0);
+        mDataBaseHelper.InsertCategory("餐饮食品","烟酒茶水",0);
+        mDataBaseHelper.InsertCategory("行车交通","公共交通",0);
+        mDataBaseHelper.InsertCategory("衣物饰品","鞋帽包包",0);
+        mDataBaseHelper.InsertCategory("行车交通","打车租车",0);
+
+        mDataBaseHelper.InsertCategory("职业收入","工资收入",1);
+        mDataBaseHelper.InsertCategory("职业收入","",1);
+        mDataBaseHelper.InsertCategory("职业收入","加班收入",1);
+        mDataBaseHelper.InsertCategory("职业收入","奖金收入",1);
+        mDataBaseHelper.InsertCategory("其他收入","中奖收入",1);
+
+
+        mDataBaseHelper.InsertAccount("");
+        mDataBaseHelper.InsertAccount("现金");
+        mDataBaseHelper.InsertAccount("信用卡");
+
+        mDataBaseHelper.InsertMember("无成员");
+        mDataBaseHelper.InsertMember("本人");
+        mDataBaseHelper.InsertMember("配偶");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("---AddActivity---","Pause");
     }
 }
 

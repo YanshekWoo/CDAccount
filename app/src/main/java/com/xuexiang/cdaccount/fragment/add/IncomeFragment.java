@@ -20,26 +20,21 @@ package com.xuexiang.cdaccount.fragment.add;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.IBinder;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.AddActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
@@ -52,14 +47,12 @@ import com.xuexiang.xui.widget.picker.widget.OptionsPickerView;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
 import com.xuexiang.xui.widget.picker.widget.builder.OptionsPickerBuilder;
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
-import com.xuexiang.xui.widget.picker.widget.configure.TimePickerType;
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
 import com.xuexiang.xui.widget.spinner.editspinner.EditSpinner;
 import com.xuexiang.xutil.data.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -96,7 +89,7 @@ public class IncomeFragment  extends BaseFragment {
     private ShadowImageView mBtnNewMember;
 
     private MaterialEditText mEtRemark;
-    private String mRemark = null;
+    private String mRemark = "";
 
 
     private TextView mTvDialogItem1, mTvDialogItem2;
@@ -105,6 +98,8 @@ public class IncomeFragment  extends BaseFragment {
     private String mStrNewItem1, mStrNewItem2;
 
     private IncomeMessage Income;
+
+    private BillDao mDatabaseHelper;
 
 
     public interface IncomeMessage{
@@ -115,8 +110,8 @@ public class IncomeFragment  extends BaseFragment {
 
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onPause() {
+        super.onPause();
         Income.InsertIncome(mAmount, mStrYear, mStrMonth, mStrDay, mStrTime,mOption2,mAccount,null,mMember,mRemark);
 
     }
@@ -144,6 +139,8 @@ public class IncomeFragment  extends BaseFragment {
 
     @Override
     protected void initViews() {
+
+        mDatabaseHelper = new BillDao(getContext());
 
         //记账金额
 
@@ -173,7 +170,7 @@ public class IncomeFragment  extends BaseFragment {
                     XToastUtils.error("小数点后不超过两位");
                 }
                 if (!temp.equals("")) {
-                    mAmount = Double.parseDouble(temp);
+                    mAmount = Double.parseDouble(s.toString());
                 } else {
                     mAmount = -1;
                 }
@@ -253,9 +250,11 @@ public class IncomeFragment  extends BaseFragment {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mStrNewItem1 = mEsDialog.getText();
                         mStrNewItem2 = mEtDialog.getText().toString();
-                        //TODO:Insert_Category
                         mOption = mStrNewItem1 + "-" + mStrNewItem2;
                         mTvType.setText(mOption);
+                        //TODO:Insert_Category
+                        mDatabaseHelper.InsertCategory(mStrNewItem1,mStrNewItem2,0);
+                        loadOptionData();
                     }
                 });
                 materialDialog.show();
@@ -301,7 +300,8 @@ public class IncomeFragment  extends BaseFragment {
                                                                   mAccount = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount.setText(mAccount);
                                                                   //TODO:insert_new_account
-
+                                                                  mDatabaseHelper.InsertAccount(mAccount);
+                                                                  loadAccountData();
                                                               }
                                                           })
                                                           .show();
@@ -347,12 +347,16 @@ public class IncomeFragment  extends BaseFragment {
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 mMember = dialog.getInputEditText().getText().toString();
                                 mTvMember.setText(mMember);
-                                //TODO:insert new member
+
                                 if(mMember.equals(MembersItem.get(0))){
                                     mTvMember.setTextColor(0xFF6E6E6E);
                                 }else{
                                     mTvMember.setTextColor(0xFF000000 );
                                 }
+
+                                //TODO:insert new member
+                                mDatabaseHelper.InsertMember(mMember);
+                                loadMemberData();
 
                             }
                         })
@@ -426,14 +430,17 @@ public class IncomeFragment  extends BaseFragment {
 
     //记账属性——分类
     private void loadOptionData() {
-        String[] str1 = {"餐饮", "交通", "购物"};
-        String[] str2_1 = {"早餐", "午餐", "晚餐"};
-        String[] str2_2 = {"公交", "火车", "飞机"};
-        String[] str2_3 = {"服饰", "生活", "数码"};
-        options1Item = Arrays.asList(str1);
-        options2Item.add(Arrays.asList(str2_1));
-        options2Item.add(Arrays.asList(str2_2));
-        options2Item.add(Arrays.asList(str2_3));
+//        String[] str1 = {"餐饮", "交通", "购物"};
+//        String[] str2_1 = {"早餐", "午餐", "晚餐"};
+//        String[] str2_2 = {"公交", "火车", "飞机"};
+//        String[] str2_3 = {"服饰", "生活", "数码"};
+//        options1Item = Arrays.asList(str1);
+//        options2Item.add(Arrays.asList(str2_1));
+//        options2Item.add(Arrays.asList(str2_2));
+//        options2Item.add(Arrays.asList(str2_3));
+        options1Item = mDatabaseHelper.QueryInTopCategory();
+        options2Item = mDatabaseHelper.QueryInSubCategory();
+
     }
 
     private void showOptionPickerView(boolean isDialog) {// 弹出选择器
@@ -468,8 +475,10 @@ public class IncomeFragment  extends BaseFragment {
 
     //记账属性——账户
     private void loadAccountData() {
-        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
-        Accounts1Item = Arrays.asList(str1);
+//        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
+//        Accounts1Item = Arrays.asList(str1);
+        Accounts1Item = mDatabaseHelper.QueryAccount();
+
     }
 
     private void showAccountPickerView(boolean isDialog) {// 弹出选择器
@@ -501,8 +510,10 @@ public class IncomeFragment  extends BaseFragment {
 
     //记账属性——成员
     private void loadMemberData() {
-        String[] str1 = {"无成员","本人", "配偶", "子女"};
-        MembersItem = Arrays.asList(str1);
+//        String[] str1 = {"无成员","本人", "配偶", "子女"};
+//        MembersItem = Arrays.asList(str1);
+        MembersItem = mDatabaseHelper.QueryMember();
+
     }
 
     private void showMemberPickerView(boolean isDialog) {// 弹出选择器
