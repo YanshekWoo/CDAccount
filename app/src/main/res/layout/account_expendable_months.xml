@@ -130,6 +130,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="end|center"
+                android:layout_marginEnd="20dp"
                 app:srcCompat="@drawable/icon_arrow_right_grey" />
 
         </LinearLayout>

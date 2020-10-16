@@ -93,7 +93,7 @@ public class AccountFragment extends BaseFragment {
         recyclerView.setRecycledViewPool(viewPool);
         viewPool.setMaxRecycledViews(0, 10);
         datas = new ArrayList<String>();
-        for(int i = 0; i < 9 ;i++){
+        for(int i = 0; i < 4 ;i++){
             datas.add("" + i);
         }
 
@@ -131,12 +131,17 @@ public class AccountFragment extends BaseFragment {
             }, 1000);
         });
         //上拉加载
-        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            refreshLayout.getLayout().postDelayed(() -> {
-                adapter.loadMore(datas);
-                refreshLayout.finishLoadMore();
-            }, 1000);
-        });
+//        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+//            refreshLayout.getLayout().postDelayed(() -> {
+//                if (adapter.getItemCount() > 8) {
+//                    XToastUtils.toast("数据全部加载完毕");
+//                    refreshLayout.finishLoadMoreWithNoMoreData();//将不会再次触发加载更多事件
+//                } else {
+//                    adapter.loadMore(datas);
+//                    refreshLayout.finishLoadMore();
+//                }
+//            }, 1000);
+//        });
         refreshLayout.autoRefresh();//第一次进入触发自动刷新，演示效果
     }
 
