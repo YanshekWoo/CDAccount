@@ -1,5 +1,7 @@
 package com.xuexiang.cdaccount.adapter;
 
+import android.widget.LinearLayout;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -47,13 +49,63 @@ public class TestItem {
 //        return Arrays.asList("1", "2", "3");
     }
 
-//    public List<String> getMonth(int year){
+//    //输入年份，返回该年份中有记录的月份
+//    public List<String> getMonthByYear(int year){
 //
 //    }
 //
-//    public List<String> getDay (int year, int month){
+//    //输入年份，返回该年份总收入
+//    public int getIncomeByYear (int year) {
 //
 //    }
 //
-//    public
+//    //输入年份，返回该年份总支出
+//    public int getOutComeByYear (int year) {
+//
+//    }
+//
+//    //输入年份和月份，返回该年该月中有记录的天
+//    public List<String> getDayByMonth (int year, int month){
+//
+//    }
+//
+//    //输入年份和月份，返回该月总收入
+//    public int getIncomeByMonth (int year, int month){
+//
+//    }
+//
+//    //输入年份和月份，返回该月总支出
+//    public int getOutcomeByMonth (int year, int month){
+//
+//    }
+//
+//    //输入年份月份天，返回该日总收入
+//    public int getIncomeByDay (int year, int month ,int day){
+//
+//    }
+//
+//    //输入年份月份天，返回该日总支出
+//    public int getOutcomeByDay (int year, int month, int day){
+//
+//    }
+//
+//    //返回流水
+//    public List<Bill> getBillByDay (int year, int month, int day, String mainCatagory, String subCatagory, String member, String account, String startTime, String endTime){
+//
+//    }
+//
+//    //返回全部账户名
+//    public List<String> getAccountName () {
+//
+//    }
+//
+//    //返回全部账户金额
+//    public List<String> getAccountMoney() {
+//
+//    }
+//
+//    //查找账户，存在返回true
+//    boolean FindAccountName (String name){
+//
+//    }
 }

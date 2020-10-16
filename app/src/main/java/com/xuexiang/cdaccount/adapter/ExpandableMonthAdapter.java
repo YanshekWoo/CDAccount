@@ -103,7 +103,7 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
 //            }
         }
         else {
-//            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+            XToastUtils.toast("点击了:" + t.getRefresh());
             isSelected = position == mSelectPosition;         //false
             expandableLayout.setExpanded(isSelected, true);
         }

@@ -176,7 +176,7 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<TestItem> {
         }
 
         //设置选择天的卡片样式
-        if(item.getYear() && item.getMonth() && !item.getDay()){
+        if(item.getYear() && item.getMonth() && item.getDay()){
             holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(10);
             holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(10);
 //            holder.getImageView(R.id.year_indicator).setMaxHeight(10);
