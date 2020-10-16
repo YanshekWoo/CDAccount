@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlEnableAutoLoadMore="true"
-        app:srlEnableLoadMore="true">
+        app:srlEnableLoadMore="false">
 
         <com.scwang.smartrefresh.header.MaterialHeader
             android:layout_width="match_parent"

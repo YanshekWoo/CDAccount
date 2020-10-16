@@ -17,33 +17,30 @@
 
 package com.xuexiang.cdaccount.activity;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.xuexiang.cdaccount.ExpanableBill.BillDataDay;
+import com.xuexiang.cdaccount.ExpanableBill.BillDataItem;
+import com.xuexiang.cdaccount.ExpanableBill.BillDataMonth;
+import com.xuexiang.cdaccount.ExpanableBill.BillDataYear;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.adapter.ExpandableListAdapter;
 import com.xuexiang.cdaccount.adapter.ExpandableYearAdapter;
-import com.xuexiang.cdaccount.adapter.ExpendableAdapter;
 import com.xuexiang.cdaccount.adapter.TestItem;
-import com.xuexiang.cdaccount.adapter.dropdownmenu.ConstellationAdapter;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
-import com.xuexiang.cdaccount.utils.DemoDataProvider;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.utils.WidgetUtils;
@@ -59,8 +56,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 public class AccountDetailsActivity extends BaseActivity {
@@ -91,6 +90,11 @@ public class AccountDetailsActivity extends BaseActivity {
 
     private Collection<String> datas;
     private TestItem t;
+    private int listCount = 0;
+    private boolean yearFocusable = true;
+    private boolean monthFocusable =false;
+    private boolean dayFocusable = false;
+    List<BillDataYear> billDataYearList = new ArrayList<>();
 
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
@@ -128,20 +132,19 @@ public class AccountDetailsActivity extends BaseActivity {
 //        XUIAlphaButton Btn_date_start = findViewById(R.id.btn_date_start);
 //        XUIAlphaButton Btn_date_end = findViewById(R.id.btn_date_end);
 
-        Btn_date_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerStart(Btn_date_start);
-            }
-        });
-        Btn_date_end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerEnd(Btn_date_end);
-            }
-        });
+//        Btn_date_start.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showDatePickerStart(Btn_date_start);
+//            }
+//        });
+//        Btn_date_end.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showDatePickerEnd(Btn_date_end);
+//            }
+//        });
 
-        t = new TestItem();
 
 //        initData(datas);
         initTitleBar();
@@ -152,16 +155,9 @@ public class AccountDetailsActivity extends BaseActivity {
 
     }
 
-//    protected void initData(Collection<String> datas){
-//        datas = new ArrayList<String>();
-//        for(int i = 0; i < 9 ;i++){
-//            datas.add("" + i);
-//        }
-//    }
 
     protected void initTitleBar() {
         String account = getIntent().getStringExtra("account");
-//        mTitleBar.setTitle(account);
         mTitleBar.setLeftClickListener(view -> {
             finish();
         });
@@ -175,11 +171,9 @@ public class AccountDetailsActivity extends BaseActivity {
      *初始化Recycle布局
      */
     protected void initRecyclerViews() {
-        adapter = new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView);
+        adapter = new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, getTestData());
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
-
-
 
 //        RefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
         refreshLayout.setEnableAutoLoadMore(true);//开启自动加载功能（非必须）
@@ -189,11 +183,15 @@ public class AccountDetailsActivity extends BaseActivity {
 //            TestItem t = new TestItem(0,true);
 //            t.addMonth(false);
 //            t.addDay(false);
-            t.addRefresh(true);
-            List<TestItem> datas = new ArrayList<>();
-            datas.add(t);
+//            t.addRefresh(true);
+//            List<TestItem> datas = new ArrayList<>();
+//            datas.add(t);
 
-            adapter.refresh(datas);
+            billDataYearList = getTestData();
+            listCount = 0;
+            setFocusedExpandable(yearFocusable, monthFocusable, dayFocusable);
+
+            adapter.refresh(getBillData(listCount));
             refreshLayout12.finishRefresh();
             refreshLayout12.resetNoMoreData();//setNoMoreData(false);
         }, 2000));
@@ -206,10 +204,13 @@ public class AccountDetailsActivity extends BaseActivity {
 //                adapter.loadMore(DemoDataProvider.getDemoData());
 //                datas = DemoDataProvider.getDemoData();
 //                TestItem t2 = new TestItem(1,false);
-                t.addRefresh(false);
-                List<TestItem> datas2 = new ArrayList<>();
-                datas2.add(t);
-                adapter.loadMore(datas2);
+//                t.addRefresh(true);
+//                List<TestItem> datas2 = new ArrayList<>();
+//
+                listCount++;
+                if(listCount < billDataYearList.size()) {
+                    adapter.loadMore(getBillData(listCount));
+                }
                 refreshLayout1.finishLoadMore();
             }
         }, 2000));
@@ -220,6 +221,40 @@ public class AccountDetailsActivity extends BaseActivity {
 //        recyclerView.setLayoutManager(new LinearLayoutManager(AccountDetailsActivity.this));
 //        recyclerView.setAdapter(new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, DemoDataProvider.getDemoData1()));
     }
+
+
+    protected List<BillDataYear> getTestData() {
+        List<BillDataYear> billDataYearList = new ArrayList<>();
+        for(int y=2020;y > 2017;y--) {
+            List<BillDataMonth> billDataMonthList = new ArrayList<>();
+
+            for(int m=1;m < 3;m++) {
+                List<BillDataDay> billDataDayList = new ArrayList<>();
+
+                for(int d=1;d < 5; d++) {
+                    List<BillDataItem> billDataItemList = new ArrayList<>();
+                    for(int i=1;i< 4;i++) {
+                        billDataItemList.add(new BillDataItem(new Random().nextInt(2), "早午晚餐", "信用卡", "to账户", "本人", Integer.toString(y), Integer.toString(m), Integer.toString(d), "20:34", (double) new Random().nextInt(2000), "这是备注"));
+                    }
+                    billDataDayList.add(new BillDataDay(Integer.toString(d), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataItemList));
+                }
+
+                billDataMonthList.add(new BillDataMonth(Integer.toString(m), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataDayList));
+            }
+
+            billDataYearList.add(new BillDataYear(Integer.toString(y), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataMonthList));
+        }
+        return billDataYearList;
+    }
+
+    protected List<BillDataYear> getBillData(int count) {
+        List<BillDataYear> showBillDataYearList = new ArrayList<>();
+        if(count < getTestData().size()) {
+            showBillDataYearList.add(billDataYearList.get(count));
+        }
+        return showBillDataYearList;
+    }
+
 
     /**
      * 用数组初始化菜单选项
@@ -312,28 +347,19 @@ public class AccountDetailsActivity extends BaseActivity {
             mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mTimes[position]);
             switch (position){
                 case 0:
-//                    year_expendable = true;
-//                    month_expendable = false;
-//                    day_expendable = false;
-                    t.addYear(true);
-                    t.addMonth(false);
-                    t.addDay(false);
+                    yearFocusable = true;
+                    monthFocusable = false;
+                    dayFocusable = false;
                     break;
                 case 1:
-//                    month_expendable = true;
-//                    year_expendable = false;
-//                    day_expendable = false;
-                    t.addYear(true);
-                    t.addMonth(true);
-                    t.addDay(false);
+                    yearFocusable = false;
+                    monthFocusable = true;
+                    dayFocusable = false;
                     break;
                 case 2:
-//                    day_expendable = true;
-//                    year_expendable = false;
-//                    month_expendable = false;
-                    t.addYear(true);
-                    t.addMonth(true);
-                    t.addDay(true);
+                    yearFocusable = false;
+                    monthFocusable = false;
+                    dayFocusable = true;
                     break;
             }
 
@@ -385,6 +411,18 @@ public class AccountDetailsActivity extends BaseActivity {
     }
 
 
+    private void setFocusedExpandable(boolean yearSelect, boolean monthSelect, boolean daySelect) {
+        for(BillDataYear billDataYear : billDataYearList) {
+            billDataYear.setmYearSelected(yearSelect);
+            for(BillDataMonth billDataMonth : billDataYear.getmBillDataMonthList()){
+                billDataMonth.setmMonthSelected(monthSelect);
+                for(BillDataDay billDataDay : billDataMonth.getmBillDataDayList()) {
+                    billDataDay.setmDaySelected(daySelect);
+                }
+            }
+        }
+    }
+
 
     /**
      * 初始化日期选择控件
@@ -400,30 +438,34 @@ public class AccountDetailsActivity extends BaseActivity {
 
     }
 
+
     /**
      * 日期选择控件
      *
-
-    OnClick({R.id.btn_date_start, R.id.btn_date_end})
+     **/
+    @SuppressLint("NonConstantResourceId")
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @OnClick({R.id.btn_date_start, R.id.btn_date_end})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_date_start:
-                showDatePickerStart(Btn_date_start);
+                showDatePickerStart();
                 break;
             case R.id.btn_date_end:
-                showDatePickerEnd(Btn_date_end);
+                showDatePickerEnd();
                 break;
             default:
                 break;
         }
-    }*/
+    }
 
-    private void showDatePickerStart(XUIAlphaButton Btn_date_start) {
+
+    private void showDatePickerStart() {
         if (mDatePickerStart == null) {
             //选择器初始化
             Calendar calendar = Calendar.getInstance();
             calendar.roll(Calendar.MONTH, -1);
-            mDatePickerStart = new TimePickerBuilder(AccountDetailsActivity.this, (date, v) ->
+            mDatePickerStart = new TimePickerBuilder(this, (date, v) ->
             {
                 //选择器监听
                 mDateStart = date;
@@ -433,17 +475,22 @@ public class AccountDetailsActivity extends BaseActivity {
                 }
             })
                     .setDate(calendar)  //默认日期为当前的前一个月
-                    .setTimeSelectChangeListener(date -> Log.i("pvTime", Calendar.getInstance().toString()))
+                    .setTimeSelectChangeListener(date -> {
+                        if(date.after(mDateEnd)) {
+                            XToastUtils.error("开始日期不能晚于结束日期");
+                        }
+                    })
                     .setTitleText("开始日期")
                     .build();
         }
         mDatePickerStart.show();
     }
 
-    private void showDatePickerEnd(XUIAlphaButton Btn_date_end) {
+
+    private void showDatePickerEnd() {
         if (mDatePickerEnd == null) {
             //选择器初始化
-            mDatePickerEnd = new TimePickerBuilder(AccountDetailsActivity.this, (date, v) ->
+            mDatePickerEnd = new TimePickerBuilder(this, (date, v) ->
             {
                 //选择器监听
                 mDateEnd = date;
@@ -452,7 +499,11 @@ public class AccountDetailsActivity extends BaseActivity {
                     XToastUtils.error("结束日期不能早于开始日期");
                 }
             })
-                    .setTimeSelectChangeListener(date -> Log.i("pvTime", Calendar.getInstance().toString()))
+                    .setTimeSelectChangeListener(date -> {
+                        if(date.before(mDateStart)) {
+                            XToastUtils.error("结束日期不能早于开始日期");
+                        }
+                    })
                     .setTitleText("结束日期")
                     .build();
         }
