@@ -23,20 +23,20 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xuexiang.cdaccount.ExpanableBill.BillDataItem;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
-import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
 import java.util.Collection;
 
-public class ExpandableItemAdapter extends BaseRecyclerAdapter<String> {
+public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
 
     private RecyclerView mRecyclerView;
     private Context context;
 
-    public ExpandableItemAdapter(Context context, RecyclerView recyclerView,Collection<String> data) {
+    public ExpandableItemAdapter(Context context, RecyclerView recyclerView,Collection<BillDataItem> data) {
         super(data);
         mRecyclerView = recyclerView;
         this.context = context;
@@ -48,9 +48,9 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<String> {
     }
 
     @Override
-    protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-        holder.text(R.id.tv_date, ResUtils.getResources().getString(R.string.item_example_number, position + 1));
-        holder.text(R.id.tv_money,"000");
+    protected void bindData(@NonNull RecyclerViewHolder holder, int position, BillDataItem item) {
+        holder.text(R.id.tv_date, item.getTime());
+        holder.text(R.id.tv_money,Double.toString(item.getBill_Money()));
         holder.click(R.id.account_detail, new View.OnClickListener() {
             @Override
             public void onClick(View view) {

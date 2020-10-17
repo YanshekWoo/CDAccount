@@ -21,6 +21,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -51,7 +52,8 @@ import com.xuexiang.cdaccount.chartsclass.MyBarChart;
 import com.xuexiang.cdaccount.chartsclass.MyLineChart;
 import com.xuexiang.cdaccount.chartsclass.MyPieChart;
 import com.xuexiang.cdaccount.core.BaseFragment;
-import com.xuexiang.cdaccount.utils.DemoDataProvider;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.annotation.Page;
@@ -65,7 +67,9 @@ import com.xuexiang.xutil.data.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -136,8 +140,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     private int tabInout;
 
     private ChartListAdapter madapter;
-    private ArrayList<String> datas;
-    private Context TrendingFragment;
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -165,11 +167,10 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @Override
     protected void initViews() {
         init_tab();
+        initRecycleView();
         initTimePicker();
         initChart();
         selectChart(0);
-        initRecycleView();
-
     }
 
 
@@ -256,20 +257,56 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void refreshCharts() {
+        BillDao billDao = new BillDao(getContext());
+
+        // chart datas
+        BarData barData = new BarData();
+        PieData pieData = new PieData();
+        LineData lineData = new LineData();
+
+        // parse date to string
+        String[] strDateStart = DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()).split("-");
+        String[] strDateEnd = DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()).split("-");
+        String start_year = strDateStart[0];
+        String start_month = strDateStart[1];
+        String start_day = strDateStart[2];
+        String end_year = strDateEnd[0];
+        String end_month = strDateEnd[1];
+        String end_day = strDateEnd[2];
+
+//        Log.i("datestart", start_year+start_month+start_day);
+//        Log.i("dateend", end_year+end_month+end_day);
+
+
+        // get the chart data
+        switch (tabSelected) {
+            case 0:
+                List<ChartDataEntry> chartDataEntries = billDao.GetDateByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                barData = myBarChart.setBardata(chartDataEntries);
+                pieData = myPieChart.setPiedata(mPieChart, chartDataEntries);
+                lineData = myLineChart.setLinedata(billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day));
+                Collections.sort(chartDataEntries);
+                madapter.refresh(chartDataEntries);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+
         // 柱状图
-        BarData barData = myBarChart.setBardata();
         mBarChart.setData(barData);
         mBarChart.animateXY(1500, 1500);
         mBarChart.invalidate();
 
         //饼图
-        PieData pieData = myPieChart.setPiedata(mPieChart);
         mPieChart.setData(pieData);
         mPieChart.animateXY(1500, 1500);
         mPieChart.invalidate();
 
         //折线图
-        LineData lineData = myLineChart.setLinedata();
         mLineChart.setData(lineData);
         mLineChart.animateXY(1500, 1500);
         mLineChart.invalidate();
@@ -305,11 +342,11 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     protected void initTimePicker() {
         Calendar calendar = Calendar.getInstance();
         mDateEnd = calendar.getTime();
-        Btn_date_end.setText(DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
+        Btn_date_end.setText(DateUtils.date2String(calendar.getTime(), DateUtils.yyyyMMdd.get()));
 
         calendar.roll(Calendar.MONTH, -1);
         mDateStart = calendar.getTime();
-        Btn_date_start.setText(DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()));
+        Btn_date_start.setText(DateUtils.date2String(calendar.getTime(), DateUtils.yyyyMMdd.get()));
 
     }
 
@@ -320,6 +357,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      * @param view
      * 当前视图
      */
+    @SuppressLint("NonConstantResourceId")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @OnClick({R.id.btn_date_start, R.id.btn_date_end})
     public void onViewClicked(View view) {
@@ -412,7 +450,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      * 初始化RecycleView
      */
     private void initRecycleView() {
-        madapter = new ChartListAdapter(getContext(), chart_recyclerView, DemoDataProvider.getDemoData1());
+        List<ChartDataEntry> chartDataEntries = new ArrayList<>();
+        madapter = new ChartListAdapter(getContext(), chart_recyclerView, chartDataEntries);
         WidgetUtils.initRecyclerView(chart_recyclerView);
         chart_recyclerView.setAdapter(madapter);
     }
@@ -439,6 +478,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      * @param tab
      * tab按钮
      */
+    @SuppressLint("NonConstantResourceId")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -449,12 +489,9 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 tabInout = tab.getPosition();
                 XToastUtils.toast("选中了:" + Integer.toString(tabInout));
                 break;
-//            case R.id.chart_tab_selector:
-//                tabSelected = tab.getPosition();
-//                XToastUtils.toast("选中了:" + Integer.toString(tabSelected));
-//                break;
             case R.id.chart_tab_selector:
                 int i = tab.getPosition();
+                tabSelected = tab.getPosition();
                 XToastUtils.toast("选中了:" + Integer.toString(i));
                 break;
             default:
@@ -472,7 +509,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-        XToastUtils.toast("选中了:" + tab.getText());
+//        XToastUtils.toast("选中了:" + tab.getText());
 
         refreshCharts();
     }

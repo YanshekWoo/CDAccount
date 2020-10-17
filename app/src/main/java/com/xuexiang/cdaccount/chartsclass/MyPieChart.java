@@ -28,6 +28,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,12 +80,12 @@ public class MyPieChart {
         legend.setWordWrapEnabled(false);
     }
 
-    public PieData setPiedata(PieChart pieChart) {
+    public PieData setPiedata(PieChart pieChart, List<ChartDataEntry> chartDataEntries) {
         Random myRandom = new Random();
         //设置数据
         List<PieEntry> entries = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            entries.add(new PieEntry((float) (Math.random()) * 80, Integer.toString(i)));
+        for (int i = 0; i < chartDataEntries.size(); i++) {
+            entries.add(new PieEntry((float) chartDataEntries.get(i).getDataMoney(), chartDataEntries.get(i).getDataName()));
         }
 
         List<Integer> colors = new ArrayList<>();
