@@ -28,19 +28,15 @@ import android.widget.EditText;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.RandomUtils;
-import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.TokenUtils;
-import com.xuexiang.cdaccount.utils.Utils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.ResUtils;
-import com.xuexiang.xui.utils.SnackbarUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
-import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.display.Colors;
 
 import butterknife.BindView;
@@ -176,6 +172,7 @@ public class RegisterVerifyActivity extends BaseActivity {
     private void onLoginSuccess() {
         String token = RandomUtils.getRandomNumbersAndLetters(16);
         if (TokenUtils.handleLoginSuccess(token)) {
+            initDate();
             Intent intent = new Intent(RegisterVerifyActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -199,7 +196,31 @@ public class RegisterVerifyActivity extends BaseActivity {
     }
 
 
+    public void initDate(){
+        BillDao mDataBaseHelper = new BillDao(this);
+        mDataBaseHelper.InsertCategory("餐饮食品","",0);
+        mDataBaseHelper.InsertCategory("餐饮食品","早午晚餐",0);
+        mDataBaseHelper.InsertCategory("餐饮食品","水果零食",0);
+        mDataBaseHelper.InsertCategory("餐饮食品","烟酒茶水",0);
+        mDataBaseHelper.InsertCategory("行车交通","公共交通",0);
+        mDataBaseHelper.InsertCategory("衣物饰品","鞋帽包包",0);
+        mDataBaseHelper.InsertCategory("行车交通","打车租车",0);
 
+        mDataBaseHelper.InsertCategory("职业收入","工资收入",1);
+        mDataBaseHelper.InsertCategory("职业收入","",1);
+        mDataBaseHelper.InsertCategory("职业收入","加班收入",1);
+        mDataBaseHelper.InsertCategory("职业收入","奖金收入",1);
+        mDataBaseHelper.InsertCategory("其他收入","中奖收入",1);
+
+
+        mDataBaseHelper.InsertAccount("");
+        mDataBaseHelper.InsertAccount("现金");
+        mDataBaseHelper.InsertAccount("信用卡");
+
+        mDataBaseHelper.InsertMember("无成员");
+        mDataBaseHelper.InsertMember("本人");
+        mDataBaseHelper.InsertMember("配偶");
+    }
 
 
 

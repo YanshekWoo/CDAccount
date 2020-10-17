@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.xuexiang.cdaccount.database.Sum;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 import com.xuexiang.cdaccount.somethingDao.DatabaseHelper;
 
 import java.text.DecimalFormat;
@@ -395,7 +395,18 @@ public class BillDao {
         return re;
     }
 
-    public List<Sum> GetDateByOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){//通过测试
+
+    /**
+     * 按一级分类分组获取收入支出
+     * @param start_year 开始日期年份
+     * @param start_month 开始日期月份
+     * @param start_day 开始日期天
+     * @param end_year 结束日期年份
+     * @param end_month 结束日期月份
+     * @param end_day 结束日期天
+     * @return List<ChartDataEntry>
+     */
+    public List<ChartDataEntry> GetDateByOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){//通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -416,7 +427,7 @@ public class BillDao {
 
         String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Sum> re = new LinkedList<Sum>();
+        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
         Map<String,Double> ans =  new HashMap<String,Double>();
         while(cursor.moveToNext()){
@@ -432,13 +443,13 @@ public class BillDao {
                 ans.put(tmp2, tmp4);
         }
         for (Map.Entry<String, Double> entry : ans.entrySet()) {
-            Sum tmp = new Sum(entry.getKey(), entry.getValue());
+            ChartDataEntry tmp = new ChartDataEntry(entry.getKey(), entry.getValue());
             re.add(tmp);
         }
         return re;
     }
 
-    public List<Sum> GetDateByOutSubCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){  //通过测试
+    public List<ChartDataEntry> GetDateByOutSubCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){  //通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -452,17 +463,17 @@ public class BillDao {
 
         String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Sum> re = new LinkedList<Sum>();
+        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
         while(cursor.moveToNext()){
             Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_SubCategory")));
-            Sum tmp = new Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
+            ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
     }
 
-    public List<Sum> GetDateByMember(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){ //通过测试
+    public List<ChartDataEntry> GetDateByMember(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){ //通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -476,17 +487,17 @@ public class BillDao {
 
         String sql = "select Bill_ID, Bill_Member, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_Member";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Sum> re = new LinkedList<Sum>();
+        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
         while(cursor.moveToNext()){
             Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_Member")));
-            Sum tmp = new Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
+            ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
     }
 
-    public List<Sum> GetDateByAccount(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){//通过测试
+    public List<ChartDataEntry> GetDateByAccount(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){//通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -500,33 +511,33 @@ public class BillDao {
 
         String sql = "select Bill_ID, Bill_Account, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_Account";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Sum> re = new LinkedList<Sum>();
+        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
         while(cursor.moveToNext()){
             Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_Account")));
-            Sum tmp = new Sum(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
+            ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
     }
 
-    public List<Sum> GetSumByDate(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){ //按天求和 通过测试
+    public List<ChartDataEntry> GetSumByDate(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day){ //按天求和 通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
         String sql = "select year || month || day as date, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by date";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Sum> re = new LinkedList<Sum>();
+        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
         while(cursor.moveToNext()){
-            Sum tmp = new Sum(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
+            ChartDataEntry tmp = new ChartDataEntry(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
     }
 
-    public List<Sum> GetSumByDateAndOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day, String category){    //通过测试
+    public List<ChartDataEntry> GetSumByDateAndOutTopCategory(String start_year, String start_month, String start_day, String end_year, String end_month, String end_day, String category){    //通过测试
         String st = start_year+start_month+start_day;
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -539,10 +550,10 @@ public class BillDao {
 
         String sql = "select year || month || day as date, sum(Bill_Money)as nums, Bill_SubCategory, OutSubCategory_ID, OutSubCategory_Parent from Bill inner join OutSubCategory on OutSubCategory_ID = Bill_SubCategory where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND OutSubCategory_Parent = "+id_parent+" group by date";
         Cursor cursor = db.rawQuery(sql, null);
-        List<Sum> re = new LinkedList<Sum>();
+        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
         while(cursor.moveToNext()){
-            Sum tmp = new Sum(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
+            ChartDataEntry tmp = new ChartDataEntry(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
         return re;
