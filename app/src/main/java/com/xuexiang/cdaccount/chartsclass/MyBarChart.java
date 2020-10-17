@@ -28,11 +28,11 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.model.GradientColor;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 import static com.xuexiang.xutil.XUtil.getContext;
 import static com.xuexiang.xutil.XUtil.getResources;
@@ -91,10 +91,10 @@ public class MyBarChart {
      * 设置图表数据
      * @return bardata
      */
-    public BarData setBardata() {
+    public BarData setBardata(List<ChartDataEntry> chartDataEntries) {
         List<BarEntry> entries = new ArrayList<>();
-        for(int i = 0;i < 12;i++) {
-            entries.add(new BarEntry(i, new Random().nextInt(2000)));
+        for(int i = 0; i < chartDataEntries.size(); i++) {
+            entries.add(new BarEntry(i, (float) chartDataEntries.get(i).getDataMoney(), chartDataEntries.get(i).getDataName()));
         }
         BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
 

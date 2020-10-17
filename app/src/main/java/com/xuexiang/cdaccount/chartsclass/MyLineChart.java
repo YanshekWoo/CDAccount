@@ -29,7 +29,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.arima.RunARIMA;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,30 +90,24 @@ public class MyLineChart {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public LineData setLinedata() {
+    public LineData setLinedata(List<ChartDataEntry> chartDataEntries) {
         //设置数据
         List<Entry> entries = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            entries.add(new Entry(i, (float) (Math.random()) * 80));
-//        }
-
-        entries.add(new Entry(0, (float) 2285));
-        entries.add(new Entry(1, (float) 1670));
-        entries.add(new Entry(2, (float) 2341));
-        entries.add(new Entry(3, (float) 1781));
-        entries.add(new Entry(4, (float) 1737));
-        entries.add(new Entry(5, (float) 2210));
-        entries.add(new Entry(6, (float) 2824));
-        entries.add(new Entry(7, (float) 3141));
-        entries.add(new Entry(8, (float) 2089));
-        entries.add(new Entry(9, (float) 1989));
-        //预测 predict
-        RunARIMA ra = new RunARIMA();
-        for(int i=10; i < 13; i++) {
-            float predict = ra.predictNext(entries);
-            entries.add(new Entry(i, predict));
+        for (int i = 0; i < chartDataEntries.size(); i++) {
+            entries.add(new Entry(i, (float) chartDataEntries.get(i).getDataMoney()));
         }
 
+//        // ARIMA预测 predict
+//        if(chartDataEntries.size() >= 5) {
+//            RunARIMA ra = new RunARIMA();
+//            for(int i=chartDataEntries.size(); i < chartDataEntries.size()+2; i++) {
+//                float predict = ra.predictNext(entries);
+//                while(predict<0) {
+//                    predict = ra.predictNext(entries);
+//                }
+//                entries.add(new Entry(i, predict));
+//            }
+//        }
 
         LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));

@@ -20,29 +20,20 @@ package com.xuexiang.cdaccount.adapter.charts;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
-import com.xuexiang.cdaccount.adapter.ExpandableMonthAdapter;
-import com.xuexiang.cdaccount.utils.DemoDataProvider;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
-import com.xuexiang.xui.utils.ResUtils;
-import com.xuexiang.xui.utils.WidgetUtils;
-import com.xuexiang.xui.widget.layout.ExpandableLayout;
 
 import java.util.Collection;
-
-import static com.xuexiang.xutil.XUtil.getContext;
-import static com.xuexiang.xutil.app.ActivityUtils.startActivity;
 
 /**
  * 可伸缩布局适配器
@@ -50,12 +41,12 @@ import static com.xuexiang.xutil.app.ActivityUtils.startActivity;
  * @author xuexiang
  * @since 2019-11-22 15:38
  */
-public class ChartListAdapter extends BaseRecyclerAdapter<String> {
+public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
 
     private RecyclerView mRecyclerView;
     private Context context;
 
-    public ChartListAdapter(Context context, RecyclerView recyclerView, Collection<String> data) {
+    public ChartListAdapter(Context context, RecyclerView recyclerView, Collection<ChartDataEntry> data) {
         super(data);
         this.mRecyclerView = recyclerView;
         this.context = context;
@@ -78,13 +69,14 @@ public class ChartListAdapter extends BaseRecyclerAdapter<String> {
      * @param item     列表项
      */
     @Override
-    protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
+    protected void bindData(@NonNull RecyclerViewHolder holder, int position, ChartDataEntry item) {
         ProgressBar progressBar = holder.findViewById(R.id.adapter_chart_list_progressbar);
 
-        holder.text(R.id.adapter_chart_list_position,Integer.toString(position));
-        holder.text(R.id.adapter_chart_list_title,"金融股票");
-        holder.text(R.id.adapter_chart_list_money,"8500.00");
         progressBar.setProgress(58);
+        holder.text(R.id.adapter_chart_list_position,Integer.toString(position));
+        holder.text(R.id.adapter_chart_list_title,item.getDataName());
+        holder.text(R.id.adapter_chart_list_money,Double.toString(item.dataMoney));
+
 
         holder.click(R.id.adapter_chart_list_card, new View.OnClickListener() {
             @SingleClick
