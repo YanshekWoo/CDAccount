@@ -18,6 +18,7 @@
 package com.xuexiang.cdaccount.adapter.record;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,12 +37,13 @@ public class RecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Context mContext;
     private List<String> mRecentDate, mRecentInfo;
     private List<Integer> mRecentType;
+    private int mLength;
 
     public enum ItemType {
-        OUT,IN
+        OUT, IN, END
     }
 
-    public RecordAdapter(Context context, List<String> Date, List<String> Info, List<Integer> Type){
+    public RecordAdapter(Context context, List<String> Date, List<String> Info, List<Integer> Type) {
         this.mContext = context;
         this.mRecentInfo = Info;
         this.mRecentDate = Date;
@@ -51,10 +53,12 @@ public class RecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == ItemType.OUT.ordinal()){
-            return new RecordViewHolder1(LayoutInflater.from(mContext).inflate(R.layout.layout_record_out,parent,false));
-        }else if(viewType == ItemType.IN.ordinal()){
-            return new RecordViewHolder2(LayoutInflater.from(mContext).inflate(R.layout.layout_record_in,parent,false));
+        if (viewType == ItemType.OUT.ordinal()) {
+            return new RecordViewHolder1(LayoutInflater.from(mContext).inflate(R.layout.layout_record_out, parent, false));
+        } else if (viewType == ItemType.IN.ordinal()) {
+            return new RecordViewHolder2(LayoutInflater.from(mContext).inflate(R.layout.layout_record_in, parent, false));
+        } else if (viewType == ItemType.END.ordinal()) {
+            return new RecordViewHolder3(LayoutInflater.from(mContext).inflate(R.layout.layout_record_end, parent, false));
         }
         return null;
 
@@ -63,39 +67,61 @@ public class RecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        String Date = mRecentDate.get(position);
-        String Message = mRecentInfo.get(position);
-        Boolean IsTimeHide = false;
-        if(position < mRecentDate.size()-2 && Date.equals(mRecentDate.get(position+1))){
-            IsTimeHide = true;
+        String Date = "", Message = "";
+
+        if (position < mRecentDate.size()) {
+            Date = mRecentDate.get(position);
+            Log.d("--RecordAdapter--", String.valueOf(position) + Date);
+            Message = mRecentInfo.get(position);
         }
 
+        boolean IsTimeHide = false;
+//        if (position < mRecentDate.size() - 1 && mRecentDate.get(position).equals(mRecentDate.get(position + 1))) {
+//            IsTimeHide = true;
+//        } else {
+//            IsTimeHide = false;
+//        }
+
         if (holder instanceof RecordViewHolder1) {
-            ((RecordViewHolder1) holder).time.setText(Date);
-            if(IsTimeHide){
+            if (mRecentDate.size() == 0) {
                 ((RecordViewHolder1) holder).time.setHeight(0);
+                ((RecordViewHolder1) holder).message.setText("欢迎来到《天龙记账》，点击上方的“+”即可开始记账，我会在这里告诉你最近的账目");
+            } else {
+                ((RecordViewHolder1) holder).time.setText(Date);
+                if (IsTimeHide) {
+                    ((RecordViewHolder1) holder).time.setHeight(0);
+                }
+                ((RecordViewHolder1) holder).message.setText(Message);
             }
-            ((RecordViewHolder1) holder).message.setText(Message);
         } else if (holder instanceof RecordViewHolder2) {
             ((RecordViewHolder2) holder).time.setText(Date);
-            if(IsTimeHide){
+            if (IsTimeHide) {
                 ((RecordViewHolder2) holder).time.setHeight(0);
             }
-            ((RecordViewHolder2) holder).message.setText(Message);        }
+            ((RecordViewHolder2) holder).message.setText(Message);
+        } else if (holder instanceof RecordViewHolder3) ;
+
     }
 
     @Override
     public int getItemCount() {
-        return mRecentDate.size();       //至多展示20条数据
+        return mRecentDate.size() + 1;       //至多展示20条数据，加一条末尾提示
+
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (mRecentType.get(position));
+        if (position < mRecentDate.size()) {
+            return (mRecentType.get(position));
+        } else if (mRecentDate.size() == 0) {
+            return ItemType.OUT.ordinal();
+        } else {
+            return ItemType.END.ordinal();
+        }
     }
 
-    public static class RecordViewHolder1 extends RecyclerView.ViewHolder{
-        private TextView time,message;
+    public static class RecordViewHolder1 extends RecyclerView.ViewHolder {
+        private TextView time, message;
         private ChatView chatView;
 
         public RecordViewHolder1(@NonNull View itemView) {
@@ -106,8 +132,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public static class RecordViewHolder2 extends RecyclerView.ViewHolder{
-        private TextView time,message;
+    public static class RecordViewHolder2 extends RecyclerView.ViewHolder {
+        private TextView time, message;
         private ChatView chatView;
 
         public RecordViewHolder2(@NonNull View itemView) {
@@ -115,6 +141,14 @@ public class RecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             time = itemView.findViewById(R.id.tv_time);
             message = itemView.findViewById(R.id.tv_record);
             chatView = itemView.findViewById(R.id.chatview);
+        }
+    }
+
+    public static class RecordViewHolder3 extends RecyclerView.ViewHolder {
+
+        public RecordViewHolder3(@NonNull View itemView) {
+            super(itemView);
+
         }
     }
 }
