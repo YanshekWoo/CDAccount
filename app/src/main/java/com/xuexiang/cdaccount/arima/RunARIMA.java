@@ -4,7 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.github.mikephil.charting.data.Entry;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +15,12 @@ public class RunARIMA
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.N)
-	public float predictNext(List<Entry> entries)
+	public double predictNext(List<ChartDataEntry> entries)
 	{
 		//获取entries数据
 		ArrayList<Double> al=new ArrayList<Double>();
-		for(Entry e : entries) {
-			al.add((double) e.getY());
+		for(ChartDataEntry e : entries) {
+			al.add((double) e.getDataMoney());
 		}
 
 		double [] data = new double[al.size()];
@@ -61,6 +61,6 @@ public class RunARIMA
 		}
 		int predict = (int)Math.round(sumPredict);
 //		System.out.println("Predict value="+predict);
-		return (float) predict;
+		return (double) predict;
 	}
 }
