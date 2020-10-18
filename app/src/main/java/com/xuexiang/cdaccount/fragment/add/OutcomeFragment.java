@@ -252,13 +252,13 @@ public class OutcomeFragment extends BaseFragment {
                 materialDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mStrNewItem1 = mEsDialog.getText();
-                        mStrNewItem2 = mEtDialog.getText().toString();
+                        mOption1 = mEsDialog.getText();
+                        mOption2 = mEtDialog.getText().toString();
+                        mOption = mOption1 + '-' + mOption2;
 
-                        mOption = mStrNewItem1 + "-" + mStrNewItem2;
                         mTvType.setText(mOption);
                         //TODO:Insert_Category
-                        mDatabaseHelper.InsertCategory(mStrNewItem1, mStrNewItem2, 0);
+                        mDatabaseHelper.InsertCategory(mOption1, mOption2, 0);
                         loadOptionData();
                     }
                 });
