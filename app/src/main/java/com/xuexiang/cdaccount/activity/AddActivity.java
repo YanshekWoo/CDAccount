@@ -124,9 +124,9 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         mTlAdd.setupWithViewPager(mVpAdd);
         WidgetUtils.setTabLayoutTextFont(mTlAdd);
 
-    /**
-     * 返回按钮
-     */
+        /**
+         * 返回按钮
+         */
 
         mIvBack = findViewById(R.id.iv_back);
         mIvBack.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +143,7 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         mBtnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (mVpAdd.getCurrentItem()){               //判断金额是否已填入
+                switch (mVpAdd.getCurrentItem()) {               //判断金额是否已填入
                     case 0:
                         IsAmountFill = mOutcomeAmount == -1;
                         break;
@@ -154,9 +154,9 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
                         IsAmountFill = mTransferAmount == -1;
                         break;
                 }
-                if(IsAmountFill){
+                if (IsAmountFill) {
                     XToastUtils.error("请填写金额");
-                }else{
+                } else {
                     mBlConfirm = true;      //置为true，表示需要插入新数据
                     finish();               //利用生命周期的回调函数完成写入数据库
                 }
@@ -224,12 +224,14 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     }
 
 
-
     @Override
     public void InsertOutcome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
-        if(mBlConfirm && mVpAdd.getCurrentItem()==0){
-            Log.d("---InsertIncome---",String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
-            mDataBaseHelper.InsertBill(0, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);        }
+        if (mBlConfirm && mVpAdd.getCurrentItem() == 0) {
+            Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
+            mDataBaseHelper.InsertBill(0, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+            XToastUtils.success("记账成功");
+
+        }
     }
 
     @Override
@@ -238,12 +240,12 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     }
 
 
-
     @Override
     public void InsertIncome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
-        if(mBlConfirm && mVpAdd.getCurrentItem()==1){
-            Log.d("---InsertIncome---",String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
+        if (mBlConfirm && mVpAdd.getCurrentItem() == 1) {
+            Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
             mDataBaseHelper.InsertBill(1, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+            XToastUtils.success("记账成功");
         }
     }
 
@@ -253,12 +255,13 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     }
 
 
-
     @Override
     public void InsertTransfer(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
-        if(mBlConfirm && mVpAdd.getCurrentItem()==2){
-            Log.d("---InsertTransfer---",String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
+        if (mBlConfirm && mVpAdd.getCurrentItem() == 2) {
+            Log.d("---InsertTransfer---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
             mDataBaseHelper.InsertBill(2, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+            XToastUtils.success("记账成功");
+
         }
     }
 
@@ -268,20 +271,20 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
 
     }
 
-    public void initDate(){
-        mDataBaseHelper.InsertCategory("餐饮食品","",0);
-        mDataBaseHelper.InsertCategory("餐饮食品","早午晚餐",0);
-        mDataBaseHelper.InsertCategory("餐饮食品","水果零食",0);
-        mDataBaseHelper.InsertCategory("餐饮食品","烟酒茶水",0);
-        mDataBaseHelper.InsertCategory("行车交通","公共交通",0);
-        mDataBaseHelper.InsertCategory("衣物饰品","鞋帽包包",0);
-        mDataBaseHelper.InsertCategory("行车交通","打车租车",0);
+    public void initDate() {
+        mDataBaseHelper.InsertCategory("餐饮食品", "", 0);
+        mDataBaseHelper.InsertCategory("餐饮食品", "早午晚餐", 0);
+        mDataBaseHelper.InsertCategory("餐饮食品", "水果零食", 0);
+        mDataBaseHelper.InsertCategory("餐饮食品", "烟酒茶水", 0);
+        mDataBaseHelper.InsertCategory("行车交通", "公共交通", 0);
+        mDataBaseHelper.InsertCategory("衣物饰品", "鞋帽包包", 0);
+        mDataBaseHelper.InsertCategory("行车交通", "打车租车", 0);
 
-        mDataBaseHelper.InsertCategory("职业收入","工资收入",1);
-        mDataBaseHelper.InsertCategory("职业收入","",1);
-        mDataBaseHelper.InsertCategory("职业收入","加班收入",1);
-        mDataBaseHelper.InsertCategory("职业收入","奖金收入",1);
-        mDataBaseHelper.InsertCategory("其他收入","中奖收入",1);
+        mDataBaseHelper.InsertCategory("职业收入", "工资收入", 1);
+        mDataBaseHelper.InsertCategory("职业收入", "", 1);
+        mDataBaseHelper.InsertCategory("职业收入", "加班收入", 1);
+        mDataBaseHelper.InsertCategory("职业收入", "奖金收入", 1);
+        mDataBaseHelper.InsertCategory("其他收入", "中奖收入", 1);
 
 
         mDataBaseHelper.InsertAccount("");
@@ -293,11 +296,6 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         mDataBaseHelper.InsertMember("配偶");
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("---AddActivity---","Pause");
-    }
 }
 
 

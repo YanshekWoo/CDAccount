@@ -43,9 +43,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:paddingLeft="10dp"
+            android:layout_marginLeft="40dp"
             android:paddingTop="10dp"
-            android:paddingRight="15dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="10dp"
 
             android:paddingBottom="10dp"
             chat:arrow_direction="right"
@@ -63,6 +64,7 @@
                 android:id="@+id/tv_record"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_centerVertical="true"
                 android:text="这是箭头向左的聊天气泡"
                 android:textColor="#4a4a4a"
@@ -74,6 +76,8 @@
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             chat:srcCompat="@drawable/ic_default_head"
+            android:layout_centerVertical="true"
+
             />
     </RelativeLayout>
 

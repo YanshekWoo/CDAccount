@@ -66,7 +66,7 @@ public class OutcomeFragment extends BaseFragment {
     private EditText mEtAmount;
     private double mAmount = -1;    //负数作空标志
 
-    private TextView mTvDateTime;
+    private TextView mTvDate,mTvTime;
     private TimePickerView mDatePicker;
     private TimePickerView mTimePicker;
     private Date mDate, mTime;
@@ -189,7 +189,8 @@ public class OutcomeFragment extends BaseFragment {
 //        Date cur_date = new Date();
 //        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 //        mTvDateTime.setText(dateFormat.format(cur_date));
-        mTvDateTime = findViewById(R.id.tv_datatime);
+        mTvDate = findViewById(R.id.tv_date);
+        mTvTime = findViewById(R.id.tv_time);
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
@@ -202,11 +203,19 @@ public class OutcomeFragment extends BaseFragment {
         mStrDay = String.valueOf(day);
         mStrTime = String.format("%02d", hour) + ":" + String.format("%02d", minute);
 
-        mTvDateTime.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + "  " + mStrTime);
-        mTvDateTime.setOnClickListener(new View.OnClickListener() {
+        mTvDate.setText(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day));
+        mTvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDatePicker();
+            }
+        });
+
+        mTvTime.setText(mStrTime);
+        mTvTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePicker();
             }
         });
 
@@ -252,13 +261,13 @@ public class OutcomeFragment extends BaseFragment {
                 materialDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mStrNewItem1 = mEsDialog.getText();
-                        mStrNewItem2 = mEtDialog.getText().toString();
+                        mOption1 = mEsDialog.getText();
+                        mOption2 = mEtDialog.getText().toString();
+                        mOption = mOption1 + '-' + mOption2;
 
-                        mOption = mStrNewItem1 + "-" + mStrNewItem2;
                         mTvType.setText(mOption);
                         //TODO:Insert_Category
-                        mDatabaseHelper.InsertCategory(mStrNewItem1, mStrNewItem2, 0);
+                        mDatabaseHelper.InsertCategory(mOption1, mOption2, 0);
                         loadOptionData();
                     }
                 });
@@ -405,7 +414,10 @@ public class OutcomeFragment extends BaseFragment {
                 @Override
                 public void onTimeSelected(Date date, View v) {
                     mDate = date;
-                    showTimePicker();
+                    mStrYear = DateUtils.date2String(mDate, new SimpleDateFormat("yyyy"));
+                    mStrMonth = DateUtils.date2String(mDate, new SimpleDateFormat("MM"));
+                    mStrDay = DateUtils.date2String(mDate, new SimpleDateFormat("dd"));
+                    mTvDate.setText(DateUtils.date2String(mDate, DateUtils.yyyyMMdd.get()));
                 }
             }).setTitleText("日期选择")
                     .build();
@@ -421,12 +433,8 @@ public class OutcomeFragment extends BaseFragment {
                 @Override
                 public void onTimeSelected(Date date, View v) {
                     mTime = date;
-                    mStrYear = DateUtils.date2String(mDate, new SimpleDateFormat("yyyy"));
-                    mStrMonth = DateUtils.date2String(mDate, new SimpleDateFormat("MM"));
-                    mStrDay = DateUtils.date2String(mDate, new SimpleDateFormat("dd"));
                     mStrTime = DateUtils.date2String(mTime, DateUtils.HHmm.get());
-
-                    mTvDateTime.setText(DateUtils.date2String(mDate, DateUtils.yyyyMMdd.get()) + "  " + mStrTime);
+                    mTvTime.setText(mStrTime);
                 }
             })
                     .setType(false, false, false, true, true, false)     //只显示时分
@@ -453,7 +461,8 @@ public class OutcomeFragment extends BaseFragment {
     }
 
     private void showOptionPickerView(boolean isDialog) {// 弹出选择器
-        int[] defaultSelectOptions = {0, 0};
+
+        int[] defaultSelectOptions = {options1Item.indexOf(mOption1), options2Item.get(options1Item.indexOf(mOption1)).indexOf(mOption2)};
 
         OptionsPickerView pvOptions = new OptionsPickerBuilder(getContext(), (v, options1, options2, options3) -> {
             //返回的分别是三个级别的选中位置
@@ -490,7 +499,7 @@ public class OutcomeFragment extends BaseFragment {
     }
 
     private void showAccountPickerView(boolean isDialog) {// 弹出选择器
-        int[] defaultSelectOptions = {0};
+        int[] defaultSelectOptions = {Accounts1Item.indexOf(mAccount)};
 
         OptionsPickerView pvOptions = new OptionsPickerBuilder(getContext(), (v, accounts1, accounts2, accounts3) -> {
             //返回的分别是三个级别的选中位置
@@ -524,7 +533,7 @@ public class OutcomeFragment extends BaseFragment {
     }
 
     private void showMemberPickerView(boolean isDialog) {// 弹出选择器
-        int[] defaultSelectOptions = {0};
+        int[] defaultSelectOptions = {MembersItem.indexOf(mMember)};
 
         OptionsPickerView pvOptions = new OptionsPickerBuilder(getContext(), (v, member1, member2, member3) -> {
             //返回的分别是三个级别的选中位置
