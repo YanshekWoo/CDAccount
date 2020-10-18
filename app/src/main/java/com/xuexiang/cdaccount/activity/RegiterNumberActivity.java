@@ -18,7 +18,6 @@
 package com.xuexiang.cdaccount.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -29,15 +28,16 @@ import android.widget.Button;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
-import com.xuexiang.cdaccount.utils.SettingUtils;
-import com.xuexiang.cdaccount.utils.Utils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.display.Colors;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,13 +50,17 @@ import butterknife.OnClick;
  */
 public class RegiterNumberActivity extends BaseActivity implements ClickUtils.OnClick2ExitListener {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_commit)
     Button mBtSign;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_user)
     MaterialEditText mEt_user;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_passwd)
     MaterialEditText mEt_password;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_passwd_again)
     MaterialEditText mEt_password_again;
 
@@ -76,7 +80,6 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
         super.onCreate(savedInstanceState);
         initSP();
         setButtomClickListener();
-        showPrivacy();
         initTextView();
     }
 
@@ -111,9 +114,9 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
         mBtSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String user = mEt_user.getText().toString();
-                String passwd1 = mEt_password.getText().toString();
-                String passwd2 = mEt_password_again.getText().toString();
+                String user = Objects.requireNonNull(mEt_user.getText()).toString();
+                String passwd1 = Objects.requireNonNull(mEt_password.getText()).toString();
+                String passwd2 = Objects.requireNonNull(mEt_password_again.getText()).toString();
 
                 if(passwd1.equals(passwd2)) {
                     if(user.length()==0) {
@@ -136,8 +139,9 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
 
 //                        XToastUtils.success("注册成功");
 
-                        Intent intent = new Intent(RegiterNumberActivity.this, RegiterGestureActivity.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(RegiterNumberActivity.this, RegiterGestureActivity.class);
+//                        startActivity(intent);
+                        ActivityUtils.startActivity(RegiterGestureActivity.class);
                         finish();
                     }
 
@@ -167,15 +171,6 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
     }
 
 
-    private void showPrivacy() {
-        //隐私政策弹窗
-        if (!SettingUtils.isAgreePrivacy()) {
-            Utils.showPrivacyDialog(RegiterNumberActivity.this, (dialog, which) -> {
-                dialog.dismiss();
-                SettingUtils.setIsAgreePrivacy(true);
-            });
-        }
-    }
 
 
     /**

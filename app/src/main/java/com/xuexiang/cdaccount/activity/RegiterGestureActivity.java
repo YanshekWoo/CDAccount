@@ -18,7 +18,6 @@
 package com.xuexiang.cdaccount.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +38,7 @@ import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
+import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.display.Colors;
 
 import java.util.List;
@@ -54,9 +54,11 @@ import io.reactivex.functions.Consumer;
  */
 public class RegiterGestureActivity extends BaseActivity {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_patter_lock_view)
     PatternLockView mPatternLockView;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_gesture_text)
     TextView tv_register_gesture;
 
@@ -156,7 +158,7 @@ public class RegiterGestureActivity extends BaseActivity {
 
 
     //设置监听器
-    private PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
+    private final PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
         @Override
         public void onStarted() {
             Log.d(getClass().getName(), "Pattern drawing started");
@@ -225,11 +227,11 @@ public class RegiterGestureActivity extends BaseActivity {
      * 登录成功的处理
      */
     private void onLoginSuccess() {
-        Intent intent = new Intent(RegiterGestureActivity.this, RegisterVerifyActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(RegiterGestureActivity.this, RegisterVerifyActivity.class);
+//        startActivity(intent);
+        ActivityUtils.startActivity(RegisterVerifyActivity.class);
         finish();
     }
-
 
 
 }
