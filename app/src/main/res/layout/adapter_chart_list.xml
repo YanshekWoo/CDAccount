@@ -51,24 +51,28 @@
                     android:layout_width="52dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
-                    android:text="121"
-                    android:textSize="15sp" />
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/adapter_chart_list_title"
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="信用卡卡"
-                    android:textSize="15sp" />
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/adapter_chart_list_money"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
+                    android:gravity="end"
                     android:text="@string/account_origin"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/app_color_theme_6"/>
 
 
             </LinearLayout>

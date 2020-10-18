@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 public class ChartDataEntry implements Comparable<ChartDataEntry>{
     public String dataName;
     public double dataMoney;
+    private double sumMoney = 1000000;
 
     public ChartDataEntry(String name, double s){
         this.dataName = name;
@@ -15,8 +16,24 @@ public class ChartDataEntry implements Comparable<ChartDataEntry>{
         return dataName;
     }
 
+    public void setDataName(String dataName) {
+        this.dataName = dataName;
+    }
+
     public double getDataMoney() {
         return dataMoney;
+    }
+
+    public void setDataMoney(double dataMoney) {
+        this.dataMoney = dataMoney;
+    }
+
+    public double getSumMoney() {
+        return sumMoney;
+    }
+
+    public void setSumMoney(double sumMoney) {
+        this.sumMoney = sumMoney;
     }
 
     @NonNull
@@ -29,4 +46,6 @@ public class ChartDataEntry implements Comparable<ChartDataEntry>{
     public int compareTo(ChartDataEntry chartDataEntry) {
         return (int) (chartDataEntry.getDataMoney() - this.dataMoney);
     }
+
+
 }
