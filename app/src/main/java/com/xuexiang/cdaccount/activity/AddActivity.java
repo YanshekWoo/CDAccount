@@ -229,6 +229,8 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         if (mBlConfirm && mVpAdd.getCurrentItem() == 0) {
             Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
             mDataBaseHelper.InsertBill(0, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+            XToastUtils.success("记账成功");
+
         }
     }
 
@@ -243,6 +245,7 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         if (mBlConfirm && mVpAdd.getCurrentItem() == 1) {
             Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
             mDataBaseHelper.InsertBill(1, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+            XToastUtils.success("记账成功");
         }
     }
 
@@ -257,6 +260,8 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         if (mBlConfirm && mVpAdd.getCurrentItem() == 2) {
             Log.d("---InsertTransfer---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
             mDataBaseHelper.InsertBill(2, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+            XToastUtils.success("记账成功");
+
         }
     }
 

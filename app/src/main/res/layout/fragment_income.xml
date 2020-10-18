@@ -71,21 +71,40 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/tv_datatime"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginStart="5dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
+                    android:paddingRight="5dp"
+                    android:text="时间"
+                    android:background="@drawable/bg_bottom_border"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:foreground="?selectableItemBackground"/>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="left|center_vertical"
+                    android:maxLines="1"
+                    android:paddingLeft="5dp"
                     android:paddingRight="10dp"
                     android:text="时间"
                     android:background="@drawable/bg_bottom_border"
                     android:textColor="#000000"
                     android:textSize="18sp"
                     android:foreground="?selectableItemBackground"/>
+
             </LinearLayout>
 
             <!--分类-->
