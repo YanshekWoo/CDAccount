@@ -256,8 +256,8 @@ public class OutcomeFragment extends BaseFragment {
                 mTvDialogItem2.setText("二级分类");
                 mEsDialog.setHint("选择已有分类或新建");
                 mEsDialog.setItems(options1Item);
-                mEsDialog.getEditText().setFilters(new InputFilter[]{new LengthFilter(10)});
-                mEtDialog.setFilters(new InputFilter[]{new LengthFilter(10)});
+                mEsDialog.getEditText().setFilters(new InputFilter[]{new LengthFilter(5)});
+                mEtDialog.setFilters(new InputFilter[]{new LengthFilter(5)});
                 materialDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -306,7 +306,7 @@ public class OutcomeFragment extends BaseFragment {
                                                                       public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                                                       }
                                                                   })
-                                                          .inputRange(1, 10)
+                                                          .inputRange(1, 5)
                                                           .positiveText("确定")
                                                           .negativeText("取消")
                                                           .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -354,7 +354,7 @@ public class OutcomeFragment extends BaseFragment {
                                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                     }
                                 })
-                        .inputRange(1, 10)
+                        .inputRange(1, 5)
                         .positiveText("确定")
                         .negativeText("取消")
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
