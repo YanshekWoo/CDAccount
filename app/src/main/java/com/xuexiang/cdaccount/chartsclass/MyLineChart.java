@@ -97,17 +97,7 @@ public class MyLineChart {
             entries.add(new Entry(i, (float) chartDataEntries.get(i).getDataMoney()));
         }
 
-//        // ARIMA预测 predict
-//        if(chartDataEntries.size() >= 5) {
-//            RunARIMA ra = new RunARIMA();
-//            for(int i=chartDataEntries.size(); i < chartDataEntries.size()+2; i++) {
-//                float predict = ra.predictNext(entries);
-//                while(predict<0) {
-//                    predict = ra.predictNext(entries);
-//                }
-//                entries.add(new Entry(i, predict));
-//            }
-//        }
+
 
         LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));

@@ -93,11 +93,14 @@ public class MyBarChart {
      */
     public BarData setBardata(List<ChartDataEntry> chartDataEntries) {
         List<BarEntry> entries = new ArrayList<>();
-        for(int i = 0; i < chartDataEntries.size(); i++) {
+        int lenth = chartDataEntries.size();
+        for(int i = 0; i < lenth; i++) {
             entries.add(new BarEntry(i, (float) chartDataEntries.get(i).getDataMoney(), chartDataEntries.get(i).getDataName()));
         }
-        BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
 
+
+
+        BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
 
         barDataSet.setDrawIcons(false);
         //双色柱状图

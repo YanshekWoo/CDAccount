@@ -36,8 +36,6 @@ import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent;
 import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
-import com.xuexiang.cdaccount.utils.RandomUtils;
-import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
@@ -193,7 +191,7 @@ public class RegiterGestureActivity extends BaseActivity {
                         mEditor_gesture.putString("gesture_sign",GestureSignUp);
                         mEditor_gesture.apply();
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
-                        XToastUtils.success("注册成功");
+//                        XToastUtils.success("注册成功");
 
                         onLoginSuccess();
                     }
