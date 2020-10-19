@@ -28,17 +28,19 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataDay;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataItem;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataMonth;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataYear;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.adapter.ExpandableYearAdapter;
-import com.xuexiang.cdaccount.adapter.TestItem;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.XToastUtils;
@@ -89,7 +91,6 @@ public class AccountDetailsActivity extends BaseActivity {
     private Date mDateEnd;
 
     private Collection<String> datas;
-    private TestItem t;
     private int listCount = 0;
     private boolean yearFocusable = true;
     private boolean monthFocusable =false;
@@ -171,14 +172,25 @@ public class AccountDetailsActivity extends BaseActivity {
      *初始化Recycle布局
      */
     protected void initRecyclerViews() {
-        adapter = new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, getTestData());
+        List<BillDataYear> startData = new ArrayList<>();
+        adapter = new ExpandableYearAdapter(AccountDetailsActivity.this, recyclerView, startData);
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
 
 //        RefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
         refreshLayout.setEnableAutoLoadMore(true);//开启自动加载功能（非必须）
         //下拉刷新
-        refreshLayout.setOnRefreshListener(refreshLayout12 -> refreshLayout12.getLayout().postDelayed(() -> {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener(){
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                billDataYearList = getTestData();
+                listCount = 0;
+                setFocusedExpandable(yearFocusable, monthFocusable, dayFocusable);
+
+                adapter.refresh(getBillData(listCount));
+                refreshLayout.finishRefresh();
+                refreshLayout.resetNoMoreData();
+            }
 //            datas = DemoDataProvider.getDemoData();
 //            TestItem t = new TestItem(0,true);
 //            t.addMonth(false);
@@ -187,31 +199,42 @@ public class AccountDetailsActivity extends BaseActivity {
 //            List<TestItem> datas = new ArrayList<>();
 //            datas.add(t);
 
-            billDataYearList = getTestData();
+            /*billDataYearList = getTestData();
             listCount = 0;
             setFocusedExpandable(yearFocusable, monthFocusable, dayFocusable);
 
             adapter.refresh(getBillData(listCount));
             refreshLayout12.finishRefresh();
-            refreshLayout12.resetNoMoreData();//setNoMoreData(false);
-        }, 2000));
+            refreshLayout12.resetNoMoreData();//setNoMoreData(false);*/
+        });
         //上拉加载
         refreshLayout.setOnLoadMoreListener(refreshLayout1 -> refreshLayout1.getLayout().postDelayed(() -> {
-            if (adapter.getItemCount() > 30) {
-                XToastUtils.toast("数据全部加载完毕");
-                refreshLayout1.finishLoadMoreWithNoMoreData();//将不会再次触发加载更多事件
-            } else {
-//                adapter.loadMore(DemoDataProvider.getDemoData());
-//                datas = DemoDataProvider.getDemoData();
-//                TestItem t2 = new TestItem(1,false);
-//                t.addRefresh(true);
-//                List<TestItem> datas2 = new ArrayList<>();
-//
-                listCount++;
-                if(listCount < billDataYearList.size()) {
-                    adapter.loadMore(getBillData(listCount));
-                }
+
+//            if (adapter.getItemCount() > 30) {
+//                XToastUtils.toast("数据全部加载完毕");
+//                refreshLayout1.finishLoadMoreWithNoMoreData();//将不会再次触发加载更多事件
+//            } else {
+////                adapter.loadMore(DemoDataProvider.getDemoData());
+////                datas = DemoDataProvider.getDemoData();
+////                TestItem t2 = new TestItem(1,false);
+////                t.addRefresh(true);
+////                List<TestItem> datas2 = new ArrayList<>();
+////
+//                listCount++;
+//                if(listCount < billDataYearList.size()) {
+//                    adapter.loadMore(getBillData(listCount));
+//                }
+//                refreshLayout1.finishLoadMore();
+//            }
+
+            listCount++;
+            if(listCount < billDataYearList.size()){
+                adapter.loadMore(getBillData(listCount));
                 refreshLayout1.finishLoadMore();
+            }
+            else{
+                XToastUtils.toast("数据全部加载完毕");
+                refreshLayout1.finishLoadMoreWithNoMoreData();          //将不会再次触发加载更多事件
             }
         }, 2000));
 

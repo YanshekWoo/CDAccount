@@ -93,7 +93,7 @@ public class AccountFragment extends BaseFragment {
         recyclerView.setRecycledViewPool(viewPool);
         viewPool.setMaxRecycledViews(0, 10);
         datas = new ArrayList<String>();
-        for(int i = 0; i < 4 ;i++){
+        for(int i = 0; i <15 ;i++){
             datas.add("" + i);
         }
 
