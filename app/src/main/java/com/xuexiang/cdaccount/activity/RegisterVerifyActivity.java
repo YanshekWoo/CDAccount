@@ -18,13 +18,12 @@
 package com.xuexiang.cdaccount.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
@@ -36,8 +35,13 @@ import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
+import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
+import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
+import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.display.Colors;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,23 +54,30 @@ import butterknife.OnClick;
  */
 public class RegisterVerifyActivity extends BaseActivity {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_verify_commit)
-    Button mBtSign;
+    SuperButton mBtSign;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_question1)
     MaterialSpinner mMaterialSpinner1;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_answer1)
-    EditText mEt_answer1;
+    MaterialEditText mEt_answer1;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_question2)
     MaterialSpinner mMaterialSpinner2;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_answer2)
-    EditText mEt_answer2;
+    MaterialEditText mEt_answer2;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_question3)
     MaterialSpinner mMaterialSpinner3;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_answer3)
-    EditText mEt_answer3;
+    MaterialEditText mEt_answer3;
 
     private SharedPreferences.Editor mEditor_question1;
     private SharedPreferences.Editor mEditor_question2;
@@ -104,6 +115,13 @@ public class RegisterVerifyActivity extends BaseActivity {
         initSP();
         initSpinner();
         setButtomClickListener();
+        initTextView();
+    }
+
+    private void initTextView() {
+        mEt_answer1.setFilters(new InputFilter[]{new RegiterNumberActivity.LengthFilter(12)});
+        mEt_answer2.setFilters(new InputFilter[]{new RegiterNumberActivity.LengthFilter(12)});
+        mEt_answer3.setFilters(new InputFilter[]{new RegiterNumberActivity.LengthFilter(12)});
     }
 
 
@@ -145,22 +163,37 @@ public class RegisterVerifyActivity extends BaseActivity {
         mBtSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditor_question1.putInt("verify_qustion1", mMaterialSpinner1.getSelectedIndex());
-                mEditor_question1.apply();
-                mEditor_question2.putInt("verify_qustion2", mMaterialSpinner2.getSelectedIndex());
-                mEditor_question2.apply();
-                mEditor_question3.putInt("verify_qustion3", mMaterialSpinner3.getSelectedIndex());
-                mEditor_question3.apply();
 
-                mEditor_answer1.putString("verify_answer1", mEt_answer1.getText().toString());
-                mEditor_answer1.apply();
-                mEditor_answer2.putString("verify_answer2", mEt_answer2.getText().toString());
-                mEditor_answer2.apply();
-                mEditor_answer3.putString("verify_answer3", mEt_answer1.getText().toString());
-                mEditor_answer3.apply();
+                String ans1 = Objects.requireNonNull(mEt_answer1.getText()).toString();
+                String ans2 = Objects.requireNonNull(mEt_answer2.getText()).toString();
+                String ans3 = Objects.requireNonNull(mEt_answer3.getText()).toString();
 
-                XToastUtils.success("注册成功");
-                onLoginSuccess();
+                if(ans1.length()==0 || ans2.length()==0 || ans3.length()==0)
+                {
+                    XToastUtils.error("填写不能为空");
+                }
+                else if(ans1.length()>12 || ans2.length()>12 || ans3.length()>12)
+                {
+                    XToastUtils.error("填写超出长度范围");
+                }
+                else {
+                    mEditor_question1.putInt("verify_qustion1", mMaterialSpinner1.getSelectedIndex());
+                    mEditor_question1.apply();
+                    mEditor_question2.putInt("verify_qustion2", mMaterialSpinner2.getSelectedIndex());
+                    mEditor_question2.apply();
+                    mEditor_question3.putInt("verify_qustion3", mMaterialSpinner3.getSelectedIndex());
+                    mEditor_question3.apply();
+
+                    mEditor_answer1.putString("verify_answer1", ans1);
+                    mEditor_answer1.apply();
+                    mEditor_answer2.putString("verify_answer2", ans2);
+                    mEditor_answer2.apply();
+                    mEditor_answer3.putString("verify_answer3", ans3);
+                    mEditor_answer3.apply();
+
+                    XToastUtils.success("注册成功");
+                    onLoginSuccess();
+                }
             }
         });
     }
@@ -172,14 +205,16 @@ public class RegisterVerifyActivity extends BaseActivity {
     private void onLoginSuccess() {
         String token = RandomUtils.getRandomNumbersAndLetters(16);
         if (TokenUtils.handleLoginSuccess(token)) {
-            initDate();
-            Intent intent = new Intent(RegisterVerifyActivity.this, MainActivity.class);
-            startActivity(intent);
+//            initDate();
+//            Intent intent = new Intent(RegisterVerifyActivity.this, MainActivity.class);
+//            startActivity(intent);
+            ActivityUtils.startActivity(MainActivity.class);
             finish();
         }
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @OnClick({R.id.tv_user_protocol, R.id.tv_privacy_protocol})
     public void onViewClicked(View view) {
@@ -223,6 +258,45 @@ public class RegisterVerifyActivity extends BaseActivity {
     }
 
 
+    /**
+     * 限制最大长度
+     */
+    public static class LengthFilter implements InputFilter {
+        private final int mMax;
+
+        public LengthFilter(int max) {
+            mMax = max;
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            int keep = mMax - (dest.length() - (dend - dstart));
+
+            if (keep <= 0) {
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
+                return "";
+            } else if (keep >= end - start) {
+                return null; // keep original
+            } else {
+                keep += start;
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
+                if (Character.isHighSurrogate(source.charAt(keep - 1))) {
+                    --keep;
+                    if (keep == start) {
+                        return "";
+                    }
+                }
+                return source.subSequence(start, keep);
+            }
+        }
+
+    }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        initDate();
+    }
 }

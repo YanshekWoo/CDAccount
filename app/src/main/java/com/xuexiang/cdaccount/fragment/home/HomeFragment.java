@@ -35,6 +35,7 @@ import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -50,8 +51,7 @@ public class HomeFragment extends BaseFragment {
     private List<Integer>mRecentType;
 
     private TextView mTvIn,mTvOut;
-    private double mAmountIn;
-    private double mAmountOut;
+    private String mAmountIn, mAmountOut;
     private BillDao mDataBaseHelper;
 
 
@@ -124,9 +124,9 @@ public class HomeFragment extends BaseFragment {
 
 
     private void loadData(){
-
-        mAmountIn = mDataBaseHelper.QueryMonthIncome();
-        mAmountOut = mDataBaseHelper.QueryMonthpay();
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        mAmountIn = decimalFormat.format(mDataBaseHelper.QueryMonthIncome());
+        mAmountOut = decimalFormat.format(mDataBaseHelper.QueryMonthpay());
         mRecentInfo = mDataBaseHelper.GetRecentInformation();
         mRecentDate = mDataBaseHelper.GetRecentDate();
         mRecentType = mDataBaseHelper.GetRecentIO();

@@ -12,9 +12,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        android:paddingStart="44dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="44dp"
+        android:paddingEnd="44dp"
         android:orientation="vertical">
 
         <FrameLayout
@@ -53,14 +53,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
+                android:paddingRight="-30dp"
                 android:hint="密保问题1"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textSize="16sp"
                 app:met_minCharacters="1"
-                app:met_maxCharacters="10"
+                app:met_maxCharacters="12"
                 app:met_clearButton="true"
-                app:met_floatingLabel="normal"
+                app:met_floatingLabel="none"
                 app:met_floatingLabelText="密保问题1" />
 
         </FrameLayout>
@@ -102,14 +103,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
+                android:paddingRight="-30dp"
                 android:hint="密保问题2"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textSize="16sp"
                 app:met_minCharacters="1"
-                app:met_maxCharacters="10"
+                app:met_maxCharacters="12"
                 app:met_clearButton="true"
-                app:met_floatingLabel="normal"
+                app:met_floatingLabel="none"
                 app:met_floatingLabelText="密保问题2" />
 
         </FrameLayout>
@@ -151,14 +153,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
+                android:paddingRight="-30dp"
                 android:hint="密保问题3"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textSize="16sp"
                 app:met_minCharacters="1"
-                app:met_maxCharacters="10"
+                app:met_maxCharacters="12"
                 app:met_clearButton="true"
-                app:met_floatingLabel="normal"
+                app:met_floatingLabel="none"
                 app:met_floatingLabelText="密保问题3" />
 
         </FrameLayout>

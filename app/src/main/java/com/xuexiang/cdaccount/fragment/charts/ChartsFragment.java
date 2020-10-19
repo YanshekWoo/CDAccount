@@ -22,9 +22,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -46,7 +45,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.charts.ChartListAdapter;
 import com.xuexiang.cdaccount.chartsclass.MyBarChart;
 import com.xuexiang.cdaccount.chartsclass.MyLineChart;
@@ -86,37 +84,49 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 //    @BindView(R.id.chart_tab_selector)
 //    TabLayout mTabLayoutSelector;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_recyclerView)
     RecyclerView chart_recyclerView;
 
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.lineChart)
     LineChart mLineChart;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.barChart)
     BarChart mBarChart;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.pieChart)
     PieChart mPieChart;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.btn_date_start)
     XUIAlphaButton Btn_date_start;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.btn_date_end)
     XUIAlphaButton Btn_date_end;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFloatingActionMenu;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_tab_inout)
     TabLayout mTabLayoutInout;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.ll_navigation_view)
     LinearLayout llNavigationView;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_tab_selector)
     TabLayout mTabLayout;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_tab_title)
     TextView chartTabTitle;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.iv_switch)
     AppCompatImageView ivSwitch;
 
@@ -173,7 +183,12 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         selectChart(0);
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshCharts();
+    }
 
     /**
      *  初始化图表
@@ -274,27 +289,54 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         String end_month = strDateEnd[1];
         String end_day = strDateEnd[2];
 
-//        Log.i("datestart", start_year+start_month+start_day);
-//        Log.i("dateend", end_year+end_month+end_day);
-
 
         // get the chart data
+        List<ChartDataEntry> chartDataEntries = new ArrayList<>();
+        List<ChartDataEntry> chartDataLineEntries = new ArrayList<>();
         switch (tabSelected) {
             case 0:
-                List<ChartDataEntry> chartDataEntries = billDao.GetDateByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
-                barData = myBarChart.setBardata(chartDataEntries);
-                pieData = myPieChart.setPiedata(mPieChart, chartDataEntries);
-                lineData = myLineChart.setLinedata(billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day));
-                Collections.sort(chartDataEntries);
-                madapter.refresh(chartDataEntries);
+                chartDataEntries = billDao.GetDateByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 break;
             case 1:
+                chartDataEntries = billDao.GetDateByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 break;
             case 2:
+                chartDataEntries = billDao.GetDateByMember(start_year, start_month, start_day, end_year, end_month, end_day);
                 break;
             case 3:
+                chartDataEntries = billDao.GetDateByAccount(start_year, start_month, start_day, end_year, end_month, end_day);
                 break;
         }
+        chartDataLineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day);
+//        // ARIMA预测 predict
+//        if(chartDataEntries.size() >= 5) {
+//            RunARIMA ra = new RunARIMA();
+//            int lenth = chartDataLineEntries.size();
+//            for(int i=lenth; i < lenth+2; i++) {
+//                double predictData = ra.predictNext(chartDataLineEntries);
+//                while(predictData<0) {
+//                    predictData = ra.predictNext(chartDataLineEntries);
+//                }
+//                chartDataLineEntries.add(new ChartDataEntry("预测第"+i+"天", predictData));
+//            }
+//        }
+
+//        Handler handler = new Handler();
+//        new Thread(new ChartDataRunnable()).start();
+
+        Double allMoney = chartDataEntries.stream().map(ChartDataEntry::getDataMoney).reduce(0.00, Double::sum);
+        Log.i("sum", allMoney.toString());
+        for(ChartDataEntry e: chartDataEntries) {
+            e.setSumMoney(allMoney);
+        }
+
+        barData = myBarChart.setBardata(mBarChart, chartDataEntries);
+        pieData = myPieChart.setPiedata(mPieChart, chartDataEntries);
+        lineData = myLineChart.setLinedata(mLineChart, chartDataLineEntries);
+
+        Collections.sort(chartDataEntries);
+        madapter.refresh(chartDataEntries);
+
 
         // 柱状图
         mBarChart.setData(barData);
@@ -312,6 +354,48 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         mLineChart.invalidate();
 
     }
+
+
+//    public class ChartDataRunnable implements Runnable{
+//        @RequiresApi(api = Build.VERSION_CODES.N)
+//        @Override
+//        public void run() {
+//            BillDao billDao = new BillDao(getContext());
+//            // get the chart data
+//            List<ChartDataEntry> chartDataEntries = new ArrayList<>();
+//            List<ChartDataEntry> chartDataLineEntries = new ArrayList<>();
+//            switch (tabSelected) {
+//                case 0:
+//                    chartDataEntries = billDao.GetDateByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+//                    break;
+//                case 1:
+//                    chartDataEntries = billDao.GetDateByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+//                    break;
+//                case 2:
+//                    chartDataEntries = billDao.GetDateByMember(start_year, start_month, start_day, end_year, end_month, end_day);
+//                    break;
+//                case 3:
+//                    chartDataEntries = billDao.GetDateByAccount(start_year, start_month, start_day, end_year, end_month, end_day);
+//                    break;
+//            }
+//            chartDataLineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day);
+//            // ARIMA预测 predict
+//            if(chartDataEntries.size() >= 5) {
+//                RunARIMA ra = new RunARIMA();
+//                int lenth = chartDataLineEntries.size();
+//                for(int i=lenth; i < lenth+2; i++) {
+//                    double predictData = ra.predictNext(chartDataLineEntries);
+//                    while(predictData<0) {
+//                        predictData = ra.predictNext(chartDataLineEntries);
+//                    }
+//                    chartDataLineEntries.add(new ChartDataEntry("预测第"+i+"天", predictData));
+//                }
+//            }
+//
+//            Message msg = new Message();
+//
+//        }
+//    }
 
 
 
@@ -443,6 +527,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         mTabLayout.addTab(mTabLayout.newTab().setText("成员"));
         mTabLayout.addTab(mTabLayout.newTab().setText("账户"));
         mTabLayout.addOnTabSelectedListener(this);
+        // 初始不可见，避免隐藏状态下被点击
+        mTabLayout.setVisibility(View.INVISIBLE);
     }
 
 
@@ -456,21 +542,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         chart_recyclerView.setAdapter(madapter);
     }
 
-
-
-    /**
-     * recycleView点击监听
-     * @param context
-     * 上下文
-     * @param position
-     * 点击位置
-     */
-    public void recycleviewClick(Context context, String position){
-        Intent intent = new Intent(context, AccountDetailsActivity.class);
-        String account = "账户";
-        intent.putExtra("account", account);
-        startActivity(intent);
-    }
 
 
     /**
@@ -490,9 +561,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 XToastUtils.toast("选中了:" + Integer.toString(tabInout));
                 break;
             case R.id.chart_tab_selector:
-                int i = tab.getPosition();
                 tabSelected = tab.getPosition();
-                XToastUtils.toast("选中了:" + Integer.toString(i));
                 break;
             default:
                 break;
@@ -509,8 +578,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-//        XToastUtils.toast("选中了:" + tab.getText());
-
         refreshCharts();
     }
 
@@ -538,9 +605,10 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
             @Override
             public void onAnimationEnd(Animator animation) {
                 chartTabTitle.setVisibility(isShow ? View.GONE : View.VISIBLE);
+                mTabLayout.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
             }
         });
-        animatorSet.setDuration(600).start();
+        animatorSet.setDuration(400).start();
     }
 
 

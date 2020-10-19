@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.adapter.charts;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -68,15 +69,19 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
      * @param position 索引
      * @param item     列表项
      */
+    @SuppressLint("DefaultLocale")
     @Override
     protected void bindData(@NonNull RecyclerViewHolder holder, int position, ChartDataEntry item) {
         ProgressBar progressBar = holder.findViewById(R.id.adapter_chart_list_progressbar);
+        int progress = 0;
+        if(item.getSumMoney() > 0) {
+            progress = (int) (100 * item.getDataMoney() / item.getSumMoney());
+        }
+        progressBar.setProgress(progress);
 
-        progressBar.setProgress(58);
         holder.text(R.id.adapter_chart_list_position,Integer.toString(position));
         holder.text(R.id.adapter_chart_list_title,item.getDataName());
-        holder.text(R.id.adapter_chart_list_money,Double.toString(item.dataMoney));
-
+        holder.text(R.id.adapter_chart_list_money,String.format("%.2f", item.dataMoney));
 
         holder.click(R.id.adapter_chart_list_card, new View.OnClickListener() {
             @SingleClick

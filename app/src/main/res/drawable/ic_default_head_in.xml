@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2020 xuexiangjys(xuexiangjys@163.com)
+  ~ Copyright (C) 2019 xuexiangjys(xuexiangjys@163.com)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,12 +16,11 @@
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="100dp"
-    android:height="100dp"
+    android:width="64dp"
+    android:height="64dp"
     android:viewportWidth="1024"
     android:viewportHeight="1024">
     <path
-        android:fillColor="@color/app_color_theme_6"
-        android:pathData="M512 1024C229.242435 1024 0 794.757565 0 512S229.242435 0 512 0 1024 229.242435 1024 512 794.757565 1024 512 1024z m290.771478-523.130435a44.521739 44.521739 0 0 0-44.521739-44.521739h-189.217391v-178.086956a55.652174 55.652174 0 1 0-111.304348 0v178.086956h-189.217391a44.521739 44.521739 0 0 0-44.521739 44.521739v22.26087a44.521739 44.521739 0 0 0 44.521739 44.521739h189.217391v178.086956a55.652174 55.652174 0 0 0 111.304348 0v-178.086956h189.217391a44.521739 44.521739 0 0 0 44.521739-44.521739v-22.26087z"/>
+        android:fillColor="@color/app_color_theme_8"
+        android:pathData="M512,0c281.6,0 512,230.4 512,512s-230.4,512 -512,512 -512,-230.4 -512,-512 230.4,-512 512,-512zM627.2,505.6c44.8,-38.4 76.8,-89.6 76.8,-153.6 0,-108.8 -83.2,-192 -192,-192s-192,83.2 -192,192c0,64 32,115.2 76.8,153.6 -102.4,44.8 -172.8,147.2 -172.8,262.4 0,19.2 12.8,32 32,32s32,-12.8 32,-32c0,-121.6 102.4,-224 224,-224s224,102.4 224,224c0,19.2 12.8,32 32,32s32,-12.8 32,-32c0,-115.2 -70.4,-217.6 -172.8,-262.4zM512,480c-70.4,0 -128,-57.6 -128,-128s57.6,-128 128,-128 128,57.6 128,128 -57.6,128 -128,128z" />
 </vector>
-

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.xuexiang.cdaccount.database.ChartDataEntry;
 import com.xuexiang.cdaccount.somethingDao.DatabaseHelper;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -273,6 +274,7 @@ public class BillDao {
     }
 
     public List<String> GetRecentInformation(){   //通过测试
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         SQLiteDatabase db = mHelper.getReadableDatabase();
         String sql = "select * from Bill order by year || month || day || time DESC";
         Cursor cursor = db.rawQuery(sql, null);
@@ -301,8 +303,8 @@ public class BillDao {
                     nametmp = cursor1.getString(cursor1.getColumnIndex("InSubCategory_Name"));
                 }
             }
-            String Mon = String.valueOf(cursor.getDouble(cursor.getColumnIndex("Bill_Money")));
-            String ans = IO+nametmp+Mon+"元";
+            String Mon = decimalFormat.format(cursor.getDouble(cursor.getColumnIndex("Bill_Money")))+"元";
+            String ans = IO+nametmp+Mon;
             re.add(ans);
         }
         return re;

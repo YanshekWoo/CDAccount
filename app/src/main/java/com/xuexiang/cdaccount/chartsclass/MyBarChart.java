@@ -17,6 +17,8 @@
 
 package com.xuexiang.cdaccount.chartsclass;
 
+import android.annotation.SuppressLint;
+
 import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -26,6 +28,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.model.GradientColor;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.database.ChartDataEntry;
@@ -91,13 +94,14 @@ public class MyBarChart {
      * 设置图表数据
      * @return bardata
      */
-    public BarData setBardata(List<ChartDataEntry> chartDataEntries) {
+    public BarData setBardata(BarChart barChart, List<ChartDataEntry> chartDataEntries) {
         List<BarEntry> entries = new ArrayList<>();
-        for(int i = 0; i < chartDataEntries.size(); i++) {
-            entries.add(new BarEntry(i, (float) chartDataEntries.get(i).getDataMoney(), chartDataEntries.get(i).getDataName()));
+        int lenth = chartDataEntries.size();
+        for(int i = 0; i < lenth; i++) {
+            entries.add(new BarEntry(i, (float) chartDataEntries.get(i).getDataMoney()));
         }
-        BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
 
+        BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
 
         barDataSet.setDrawIcons(false);
         //双色柱状图
@@ -121,6 +125,29 @@ public class MyBarChart {
 
         //设置渐变色
         barDataSet.setGradientColors(gradientColors);
+        // Y值显示样式
+        barDataSet.setValueFormatter(new ValueFormatter(){
+            @SuppressLint("DefaultLocale")
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format("%.2f", value);
+            }
+        });
+
+        barChart.getXAxis().setLabelCount(lenth);
+        barChart.getXAxis().setLabelRotationAngle(-60f);
+        barChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int intValue = (int) value;
+                if(intValue < lenth && intValue==value) {
+                    return chartDataEntries.get((int) (value)).getDataName();
+                }
+                else {
+                    return "";
+                }
+            }
+        });
 
 
         BarData bardata = new BarData(barDataSet);

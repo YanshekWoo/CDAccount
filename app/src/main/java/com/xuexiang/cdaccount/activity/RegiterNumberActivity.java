@@ -18,24 +18,26 @@
 package com.xuexiang.cdaccount.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
-import com.xuexiang.cdaccount.utils.SettingUtils;
-import com.xuexiang.cdaccount.utils.Utils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.utils.StatusBarUtils;
+import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.display.Colors;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,15 +50,19 @@ import butterknife.OnClick;
  */
 public class RegiterNumberActivity extends BaseActivity implements ClickUtils.OnClick2ExitListener {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_commit)
     Button mBtSign;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_user)
-    EditText mEt_user;
+    MaterialEditText mEt_user;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_passwd)
-    EditText mEt_password;
+    MaterialEditText mEt_password;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_passwd_again)
-    EditText mEt_password_again;
+    MaterialEditText mEt_password_again;
 
 
     private SharedPreferences.Editor mEditor_user;
@@ -74,7 +80,7 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
         super.onCreate(savedInstanceState);
         initSP();
         setButtomClickListener();
-        showPrivacy();
+        initTextView();
     }
 
     @Override
@@ -97,23 +103,48 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
     }
 
 
+    public void initTextView() {
+        mEt_user.setFilters(new InputFilter[]{new LengthFilter(12)});
+        mEt_password.setFilters(new InputFilter[]{new LengthFilter(18)});
+        mEt_password_again.setFilters(new InputFilter[]{new LengthFilter(18)});
+    }
 
 
     public void setButtomClickListener() {
         mBtSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mEt_password.getText().toString().equals(mEt_password_again.getText().toString())) {
-                    mEditor_user.putString("user", mEt_user.getText().toString());
-                    mEditor_user.apply();
-                    mEditor_password.putString("password", mEt_password.getText().toString());
-                    mEditor_password.apply();
+                String user = Objects.requireNonNull(mEt_user.getText()).toString();
+                String passwd1 = Objects.requireNonNull(mEt_password.getText()).toString();
+                String passwd2 = Objects.requireNonNull(mEt_password_again.getText()).toString();
 
-                    XToastUtils.success("注册成功");
+                if(passwd1.equals(passwd2)) {
+                    if(user.length()==0) {
+                        XToastUtils.error("用户名不能为空");
+                    }
+                    else if(user.length() > 12) {
+                        XToastUtils.error("用户名长度不能超过12");
+                    }
+                    else if(passwd1.length()<4 ||  passwd2.length()<4) {
+                        XToastUtils.error("密码长度不能小于4");
+                    }
+                    else if(passwd1.length()>18  || passwd2.length()>18){
+                        XToastUtils.error("密码长度不能超过18");
+                    }
+                    else {
+                        mEditor_user.putString("user", user);
+                        mEditor_user.apply();
+                        mEditor_password.putString("password", passwd2);
+                        mEditor_password.apply();
 
-                    Intent intent = new Intent(RegiterNumberActivity.this, RegiterGestureActivity.class);
-                    startActivity(intent);
-                    finish();
+//                        XToastUtils.success("注册成功");
+
+//                        Intent intent = new Intent(RegiterNumberActivity.this, RegiterGestureActivity.class);
+//                        startActivity(intent);
+                        ActivityUtils.startActivity(RegiterGestureActivity.class);
+                        finish();
+                    }
+
                 }
                 else
                 {
@@ -140,15 +171,6 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
     }
 
 
-    private void showPrivacy() {
-        //隐私政策弹窗
-        if (!SettingUtils.isAgreePrivacy()) {
-            Utils.showPrivacyDialog(RegiterNumberActivity.this, (dialog, which) -> {
-                dialog.dismiss();
-                SettingUtils.setIsAgreePrivacy(true);
-            });
-        }
-    }
 
 
     /**
@@ -171,4 +193,41 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
     public void onExit() {
         XUtil.exitApp();
     }
+
+
+    /**
+     * 限制最大长度
+     */
+    public static class LengthFilter implements InputFilter {
+        private final int mMax;
+
+        public LengthFilter(int max) {
+            mMax = max;
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            int keep = mMax - (dest.length() - (dend - dstart));
+
+            if (keep <= 0) {
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
+                return "";
+            } else if (keep >= end - start) {
+                return null; // keep original
+            } else {
+                keep += start;
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
+                if (Character.isHighSurrogate(source.charAt(keep - 1))) {
+                    --keep;
+                    if (keep == start) {
+                        return "";
+                    }
+                }
+                return source.subSequence(start, keep);
+            }
+        }
+
+    }
+
 }

@@ -32,7 +32,6 @@ import com.xuexiang.cdaccount.database.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.xuexiang.xutil.XUtil.getResources;
 
@@ -81,11 +80,29 @@ public class MyPieChart {
     }
 
     public PieData setPiedata(PieChart pieChart, List<ChartDataEntry> chartDataEntries) {
-        Random myRandom = new Random();
         //设置数据
+        int lenth = chartDataEntries.size();
         List<PieEntry> entries = new ArrayList<>();
+        PieEntry others = new PieEntry((float) 0.00, "其他");
+        int othersCount = 0;
         for (int i = 0; i < chartDataEntries.size(); i++) {
-            entries.add(new PieEntry((float) chartDataEntries.get(i).getDataMoney(), chartDataEntries.get(i).getDataName()));
+            float money = (float) chartDataEntries.get(i).getDataMoney();
+            if(chartDataEntries.get(i).getSumMoney() / money > 20) {
+                money += others.getValue();
+                others.setY(money);
+                others.setLabel(chartDataEntries.get(i).getDataName());
+                othersCount++;
+            }
+            else {
+                entries.add(new PieEntry(money, chartDataEntries.get(i).getDataName()));
+            }
+        }
+        if(othersCount == 1){
+            entries.add(others);
+        }
+        else if(othersCount > 1) {
+            others.setLabel("其他");
+            entries.add(others);
         }
 
         List<Integer> colors = new ArrayList<>();
@@ -111,7 +128,7 @@ public class MyPieChart {
         pieDataSet.setDrawIcons(false);
         pieDataSet.setSliceSpace(3f);
         pieDataSet.setIconsOffset(new MPPointF(0, 40));
-        pieDataSet.setSelectionShift(10f);
+        pieDataSet.setSelectionShift(4f);
         pieDataSet.setColors(colors);
 //        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);

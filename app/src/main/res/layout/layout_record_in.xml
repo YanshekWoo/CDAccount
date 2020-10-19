@@ -41,7 +41,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
-            chat:srcCompat="@drawable/ic_default_head"
+            chat:srcCompat="@drawable/ic_default_head_in"
+            android:layout_centerVertical="true"
             />
         <com.cxd.chatview.moudle.ChatView
             android:id="@+id/chatview"
@@ -50,9 +51,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="40dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
-            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             chat:arrow_direction="left"
             chat:arrow_height="12dp"
@@ -60,11 +63,13 @@
             chat:arrow_width="5dp"
             chat:conner_radius="10dp"
             chat:is_arrow_center="true"
-            chat:press_fill_color="#50111111"
+            chat:press_fill_color="#C56D9F"
             chat:press_stroke_color="#50111111"
             chat:stroke_color="#FFFFFF"
             chat:stroke_width="1px"
-            chat:fill_color = "#FFFFFF"
+            chat:fill_color = "@color/app_color_theme_9"
+            android:clickable="true"
+            android:focusable="true"
             >
 
             <TextView
