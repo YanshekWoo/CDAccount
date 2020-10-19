@@ -271,30 +271,6 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
 
     }
 
-    public void initDate() {
-        mDataBaseHelper.InsertCategory("餐饮食品", "", 0);
-        mDataBaseHelper.InsertCategory("餐饮食品", "早午晚餐", 0);
-        mDataBaseHelper.InsertCategory("餐饮食品", "水果零食", 0);
-        mDataBaseHelper.InsertCategory("餐饮食品", "烟酒茶水", 0);
-        mDataBaseHelper.InsertCategory("行车交通", "公共交通", 0);
-        mDataBaseHelper.InsertCategory("衣物饰品", "鞋帽包包", 0);
-        mDataBaseHelper.InsertCategory("行车交通", "打车租车", 0);
-
-        mDataBaseHelper.InsertCategory("职业收入", "工资收入", 1);
-        mDataBaseHelper.InsertCategory("职业收入", "", 1);
-        mDataBaseHelper.InsertCategory("职业收入", "加班收入", 1);
-        mDataBaseHelper.InsertCategory("职业收入", "奖金收入", 1);
-        mDataBaseHelper.InsertCategory("其他收入", "中奖收入", 1);
-
-
-        mDataBaseHelper.InsertAccount("");
-        mDataBaseHelper.InsertAccount("现金");
-        mDataBaseHelper.InsertAccount("信用卡");
-
-        mDataBaseHelper.InsertMember("无成员");
-        mDataBaseHelper.InsertMember("本人");
-        mDataBaseHelper.InsertMember("配偶");
-    }
 
 }
 

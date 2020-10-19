@@ -47,7 +47,6 @@
             android:paddingTop="10dp"
             android:paddingEnd="15dp"
             android:paddingStart="10dp"
-
             android:paddingBottom="10dp"
             chat:arrow_direction="right"
             chat:arrow_height="12dp"
@@ -55,16 +54,17 @@
             chat:arrow_width="5dp"
             chat:conner_radius="10dp"
             chat:is_arrow_center="true"
-            chat:press_fill_color="#50111111"
+            chat:press_fill_color="#2596BF"
             chat:press_stroke_color="#50111111"
             chat:stroke_color="#FFFFFF"
-            chat:stroke_width="1px">
+            chat:stroke_width="1px"
+            android:clickable="true"
+            android:focusable="true">
 
             <TextView
                 android:id="@+id/tv_record"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:layout_centerVertical="true"
                 android:text="这是箭头向左的聊天气泡"
                 android:textColor="#4a4a4a"
@@ -75,7 +75,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
-            chat:srcCompat="@drawable/ic_default_head"
+            chat:srcCompat="@drawable/ic_default_head_out"
             android:layout_centerVertical="true"
 
             />

@@ -289,7 +289,7 @@ public class TransferFragment extends BaseFragment {
                                                                       public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                                                       }
                                                                   })
-                                                          .inputRange(1,10)
+                                                          .inputRange(1,5)
                                                           .positiveText("确定")
                                                           .negativeText("取消")
                                                           .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -336,7 +336,7 @@ public class TransferFragment extends BaseFragment {
                                                                       public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                                                       }
                                                                   })
-                                                          .inputRange(1,10)
+                                                          .inputRange(1,5)
                                                           .positiveText("确定")
                                                           .negativeText("取消")
                                                           .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -387,7 +387,7 @@ public class TransferFragment extends BaseFragment {
                                 })
                         .positiveText("确定")
                         .negativeText("取消")
-                        .inputRange(1,10)
+                        .inputRange(1,5)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

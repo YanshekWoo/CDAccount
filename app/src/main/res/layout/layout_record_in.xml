@@ -41,7 +41,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
-            chat:srcCompat="@drawable/ic_default_head"
+            chat:srcCompat="@drawable/ic_default_head_in"
             android:layout_centerVertical="true"
             />
         <com.cxd.chatview.moudle.ChatView
@@ -63,18 +63,19 @@
             chat:arrow_width="5dp"
             chat:conner_radius="10dp"
             chat:is_arrow_center="true"
-            chat:press_fill_color="#50111111"
+            chat:press_fill_color="#C56D9F"
             chat:press_stroke_color="#50111111"
             chat:stroke_color="#FFFFFF"
             chat:stroke_width="1px"
-            chat:fill_color = "#FFFFFF"
+            chat:fill_color = "@color/app_color_theme_9"
+            android:clickable="true"
+            android:focusable="true"
             >
 
             <TextView
                 android:id="@+id/tv_record"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_centerVertical="true"
                 android:text="这是箭头向左的聊天气泡"
                 android:textColor="#4a4a4a"
