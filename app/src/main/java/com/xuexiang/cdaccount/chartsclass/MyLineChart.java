@@ -90,14 +90,34 @@ public class MyLineChart {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public LineData setLinedata(List<ChartDataEntry> chartDataEntries) {
+    public LineData setLinedata(LineChart lineChart, List<ChartDataEntry> chartDataEntries) {
         //设置数据
         List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < chartDataEntries.size(); i++) {
+        int lenth = chartDataEntries.size();
+        for (int i = 0; i < lenth; i++) {
             entries.add(new Entry(i, (float) chartDataEntries.get(i).getDataMoney()));
         }
 
-
+        // X轴样式
+        lineChart.getXAxis().setLabelCount(lenth);
+//        lineChart.getXAxis().setLabelRotationAngle(-60f);
+//        lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value) {
+//                int m = lenth /5 + 1;
+//                int intValue = (int) value;
+//                if(intValue < lenth && intValue%m==0) {
+//                    String date = chartDataEntries.get((int) (value)).getDataName();
+//                    String year = date.substring(0, 4);
+//                    String month = date.substring(4, 6);
+//                    String day = date.substring(6, 8);
+//                    return year+"-"+month+"-"+day;
+//                }
+//                else {
+//                    return "";
+//                }
+//            }
+//        });
 
         LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
@@ -108,6 +128,8 @@ public class MyLineChart {
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillAlpha(80);
         lineDataSet.setFillDrawable(getResources().getDrawable(R.drawable.line_gradient_bg_shape));
+
+
 
         LineData linedata = new LineData(lineDataSet);
         linedata.setValueTextSize(11f);

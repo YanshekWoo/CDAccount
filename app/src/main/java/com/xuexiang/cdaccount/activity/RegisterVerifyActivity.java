@@ -168,7 +168,7 @@ public class RegisterVerifyActivity extends BaseActivity {
                 String ans2 = Objects.requireNonNull(mEt_answer2.getText()).toString();
                 String ans3 = Objects.requireNonNull(mEt_answer3.getText()).toString();
 
-                if(ans1.length()==0 || ans2.length()==1 || ans3.length()==0)
+                if(ans1.length()==0 || ans2.length()==0 || ans3.length()==0)
                 {
                     XToastUtils.error("填写不能为空");
                 }
@@ -205,7 +205,7 @@ public class RegisterVerifyActivity extends BaseActivity {
     private void onLoginSuccess() {
         String token = RandomUtils.getRandomNumbersAndLetters(16);
         if (TokenUtils.handleLoginSuccess(token)) {
-            initDate();
+//            initDate();
 //            Intent intent = new Intent(RegisterVerifyActivity.this, MainActivity.class);
 //            startActivity(intent);
             ActivityUtils.startActivity(MainActivity.class);
@@ -293,4 +293,10 @@ public class RegisterVerifyActivity extends BaseActivity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        initDate();
+    }
 }
