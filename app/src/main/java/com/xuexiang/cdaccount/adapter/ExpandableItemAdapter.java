@@ -49,8 +49,11 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
 
     @Override
     protected void bindData(@NonNull RecyclerViewHolder holder, int position, BillDataItem item) {
-        holder.text(R.id.tv_date, item.getTime());
-        holder.text(R.id.tv_money,Double.toString(item.getBill_Money()));
+        holder.text(R.id.date, item.getTime());
+        holder.text(R.id.money,Double.toString(item.getBill_Money()));
+        holder.text(R.id.category,"温腿是你爹");
+        holder.text(R.id.account,"wtwtw");
+        holder.text(R.id.member,"胡欣硕是狗");
         holder.click(R.id.account_detail, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
