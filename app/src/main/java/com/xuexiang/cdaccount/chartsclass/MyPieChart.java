@@ -87,7 +87,7 @@ public class MyPieChart {
         int othersCount = 0;
         for (int i = 0; i < chartDataEntries.size(); i++) {
             float money = (float) chartDataEntries.get(i).getDataMoney();
-            if(chartDataEntries.get(i).getSumMoney() / money > 25) {
+            if(chartDataEntries.get(i).getSumMoney() / money > 20) {
                 money += others.getValue();
                 others.setY(money);
                 others.setLabel(chartDataEntries.get(i).getDataName());
