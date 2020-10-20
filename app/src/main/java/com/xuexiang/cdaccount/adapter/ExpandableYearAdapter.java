@@ -34,6 +34,7 @@ import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.layout.ExpandableLayout;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 
 /**
@@ -133,13 +134,13 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<BillDataYear> {
 //                refreshLayout1.finishLoadMore();
 //            }
 //        }, 2000));
-
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         holder.select(R.id.account_expendable_year, isSelected);
         holder.text(R.id.account_expendable_year_maintime, item.getmYear()+"年");
 //        holder.text(R.id.account_expendable_year_subtime,"0000");
-        holder.text(R.id.account_expendable_year_totalmoney,Double.toString(item.getmYearIncome()-item.getmYearOutcome()));
-        holder.text(R.id.account_expendable_year_income, Double.toString(item.getmYearIncome()));
-        holder.text(R.id.account_expendable_year_outcome,Double.toString(item.getmYearOutcome()));
+        holder.text(R.id.account_expendable_year_totalmoney,decimalFormat.format(item.getmYearIncome()-item.getmYearOutcome()));
+        holder.text(R.id.account_expendable_year_income, decimalFormat.format(item.getmYearIncome()));
+        holder.text(R.id.account_expendable_year_outcome,decimalFormat.format(item.getmYearOutcome()));
         //holder.text(R.id.tv_content, ResUtils.getResources().getString(R.string.item_example_number_abstract, position + 1));
         holder.click(R.id.account_expendable_year, new View.OnClickListener() {
             @SingleClick

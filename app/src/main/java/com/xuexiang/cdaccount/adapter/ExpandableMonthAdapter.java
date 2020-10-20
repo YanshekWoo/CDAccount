@@ -34,6 +34,7 @@ import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.layout.ExpandableLayout;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 
 /**
@@ -119,13 +120,13 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<BillDataMonth> {
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(new ExpandableDayAdapter(context, recyclerView, item.getmBillDataDayList()));
 
-
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         holder.select(R.id.account_expendable_month, isSelected);
         holder.text(R.id.account_expendable_month_maintime, item.getmMonth()+"月");
         holder.text(R.id.account_expendable_month_subtime,"0000");
-        holder.text(R.id.account_expendable_month_totalmoney,Double.toString(item.getmMonthIncome()-item.getmMonthOutcome()));
-        holder.text(R.id.account_expendable_month_income, Double.toString(item.getmMonthIncome()));
-        holder.text(R.id.account_expendable_month_outcome,Double.toString(item.getmMonthOutcome()));
+        holder.text(R.id.account_expendable_month_totalmoney,decimalFormat.format(item.getmMonthIncome()-item.getmMonthOutcome()));
+        holder.text(R.id.account_expendable_month_income, decimalFormat.format(item.getmMonthIncome()));
+        holder.text(R.id.account_expendable_month_outcome,decimalFormat.format(item.getmMonthOutcome()));
         //holder.text(R.id.tv_content, ResUtils.getResources().getString(R.string.item_example_number_abstract, position + 1));
         holder.click(R.id.account_expendable_month, new View.OnClickListener() {
             @SingleClick
