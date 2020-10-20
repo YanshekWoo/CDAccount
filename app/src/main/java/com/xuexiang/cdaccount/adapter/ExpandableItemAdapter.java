@@ -29,6 +29,7 @@ import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 
 public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
@@ -49,8 +50,9 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
 
     @Override
     protected void bindData(@NonNull RecyclerViewHolder holder, int position, BillDataItem item) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         holder.text(R.id.date, item.getTime());
-        holder.text(R.id.money,Double.toString(item.getBill_Money()));
+        holder.text(R.id.money,decimalFormat.format(item.getBill_Money()));
         holder.text(R.id.category,item.getBill_SubCategory());
         holder.text(R.id.account,item.getBill_Account());
         holder.text(R.id.member,item.getBill_Mumber());
