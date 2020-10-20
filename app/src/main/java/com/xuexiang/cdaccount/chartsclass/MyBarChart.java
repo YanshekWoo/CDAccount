@@ -71,6 +71,8 @@ public class MyBarChart {
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setEnabled(true);
+        xAxis.setTextSize(7f);
+//        xAxis.setAxisMinimum(0);
 
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setDrawAxisLine(true);
@@ -140,18 +142,18 @@ public class MyBarChart {
             @Override
             public String getFormattedValue(float value) {
                 int intValue = (int) value;
-                if(intValue < lenth && intValue==value) {
-                    return chartDataEntries.get((int) (value)).getDataName();
+                if(intValue < lenth && intValue>=0 && intValue==value) {
+                    return chartDataEntries.get(intValue).getDataName();
                 }
                 else {
-                    return "";
+                    return "    ";
                 }
             }
         });
 
 
         BarData bardata = new BarData(barDataSet);
-        bardata.setValueTextSize(11f);
+        bardata.setValueTextSize(7f);
 
 
         return bardata;
