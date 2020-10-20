@@ -354,9 +354,9 @@ public class AccountDetailsActivity extends BaseActivity {
 //        mMembers = ResUtils.getStringArray(R.array.member_entry);
 //        mAccounts = ResUtils.getStringArray(R.array.account_entry);
         mMembers = mBillDao.QueryMember();
-        mMembers.add(0,"无限制");
+        mMembers.add(0,getResources().getString(R.string.unlimited));
         mAccounts = mBillDao.QueryAccount();
-        mAccounts.add(0,"无限制");
+        mAccounts.add(0,getResources().getString(R.string.unlimited));
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event, DropDownMenu mDropDownMenu) {
