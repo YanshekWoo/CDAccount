@@ -20,9 +20,7 @@ package com.xuexiang.cdaccount.fragment.account;
 import android.content.Context;
 import android.content.Intent;
 import android.text.InputType;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,7 +41,6 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -148,11 +145,15 @@ public class AccountFragment extends BaseFragment {
     }
 
     public void click(Context context, String position){
-        Intent intent = new Intent(context, AccountDetailsActivity.class);
+        String expandType = "年";
         String account = "账户";
+        String member = getResources().getString(R.string.unlimited);
+
+        Intent intent = new Intent(context, AccountDetailsActivity.class);
+        intent.putExtra("expandType", expandType);
+        intent.putExtra("member", member);
         intent.putExtra("account", account);
         startActivity(intent);
-        //Toast.makeText(context,"温腿 "+position+"号",Toast.LENGTH_SHORT).show();
     }
 
     private void showInputDialog() {

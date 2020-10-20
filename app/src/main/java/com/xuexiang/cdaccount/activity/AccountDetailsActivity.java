@@ -17,8 +17,6 @@
 
 package com.xuexiang.cdaccount.activity;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -29,7 +27,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -48,24 +45,17 @@ import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
-import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
-import com.xuexiang.xui.widget.alpha.XUIAlphaButton;
-import com.xuexiang.xui.widget.picker.widget.TimePickerView;
-import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xui.widget.spinner.DropDownMenu;
-import com.xuexiang.xutil.data.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 
 public class AccountDetailsActivity extends BaseActivity {
