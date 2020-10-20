@@ -278,7 +278,7 @@ public class BillDao {
 
     public List<String> QueryAccount(){  //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "select Account_name from Account";
+        String sql = "select Account_name from Account where Account_ID > 0";
         Cursor cursor = db.rawQuery(sql,null);
         List<String> re = new LinkedList<String>();
         while(cursor.moveToNext()){
