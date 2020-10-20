@@ -100,8 +100,44 @@ public class BillDao {
         insertBill(type, sub, acc, toa, mem, year, month, day, time, remark, money);
     }
 
-    public void InsertCategory(String Top, String sub, int type){   //通过测试
+
+    public boolean InsertCategory(String Top, String sub, int type){   //通过测试,返回值需要判断
         SQLiteDatabase db = mHelper.getWritableDatabase();
+
+        boolean sucessTop = false;
+        boolean sucessSub = false;
+        if(type == 0) {
+            String sql = "select OutTopCategory_Name from OutTopCategory where OutTopCategory_Name = '"+Top+"'";
+            Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()) {
+                if (cursor.getString(cursor.getColumnIndex("OutTopCategory_Name")).equals(Top))
+                    sucessTop = true;
+            }
+            sql = "select OutSubCategory_Name from OutSubCategory where OutSubCategory_Name = '"+sub+"'";
+            cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()) {
+                if (cursor.getString(cursor.getColumnIndex("OutSubCategory_Name")).equals(sub))
+                    sucessSub = true;
+            }
+        }
+        else{
+            String sql = "select InTopCategory_Name from InTopCategory where InTopCategory_Name = '"+Top+"'";
+            Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()) {
+                if (cursor.getString(cursor.getColumnIndex("InTopCategory_Name")).equals(Top))
+                    sucessTop = true;
+            }
+            sql = "select InSubCategory_Name from InSubCategory where InSubCategory_Name = '"+sub+"'";
+            cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()) {
+                if (cursor.getString(cursor.getColumnIndex("InSubCategory_Name")).equals(sub))
+                    sucessSub = true;
+            }
+        }
+        if(sucessSub && sucessTop){
+            db.close();
+            return false;
+        }
 
         if(type == 0){ //支出
 
@@ -170,32 +206,61 @@ public class BillDao {
                 db.execSQL(sql, new Object[] {cnt1, tmp, sub});
             }
         }
+        db.close();
+        return true;
     }
 
-    public void InsertMember(String name){ //通过测试
+    public boolean InsertMember(String name){ //通过测试,返回值需要判断
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        Cursor cursor = db.query("Member",null,null,null,null,null,null);
+
+        String sql = "select Member_Name from Member where Member_Name = '"+name+"'";
+        Cursor cursor = db.rawQuery(sql,null);
+        boolean sucess = false;
+        while(cursor.moveToNext()){
+            if(cursor.getString(cursor.getColumnIndex("Member_Name")).equals(name)){
+                sucess = true;
+            }
+        }
+        if(sucess) {db.close();return false;}
+
+        cursor = db.query("Member",null,null,null,null,null,null);
         int tmp = 0;
         while (cursor.moveToNext()){
             tmp = cursor.getInt(cursor.getColumnIndex("Member_ID"));
             tmp++;
         }
-        String sql = "insert into Member(Member_Id, Member_Name) values(?,?)";
+        sql = "insert into Member(Member_Id, Member_Name) values(?,?)";
         db.execSQL(sql, new Object[] {tmp, name});
+
         db.close();
+        return true;
     }
 
-    public void InsertAccount(String name){   //通过测试
+    public boolean InsertAccount(String name){   //通过测试,返回值需要判断
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        Cursor cursor = db.query("Account",null,null,null,null,null,null);
+        String sql = "select Account_Name from Account where Account_Name = '"+name+"'";
+        Cursor cursor = db.rawQuery(sql,null);
+        boolean sucess = false;
+        while(cursor.moveToNext()){
+            if(cursor.getString(cursor.getColumnIndex("Account_Name")).equals(name)){
+                sucess = true;
+            }
+        }
+        if(sucess){
+            db.close();
+            return false;
+        }
+
+        cursor = db.query("Account",null,null,null,null,null,null);
         int tmp = 0;
         while (cursor.moveToNext()){
             tmp = cursor.getInt(cursor.getColumnIndex("Account_ID"));
             tmp++;
         }
-        String sql = "insert into Account(Account_Id, Account_Name) values(?,?)";
+        sql = "insert into Account(Account_Id, Account_Name) values(?,?)";
         db.execSQL(sql, new Object[] {tmp, name});
         db.close();
+        return true;
     }
 
     public List<String> QueryMember(){  //通过测试
@@ -320,9 +385,6 @@ public class BillDao {
             if(cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) == 2) continue;
             cnt++;
             Integer IO = cursor.getInt(cursor.getColumnIndex("Bill_TYPE"));
-//            String txt = cursor.getString(cursor.getColumnIndex("Bill_SubCategory"))+" ";
-//            String Mon = String.valueOf(cursor.getDouble(cursor.getColumnIndex("Bill_Money")));
-//            String ans = IO+txt+Mon;
             re.add(IO);
         }
         return re;
