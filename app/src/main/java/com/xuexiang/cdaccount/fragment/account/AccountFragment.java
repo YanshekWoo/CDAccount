@@ -43,6 +43,7 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -101,9 +102,10 @@ public class AccountFragment extends BaseFragment {
         adapter = new SimpleDelegateAdapter<String>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
             @Override
             protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-                holder.text(R.id.account_name,"帐户名称");
+                holder.text(R.id.account_name,"银行卡");
                 holder.text(R.id.account_money,datas.get(position));
-
+                holder.text(R.id.account_income,"100.00");
+                holder.text(R.id.account_outcome,"000.00");
                 holder.click(R.id.account_card,view -> click(getContext(),datas.get(position)));
             }
         };
@@ -175,6 +177,7 @@ public class AccountFragment extends BaseFragment {
                 .cancelable(false)
                 .show();
     }
+
 
 //    private void showCustomDialog() {
 //        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))

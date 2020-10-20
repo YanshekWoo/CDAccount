@@ -25,13 +25,15 @@ import android.widget.TextView;
 import com.xuexiang.xui.adapter.listview.BaseListAdapter;
 import com.xuexiang.cdaccount.R;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class ListDropDownAdapter extends BaseListAdapter<String, ListDropDownAdapter.ViewHolder> {
 
-    public ListDropDownAdapter(Context context, String[] data) {
+    public ListDropDownAdapter(Context context, List<String> data) {
         super(context, data);
     }
 
