@@ -29,12 +29,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.database.ChartDataEntry;
-import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 
 import java.util.Collection;
+
+import static com.xuexiang.xutil.XUtil.getResources;
 
 /**
  * 可伸缩布局适配器
@@ -45,13 +46,16 @@ import java.util.Collection;
 public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
 
     private RecyclerView mRecyclerView;
-    private Context context;
+    private final Context context;
+    private int tabSeleted;
+
 
     public ChartListAdapter(Context context, RecyclerView recyclerView, Collection<ChartDataEntry> data) {
         super(data);
         this.mRecyclerView = recyclerView;
         this.context = context;
     }
+
 
     /**
      * 适配的布局
@@ -61,6 +65,7 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
      */
     @Override
     protected int getItemLayoutId(int viewType) { return R.layout.adapter_chart_list; }
+
 
     /**
      * 绑定数据
@@ -87,11 +92,30 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
             @SingleClick
             @Override
             public void onClick(View v) {
-                XToastUtils.toast("点击了:" + mSelectPosition);
+                String expandType = "月";
+                String account = getResources().getString(R.string.unlimited);
+                String member = getResources().getString(R.string.unlimited);
+                if(tabSeleted==2) {
+                    member = item.getDataName();
+                }
+                else if(tabSeleted==3) {
+                    account = item.getDataName();
+                }
+
                 Intent intent = new Intent(context, AccountDetailsActivity.class);
+                intent.putExtra("expandType", expandType);
+                intent.putExtra("member", member);
+                intent.putExtra("account", account);
                 context.startActivity(intent);
             }
         });
     }
 
+    public int getTabSeleted() {
+        return tabSeleted;
+    }
+
+    public void setTabSeleted(int tabSeleted) {
+        this.tabSeleted = tabSeleted;
+    }
 }

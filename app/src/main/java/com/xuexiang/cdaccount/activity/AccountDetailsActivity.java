@@ -17,8 +17,6 @@
 
 package com.xuexiang.cdaccount.activity;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -29,7 +27,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -46,46 +43,41 @@ import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.adapter.ExpandableYearAdapter;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
-import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
-import com.xuexiang.xui.widget.alpha.XUIAlphaButton;
-import com.xuexiang.xui.widget.picker.widget.TimePickerView;
-import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xui.widget.spinner.DropDownMenu;
-import com.xuexiang.xutil.data.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 
 public class AccountDetailsActivity extends BaseActivity {
 
 
-    private String[] mHeaders = {"年", "类别", "成员", "账户"};
+    private BillDao mBillDao;
+    private String[] mHeaders = {"年",  "成员", "账户"};
     private List<View> mPopupViews = new ArrayList<>();
 
 //    private ListDropDownAdapter mCategoryAdapter;
-    private ListDropDownAdapter mTopCategoryAdapter;
-    private ListDropDownAdapter mSubCategoryAdapter;
+//    private ListDropDownAdapter mTopCategoryAdapter;
+//    private ListDropDownAdapter mSubCategoryAdapter;
     private ListDropDownAdapter mMemberAdapter;
     private ListDropDownAdapter mAccountAdapter;
     private ListDropDownAdapter mTimeAdapter;
 
 //    private String[] mCategories;
-    private String[] mTopCategory;
-    private String[] mSubCategory;
-    private String[] mMembers;
-    private String[] mAccounts;
-    private String[] mTimes;
+//    private List<String> mTopCategory;
+//    private List<String> mSubCategory;
+    private List<String> mMembers;
+    private List<String> mAccounts;
+    private List<String> mTimes;
 
 
 //    private TimePickerView mDatePickerStart;
@@ -351,12 +343,20 @@ public class AccountDetailsActivity extends BaseActivity {
      * 用数组初始化菜单选项
      */
     protected void initArgs() {
-        mTimes = ResUtils.getStringArray(R.array.time_entry);
-//        mCategories = ResUtils.getStringArray(R.array.category_entry);
-        mTopCategory = ResUtils.getStringArray(R.array.category_entry);
-        mSubCategory = ResUtils.getStringArray(R.array.member_entry);
-        mMembers = ResUtils.getStringArray(R.array.member_entry);
-        mAccounts = ResUtils.getStringArray(R.array.account_entry);
+        mBillDao = new BillDao(AccountDetailsActivity.this);
+        mTimes = new ArrayList<>();
+        mTimes.add("年");
+        mTimes.add("月");
+        mTimes.add("日");
+////        mCategories = ResUtils.getStringArray(R.array.category_entry);
+//        mTopCategory = ResUtils.getStringArray(R.array.category_entry);
+//        mSubCategory = ResUtils.getStringArray(R.array.member_entry);
+//        mMembers = ResUtils.getStringArray(R.array.member_entry);
+//        mAccounts = ResUtils.getStringArray(R.array.account_entry);
+        mMembers = mBillDao.QueryMember();
+        mMembers.add(0,"无限制");
+        mAccounts = mBillDao.QueryAccount();
+        mAccounts.add(0,"无限制");
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event, DropDownMenu mDropDownMenu) {
@@ -389,30 +389,30 @@ public class AccountDetailsActivity extends BaseActivity {
 //        categoryView.setDividerHeight(0);
 //        categoryView.setAdapter(mCategoryAdapter);
         //init category
-        final View categoryListView = getLayoutInflater().inflate(R.layout.layout_drop_down_category, null);
-        ListView topListView = categoryListView.findViewById(R.id.dorp_down_topcategory);
-        ListView subListView = categoryListView.findViewById(R.id.dorp_down_subcategory);
-        mTopCategoryAdapter = new ListDropDownAdapter(this, mTopCategory);
-        mSubCategoryAdapter = new ListDropDownAdapter(this, mSubCategory);
-        topListView.setAdapter(mTopCategoryAdapter);
-        subListView.setAdapter(mSubCategoryAdapter);
-        categoryListView.findViewById(R.id.btn_ok).setOnClickListener(v -> {
-            mDropDownMenu.setTabMenuText(mTopCategoryAdapter.getSelectPosition() <= 0 ? mHeaders[3] : mTopCategoryAdapter.getSelectItem());
-            getBillData();
-            mDropDownMenu.closeMenu();
-        });
-        topListView.setOnItemClickListener((parent, view, position, id) -> {
-            mTopCategoryAdapter.setSelectPosition(position);
-            if(position==0) {
-                getBillData();
-                mDropDownMenu.closeMenu();
-            }
-        });
-        subListView.setOnItemClickListener((parent, view, position, id) -> {
-            mSubCategoryAdapter.setSelectPosition(position);
-            getBillData();
-            mDropDownMenu.closeMenu();
-        });
+//        final View categoryListView = getLayoutInflater().inflate(R.layout.layout_drop_down_category, null);
+//        ListView topListView = categoryListView.findViewById(R.id.dorp_down_topcategory);
+//        ListView subListView = categoryListView.findViewById(R.id.dorp_down_subcategory);
+//        mTopCategoryAdapter = new ListDropDownAdapter(this, mTopCategory);
+//        mSubCategoryAdapter = new ListDropDownAdapter(this, mSubCategory);
+//        topListView.setAdapter(mTopCategoryAdapter);
+//        subListView.setAdapter(mSubCategoryAdapter);
+//        categoryListView.findViewById(R.id.btn_ok).setOnClickListener(v -> {
+//            mDropDownMenu.setTabMenuText(mTopCategoryAdapter.getSelectPosition() <= 0 ? mHeaders[3] : mTopCategoryAdapter.getSelectItem());
+//            getBillData();
+//            mDropDownMenu.closeMenu();
+//        });
+//        topListView.setOnItemClickListener((parent, view, position, id) -> {
+//            mTopCategoryAdapter.setSelectPosition(position);
+//            if(position==0) {
+//                getBillData();
+//                mDropDownMenu.closeMenu();
+//            }
+//        });
+//        subListView.setOnItemClickListener((parent, view, position, id) -> {
+//            mSubCategoryAdapter.setSelectPosition(position);
+//            getBillData();
+//            mDropDownMenu.closeMenu();
+//        });
 
 
         //init member menu
@@ -431,14 +431,14 @@ public class AccountDetailsActivity extends BaseActivity {
 
         //init mPopupViews
         mPopupViews.add(timeView);
-        mPopupViews.add(categoryListView);
+//        mPopupViews.add(categoryListView);
         mPopupViews.add(memberView);
         mPopupViews.add(accoutView);
 
         //add item click event
         timeView.setOnItemClickListener((parent, view, position, id) -> {
             mTimeAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mTimes[position]);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mTimes.get(position));
             switch (position){
                 case 0:
                     yearFocusable = true;
@@ -480,16 +480,16 @@ public class AccountDetailsActivity extends BaseActivity {
 
         memberView.setOnItemClickListener((parent, view, position, id) -> {
             mMemberAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[2] : mMembers[position]);
-            XToastUtils.toast("点击了:" + mMembers[position]);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[2] : mMembers.get(position));
+            XToastUtils.toast("点击了:" + mMembers.get(position));
             getBillData();
             mDropDownMenu.closeMenu();
         });
 
         accoutView.setOnItemClickListener((parent, view, position, id) -> {
             mAccountAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[3] : mAccounts[position]);
-            XToastUtils.toast("点击了:" + mAccounts[position]);
+            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[3] : mAccounts.get(position));
+            XToastUtils.toast("点击了:" + mAccounts.get(position));
             getBillData();
             mDropDownMenu.closeMenu();
         });

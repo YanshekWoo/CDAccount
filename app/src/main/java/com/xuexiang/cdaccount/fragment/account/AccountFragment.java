@@ -20,9 +20,7 @@ package com.xuexiang.cdaccount.fragment.account;
 import android.content.Context;
 import android.content.Intent;
 import android.text.InputType;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -101,9 +99,10 @@ public class AccountFragment extends BaseFragment {
         adapter = new SimpleDelegateAdapter<String>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
             @Override
             protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-                holder.text(R.id.account_name,"帐户名称");
+                holder.text(R.id.account_name,"银行卡");
                 holder.text(R.id.account_money,datas.get(position));
-
+                holder.text(R.id.account_income,"100.00");
+                holder.text(R.id.account_outcome,"000.00");
                 holder.click(R.id.account_card,view -> click(getContext(),datas.get(position)));
             }
         };
@@ -146,11 +145,15 @@ public class AccountFragment extends BaseFragment {
     }
 
     public void click(Context context, String position){
-        Intent intent = new Intent(context, AccountDetailsActivity.class);
+        String expandType = "年";
         String account = "账户";
+        String member = getResources().getString(R.string.unlimited);
+
+        Intent intent = new Intent(context, AccountDetailsActivity.class);
+        intent.putExtra("expandType", expandType);
+        intent.putExtra("member", member);
         intent.putExtra("account", account);
         startActivity(intent);
-        //Toast.makeText(context,"温腿 "+position+"号",Toast.LENGTH_SHORT).show();
     }
 
     private void showInputDialog() {
@@ -175,6 +178,7 @@ public class AccountFragment extends BaseFragment {
                 .cancelable(false)
                 .show();
     }
+
 
 //    private void showCustomDialog() {
 //        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
