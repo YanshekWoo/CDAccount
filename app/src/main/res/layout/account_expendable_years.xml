@@ -101,7 +101,7 @@
                         android:layout_height="wrap_content"
                         android:text="支出"
                         android:textSize="10sp"
-                        android:textColor="@color/app_color_theme_5"
+                        android:textColor="@color/app_color_theme_1"
                         android:layout_marginStart="10dp"
                         tools:ignore="SmallSp" />
 
@@ -111,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="10sp"
                         android:text="000"
-                        android:textColor="@color/app_color_theme_5"
+                        android:textColor="@color/app_color_theme_1"
                         android:layout_marginStart="5dp"
                         tools:ignore="SmallSp" />
 
