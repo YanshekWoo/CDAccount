@@ -241,8 +241,8 @@ public class IncomeFragment  extends BaseFragment {
                         .customView(dialog, true)
                         .title("添加分类")
                         .positiveText("确定")
-                        .negativeText("取消");
-
+                        .negativeText("取消")
+                        .autoDismiss(false);
                 mTvDialogItem1 = dialog.findViewById(R.id.item_title1);
                 mTvDialogItem2 = dialog.findViewById(R.id.item_title2);
                 mEsDialog = dialog.findViewById(R.id.es_item1);
@@ -253,17 +253,31 @@ public class IncomeFragment  extends BaseFragment {
                 mEsDialog.setItems(options1Item);
                 mEsDialog.getEditText().setFilters(new InputFilter[]{new IncomeFragment.LengthFilter(5)});
                 mEtDialog.setFilters(new InputFilter[]{new IncomeFragment.LengthFilter(5)});
+                materialDialog.onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
                 materialDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mOption1 = mEsDialog.getText();
-                        mOption2 = mEtDialog.getText().toString();
-                        mOption = mOption1 + '-' + mOption2;
-
-                        mTvType.setText(mOption);
+                        mStrNewItem1 = mEsDialog.getText();
+                        mStrNewItem2 = mEtDialog.getText().toString();
                         //TODO:Insert_Category
-                        mDatabaseHelper.InsertCategory(mOption1, mOption2, 0);
-                        loadOptionData();
+                        if(mStrNewItem1.length()==0 || mStrNewItem2.length()==0){
+                            XToastUtils.error("添加分类不可为空");
+                        }else if(mDatabaseHelper.InsertCategory(mStrNewItem1, mStrNewItem2, 1)){
+                            mOption1 = mStrNewItem1;
+                            mOption2 = mStrNewItem2;
+                            mOption = mOption1 + '-' + mOption2;
+                            mTvType.setText(mOption);
+                            XToastUtils.success("添加分类成功");
+                            loadOptionData();
+                            dialog.dismiss();
+                        }else{
+                            XToastUtils.error("添加分类失败，该分类已存在");
+                        }
                     }
                 });
                 materialDialog.show();
@@ -309,8 +323,12 @@ public class IncomeFragment  extends BaseFragment {
                                                                   mAccount = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount.setText(mAccount);
                                                                   //TODO:insert_new_account
-                                                                  mDatabaseHelper.InsertAccount(mAccount);
-                                                                  loadAccountData();
+                                                                  if(mDatabaseHelper.InsertAccount(mAccount)){
+                                                                      XToastUtils.success("添加账户成功");
+                                                                      loadAccountData();
+                                                                  }else{
+                                                                      XToastUtils.error("添加账户失败，该账户已存在");
+                                                                  }
                                                               }
                                                           })
                                                           .show();
@@ -363,9 +381,12 @@ public class IncomeFragment  extends BaseFragment {
                                     mTvMember.setTextColor(0xFF000000 );
                                 }
 
-                                //TODO:insert new member
-                                mDatabaseHelper.InsertMember(mMember);
-                                loadMemberData();
+                                if(mDatabaseHelper.InsertMember(mMember)){
+                                    XToastUtils.success("添加成员成功");
+                                    loadMemberData();
+                                }else{
+                                    XToastUtils.error("添加成员失败，该成员已存在");
+                                }
 
                             }
                         })
