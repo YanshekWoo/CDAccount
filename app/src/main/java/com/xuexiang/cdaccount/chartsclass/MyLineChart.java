@@ -28,6 +28,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.database.ChartDataEntry;
 
@@ -71,6 +72,8 @@ public class MyLineChart {
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setEnabled(true);
+        xAxis.setTextSize(7f);
+//        xAxis.setAxisMinimum(0);
 
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setDrawAxisLine(true);
@@ -100,24 +103,24 @@ public class MyLineChart {
 
         // X轴样式
         lineChart.getXAxis().setLabelCount(lenth);
-//        lineChart.getXAxis().setLabelRotationAngle(-60f);
-//        lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
-//            @Override
-//            public String getFormattedValue(float value) {
-//                int m = lenth /5 + 1;
-//                int intValue = (int) value;
-//                if(intValue < lenth && intValue%m==0) {
-//                    String date = chartDataEntries.get((int) (value)).getDataName();
-//                    String year = date.substring(0, 4);
-//                    String month = date.substring(4, 6);
-//                    String day = date.substring(6, 8);
-//                    return year+"-"+month+"-"+day;
-//                }
-//                else {
-//                    return "";
-//                }
-//            }
-//        });
+        lineChart.getXAxis().setLabelRotationAngle(-60f);
+        lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int m = lenth / 5 + 1;
+                int intValue = Math.round(value);
+                if(intValue < lenth && intValue>=0 && intValue==value && intValue%m==0) {
+                    String date = chartDataEntries.get(intValue).getDataName();
+                    String year = date.substring(0, 4);
+                    String month = date.substring(4, 6);
+                    String day = date.substring(6, 8);
+                    return year+"-"+month+"-"+day;
+                }
+                else {
+                    return "";
+                }
+            }
+        });
 
         LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
@@ -132,7 +135,7 @@ public class MyLineChart {
 
 
         LineData linedata = new LineData(lineDataSet);
-        linedata.setValueTextSize(11f);
+        linedata.setValueTextSize(7f);
         return linedata;
     }
 
