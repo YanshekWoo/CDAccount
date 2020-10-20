@@ -18,7 +18,6 @@
 package com.xuexiang.cdaccount.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -39,7 +38,10 @@ import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
+import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.display.Colors;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -52,21 +54,28 @@ import butterknife.OnClick;
  */
 public class RegisterVerifyActivity extends BaseActivity {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_verify_commit)
     SuperButton mBtSign;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_question1)
     MaterialSpinner mMaterialSpinner1;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_answer1)
     MaterialEditText mEt_answer1;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_question2)
     MaterialSpinner mMaterialSpinner2;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_answer2)
     MaterialEditText mEt_answer2;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_question3)
     MaterialSpinner mMaterialSpinner3;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.verify_answer3)
     MaterialEditText mEt_answer3;
 
@@ -155,11 +164,11 @@ public class RegisterVerifyActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                String ans1 = mEt_answer1.getText().toString();
-                String ans2 = mEt_answer2.getText().toString();
-                String ans3 = mEt_answer1.getText().toString();
+                String ans1 = Objects.requireNonNull(mEt_answer1.getText()).toString();
+                String ans2 = Objects.requireNonNull(mEt_answer2.getText()).toString();
+                String ans3 = Objects.requireNonNull(mEt_answer3.getText()).toString();
 
-                if(ans1.length()==0 || ans2.length()==1 || ans3.length()==0)
+                if(ans1.length()==0 || ans2.length()==0 || ans3.length()==0)
                 {
                     XToastUtils.error("填写不能为空");
                 }
@@ -196,14 +205,16 @@ public class RegisterVerifyActivity extends BaseActivity {
     private void onLoginSuccess() {
         String token = RandomUtils.getRandomNumbersAndLetters(16);
         if (TokenUtils.handleLoginSuccess(token)) {
-            initDate();
-            Intent intent = new Intent(RegisterVerifyActivity.this, MainActivity.class);
-            startActivity(intent);
+//            initDate();
+//            Intent intent = new Intent(RegisterVerifyActivity.this, MainActivity.class);
+//            startActivity(intent);
+            ActivityUtils.startActivity(MainActivity.class);
             finish();
         }
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @OnClick({R.id.tv_user_protocol, R.id.tv_privacy_protocol})
     public void onViewClicked(View view) {
@@ -282,4 +293,10 @@ public class RegisterVerifyActivity extends BaseActivity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        initDate();
+    }
 }

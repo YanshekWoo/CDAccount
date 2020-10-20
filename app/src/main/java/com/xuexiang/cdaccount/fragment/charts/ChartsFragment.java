@@ -23,7 +23,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.os.Build;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -65,7 +64,6 @@ import com.xuexiang.xutil.data.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -84,37 +82,49 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 //    @BindView(R.id.chart_tab_selector)
 //    TabLayout mTabLayoutSelector;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_recyclerView)
     RecyclerView chart_recyclerView;
 
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.lineChart)
     LineChart mLineChart;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.barChart)
     BarChart mBarChart;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.pieChart)
     PieChart mPieChart;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.btn_date_start)
     XUIAlphaButton Btn_date_start;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.btn_date_end)
     XUIAlphaButton Btn_date_end;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFloatingActionMenu;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_tab_inout)
     TabLayout mTabLayoutInout;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.ll_navigation_view)
     LinearLayout llNavigationView;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_tab_selector)
     TabLayout mTabLayout;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_tab_title)
     TextView chartTabTitle;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.iv_switch)
     AppCompatImageView ivSwitch;
 
@@ -171,7 +181,12 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         selectChart(0);
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshCharts();
+    }
 
     /**
      *  初始化图表
@@ -307,19 +322,21 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 //        Handler handler = new Handler();
 //        new Thread(new ChartDataRunnable()).start();
 
+//        Collections.sort(chartDataEntries, (ChartDataEntry a, ChartDataEntry b)-> b.compareTo(a));
+
         Double allMoney = chartDataEntries.stream().map(ChartDataEntry::getDataMoney).reduce(0.00, Double::sum);
-        Log.i("sum", allMoney.toString());
+//        Log.i("sum", allMoney.toString());
         for(ChartDataEntry e: chartDataEntries) {
             e.setSumMoney(allMoney);
         }
 
-        barData = myBarChart.setBardata(chartDataEntries);
+        barData = myBarChart.setBardata(mBarChart, chartDataEntries);
         pieData = myPieChart.setPiedata(mPieChart, chartDataEntries);
-        lineData = myLineChart.setLinedata(chartDataLineEntries);
+        lineData = myLineChart.setLinedata(mLineChart, chartDataLineEntries);
 
-        Collections.sort(chartDataEntries);
+
+
         madapter.refresh(chartDataEntries);
-
 
         // 柱状图
         mBarChart.setData(barData);
@@ -335,6 +352,9 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         mLineChart.setData(lineData);
         mLineChart.animateXY(1500, 1500);
         mLineChart.invalidate();
+
+
+
 
     }
 
@@ -459,7 +479,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
             })
                     .setDate(calendar)  //默认日期为当前的前一个月
                     .setTimeSelectChangeListener(date -> {
-                        if(date.after(mDateEnd)) {
+                        if(mDateEnd.before(date)) {
                             XToastUtils.error("开始日期不能晚于结束日期");
                         }
                     })
@@ -479,7 +499,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 //选择器监听
                 mDateEnd = date;
                 Btn_date_end.setText(DateUtils.date2String(date, DateUtils.yyyyMMdd.get()));
-                if(mDateStart.after(mDateEnd)) {
+                if(mDateEnd.before(mDateStart)) {
                     XToastUtils.error("结束日期不能早于开始日期");
                 }
                 refreshCharts();
@@ -510,6 +530,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         mTabLayout.addTab(mTabLayout.newTab().setText("成员"));
         mTabLayout.addTab(mTabLayout.newTab().setText("账户"));
         mTabLayout.addOnTabSelectedListener(this);
+        // 初始不可见，避免隐藏状态下被点击
         mTabLayout.setVisibility(View.INVISIBLE);
     }
 
@@ -543,9 +564,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 XToastUtils.toast("选中了:" + Integer.toString(tabInout));
                 break;
             case R.id.chart_tab_selector:
-                int i = tab.getPosition();
                 tabSelected = tab.getPosition();
-                XToastUtils.toast("选中了:" + Integer.toString(i));
                 break;
             default:
                 break;

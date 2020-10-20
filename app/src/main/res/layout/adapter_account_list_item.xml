@@ -19,7 +19,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/account_card"
+
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginStart="10dp"
@@ -30,9 +30,12 @@
     app:cardElevation="4dp"
     app:cardPreventCornerOverlap="true">
 
-    <FrameLayout
+    <com.xuexiang.xui.widget.button.RippleView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/account_card">
+<!--        android:layout_marginTop="?attr/xui_config_content_spacing_horizontal"-->
+<!--        app:rv_type="doubleRipple">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:text="信用卡"
                 android:textSize="20sp"
+                android:textColor="#000000"
                 android:layout_marginStart="20dp"/>
 
             <TextView
@@ -63,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/account_origin"
+                android:textColor="#000000"
                 android:textSize="20sp" />
 
             <ImageView
@@ -75,6 +80,6 @@
                 tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
-    </FrameLayout>
+    </com.xuexiang.xui.widget.button.RippleView>
 
 </androidx.cardview.widget.CardView>

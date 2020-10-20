@@ -44,7 +44,7 @@ public class ChartDataEntry implements Comparable<ChartDataEntry>{
 
     @Override
     public int compareTo(ChartDataEntry chartDataEntry) {
-        return (int) (chartDataEntry.getDataMoney() - this.dataMoney);
+        return (int) (this.dataMoney - chartDataEntry.getDataMoney());
     }
 
 
