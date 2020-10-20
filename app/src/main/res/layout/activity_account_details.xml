@@ -40,32 +40,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp" >
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="10dp" >-->
 
-        <com.xuexiang.xui.widget.alpha.XUIAlphaButton
-            android:id="@+id/btn_date_start"
-            style="@style/Button.Primary.wrap"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            tools:ignore="RtlHardcoded" />
+<!--        <com.xuexiang.xui.widget.alpha.XUIAlphaButton-->
+<!--            android:id="@+id/btn_date_start"-->
+<!--            style="@style/Button.Primary.wrap"-->
+<!--            android:layout_width="110dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="left"-->
+<!--            android:layout_marginRight="5dp"-->
+<!--            android:layout_weight="1"-->
+<!--            tools:ignore="RtlHardcoded" />-->
 
-        <com.xuexiang.xui.widget.alpha.XUIAlphaButton
-            android:id="@+id/btn_date_end"
-            style="@style/Button.Primary.wrap"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            tools:ignore="RtlHardcoded" />
-    </LinearLayout>
+<!--        <com.xuexiang.xui.widget.alpha.XUIAlphaButton-->
+<!--            android:id="@+id/btn_date_end"-->
+<!--            style="@style/Button.Primary.wrap"-->
+<!--            android:layout_width="110dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:layout_weight="1"-->
+<!--            tools:ignore="RtlHardcoded" />-->
+<!--    </LinearLayout>-->
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
@@ -74,9 +74,23 @@
         app:srlEnableAutoLoadMore="true"
         app:srlEnableLoadMore="true">
 
-        <com.scwang.smartrefresh.header.MaterialHeader
+<!--        <com.scwang.smartrefresh.header.MaterialHeader-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:id="@+id/account_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:srlClassicsSpinnerStyle="FixedBehind"
+            app:srlDrawableArrowSize="20dp"
+            app:srlDrawableMarginRight="20dp"
+            app:srlDrawableProgressSize="20dp"
+            app:srlEnableLastTime="true"
+            app:srlFinishDuration="500"
+            app:srlTextSizeTime="10dp"
+            app:srlTextSizeTitle="16sp"
+            app:srlTextTimeMarginTop="2dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -84,9 +98,23 @@
             android:layout_height="match_parent"
             android:overScrollMode="never" />
 
-        <com.xuexiang.cdaccount.widget.MaterialFooter
+<!--        <com.xuexiang.cdaccount.widget.MaterialFooter-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+
+        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+            android:id="@+id/account_footer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:srlClassicsSpinnerStyle="FixedBehind"
+            app:srlDrawableArrowSize="20dp"
+            app:srlDrawableMarginRight="20dp"
+            app:srlDrawableProgressSize="20dp"
+            app:srlEnableLastTime="true"
+            app:srlFinishDuration="500"
+            app:srlTextSizeTime="10dp"
+            app:srlTextSizeTitle="16sp"
+            app:srlTextTimeMarginTop="2dp" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
