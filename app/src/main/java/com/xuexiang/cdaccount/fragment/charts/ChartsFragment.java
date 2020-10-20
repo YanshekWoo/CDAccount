@@ -272,10 +272,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     protected void refreshCharts() {
         BillDao billDao = new BillDao(getContext());
 
-        // chart datas
-        BarData barData = new BarData();
-        PieData pieData = new PieData();
-        LineData lineData = new LineData();
 
         // parse date to string
         String[] strDateStart = DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()).split("-");
@@ -293,19 +289,30 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         List<ChartDataEntry> chartDataLineEntries = new ArrayList<>();
         switch (tabSelected) {
             case 0:
-                chartDataEntries = billDao.GetDateByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                if(tabInout==0) {
+                    chartDataEntries = billDao.GetDataByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                }
+                else if(tabInout==1) {
+                    chartDataEntries = billDao.GetDataByInTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                }
                 break;
             case 1:
-                chartDataEntries = billDao.GetDateByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                if(tabInout==0) {
+                    chartDataEntries = billDao.GetDataByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                }
+                else if(tabInout==1) {
+                    chartDataEntries = billDao.GetDataByInSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                }
                 break;
             case 2:
-                chartDataEntries = billDao.GetDateByMember(start_year, start_month, start_day, end_year, end_month, end_day);
+                chartDataEntries = billDao.GetDataByMember(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
                 break;
             case 3:
-                chartDataEntries = billDao.GetDateByAccount(start_year, start_month, start_day, end_year, end_month, end_day);
+                chartDataEntries = billDao.GetDataByAccount(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
                 break;
         }
-        chartDataLineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day);
+
+        chartDataLineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
 //        // ARIMA预测 predict
 //        if(chartDataEntries.size() >= 5) {
 //            RunARIMA ra = new RunARIMA();
@@ -324,81 +331,34 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
 //        Collections.sort(chartDataEntries, (ChartDataEntry a, ChartDataEntry b)-> b.compareTo(a));
 
+
         Double allMoney = chartDataEntries.stream().map(ChartDataEntry::getDataMoney).reduce(0.00, Double::sum);
-//        Log.i("sum", allMoney.toString());
         for(ChartDataEntry e: chartDataEntries) {
             e.setSumMoney(allMoney);
         }
 
-        barData = myBarChart.setBardata(mBarChart, chartDataEntries);
-        pieData = myPieChart.setPiedata(mPieChart, chartDataEntries);
-        lineData = myLineChart.setLinedata(mLineChart, chartDataLineEntries);
-
-
-
+        // 加载图表和列表数据
+        BarData barData = myBarChart.setBardata(mBarChart, chartDataEntries);
+        PieData pieData = myPieChart.setPiedata(mPieChart, chartDataEntries);
+        LineData lineData = myLineChart.setLinedata(mLineChart, chartDataLineEntries);
         madapter.refresh(chartDataEntries);
 
-        // 柱状图
+        // 柱状图刷新
         mBarChart.setData(barData);
         mBarChart.animateXY(1500, 1500);
         mBarChart.invalidate();
 
-        //饼图
+        // 饼图刷新
         mPieChart.setData(pieData);
         mPieChart.animateXY(1500, 1500);
         mPieChart.invalidate();
 
-        //折线图
+        // 折线图刷新
         mLineChart.setData(lineData);
         mLineChart.animateXY(1500, 1500);
         mLineChart.invalidate();
 
-
-
-
     }
-
-
-//    public class ChartDataRunnable implements Runnable{
-//        @RequiresApi(api = Build.VERSION_CODES.N)
-//        @Override
-//        public void run() {
-//            BillDao billDao = new BillDao(getContext());
-//            // get the chart data
-//            List<ChartDataEntry> chartDataEntries = new ArrayList<>();
-//            List<ChartDataEntry> chartDataLineEntries = new ArrayList<>();
-//            switch (tabSelected) {
-//                case 0:
-//                    chartDataEntries = billDao.GetDateByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
-//                    break;
-//                case 1:
-//                    chartDataEntries = billDao.GetDateByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
-//                    break;
-//                case 2:
-//                    chartDataEntries = billDao.GetDateByMember(start_year, start_month, start_day, end_year, end_month, end_day);
-//                    break;
-//                case 3:
-//                    chartDataEntries = billDao.GetDateByAccount(start_year, start_month, start_day, end_year, end_month, end_day);
-//                    break;
-//            }
-//            chartDataLineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day);
-//            // ARIMA预测 predict
-//            if(chartDataEntries.size() >= 5) {
-//                RunARIMA ra = new RunARIMA();
-//                int lenth = chartDataLineEntries.size();
-//                for(int i=lenth; i < lenth+2; i++) {
-//                    double predictData = ra.predictNext(chartDataLineEntries);
-//                    while(predictData<0) {
-//                        predictData = ra.predictNext(chartDataLineEntries);
-//                    }
-//                    chartDataLineEntries.add(new ChartDataEntry("预测第"+i+"天", predictData));
-//                }
-//            }
-//
-//            Message msg = new Message();
-//
-//        }
-//    }
 
 
 
@@ -565,6 +525,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 break;
             case R.id.chart_tab_selector:
                 tabSelected = tab.getPosition();
+                madapter.setTabSeleted(tabSelected);
                 break;
             default:
                 break;
@@ -649,6 +610,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      * @param v
      * 当前视图
      */
+    @SuppressLint("NonConstantResourceId")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SingleClick
     @OnClick({R.id.fab_piechart, R.id.fab_barchart, R.id.fab_linechart, R.id.iv_switch})
