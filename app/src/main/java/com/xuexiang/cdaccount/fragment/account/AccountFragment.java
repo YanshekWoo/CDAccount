@@ -99,10 +99,11 @@ public class AccountFragment extends BaseFragment {
         adapter = new SimpleDelegateAdapter<String>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
             @Override
             protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-                holder.text(R.id.account_name,"帐户名称");
+                holder.text(R.id.account_name,"银行卡");
                 holder.text(R.id.account_money,datas.get(position));
-
-                holder.click(R.id.account_card,view -> click(datas.get(position)));
+                holder.text(R.id.account_income,"100.00");
+                holder.text(R.id.account_outcome,"000.00");
+                holder.click(R.id.account_card,view -> click(getContext(),datas.get(position)));
             }
         };
 
@@ -143,12 +144,12 @@ public class AccountFragment extends BaseFragment {
         refreshLayout.autoRefresh();//第一次进入触发自动刷新，演示效果
     }
 
-    public void click(String position){
+    public void click(Context context, String position){
         String expandType = "年";
         String account = "账户";
         String member = getResources().getString(R.string.unlimited);
 
-        Intent intent = new Intent(getContext(), AccountDetailsActivity.class);
+        Intent intent = new Intent(context, AccountDetailsActivity.class);
         intent.putExtra("expandType", expandType);
         intent.putExtra("member", member);
         intent.putExtra("account", account);
@@ -177,6 +178,7 @@ public class AccountFragment extends BaseFragment {
                 .cancelable(false)
                 .show();
     }
+
 
 //    private void showCustomDialog() {
 //        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
