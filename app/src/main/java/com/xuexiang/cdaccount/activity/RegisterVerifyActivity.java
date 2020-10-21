@@ -116,6 +116,7 @@ public class RegisterVerifyActivity extends BaseActivity {
         initSpinner();
         setButtomClickListener();
         initTextView();
+        initialDataTable();
     }
 
     private void initTextView() {
@@ -318,12 +319,12 @@ public class RegisterVerifyActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        initDate();
+    protected void initialDataTable() {
         BillDao billDao = new BillDao(this);
         billDao.Init();
         initDate();
     }
+
+
+
 }
