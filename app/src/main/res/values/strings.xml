@@ -89,4 +89,5 @@
     <string name="footer_release">释放加载%04d年流水</string>
     <string name="header_pulling">下拉加载%04d年流水</string>
     <string name="header_release">释放加载%04d年流水</string>
+    <string name="accont_title">%04d年流水</string>
 </resources>
