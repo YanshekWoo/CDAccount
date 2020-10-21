@@ -281,6 +281,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         String end_day = strDateEnd[2];
 
 
+
+
         // get the chart data
         List<ChartDataEntry> chartDataEntries = new ArrayList<>();
         List<ChartDataEntry> chartDataLineEntries = new ArrayList<>();
@@ -518,7 +520,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         switch (tab.parent.getId()) {
             case R.id.chart_tab_inout:
                 tabInout = tab.getPosition();
-                XToastUtils.toast("选中了:" + Integer.toString(tabInout));
                 break;
             case R.id.chart_tab_selector:
                 tabSelected = tab.getPosition();

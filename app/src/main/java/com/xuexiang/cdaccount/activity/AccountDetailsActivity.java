@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -36,7 +37,6 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataDay;
-import com.xuexiang.cdaccount.ExpanableBill.BillDataItem;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataMonth;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataYear;
 import com.xuexiang.cdaccount.R;
@@ -52,7 +52,6 @@ import com.xuexiang.xui.widget.spinner.DropDownMenu;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 
@@ -83,6 +82,7 @@ public class AccountDetailsActivity extends BaseActivity {
     private boolean dayFocusable = false;
     List<BillDataYear> billDataYearList = new ArrayList<>();
     private int selectedYear;
+    private int selectedTime;
     private String selectedMember;
     private String selectedAccount;
 
@@ -118,8 +118,8 @@ public class AccountDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initTitleBar();
         initArgs();
+        initTitleBar();
         initSpinner();
 //        initTimePicker();
         initRecyclerViews();
@@ -128,6 +128,7 @@ public class AccountDetailsActivity extends BaseActivity {
 
 
     protected void initTitleBar() {
+        mTitleBar.setTitle(getString(R.string.accont_title,selectedYear));
         mTitleBar.setLeftClickListener(view -> {
             finish();
         });
@@ -172,7 +173,6 @@ public class AccountDetailsActivity extends BaseActivity {
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
                 selectedYear--;
                 printHeaderAndFooter();
                 getBillData();
@@ -191,36 +191,40 @@ public class AccountDetailsActivity extends BaseActivity {
     }
 
 
-    protected List<BillDataYear> getTestData(int year) {
-        List<BillDataYear> billDataYearList = new ArrayList<>();
-            List<BillDataMonth> billDataMonthList = new ArrayList<>();
+//    protected List<BillDataYear> getTestData(int year) {
+//        List<BillDataYear> billDataYearList = new ArrayList<>();
+//            List<BillDataMonth> billDataMonthList = new ArrayList<>();
+//
+//            for(int m=1;m < 3;m++) {
+//                List<BillDataDay> billDataDayList = new ArrayList<>();
+//
+//                for(int d=1;d < 5; d++) {
+//                    List<BillDataItem> billDataItemList = new ArrayList<>();
+//                    for(int i=1;i< 4;i++) {
+//                        billDataItemList.add(new BillDataItem(new Random().nextInt(2), "早午晚餐", "信用卡", "to账户", "本人", Integer.toString(year), Integer.toString(m), Integer.toString(d), "20:34", (double) new Random().nextInt(2000), "这是备注"));
+//                    }
+//                    billDataDayList.add(new BillDataDay(Integer.toString(d), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataItemList));
+//                }
+//
+//                billDataMonthList.add(new BillDataMonth(Integer.toString(m), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataDayList));
+//            }
+//
+//            billDataYearList.add(new BillDataYear(Integer.toString(year), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataMonthList));
+//        return billDataYearList;
+//    }
 
-            for(int m=1;m < 3;m++) {
-                List<BillDataDay> billDataDayList = new ArrayList<>();
 
-                for(int d=1;d < 5; d++) {
-                    List<BillDataItem> billDataItemList = new ArrayList<>();
-                    for(int i=1;i< 4;i++) {
-                        billDataItemList.add(new BillDataItem(new Random().nextInt(2), "早午晚餐", "信用卡", "to账户", "本人", Integer.toString(year), Integer.toString(m), Integer.toString(d), "20:34", (double) new Random().nextInt(2000), "这是备注"));
-                    }
-                    billDataDayList.add(new BillDataDay(Integer.toString(d), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataItemList));
-                }
-
-                billDataMonthList.add(new BillDataMonth(Integer.toString(m), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataDayList));
-            }
-
-            billDataYearList.add(new BillDataYear(Integer.toString(year), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataMonthList));
-        return billDataYearList;
-    }
-
-
-
+    /**
+     * 从数据库中获取数据，加载到适配器
+     */
     protected void getBillData() {
         BillDataYear billDataYear = mBillDao.getJournalAccount(Integer.toString(selectedYear), selectedMember, selectedAccount);
         billDataYearList.clear();
         billDataYearList.add(billDataYear);
         setFocusedExpandable(yearFocusable, monthFocusable, dayFocusable);
         adapter.refresh(billDataYearList);
+        // 刷新标题
+        mTitleBar.setTitle(getString(R.string.accont_title,selectedYear));
     }
 
     /**
@@ -239,8 +243,10 @@ public class AccountDetailsActivity extends BaseActivity {
 
         Calendar calendar = Calendar.getInstance();
         selectedYear = calendar.get(Calendar.YEAR);
-        selectedAccount = getResources().getString(R.string.unlimited);
-        selectedMember = getResources().getString(R.string.unlimited);
+        Intent intent = getIntent();
+        selectedTime = intent.getIntExtra("focusType", 0);
+        selectedMember = intent.getStringExtra("member");
+        selectedAccount = intent.getStringExtra("account");
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event, DropDownMenu mDropDownMenu) {
@@ -266,7 +272,7 @@ public class AccountDetailsActivity extends BaseActivity {
         //init time menu
         final ListView timeView = new ListView(AccountDetailsActivity.this);
         mTimeAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mTimes);
-        mTimeAdapter.setSelectPosition(initialPosition);
+        mTimeAdapter.setSelectPosition(selectedTime);
         timeView.setDividerHeight(0);
         timeView.setAdapter(mTimeAdapter);
 
