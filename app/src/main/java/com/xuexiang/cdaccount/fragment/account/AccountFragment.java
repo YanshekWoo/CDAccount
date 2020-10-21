@@ -145,12 +145,12 @@ public class AccountFragment extends BaseFragment {
     }
 
     public void click(String item){
-        String expandType = "年";
+        int focusType = 1;
         String account = item;
         String member = getResources().getString(R.string.unlimited);
 
         Intent intent = new Intent(getContext(), AccountDetailsActivity.class);
-        intent.putExtra("expandType", expandType);
+        intent.putExtra("focusType", focusType);
         intent.putExtra("member", member);
         intent.putExtra("account", account);
         startActivity(intent);
