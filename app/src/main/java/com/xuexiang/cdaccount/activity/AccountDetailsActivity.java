@@ -40,7 +40,7 @@ import com.xuexiang.cdaccount.ExpanableBill.BillDataItem;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataMonth;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataYear;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.adapter.ExpandableYearAdapter;
+import com.xuexiang.cdaccount.adapter.accountdetail.ExpandableYearAdapter;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
@@ -51,13 +51,10 @@ import com.xuexiang.xui.widget.spinner.DropDownMenu;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
-
-import static com.xuexiang.xutil.XUtil.getResources;
 
 
 public class AccountDetailsActivity extends BaseActivity {

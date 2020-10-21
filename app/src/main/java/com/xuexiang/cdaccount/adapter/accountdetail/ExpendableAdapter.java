@@ -15,7 +15,7 @@
  *
  */
 
-package com.xuexiang.cdaccount.adapter;
+package com.xuexiang.cdaccount.adapter.accountdetail;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -30,15 +30,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
-import com.xuexiang.cdaccount.utils.DemoDataProvider;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.utils.ResUtils;
-import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.layout.ExpandableLayout;
-
-import java.util.Collection;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ExpendableAdapter extends RecyclerView.Adapter<ExpendableAdapter.LinearViewHolder> {
 
