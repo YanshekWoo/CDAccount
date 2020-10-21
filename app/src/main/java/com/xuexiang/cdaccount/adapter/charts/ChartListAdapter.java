@@ -92,7 +92,7 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
             @SingleClick
             @Override
             public void onClick(View v) {
-                String expandType = "月";
+                int focusType = 1;
                 String account = getResources().getString(R.string.unlimited);
                 String member = getResources().getString(R.string.unlimited);
                 if(tabSeleted==2) {
@@ -103,7 +103,7 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
                 }
 
                 Intent intent = new Intent(context, AccountDetailsActivity.class);
-                intent.putExtra("expandType", expandType);
+                intent.putExtra("focusType", focusType);
                 intent.putExtra("member", member);
                 intent.putExtra("account", account);
                 context.startActivity(intent);
