@@ -79,9 +79,6 @@ import butterknife.OnClick;
 @Page(anim = CoreAnim.none)
 public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelectedListener{
 
-//    @BindView(R.id.chart_tab_selector)
-//    TabLayout mTabLayoutSelector;
-
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_recyclerView)
     RecyclerView chart_recyclerView;
