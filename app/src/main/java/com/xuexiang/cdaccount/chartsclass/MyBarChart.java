@@ -17,6 +17,8 @@
 
 package com.xuexiang.cdaccount.chartsclass;
 
+import android.annotation.SuppressLint;
+
 import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -26,13 +28,14 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.model.GradientColor;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 import static com.xuexiang.xutil.XUtil.getContext;
 import static com.xuexiang.xutil.XUtil.getResources;
@@ -68,6 +71,8 @@ public class MyBarChart {
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setEnabled(true);
+        xAxis.setTextSize(7f);
+//        xAxis.setAxisMinimum(0);
 
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setDrawAxisLine(true);
@@ -91,13 +96,14 @@ public class MyBarChart {
      * 设置图表数据
      * @return bardata
      */
-    public BarData setBardata() {
+    public BarData setBardata(BarChart barChart, List<ChartDataEntry> chartDataEntries) {
         List<BarEntry> entries = new ArrayList<>();
-        for(int i = 0;i < 12;i++) {
-            entries.add(new BarEntry(i, new Random().nextInt(2000)));
+        int lenth = chartDataEntries.size();
+        for(int i = 0; i < lenth; i++) {
+            entries.add(new BarEntry(i, (float) chartDataEntries.get(i).getDataMoney()));
         }
-        BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
 
+        BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
 
         barDataSet.setDrawIcons(false);
         //双色柱状图
@@ -121,10 +127,33 @@ public class MyBarChart {
 
         //设置渐变色
         barDataSet.setGradientColors(gradientColors);
+        // Y值显示样式
+        barDataSet.setValueFormatter(new ValueFormatter(){
+            @SuppressLint("DefaultLocale")
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format("%.2f", value);
+            }
+        });
+
+        barChart.getXAxis().setLabelCount(lenth);
+        barChart.getXAxis().setLabelRotationAngle(-60f);
+        barChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int intValue = (int) value;
+                if(intValue < lenth && intValue>=0 && intValue==value) {
+                    return chartDataEntries.get(intValue).getDataName();
+                }
+                else {
+                    return "    ";
+                }
+            }
+        });
 
 
         BarData bardata = new BarData(barDataSet);
-        bardata.setValueTextSize(11f);
+        bardata.setValueTextSize(7f);
 
 
         return bardata;

@@ -28,8 +28,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.arima.RunARIMA;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,8 @@ public class MyLineChart {
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setEnabled(true);
+        xAxis.setTextSize(7f);
+//        xAxis.setAxisMinimum(0);
 
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setDrawAxisLine(true);
@@ -90,30 +93,34 @@ public class MyLineChart {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public LineData setLinedata() {
+    public LineData setLinedata(LineChart lineChart, List<ChartDataEntry> chartDataEntries) {
         //设置数据
         List<Entry> entries = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            entries.add(new Entry(i, (float) (Math.random()) * 80));
-//        }
-
-        entries.add(new Entry(0, (float) 2285));
-        entries.add(new Entry(1, (float) 1670));
-        entries.add(new Entry(2, (float) 2341));
-        entries.add(new Entry(3, (float) 1781));
-        entries.add(new Entry(4, (float) 1737));
-        entries.add(new Entry(5, (float) 2210));
-        entries.add(new Entry(6, (float) 2824));
-        entries.add(new Entry(7, (float) 3141));
-        entries.add(new Entry(8, (float) 2089));
-        entries.add(new Entry(9, (float) 1989));
-        //预测 predict
-        RunARIMA ra = new RunARIMA();
-        for(int i=10; i < 13; i++) {
-            float predict = ra.predictNext(entries);
-            entries.add(new Entry(i, predict));
+        int lenth = chartDataEntries.size();
+        for (int i = 0; i < lenth; i++) {
+            entries.add(new Entry(i, (float) chartDataEntries.get(i).getDataMoney()));
         }
 
+        // X轴样式
+        lineChart.getXAxis().setLabelCount(lenth);
+        lineChart.getXAxis().setLabelRotationAngle(-60f);
+        lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int m = lenth / 5 + 1;
+                int intValue = Math.round(value);
+                if(intValue < lenth && intValue>=0 && intValue==value && intValue%m==0) {
+                    String date = chartDataEntries.get(intValue).getDataName();
+                    String year = date.substring(0, 4);
+                    String month = date.substring(4, 6);
+                    String day = date.substring(6, 8);
+                    return year+"-"+month+"-"+day;
+                }
+                else {
+                    return "";
+                }
+            }
+        });
 
         LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
@@ -125,8 +132,10 @@ public class MyLineChart {
         lineDataSet.setFillAlpha(80);
         lineDataSet.setFillDrawable(getResources().getDrawable(R.drawable.line_gradient_bg_shape));
 
+
+
         LineData linedata = new LineData(lineDataSet);
-        linedata.setValueTextSize(11f);
+        linedata.setValueTextSize(7f);
         return linedata;
     }
 

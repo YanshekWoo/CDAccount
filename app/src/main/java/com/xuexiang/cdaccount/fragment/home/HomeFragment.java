@@ -17,14 +17,11 @@
 
 package com.xuexiang.cdaccount.fragment.home;
 
-import android.app.Notification;
 import android.content.Intent;
-import android.graphics.Canvas;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,13 +29,13 @@ import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AddActivity;
 import com.xuexiang.cdaccount.adapter.record.RecordAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 
-import java.util.Arrays;
-import java.util.Calendar;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -50,11 +47,12 @@ public class HomeFragment extends BaseFragment {
 
     private RecyclerView mRvRecord;
     private ShadowImageView mIbAdd;
-    private String[] mDate,mMessage;
+    private List<String> mRecentDate, mRecentInfo;
+    private List<Integer>mRecentType;
 
     private TextView mTvIn,mTvOut;
-    private double mAmountIn;
-    private double mAmountOut;
+    private String mAmountIn, mAmountOut;
+    private BillDao mDataBaseHelper;
 
 
     /**
@@ -80,6 +78,8 @@ public class HomeFragment extends BaseFragment {
      */
     @Override
     protected void initViews() {
+        mDataBaseHelper = new BillDao(getContext());
+
         //加载数据
         loadData();
         //小计
@@ -94,7 +94,7 @@ public class HomeFragment extends BaseFragment {
         layout.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
         layout.setReverseLayout(true);//列表翻转
         mRvRecord.setLayoutManager(layout);
-        RecordAdapter adapter = new RecordAdapter(getContext(), mDate, mMessage);
+        RecordAdapter adapter = new RecordAdapter(getContext(), mRecentDate, mRecentInfo, mRecentType);
         mRvRecord.setAdapter(adapter);
         mRvRecord.scrollToPosition(0);
 
@@ -113,25 +113,23 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("---Home---","Resume");
         loadData();
-        RecordAdapter adapter = new RecordAdapter(getContext(), mDate, mMessage);
+        RecordAdapter adapter = new RecordAdapter(getContext(), mRecentDate, mRecentInfo, mRecentType);
         mRvRecord.setAdapter(adapter);
         mRvRecord.scrollToPosition(0);
+        mTvIn.setText((String.valueOf(mAmountIn)));
+        mTvOut.setText((String.valueOf(mAmountOut)));
     }
 
 
     private void loadData(){
-        mDate = new String[]{"2020/10/1","2020/10/2","2020/10/3","2020/10/4","2020/10/5","2020/10/6","2020/10/7","2020/10/8","2020/10/9","2020/10/10",};
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        int second = calendar.get(Calendar.SECOND);
-        String str = year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + " " + String.format("%02d", hour) + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second);
-        mMessage = new String[]{str,str,str,str,str,str,str,str,str,str,};
-        mAmountIn = 100.00;
-        mAmountOut = 100.00;
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        mAmountIn = decimalFormat.format(mDataBaseHelper.QueryMonthIncome());
+        mAmountOut = decimalFormat.format(mDataBaseHelper.QueryMonthpay());
+        mRecentInfo = mDataBaseHelper.GetRecentInformation();
+        mRecentDate = mDataBaseHelper.GetRecentDate();
+        mRecentType = mDataBaseHelper.GetRecentIO();
+
     }
 }

@@ -15,20 +15,19 @@
  *
  */
 
-package com.xuexiang.cdaccount.adapter.charts;
+package com.xuexiang.cdaccount.adapter.accountdetail;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
-import com.xuexiang.cdaccount.database.ChartDataEntry;
+import com.xuexiang.cdaccount.database.AccountDataEntry;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
@@ -43,14 +42,13 @@ import static com.xuexiang.xutil.XUtil.getResources;
  * @author xuexiang
  * @since 2019-11-22 15:38
  */
-public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
+public class accountListAdapter extends BaseRecyclerAdapter<AccountDataEntry> {
 
     private RecyclerView mRecyclerView;
     private final Context context;
-    private int tabSeleted;
 
 
-    public ChartListAdapter(Context context, RecyclerView recyclerView, Collection<ChartDataEntry> data) {
+    public accountListAdapter(Context context, RecyclerView recyclerView, Collection<AccountDataEntry> data) {
         super(data);
         this.mRecyclerView = recyclerView;
         this.context = context;
@@ -64,7 +62,7 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
      * @return
      */
     @Override
-    protected int getItemLayoutId(int viewType) { return R.layout.adapter_chart_list; }
+    protected int getItemLayoutId(int viewType) { return R.layout.adapter_account_list_item; }
 
 
     /**
@@ -76,31 +74,20 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
      */
     @SuppressLint("DefaultLocale")
     @Override
-    protected void bindData(@NonNull RecyclerViewHolder holder, int position, ChartDataEntry item) {
-        ProgressBar progressBar = holder.findViewById(R.id.adapter_chart_list_progressbar);
-        int progress = 0;
-        if(item.getSumMoney() > 0) {
-            progress = (int) (100 * item.getDataMoney() / item.getSumMoney());
-        }
-        progressBar.setProgress(progress);
+    protected void bindData(@NonNull RecyclerViewHolder holder, int position, AccountDataEntry item) {
 
-        holder.text(R.id.adapter_chart_list_position,Integer.toString(position));
-        holder.text(R.id.adapter_chart_list_title,item.getDataName());
-        holder.text(R.id.adapter_chart_list_money,String.format("%.2f", item.dataMoney));
+        holder.text(R.id.account_name, item.getName());
+        holder.text(R.id.account_income, String.format("%.2f", item.getInMoney()));
+        holder.text(R.id.account_outcome, String.format("%.2f", item.getOutMoney()));
+        holder.text(R.id.account_money, String.format("%.2f", item.getInMoney()-item.getOutMoney()));
 
         holder.click(R.id.adapter_chart_list_card, new View.OnClickListener() {
             @SingleClick
             @Override
             public void onClick(View v) {
                 int focusType = 1;
-                String account = getResources().getString(R.string.unlimited);
+                String account = item.getName();
                 String member = getResources().getString(R.string.unlimited);
-                if(tabSeleted==2) {
-                    member = item.getDataName();
-                }
-                else if(tabSeleted==3) {
-                    account = item.getDataName();
-                }
 
                 Intent intent = new Intent(context, AccountDetailsActivity.class);
                 intent.putExtra("focusType", focusType);
@@ -111,11 +98,4 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
         });
     }
 
-    public int getTabSeleted() {
-        return tabSeleted;
-    }
-
-    public void setTabSeleted(int tabSeleted) {
-        this.tabSeleted = tabSeleted;
-    }
 }

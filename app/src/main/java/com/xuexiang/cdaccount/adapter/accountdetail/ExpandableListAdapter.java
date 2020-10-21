@@ -15,7 +15,7 @@
  *
  */
 
-package com.xuexiang.cdaccount.adapter;
+package com.xuexiang.cdaccount.adapter.accountdetail;
 
 import android.content.Context;
 import android.view.View;
@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.utils.DemoDataProvider;
-import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
@@ -43,18 +42,15 @@ import java.util.Collection;
  * @author xuexiang
  * @since 2019-11-22 15:38
  */
-public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
+public class ExpandableListAdapter extends BaseRecyclerAdapter<String> {
 
     private RecyclerView mRecyclerView;
     private Context context;
-    boolean isSelected;
-    TestItem t;
 
-    public ExpandableMonthAdapter(Context context, RecyclerView recyclerView, Collection<String> data, TestItem it) {
+    public ExpandableListAdapter(Context context, RecyclerView recyclerView, Collection<String> data) {
         super(data);
         mRecyclerView = recyclerView;
         this.context = context;
-        t = it;
     }
 
     /**
@@ -64,7 +60,7 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
      * @return
      */
     @Override
-    protected int getItemLayoutId(int viewType) { return R.layout.account_expendable_months; }
+    protected int getItemLayoutId(int viewType) { return R.layout.account_expendable_years; }
 
     /**
      * 绑定数据
@@ -73,11 +69,10 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
      * @param position 索引
      * @param item     列表项
      */
-
     @Override
     protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-        ExpandableLayout expandableLayout = holder.findViewById(R.id.expandable_month_layout);
-        AppCompatImageView ivIndicator = holder.findViewById(R.id.month_indicator);
+        ExpandableLayout expandableLayout = holder.findViewById(R.id.expandable_year_layout);
+        AppCompatImageView ivIndicator = holder.findViewById(R.id.year_indicator);
         expandableLayout.setInterpolator(new OvershootInterpolator());
         expandableLayout.setOnExpansionChangedListener((expansion, state) -> {
             if (mRecyclerView != null && state == ExpandableLayout.State.EXPANDING) {
@@ -88,56 +83,34 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<String> {
             }
         });
 
-
-
-//        boolean isSelected = position == mSelectPosition;
-//        expandableLayout.setExpanded(isSelected, false);
+        boolean isSelected = position == mSelectPosition;
+        expandableLayout.setExpanded(isSelected, false);
         
-        RecyclerView recyclerView = holder.findViewById(R.id.month_expand_recycler_view);
+        RecyclerView recyclerView = holder.findViewById(R.id.year_expand_recycler_view);
         WidgetUtils.initRecyclerView(recyclerView);
-        recyclerView.setAdapter(new ExpandableDayAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
+        //recyclerView.setAdapter(new ExpandableItemAdapter(context, recyclerView, DemoDataProvider.getDemoData1()));
 
-
-        holder.select(R.id.account_expendable_month, isSelected);
-        holder.text(R.id.account_expendable_month_maintime,ResUtils.getResources().getString(R.string.item_example_number_month, position + 1));
-        holder.text(R.id.account_expendable_month_subtime,"0000");
-        holder.text(R.id.account_expendable_month_totalmoney,"000");
-        holder.text(R.id.account_expendable_month_income,"00");
-        holder.text(R.id.account_expendable_month_outcome,"0");
+        holder.select(R.id.account_expendable_year, isSelected);
+        holder.text(R.id.account_expendable_year_maintime,ResUtils.getResources().getString(R.string.item_example_number_month, position + 1));
+        holder.text(R.id.account_expendable_year_subtime,"0000");
+        holder.text(R.id.account_expendable_year_totalmoney,"000");
+        holder.text(R.id.account_expendable_year_income,"00");
+        holder.text(R.id.account_expendable_year_outcome,"0");
         //holder.text(R.id.tv_content, ResUtils.getResources().getString(R.string.item_example_number_abstract, position + 1));
-        holder.click(R.id.account_expendable_month, new View.OnClickListener() {
+        holder.click(R.id.account_expendable_year, new View.OnClickListener() {
             @SingleClick
             @Override
             public void onClick(View v) {
                 onClickItem(v, expandableLayout, position);
-                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
             }
         });
-
-        if(t.getRefresh()){
-            if(t.getMonth()){
-//                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
-                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
-                mSelectPosition = position;
-                t.addRefresh(false);
-            }else {
-//            isSelected = position == mSelectPosition;
-                expandableLayout.setExpanded(false, true);
-                mSelectPosition = -1;
-            }
-        }
-        else {
-            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
-            isSelected = position == mSelectPosition;         //false
-            expandableLayout.setExpanded(isSelected, true);
-        }
     }
 
     private void onClickItem(View view, final ExpandableLayout expandableLayout, final int position) {
         RecyclerViewHolder holder = (RecyclerViewHolder) mRecyclerView.findViewHolderForAdapterPosition(mSelectPosition);
         if (holder != null) {
-            holder.select(R.id.account_expendable_month, false);
-            ((ExpandableLayout) holder.findViewById(R.id.expandable_month_layout)).collapse();
+            holder.select(R.id.account_expendable_year, false);
+            ((ExpandableLayout) holder.findViewById(R.id.expandable_year_layout)).collapse();
         }
 
         if (position == mSelectPosition) {

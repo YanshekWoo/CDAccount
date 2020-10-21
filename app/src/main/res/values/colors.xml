@@ -23,7 +23,8 @@
     <color name="app_color_theme_8">#AC8FEF</color> <!-- Lavender -->
     <color name="app_color_theme_9">#EE85C1</color> <!-- Pink Rose -->
     <color name="app_color_theme_10">#6E6E6E</color> <!-- Grey -->
-
+    <color name="grey">#BBBBBB</color> <!-- Grey -->
+    <color name="black">#000000</color>
 
     <color name="drop_down_selected">#7B1FA2</color>
     <color name="drop_down_unselected">#111111</color>

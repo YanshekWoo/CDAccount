@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="31日"
                 android:textSize="15sp"
+                android:textColor="#000000"
                 android:layout_marginStart="20dp"
                 android:padding="5dp"/>
 
@@ -48,6 +49,7 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:textSize="10sp"
+                android:textColor="#000000"
                 android:text="2020.10"
                 android:layout_marginStart="30dp"/>
 
@@ -64,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="0000"
                 android:textSize="15sp"
+                android:textColor="#000000"
                 android:padding="5dp"
                 android:layout_marginStart="30dp"
                 />
@@ -73,6 +76,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/account_expendable_day_text_income"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="收入"
@@ -92,11 +96,12 @@
                     tools:ignore="SmallSp" />
 
                 <TextView
+                    android:id="@+id/account_expendable_day_text_outcome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="支出"
                     android:textSize="10sp"
-                    android:textColor="@color/app_color_theme_5"
+                    android:textColor="@color/app_color_theme_1"
                     android:layout_marginStart="10dp"
                     tools:ignore="SmallSp" />
 
@@ -106,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="10sp"
                     android:text="000"
-                    android:textColor="@color/app_color_theme_5"
+                    android:textColor="@color/app_color_theme_1"
                     android:layout_marginStart="5dp"
                     tools:ignore="SmallSp" />
 
@@ -122,8 +127,10 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/day_indicator"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="end|center"
                 app:srcCompat="@drawable/icon_arrow_right_grey" />
 
         </LinearLayout>

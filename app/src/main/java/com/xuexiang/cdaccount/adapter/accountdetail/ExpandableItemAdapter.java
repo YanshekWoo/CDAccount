@@ -15,7 +15,7 @@
  *
  */
 
-package com.xuexiang.cdaccount.adapter;
+package com.xuexiang.cdaccount.adapter.accountdetail;
 
 import android.content.Context;
 import android.view.View;
@@ -23,20 +23,21 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xuexiang.cdaccount.ExpanableBill.BillDataItem;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
-import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 
-public class ExpandableItemAdapter extends BaseRecyclerAdapter<String> {
+public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
 
     private RecyclerView mRecyclerView;
     private Context context;
 
-    public ExpandableItemAdapter(Context context, RecyclerView recyclerView,Collection<String> data) {
+    public ExpandableItemAdapter(Context context, RecyclerView recyclerView,Collection<BillDataItem> data) {
         super(data);
         mRecyclerView = recyclerView;
         this.context = context;
@@ -48,9 +49,13 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<String> {
     }
 
     @Override
-    protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-        holder.text(R.id.tv_date, ResUtils.getResources().getString(R.string.item_example_number, position + 1));
-        holder.text(R.id.tv_money,"000");
+    protected void bindData(@NonNull RecyclerViewHolder holder, int position, BillDataItem item) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        holder.text(R.id.date, item.getTime());
+        holder.text(R.id.money,decimalFormat.format(item.getBill_Money()));
+        holder.text(R.id.category,item.getBill_SubCategory());
+        holder.text(R.id.account,item.getBill_Account());
+        holder.text(R.id.member,item.getBill_Mumber());
         holder.click(R.id.account_detail, new View.OnClickListener() {
             @Override
             public void onClick(View view) {

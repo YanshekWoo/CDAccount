@@ -19,7 +19,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/account_card"
+
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginStart="10dp"
@@ -30,9 +30,12 @@
     app:cardElevation="4dp"
     app:cardPreventCornerOverlap="true">
 
-    <FrameLayout
+    <com.xuexiang.xui.widget.button.RippleView
+        android:id="@+id/account_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
+<!--        android:layout_marginTop="?attr/xui_config_content_spacing_horizontal"-->
+<!--        app:rv_type="doubleRipple">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,13 +52,69 @@
                 android:layout_marginStart="20dp"
                 android:contentDescription="@string/todo" />
 
-            <TextView
-                android:id="@+id/account_name"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:text="信用卡"
-                android:textSize="20sp"
-                android:layout_marginStart="20dp"/>
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/account_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="信用卡"
+                    android:textSize="15sp"
+                    android:textColor="#000000"
+                    android:padding="5dp"
+                    android:layout_marginStart="30dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/account_text_income"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="收入"
+                        android:textSize="10sp"
+                        android:textColor="@color/app_color_theme_5"
+                        android:layout_marginStart="35dp"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/account_income"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:text="000"
+                        android:textColor="@color/app_color_theme_5"
+                        android:layout_marginStart="5dp"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/account_text_outcome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="支出"
+                        android:textSize="10sp"
+                        android:textColor="@color/app_color_theme_1"
+                        android:layout_marginStart="10dp"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/account_outcome"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:text="000"
+                        android:textColor="@color/app_color_theme_1"
+                        android:layout_marginStart="5dp"
+                        tools:ignore="SmallSp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/account_money"
@@ -63,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/account_origin"
+                android:textColor="#000000"
                 android:textSize="20sp" />
 
             <ImageView
@@ -75,6 +135,6 @@
                 tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
-    </FrameLayout>
+    </com.xuexiang.xui.widget.button.RippleView>
 
 </androidx.cardview.widget.CardView>

@@ -3,6 +3,7 @@
     <string name="app_browser_name">通用浏览器</string>
 
     <string name="no_data">无数据</string>
+    <string name="unlimited">不限</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -84,4 +85,8 @@
     <string name="account_details_content">这里是流水详细情况</string>
     <string name="gesture_register">请输入手势密码</string>
     <string name="gesture_login">请绘制手势密码登录</string>
+    <string name="footer_pulling">上拉加载%04d年流水</string>
+    <string name="footer_release">释放加载%04d年流水</string>
+    <string name="header_pulling">下拉加载%04d年流水</string>
+    <string name="header_release">释放加载%04d年流水</string>
 </resources>
