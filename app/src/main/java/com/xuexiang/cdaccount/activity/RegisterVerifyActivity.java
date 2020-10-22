@@ -244,7 +244,7 @@ public class RegisterVerifyActivity extends BaseActivity {
         mDataBaseHelper.InsertCategory("交通","火车",0);
         mDataBaseHelper.InsertCategory("交通","飞机",0);
         mDataBaseHelper.InsertCategory("交通","出租",0);
-        mDataBaseHelper.InsertCategory("娱乐","电源",0);
+        mDataBaseHelper.InsertCategory("娱乐","电影",0);
         mDataBaseHelper.InsertCategory("娱乐","健身",0);
         mDataBaseHelper.InsertCategory("娱乐","游戏",0);
         mDataBaseHelper.InsertCategory("娱乐","旅游",0);

@@ -67,6 +67,7 @@ import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xutil.data.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -150,6 +151,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
     private ChartListAdapter madapter;
 
+    private final List<String> legendSelectArray = Arrays.asList("主类", "次类", "成员", "账户");
+
     /**
      * @return 返回为 null意为不需要导航栏
      */
@@ -175,7 +178,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void initViews() {
-        init_tab();
+        initTab();
         initRecycleView();
         initTimePicker();
         initChart();
@@ -200,10 +203,10 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
         //柱状图
         mBarChart = myBarChart.initBarChart(mBarChart);
-        mBarChart = setBarChartClickListener(mBarChart);
+//        mBarChart = setBarChartClickListener(mBarChart);
         //饼图
         mPieChart = myPieChart.initPieChart(mPieChart);
-        mPieChart = setPieChartClickListener(mPieChart);
+//        mPieChart = setPieChartClickListener(mPieChart);
         //折线图
         mLineChart = myLineChart.initLineChart(mLineChart);
 
@@ -285,6 +288,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         String end_day = strDateEnd[2];
 
 
+        String legendInOut = tabInout==0? "支出" : "收入";
+        String legendSelect = legendSelectArray.get(tabSelected);
 
 
         // get the chart data
@@ -341,9 +346,9 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         }
 
         // 加载图表和列表数据
-        BarData barData = myBarChart.setBardata(mBarChart, chartDataEntries);
-        PieData pieData = myPieChart.setPiedata(mPieChart, chartDataEntries);
-        LineData lineData = myLineChart.setLinedata(mLineChart, chartDataLineEntries);
+        BarData barData = myBarChart.setBardata(mBarChart, chartDataEntries, legendSelect+"-"+legendInOut);
+        PieData pieData = myPieChart.setPiedata(mPieChart, chartDataEntries, legendSelect+"-"+legendInOut);
+        LineData lineData = myLineChart.setLinedata(mLineChart, chartDataLineEntries, "总"+legendInOut+"趋势");
         madapter.refresh(chartDataEntries);
 
         // 柱状图刷新
@@ -483,15 +488,14 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     /**
      * tab栏设置
      */
-    private void init_tab() {
+    private void initTab() {
         mTabLayoutInout.addTab(mTabLayoutInout.newTab().setText("支出"));
         mTabLayoutInout.addTab(mTabLayoutInout.newTab().setText("收入"));
         mTabLayoutInout.addOnTabSelectedListener(this);
 
-        mTabLayout.addTab(mTabLayout.newTab().setText("主类"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("次类"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("成员"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("账户"));
+        for(int i=0;i<4;i++) {
+            mTabLayout.addTab(mTabLayout.newTab().setText(legendSelectArray.get(i)));
+        }
         mTabLayout.addOnTabSelectedListener(this);
         // 初始不可见，避免隐藏状态下被点击
         mTabLayout.setVisibility(View.INVISIBLE);

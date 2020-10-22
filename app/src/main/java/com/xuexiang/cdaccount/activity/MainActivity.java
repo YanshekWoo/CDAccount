@@ -125,6 +125,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         viewPager.setAdapter(adapter);
 
         viewPager.setCurrentItem(1, false);
+
         bottomNavigation.setSelectedItemId(bottomNavigation.getMenu().getItem(1).getItemId());
     }
 

@@ -49,6 +49,8 @@ public class MyPieChart {
         pieChart.setExtraOffsets(5, 10, 5, 5);
         //设置图标中心空白，空心
         pieChart.setDrawHoleEnabled(true);
+        //
+        pieChart.setHighlightPerTapEnabled(false);
         //设置空心圆的弧度百分比，最大100
         pieChart.setHoleRadius(45f);
         pieChart.setHoleColor(Color.WHITE);
@@ -72,14 +74,14 @@ public class MyPieChart {
 
     public void setPieChartAxis(Legend legend) {
         //设置Lengend位置
-        legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
+        legend.setTextColor(getResources().getColor(R.color.colorAccent)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        legend.setWordWrapEnabled(false);
+        legend.setWordWrapEnabled(true);
     }
 
-    public PieData setPiedata(PieChart pieChart, List<ChartDataEntry> chartDataEntries) {
+    public PieData setPiedata(PieChart pieChart, List<ChartDataEntry> chartDataEntries, String legendLable) {
         //设置数据
         int lenth = chartDataEntries.size();
         List<PieEntry> entries = new ArrayList<>();
@@ -124,7 +126,7 @@ public class MyPieChart {
         colors.add(ColorTemplate.getHoloBlue());
 
 
-        PieDataSet pieDataSet = new PieDataSet(entries, "饼图数据");
+        PieDataSet pieDataSet = new PieDataSet(entries, legendLable);
         pieDataSet.setDrawIcons(false);
         pieDataSet.setSliceSpace(3f);
         pieDataSet.setIconsOffset(new MPPointF(0, 40));
