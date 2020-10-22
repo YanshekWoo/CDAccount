@@ -22,12 +22,14 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +46,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.charts.ChartListAdapter;
 import com.xuexiang.cdaccount.chartsclass.MyBarChart;
 import com.xuexiang.cdaccount.chartsclass.MyLineChart;
@@ -55,6 +58,7 @@ import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
+import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.alpha.XUIAlphaButton;
@@ -499,7 +503,38 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      */
     private void initRecycleView() {
         List<ChartDataEntry> chartDataEntries = new ArrayList<>();
-        madapter = new ChartListAdapter(getContext(), chart_recyclerView, chartDataEntries);
+        madapter = new ChartListAdapter(getContext(), chart_recyclerView, chartDataEntries) {
+            @Override
+            protected void bindData(@NonNull RecyclerViewHolder holder, int position, ChartDataEntry item) {
+                super.bindData(holder, position, item);
+
+                holder.click(R.id.adapter_chart_list_card, new View.OnClickListener() {
+                    @SingleClick
+                    @Override
+                    public void onClick(View v) {
+                        int focusType = 1;
+                        String account = getResources().getString(R.string.unlimited);
+                        String member = getResources().getString(R.string.unlimited);
+                        if(tabSelected==2) {
+                            member = item.getDataName();
+                        }
+                        else if(tabSelected==3) {
+                            account = item.getDataName();
+                        }
+
+                        Intent intent = new Intent(getContext(), AccountDetailsActivity.class);
+                        intent.putExtra("focusType", focusType);
+                        intent.putExtra("member", member);
+                        intent.putExtra("account", account);
+//                        openNewPage(SettingsFragment.class, getActivity().getIntent().getExtras());
+//                        openNewPage(AccountDetailFragment.class);
+                        getContext().startActivity(intent);
+                    }
+                });
+            }
+        };
+
+
         WidgetUtils.initRecyclerView(chart_recyclerView);
         chart_recyclerView.setAdapter(madapter);
     }

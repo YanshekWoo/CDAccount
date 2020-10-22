@@ -98,7 +98,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
 
         initViews();
-
         initListeners();
     }
 
