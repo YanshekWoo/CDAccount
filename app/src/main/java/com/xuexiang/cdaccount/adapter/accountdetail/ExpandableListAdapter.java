@@ -15,7 +15,7 @@
  *
  */
 
-package com.xuexiang.cdaccount.adapter;
+package com.xuexiang.cdaccount.adapter.accountdetail;
 
 import android.content.Context;
 import android.view.View;

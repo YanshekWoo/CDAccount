@@ -22,12 +22,14 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +46,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.charts.ChartListAdapter;
 import com.xuexiang.cdaccount.chartsclass.MyBarChart;
 import com.xuexiang.cdaccount.chartsclass.MyLineChart;
@@ -55,6 +58,7 @@ import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
+import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.alpha.XUIAlphaButton;
@@ -63,6 +67,7 @@ import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xutil.data.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -78,9 +83,6 @@ import butterknife.OnClick;
  */
 @Page(anim = CoreAnim.none)
 public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelectedListener{
-
-//    @BindView(R.id.chart_tab_selector)
-//    TabLayout mTabLayoutSelector;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.chart_recyclerView)
@@ -149,6 +151,8 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
     private ChartListAdapter madapter;
 
+    private final List<String> legendSelectArray = Arrays.asList("主类", "次类", "成员", "账户");
+
     /**
      * @return 返回为 null意为不需要导航栏
      */
@@ -174,7 +178,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void initViews() {
-        init_tab();
+        initTab();
         initRecycleView();
         initTimePicker();
         initChart();
@@ -199,10 +203,10 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
         //柱状图
         mBarChart = myBarChart.initBarChart(mBarChart);
-        mBarChart = setBarChartClickListener(mBarChart);
+//        mBarChart = setBarChartClickListener(mBarChart);
         //饼图
         mPieChart = myPieChart.initPieChart(mPieChart);
-        mPieChart = setPieChartClickListener(mPieChart);
+//        mPieChart = setPieChartClickListener(mPieChart);
         //折线图
         mLineChart = myLineChart.initLineChart(mLineChart);
 
@@ -272,10 +276,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     protected void refreshCharts() {
         BillDao billDao = new BillDao(getContext());
 
-        // chart datas
-        BarData barData = new BarData();
-        PieData pieData = new PieData();
-        LineData lineData = new LineData();
 
         // parse date to string
         String[] strDateStart = DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()).split("-");
@@ -288,24 +288,39 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         String end_day = strDateEnd[2];
 
 
+        String legendInOut = tabInout==0? "支出" : "收入";
+        String legendSelect = legendSelectArray.get(tabSelected);
+
+
         // get the chart data
         List<ChartDataEntry> chartDataEntries = new ArrayList<>();
         List<ChartDataEntry> chartDataLineEntries = new ArrayList<>();
         switch (tabSelected) {
             case 0:
-                chartDataEntries = billDao.GetDateByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                if(tabInout==0) {
+                    chartDataEntries = billDao.GetDataByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                }
+                else if(tabInout==1) {
+                    chartDataEntries = billDao.GetDataByInTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                }
                 break;
             case 1:
-                chartDataEntries = billDao.GetDateByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                if(tabInout==0) {
+                    chartDataEntries = billDao.GetDataByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                }
+                else if(tabInout==1) {
+                    chartDataEntries = billDao.GetDataByInSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                }
                 break;
             case 2:
-                chartDataEntries = billDao.GetDateByMember(start_year, start_month, start_day, end_year, end_month, end_day);
+                chartDataEntries = billDao.GetDataByMember(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
                 break;
             case 3:
-                chartDataEntries = billDao.GetDateByAccount(start_year, start_month, start_day, end_year, end_month, end_day);
+                chartDataEntries = billDao.GetDataByAccount(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
                 break;
         }
-        chartDataLineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day);
+
+        chartDataLineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
 //        // ARIMA预测 predict
 //        if(chartDataEntries.size() >= 5) {
 //            RunARIMA ra = new RunARIMA();
@@ -324,81 +339,34 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
 //        Collections.sort(chartDataEntries, (ChartDataEntry a, ChartDataEntry b)-> b.compareTo(a));
 
+
         Double allMoney = chartDataEntries.stream().map(ChartDataEntry::getDataMoney).reduce(0.00, Double::sum);
-//        Log.i("sum", allMoney.toString());
         for(ChartDataEntry e: chartDataEntries) {
             e.setSumMoney(allMoney);
         }
 
-        barData = myBarChart.setBardata(mBarChart, chartDataEntries);
-        pieData = myPieChart.setPiedata(mPieChart, chartDataEntries);
-        lineData = myLineChart.setLinedata(mLineChart, chartDataLineEntries);
-
-
-
+        // 加载图表和列表数据
+        BarData barData = myBarChart.setBardata(mBarChart, chartDataEntries, legendSelect+"-"+legendInOut);
+        PieData pieData = myPieChart.setPiedata(mPieChart, chartDataEntries, legendSelect+"-"+legendInOut);
+        LineData lineData = myLineChart.setLinedata(mLineChart, chartDataLineEntries, "总"+legendInOut+"趋势");
         madapter.refresh(chartDataEntries);
 
-        // 柱状图
+        // 柱状图刷新
         mBarChart.setData(barData);
         mBarChart.animateXY(1500, 1500);
         mBarChart.invalidate();
 
-        //饼图
+        // 饼图刷新
         mPieChart.setData(pieData);
         mPieChart.animateXY(1500, 1500);
         mPieChart.invalidate();
 
-        //折线图
+        // 折线图刷新
         mLineChart.setData(lineData);
         mLineChart.animateXY(1500, 1500);
         mLineChart.invalidate();
 
-
-
-
     }
-
-
-//    public class ChartDataRunnable implements Runnable{
-//        @RequiresApi(api = Build.VERSION_CODES.N)
-//        @Override
-//        public void run() {
-//            BillDao billDao = new BillDao(getContext());
-//            // get the chart data
-//            List<ChartDataEntry> chartDataEntries = new ArrayList<>();
-//            List<ChartDataEntry> chartDataLineEntries = new ArrayList<>();
-//            switch (tabSelected) {
-//                case 0:
-//                    chartDataEntries = billDao.GetDateByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
-//                    break;
-//                case 1:
-//                    chartDataEntries = billDao.GetDateByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
-//                    break;
-//                case 2:
-//                    chartDataEntries = billDao.GetDateByMember(start_year, start_month, start_day, end_year, end_month, end_day);
-//                    break;
-//                case 3:
-//                    chartDataEntries = billDao.GetDateByAccount(start_year, start_month, start_day, end_year, end_month, end_day);
-//                    break;
-//            }
-//            chartDataLineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day);
-//            // ARIMA预测 predict
-//            if(chartDataEntries.size() >= 5) {
-//                RunARIMA ra = new RunARIMA();
-//                int lenth = chartDataLineEntries.size();
-//                for(int i=lenth; i < lenth+2; i++) {
-//                    double predictData = ra.predictNext(chartDataLineEntries);
-//                    while(predictData<0) {
-//                        predictData = ra.predictNext(chartDataLineEntries);
-//                    }
-//                    chartDataLineEntries.add(new ChartDataEntry("预测第"+i+"天", predictData));
-//                }
-//            }
-//
-//            Message msg = new Message();
-//
-//        }
-//    }
 
 
 
@@ -520,15 +488,14 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     /**
      * tab栏设置
      */
-    private void init_tab() {
+    private void initTab() {
         mTabLayoutInout.addTab(mTabLayoutInout.newTab().setText("支出"));
         mTabLayoutInout.addTab(mTabLayoutInout.newTab().setText("收入"));
         mTabLayoutInout.addOnTabSelectedListener(this);
 
-        mTabLayout.addTab(mTabLayout.newTab().setText("主类"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("次类"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("成员"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("账户"));
+        for(int i=0;i<4;i++) {
+            mTabLayout.addTab(mTabLayout.newTab().setText(legendSelectArray.get(i)));
+        }
         mTabLayout.addOnTabSelectedListener(this);
         // 初始不可见，避免隐藏状态下被点击
         mTabLayout.setVisibility(View.INVISIBLE);
@@ -540,7 +507,38 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      */
     private void initRecycleView() {
         List<ChartDataEntry> chartDataEntries = new ArrayList<>();
-        madapter = new ChartListAdapter(getContext(), chart_recyclerView, chartDataEntries);
+        madapter = new ChartListAdapter(getContext(), chart_recyclerView, chartDataEntries) {
+            @Override
+            protected void bindData(@NonNull RecyclerViewHolder holder, int position, ChartDataEntry item) {
+                super.bindData(holder, position, item);
+
+                holder.click(R.id.adapter_chart_list_card, new View.OnClickListener() {
+                    @SingleClick
+                    @Override
+                    public void onClick(View v) {
+                        int focusType = 1;
+                        String account = getResources().getString(R.string.unlimited);
+                        String member = getResources().getString(R.string.unlimited);
+                        if(tabSelected==2) {
+                            member = item.getDataName();
+                        }
+                        else if(tabSelected==3) {
+                            account = item.getDataName();
+                        }
+
+                        Intent intent = new Intent(getContext(), AccountDetailsActivity.class);
+                        intent.putExtra("focusType", focusType);
+                        intent.putExtra("member", member);
+                        intent.putExtra("account", account);
+//                        openNewPage(SettingsFragment.class, getActivity().getIntent().getExtras());
+//                        openNewPage(AccountDetailFragment.class);
+                        getContext().startActivity(intent);
+                    }
+                });
+            }
+        };
+
+
         WidgetUtils.initRecyclerView(chart_recyclerView);
         chart_recyclerView.setAdapter(madapter);
     }
@@ -561,10 +559,10 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         switch (tab.parent.getId()) {
             case R.id.chart_tab_inout:
                 tabInout = tab.getPosition();
-                XToastUtils.toast("选中了:" + Integer.toString(tabInout));
                 break;
             case R.id.chart_tab_selector:
                 tabSelected = tab.getPosition();
+                madapter.setTabSeleted(tabSelected);
                 break;
             default:
                 break;
@@ -649,6 +647,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      * @param v
      * 当前视图
      */
+    @SuppressLint("NonConstantResourceId")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SingleClick
     @OnClick({R.id.fab_piechart, R.id.fab_barchart, R.id.fab_linechart, R.id.iv_switch})

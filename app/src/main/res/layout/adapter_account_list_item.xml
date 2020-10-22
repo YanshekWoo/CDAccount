@@ -31,9 +31,9 @@
     app:cardPreventCornerOverlap="true">
 
     <com.xuexiang.xui.widget.button.RippleView
+        android:id="@+id/account_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/account_card">
+        android:layout_height="match_parent" >
 <!--        android:layout_marginTop="?attr/xui_config_content_spacing_horizontal"-->
 <!--        app:rv_type="doubleRipple">-->
 

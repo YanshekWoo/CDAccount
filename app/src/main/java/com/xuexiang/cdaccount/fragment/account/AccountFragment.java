@@ -17,12 +17,10 @@
 
 package com.xuexiang.cdaccount.fragment.account;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.text.InputType;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +33,8 @@ import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.base.delegate.SimpleDelegateAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.database.AccountDataEntry;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
@@ -55,15 +55,19 @@ import butterknife.BindView;
 @Page(anim = CoreAnim.none)
 public class AccountFragment extends BaseFragment {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
     ImageView img;
 
-    private SimpleDelegateAdapter<String> adapter;
-    private ArrayList<String> datas;
-    private Context TrendingFragment;
+    BillDao billDao;
+    private SimpleDelegateAdapter<AccountDataEntry> adapter;
+    private List<AccountDataEntry> accountDataEntries;
+
+
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -88,26 +92,28 @@ public class AccountFragment extends BaseFragment {
      */
     @Override
     protected void initViews() {
+
+        billDao = new BillDao(getContext());
+        accountDataEntries = new ArrayList<>();
+
         VirtualLayoutManager virtualLayoutManager = new VirtualLayoutManager(Objects.requireNonNull(getContext()));
         recyclerView.setLayoutManager(virtualLayoutManager);
         RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
         recyclerView.setRecycledViewPool(viewPool);
         viewPool.setMaxRecycledViews(0, 10);
-        datas = new ArrayList<String>();
-        for(int i = 0; i <15 ;i++){
-            datas.add("" + i);
-        }
 
 
-        adapter = new SimpleDelegateAdapter<String>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
+        adapter = new SimpleDelegateAdapter<AccountDataEntry>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
+            @SuppressLint("DefaultLocale")
             @Override
-            protected void bindData(@NonNull RecyclerViewHolder holder, int position, String item) {
-                holder.text(R.id.account_name,"银行卡");
-                holder.text(R.id.account_money,datas.get(position));
-                holder.text(R.id.account_income,"100.00");
-                holder.text(R.id.account_outcome,"000.00");
-                holder.click(R.id.account_card,view -> click(getContext(),datas.get(position)));
+            protected void bindData(@NonNull RecyclerViewHolder holder, int position, AccountDataEntry item) {
+                holder.text(R.id.account_name,item.getName());
+                holder.text(R.id.account_income, String.format("%.2f", item.getInMoney()));
+                holder.text(R.id.account_outcome,String.format("%.2f", item.getOutMoney()));
+                holder.text(R.id.account_money, String.format("%.2f", item.getInMoney()-item.getOutMoney()));
+                holder.click(R.id.account_card,view -> viewHolderClick(item));
             }
+
         };
 
         DelegateAdapter delegateAdapter = new DelegateAdapter(virtualLayoutManager);
@@ -118,17 +124,32 @@ public class AccountFragment extends BaseFragment {
         img = findViewById(R.id.account_add);
         img.setOnClickListener(view -> {
             showInputDialog();
-            //Toast.makeText(getContext(),"温腿 ",Toast.LENGTH_SHORT).show();
         });
 
-        accountInitListeners();
+        initRefreshLayoutListeners();
     }
 
-    protected void accountInitListeners() {
+
+    public void viewHolderClick(AccountDataEntry item){
+        int focusType = 1;
+        String account = item.getName();
+        String member = getResources().getString(R.string.unlimited);
+
+        Intent intent = new Intent(getContext(), AccountDetailsActivity.class);
+        intent.putExtra("focusType", focusType);
+        intent.putExtra("member", member);
+        intent.putExtra("account", account);
+        startActivity(intent);
+    }
+
+
+    protected void initRefreshLayoutListeners() {
         //下拉刷新
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             refreshLayout.getLayout().postDelayed(() -> {
-                adapter.refresh(datas);
+                accountDataEntries.clear();
+                accountDataEntries = billDao.getBalanceByAccount();
+                adapter.refresh(accountDataEntries);
                 refreshLayout.finishRefresh();
             }, 1000);
         });
@@ -147,13 +168,6 @@ public class AccountFragment extends BaseFragment {
         refreshLayout.autoRefresh();//第一次进入触发自动刷新，演示效果
     }
 
-    public void click(Context context, String position){
-        Intent intent = new Intent(context, AccountDetailsActivity.class);
-        String account = "账户";
-        intent.putExtra("account", account);
-        startActivity(intent);
-        //Toast.makeText(context,"温腿 "+position+"号",Toast.LENGTH_SHORT).show();
-    }
 
     private void showInputDialog() {
         new MaterialDialog.Builder(Objects.requireNonNull(getContext()))

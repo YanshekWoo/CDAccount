@@ -15,7 +15,7 @@
  *
  */
 
-package com.xuexiang.cdaccount.adapter;
+package com.xuexiang.cdaccount.adapter.accountdetail;
 
 import android.content.Context;
 import android.view.View;
@@ -25,8 +25,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.xuexiang.cdaccount.ExpanableBill.BillDataDay;
+import com.xuexiang.cdaccount.ExpanableBill.BillDataMonth;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
@@ -42,16 +43,16 @@ import java.util.Collection;
  * @author xuexiang
  * @since 2019-11-22 15:38
  */
-public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
+public class ExpandableMonthAdapter extends BaseRecyclerAdapter<BillDataMonth> {
 
     private RecyclerView mRecyclerView;
     private Context context;
     boolean isSelected;
 //    TestItem t;
 
-    public ExpandableDayAdapter(Context context, RecyclerView recyclerView, Collection<BillDataDay> data) {
+    public ExpandableMonthAdapter(Context context, RecyclerView recyclerView, Collection<BillDataMonth> data) {
         super(data);
-        mRecyclerView = recyclerView;
+        this.mRecyclerView = recyclerView;
         this.context = context;
 //        t = it;
     }
@@ -63,7 +64,7 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
      * @return
      */
     @Override
-    protected int getItemLayoutId(int viewType) { return R.layout.account_expendable_days; }
+    protected int getItemLayoutId(int viewType) { return R.layout.account_expendable_months; }
 
     /**
      * 绑定数据
@@ -72,10 +73,11 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
      * @param position 索引
      * @param item     列表项
      */
+
     @Override
-    protected void bindData(@NonNull RecyclerViewHolder holder, int position, BillDataDay item) {
-        ExpandableLayout expandableLayout = holder.findViewById(R.id.expandable_day_layout);
-        AppCompatImageView ivIndicator = holder.findViewById(R.id.day_indicator);
+    protected void bindData(@NonNull RecyclerViewHolder holder, int position, BillDataMonth item) {
+        ExpandableLayout expandableLayout = holder.findViewById(R.id.expandable_month_layout);
+        AppCompatImageView ivIndicator = holder.findViewById(R.id.month_indicator);
         expandableLayout.setInterpolator(new OvershootInterpolator());
         expandableLayout.setOnExpansionChangedListener((expansion, state) -> {
             if (mRecyclerView != null && state == ExpandableLayout.State.EXPANDING) {
@@ -87,11 +89,11 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
         });
 
 //        if(item.ismExpanded()){
-////            if(t.getDay()){
+////            if(t.getMonth()){
 ////                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
 //                expandableLayout.setExpanded(true, true);       //expend为true时，初始状态展开
 //                mSelectPosition = position;
-//                item.setmExpanded(false);
+////                t.addRefresh(false);
 ////            }else {
 //////            isSelected = position == mSelectPosition;
 //////                XToastUtils.toast("点击了:");
@@ -100,10 +102,11 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
 ////            }
 //        }
 //        else {
-////            XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
+//            XToastUtils.toast("点击了:" + item.ismExpanded());
 //            isSelected = position == mSelectPosition;         //false
 //            expandableLayout.setExpanded(isSelected, true);
 //        }
+
         if(position == 0)
         {
             expandableLayout.setExpanded(true,true);
@@ -113,51 +116,51 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
 //        boolean isSelected = position == mSelectPosition;
 //        expandableLayout.setExpanded(isSelected, false);
         
-        RecyclerView recyclerView = holder.findViewById(R.id.day_expand_recycler_view);
+        RecyclerView recyclerView = holder.findViewById(R.id.month_expand_recycler_view);
         WidgetUtils.initRecyclerView(recyclerView);
-        recyclerView.setAdapter(new ExpandableItemAdapter(context, recyclerView, item.getmBillDataItemList()));
+        recyclerView.setAdapter(new ExpandableDayAdapter(context, recyclerView, item.getmBillDataDayList()));
 
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        holder.select(R.id.account_expendable_day, isSelected);
-        holder.text(R.id.account_expendable_day_maintime, item.getmDay()+"日");
-        holder.text(R.id.account_expendable_day_subtime,"0000");
-        holder.text(R.id.account_expendable_day_totalmoney,decimalFormat.format(item.getmDayIncome()-item.getmDayOutcome()));
-        holder.text(R.id.account_expendable_day_income, decimalFormat.format(item.getmDayIncome()));
-        holder.text(R.id.account_expendable_day_outcome,decimalFormat.format(item.getmDayOutcome()));
+        holder.select(R.id.account_expendable_month, isSelected);
+        holder.text(R.id.account_expendable_month_maintime, item.getmMonth()+"月");
+        holder.text(R.id.account_expendable_month_subtime,"0000");
+        holder.text(R.id.account_expendable_month_totalmoney,decimalFormat.format(item.getmMonthIncome()-item.getmMonthOutcome()));
+        holder.text(R.id.account_expendable_month_income, decimalFormat.format(item.getmMonthIncome()));
+        holder.text(R.id.account_expendable_month_outcome,decimalFormat.format(item.getmMonthOutcome()));
         //holder.text(R.id.tv_content, ResUtils.getResources().getString(R.string.item_example_number_abstract, position + 1));
-        holder.click(R.id.account_expendable_day, new View.OnClickListener() {
+        holder.click(R.id.account_expendable_month, new View.OnClickListener() {
             @SingleClick
             @Override
             public void onClick(View v) {
                 onClickItem(v, expandableLayout, position);
+                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
             }
         });
 
-
-        //设置选择天的卡片样式
-        if(item.ismDaySelected()){
-            holder.getTextView(R.id.account_expendable_day_maintime).setTextSize(20);
-            holder.getTextView(R.id.account_expendable_day_totalmoney).setTextSize(20);
+        //设置选择月的卡片样式
+        if(item.ismMonthSelected()){
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextSize(20);
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextSize(20);
 //            holder.getImageView(R.id.month_indicator).setMaxHeight(10);
-            holder.getTextView(R.id.account_expendable_day_subtime).setVisibility(View.VISIBLE);
-            holder.getTextView(R.id.account_expendable_day_income).setVisibility(View.VISIBLE);
-            holder.getTextView(R.id.account_expendable_day_outcome).setVisibility(View.VISIBLE);
-            holder.getTextView(R.id.account_expendable_day_text_income).setVisibility(View.VISIBLE);
-            holder.getTextView(R.id.account_expendable_day_text_outcome).setVisibility(View.VISIBLE);
-            holder.getTextView(R.id.account_expendable_day_maintime).setTextColor(context.getResources().getColor(R.color.black));
-            holder.getTextView(R.id.account_expendable_day_totalmoney).setTextColor(context.getResources().getColor(R.color.black));
+            holder.getTextView(R.id.account_expendable_month_subtime).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_income).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_outcome).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_text_income).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_text_outcome).setVisibility(View.VISIBLE);
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextColor(context.getResources().getColor(R.color.black));
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextColor(context.getResources().getColor(R.color.black));
         }
         else {
-            holder.getTextView(R.id.account_expendable_day_maintime).setTextSize(10);
-            holder.getTextView(R.id.account_expendable_day_totalmoney).setTextSize(10);
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextSize(10);
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextSize(10);
 //            holder.getImageView(R.id.month_indicator).setMaxHeight(10);
-            holder.getTextView(R.id.account_expendable_day_subtime).setVisibility(View.GONE);
-            holder.getTextView(R.id.account_expendable_day_income).setVisibility(View.GONE);
-            holder.getTextView(R.id.account_expendable_day_outcome).setVisibility(View.GONE);
-            holder.getTextView(R.id.account_expendable_day_text_income).setVisibility(View.GONE);
-            holder.getTextView(R.id.account_expendable_day_text_outcome).setVisibility(View.GONE);
-            holder.getTextView(R.id.account_expendable_day_maintime).setTextColor(context.getResources().getColor(R.color.grey));
-            holder.getTextView(R.id.account_expendable_day_totalmoney).setTextColor(context.getResources().getColor(R.color.grey));
+            holder.getTextView(R.id.account_expendable_month_subtime).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_text_income).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_text_outcome).setVisibility(View.GONE);
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextColor(context.getResources().getColor(R.color.grey));
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextColor(context.getResources().getColor(R.color.grey));
         }
 
 
@@ -166,8 +169,8 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
     private void onClickItem(View view, final ExpandableLayout expandableLayout, final int position) {
         RecyclerViewHolder holder = (RecyclerViewHolder) mRecyclerView.findViewHolderForAdapterPosition(mSelectPosition);
         if (holder != null) {
-            holder.select(R.id.account_expendable_day, false);
-            ((ExpandableLayout) holder.findViewById(R.id.expandable_day_layout)).collapse();
+            holder.select(R.id.account_expendable_month, false);
+            ((ExpandableLayout) holder.findViewById(R.id.expandable_month_layout)).collapse();
         }
 
         if (position == mSelectPosition) {

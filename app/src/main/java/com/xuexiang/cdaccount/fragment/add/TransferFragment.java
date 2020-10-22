@@ -298,8 +298,12 @@ public class TransferFragment extends BaseFragment {
                                                                   mAccount1 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount1.setText(mAccount1);
                                                                   //TODO:insert_new_account
-                                                                  mDatabaseHelper.InsertAccount(mAccount1);
-                                                                  loadAccountData();
+                                                                  if(mDatabaseHelper.InsertAccount(mAccount1)){
+                                                                      XToastUtils.success("添加账户成功");
+                                                                      loadAccountData();
+                                                                  }else{
+                                                                      XToastUtils.error("添加账户失败，该账户已存在");
+                                                                  }
                                                               }
                                                           })
                                                           .show();
@@ -344,9 +348,12 @@ public class TransferFragment extends BaseFragment {
                                                               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                                   mAccount2 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount2.setText(mAccount2);
-                                                                  //TODO:insert_new_account
-                                                                  mDatabaseHelper.InsertAccount(mAccount2);
-                                                                  loadAccountData();
+                                                                  if(mDatabaseHelper.InsertAccount(mAccount2)){
+                                                                      XToastUtils.success("添加账户成功");
+                                                                      loadAccountData();
+                                                                  }else{
+                                                                      XToastUtils.error("添加账户失败，该账户已存在");
+                                                                  }
 
                                                               }
                                                           })
@@ -400,8 +407,12 @@ public class TransferFragment extends BaseFragment {
                                     mTvMember.setTextColor(0xFF000000 );
                                 }
                                 //TODO:insert new member
-                                mDatabaseHelper.InsertMember(mMember);
-                                loadMemberData();
+                                if(mDatabaseHelper.InsertMember(mMember)){
+                                    XToastUtils.success("添加成员成功");
+                                    loadMemberData();
+                                }else{
+                                    XToastUtils.error("添加成员失败，该成员已存在");
+                                }
 
                             }
                         })

@@ -60,8 +60,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class LoginGestureFragment extends BaseFragment {
 
     private String password_gesture;
-    private String login_gesture;
-    private SharedPreferences mSharedPreferences_gesture_login;
 
     private PatternLockView mPatternLockView;
 
@@ -86,12 +84,14 @@ public class LoginGestureFragment extends BaseFragment {
         initLock();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @OnClick({R.id.tv_other_login1, R.id.tv_forget_password, R.id.tv_user_protocol, R.id.tv_privacy_protocol})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_other_login1:
-                openPage(LoginNumberFragment.class, getActivity().getIntent().getExtras());
+//                openPage(LoginNumberFragment.class, getActivity().getIntent().getExtras());
+                openPage(LoginNumberFragment.class, false);
                 break;
             case R.id.tv_forget_password:
                 XToastUtils.info("忘记密码");
@@ -109,7 +109,7 @@ public class LoginGestureFragment extends BaseFragment {
 
 
     private void initSP() {
-        mSharedPreferences_gesture_login = getActivity().getSharedPreferences("gesture", MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_gesture_login = getActivity().getSharedPreferences("gesture", MODE_PRIVATE);
         password_gesture =  mSharedPreferences_gesture_login.getString("gesture_sign","");
     }
 
@@ -166,7 +166,7 @@ public class LoginGestureFragment extends BaseFragment {
     }
 
     //设置监听器
-    private PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
+    private final PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
         @Override
         public void onStarted() {
             Log.d(getClass().getName(), "Pattern drawing started");
@@ -185,8 +185,7 @@ public class LoginGestureFragment extends BaseFragment {
             //密码验证
             String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
             if(!TextUtils.isEmpty(patternToString)){
-                login_gesture = patternToString;
-                if(login_gesture.equals(password_gesture)){
+                if(patternToString.equals(password_gesture)){
                     //判断为正确
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
 //                    XToastUtils.success("密码正确");

@@ -50,6 +50,8 @@ public class MyLineChart {
         lineChart.setDrawGridBackground(false);
         // 开启手势触摸
         lineChart.setTouchEnabled(true);
+        // Y轴禁止缩放
+        lineChart.setScaleYEnabled(false);
         // enable scaling and dragging
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(true);
@@ -72,28 +74,32 @@ public class MyLineChart {
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setEnabled(true);
-        xAxis.setTextSize(7f);
+        xAxis.setGranularity(1f);
+        xAxis.setTextSize(4f);
+        xAxis.setLabelRotationAngle(-70f);
 //        xAxis.setAxisMinimum(0);
 
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setDrawAxisLine(true);
         yAxisLeft.setAxisLineWidth(1);
         yAxisLeft.setEnabled(true);
+        yAxisLeft.setAxisMinimum(0);
 
         yAxisRight.setDrawGridLines(false);
         yAxisRight.setDrawAxisLine(true);
         yAxisRight.setAxisLineWidth(1);
         yAxisRight.setEnabled(true);
+        yAxisRight.setAxisMinimum(0);
 
         //设置Lengend位置
-        legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
+        legend.setTextColor(getResources().getColor(R.color.colorAccent)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public LineData setLinedata(LineChart lineChart, List<ChartDataEntry> chartDataEntries) {
+    public LineData setLinedata(LineChart lineChart, List<ChartDataEntry> chartDataEntries, String legendLable) {
         //设置数据
         List<Entry> entries = new ArrayList<>();
         int lenth = chartDataEntries.size();
@@ -103,13 +109,12 @@ public class MyLineChart {
 
         // X轴样式
         lineChart.getXAxis().setLabelCount(lenth);
-        lineChart.getXAxis().setLabelRotationAngle(-60f);
         lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                int m = lenth / 5 + 1;
+                int m = lenth / 15 + 1;
                 int intValue = Math.round(value);
-                if(intValue < lenth && intValue>=0 && intValue==value && intValue%m==0) {
+                if(intValue < lenth && intValue>=0 && intValue==value && intValue % m==0) {
                     String date = chartDataEntries.get(intValue).getDataName();
                     String year = date.substring(0, 4);
                     String month = date.substring(4, 6);
@@ -117,15 +122,15 @@ public class MyLineChart {
                     return year+"-"+month+"-"+day;
                 }
                 else {
-                    return "";
+                    return "     ";
                 }
             }
         });
 
-        LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
+        LineDataSet lineDataSet = new LineDataSet(entries, legendLable);
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
         lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_7));
-        lineDataSet.setLineWidth(2f);
+        lineDataSet.setLineWidth(1f);
         //设置填充
         //设置允许填充，渐变
         lineDataSet.setDrawFilled(true);
@@ -135,7 +140,7 @@ public class MyLineChart {
 
 
         LineData linedata = new LineData(lineDataSet);
-        linedata.setValueTextSize(7f);
+        linedata.setValueTextSize(6f);
         return linedata;
     }
 

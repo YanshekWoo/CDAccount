@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sql = "create table "+"InSubCategory"+"(InSubCategory_ID int, InSubCategory_Parent, InSubCategory_Name)";
         db.execSQL(sql);
 
-        sql = "create table "+"Account"+"(Account_ID int, Account_Name varchar(15))";
+        sql = "create table "+"Account"+"(Account_ID int, Account_Name varchar(15), Account_InMoney double, Account_OutMoney)";
         db.execSQL(sql);
 
         sql = "create table "+"Member"+"(Member_ID int, Member_Name varchar(15))";
