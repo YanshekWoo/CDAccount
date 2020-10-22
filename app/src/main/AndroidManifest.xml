@@ -44,7 +44,7 @@
         <activity
             android:name="com.xuexiang.cdaccount.activity.LoginActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -56,22 +56,18 @@
         <activity
             android:name="com.xuexiang.cdaccount.activity.RegiterGestureActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.xuexiang.cdaccount.activity.RegiterNumberActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.xuexiang.cdaccount.activity.RegisterVerifyActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-
 
 
         <!--通用浏览器-->

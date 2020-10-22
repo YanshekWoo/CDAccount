@@ -35,6 +35,8 @@ import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.utils.RandomUtils;
+import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.util.MD5Utils;
@@ -191,8 +193,16 @@ public class LoginGestureFragment extends BaseFragment {
                     //判断为正确
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
 //                    XToastUtils.success("密码正确");
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
+//                    Intent intent = null;
+//                    if(TokenUtils.hasToken()){
+//                        intent = new Intent(getContext(), MainActivity.class);
+//                        startActivity(intent);
+//                    }else{
+//                        String token = RandomUtils.getRandomNumbersAndLetters(16);
+//                        TokenUtils.setToken(token);
+//                        startActivity(intent);
+//                    }
+
                     getActivity().finish();
                 }else {
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);

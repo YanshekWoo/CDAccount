@@ -142,6 +142,7 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
 
 //                        Intent intent = new Intent(RegiterNumberActivity.this, RegiterGestureActivity.class);
 //                        startActivity(intent);
+
                         ActivityUtils.startActivity(RegiterGestureActivity.class);
                         finish();
                     }

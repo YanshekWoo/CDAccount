@@ -27,6 +27,8 @@ import android.widget.EditText;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.utils.RandomUtils;
+import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.util.MD5Utils;
@@ -112,8 +114,7 @@ public class LoginNumberFragment extends BaseFragment {
                 if(password.equals(MD5Utils.encode(etlogin_passwd.getText().toString())))
                 {
 //                    XToastUtils.success("密码正确");
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
+//
                     getActivity().finish();
                 }
                 else
