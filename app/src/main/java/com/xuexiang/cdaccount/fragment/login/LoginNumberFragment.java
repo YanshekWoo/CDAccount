@@ -17,16 +17,12 @@
 
 package com.xuexiang.cdaccount.fragment.login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.MainActivity;
@@ -52,19 +48,20 @@ import static android.content.Context.MODE_PRIVATE;
 @Page(anim = CoreAnim.none)
 public class LoginNumberFragment extends BaseFragment {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_commit)
     Button BtLogin;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_passwd)
     EditText etlogin_passwd;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_user)
     EditText etlogin_user;
 
 
     private String password;
     private String user_name;
-    private SharedPreferences mSharedPreferences_user;
-    private SharedPreferences mSharedPreferences_passwd;
 
 
     /**
@@ -90,8 +87,8 @@ public class LoginNumberFragment extends BaseFragment {
 
 
     private void initSP() {
-        mSharedPreferences_user = getActivity().getSharedPreferences("user",MODE_PRIVATE);
-        mSharedPreferences_passwd = getActivity().getSharedPreferences("password",MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_user = getActivity().getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_passwd = getActivity().getSharedPreferences("password", MODE_PRIVATE);
         user_name = mSharedPreferences_user.getString("user","");
         password = mSharedPreferences_passwd.getString("password","");
     }
@@ -126,12 +123,14 @@ public class LoginNumberFragment extends BaseFragment {
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @OnClick({R.id.tv_other_login2, R.id.tv_forget_password, R.id.tv_user_protocol, R.id.tv_privacy_protocol})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_other_login2:
-                openPage(LoginGestureFragment.class, getActivity().getIntent().getExtras());
+//                openPage(LoginGestureFragment.class, getActivity().getIntent().getExtras());
+                openPage(LoginGestureFragment.class, false);
                 break;
             case R.id.tv_forget_password:
                 XToastUtils.info("忘记密码");

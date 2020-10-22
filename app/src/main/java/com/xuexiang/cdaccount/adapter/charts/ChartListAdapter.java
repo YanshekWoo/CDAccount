@@ -19,23 +19,17 @@ package com.xuexiang.cdaccount.adapter.charts;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.database.ChartDataEntry;
-import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 
 import java.util.Collection;
-
-import static com.xuexiang.xutil.XUtil.getResources;
 
 /**
  * 可伸缩布局适配器
@@ -88,27 +82,27 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
         holder.text(R.id.adapter_chart_list_title,item.getDataName());
         holder.text(R.id.adapter_chart_list_money,String.format("%.2f", item.dataMoney));
 
-        holder.click(R.id.adapter_chart_list_card, new View.OnClickListener() {
-            @SingleClick
-            @Override
-            public void onClick(View v) {
-                int focusType = 1;
-                String account = getResources().getString(R.string.unlimited);
-                String member = getResources().getString(R.string.unlimited);
-                if(tabSeleted==2) {
-                    member = item.getDataName();
-                }
-                else if(tabSeleted==3) {
-                    account = item.getDataName();
-                }
-
-                Intent intent = new Intent(context, AccountDetailsActivity.class);
-                intent.putExtra("focusType", focusType);
-                intent.putExtra("member", member);
-                intent.putExtra("account", account);
-                context.startActivity(intent);
-            }
-        });
+//        holder.click(R.id.adapter_chart_list_card, new View.OnClickListener() {
+//            @SingleClick
+//            @Override
+//            public void onClick(View v) {
+//                int focusType = 1;
+//                String account = getResources().getString(R.string.unlimited);
+//                String member = getResources().getString(R.string.unlimited);
+//                if(tabSeleted==2) {
+//                    member = item.getDataName();
+//                }
+//                else if(tabSeleted==3) {
+//                    account = item.getDataName();
+//                }
+//
+//                Intent intent = new Intent(context, AccountDetailsActivity.class);
+//                intent.putExtra("focusType", focusType);
+//                intent.putExtra("member", member);
+//                intent.putExtra("account", account);
+//                context.startActivity(intent);
+//            }
+//        });
     }
 
     public int getTabSeleted() {

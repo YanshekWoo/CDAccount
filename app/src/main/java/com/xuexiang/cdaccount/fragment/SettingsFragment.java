@@ -17,6 +17,8 @@
 
 package com.xuexiang.cdaccount.fragment;
 
+import android.annotation.SuppressLint;
+
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.TokenUtils;
@@ -36,12 +38,16 @@ import butterknife.BindView;
 @Page(name = "设置")
 public class SettingsFragment extends BaseFragment implements SuperTextView.OnSuperTextViewClickListener {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_common)
     SuperTextView menuCommon;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_privacy)
     SuperTextView menuPrivacy;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_change_passwd)
     SuperTextView menuChangeAccount;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_clear_data)
     SuperTextView menuLogout;
 
@@ -58,6 +64,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
         menuLogout.setOnSuperTextViewClickListener(this);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @Override
     public void onClick(SuperTextView superTextView) {
