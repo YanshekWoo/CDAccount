@@ -30,6 +30,7 @@ import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
+import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xutil.XUtil;
@@ -134,7 +135,7 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
                     else {
                         mEditor_user.putString("user", user);
                         mEditor_user.apply();
-                        mEditor_password.putString("password", passwd2);
+                        mEditor_password.putString("password", MD5Utils.encode(passwd2));
                         mEditor_password.apply();
 
 //                        XToastUtils.success("注册成功");

@@ -29,9 +29,11 @@ import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
+import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xupdate.utils.Md5Utils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -107,7 +109,7 @@ public class LoginNumberFragment extends BaseFragment {
         BtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(password.equals(etlogin_passwd.getText().toString()))
+                if(password.equals(MD5Utils.encode(etlogin_passwd.getText().toString())))
                 {
 //                    XToastUtils.success("密码正确");
                     Intent intent = new Intent(getContext(), MainActivity.class);

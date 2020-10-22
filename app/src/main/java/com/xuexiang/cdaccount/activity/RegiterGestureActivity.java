@@ -36,6 +36,7 @@ import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.XToastUtils;
+import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xutil.app.ActivityUtils;
@@ -190,7 +191,7 @@ public class RegiterGestureActivity extends BaseActivity {
                     GestureSignUp_sure = patternToString;
                     if(GestureSignUp.equals(GestureSignUp_sure))//两次输入密码一致
                     {
-                        mEditor_gesture.putString("gesture_sign",GestureSignUp);
+                        mEditor_gesture.putString("gesture_sign", MD5Utils.encode(GestureSignUp));
                         mEditor_gesture.apply();
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
 //                        XToastUtils.success("注册成功");

@@ -37,9 +37,11 @@ import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
+import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xupdate.utils.Md5Utils;
 
 import java.util.List;
 import java.util.Objects;
@@ -185,7 +187,7 @@ public class LoginGestureFragment extends BaseFragment {
             //密码验证
             String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
             if(!TextUtils.isEmpty(patternToString)){
-                if(patternToString.equals(password_gesture)){
+                if(MD5Utils.encode(patternToString).equals(password_gesture)){
                     //判断为正确
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
 //                    XToastUtils.success("密码正确");
