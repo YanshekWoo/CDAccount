@@ -35,15 +35,17 @@
                 android:tint="?attr/colorAccent"
                 app:srcCompat="@drawable/ic_phone" />
 
-            <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
+            <TextView
                 android:id="@+id/login_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
-                android:textSize="16sp"
-                android:inputType="none"
+                android:paddingRight="30dp"
+                android:gravity="center"
+                android:text="用户名"
                 android:maxLines="1"
-                app:met_clearButton="false" />
+                android:textSize="20sp"
+                android:background="@drawable/bg_bottom_border"/>
 
 
         </FrameLayout>

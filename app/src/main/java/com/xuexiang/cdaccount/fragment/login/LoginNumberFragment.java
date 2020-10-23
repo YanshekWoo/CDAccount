@@ -17,20 +17,28 @@
 
 package com.xuexiang.cdaccount.fragment.login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.FindpasswdActivity;
 import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.utils.RandomUtils;
+import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
+import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xupdate.utils.Md5Utils;
+import com.xuexiang.xutil.app.ActivityUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,20 +55,20 @@ import static android.content.Context.MODE_PRIVATE;
 @Page(anim = CoreAnim.none)
 public class LoginNumberFragment extends BaseFragment {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_commit)
     Button BtLogin;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_passwd)
     EditText etlogin_passwd;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_user)
-    EditText etlogin_user;
+    TextView etlogin_user;
 
 
     private String password;
     private String user_name;
-    private SharedPreferences mSharedPreferences_user;
-    private SharedPreferences mSharedPreferences_passwd;
-
 
 
     /**
@@ -77,8 +85,6 @@ public class LoginNumberFragment extends BaseFragment {
     }
 
 
-
-
     @Override
     protected void initViews() {
         initSP();
@@ -88,8 +94,8 @@ public class LoginNumberFragment extends BaseFragment {
 
 
     private void initSP() {
-        mSharedPreferences_user = getActivity().getSharedPreferences("user",MODE_PRIVATE);
-        mSharedPreferences_passwd = getActivity().getSharedPreferences("password",MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_user = getActivity().getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_passwd = getActivity().getSharedPreferences("password", MODE_PRIVATE);
         user_name = mSharedPreferences_user.getString("user","");
         password = mSharedPreferences_passwd.getString("password","");
     }
@@ -108,11 +114,11 @@ public class LoginNumberFragment extends BaseFragment {
         BtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(password.equals(etlogin_passwd.getText().toString()))
+                if(password.equals(MD5Utils.encode(etlogin_passwd.getText().toString())))
                 {
 //                    XToastUtils.success("密码正确");
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
+                    String token = RandomUtils.getRandomNumbersAndLetters(16);
+                    TokenUtils.setToken(token);
                     getActivity().finish();
                 }
                 else
@@ -124,15 +130,17 @@ public class LoginNumberFragment extends BaseFragment {
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @OnClick({R.id.tv_other_login2, R.id.tv_forget_password, R.id.tv_user_protocol, R.id.tv_privacy_protocol})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_other_login2:
-                openPage(LoginGestureFragment.class, getActivity().getIntent().getExtras());
+//                openPage(LoginGestureFragment.class, getActivity().getIntent().getExtras());
+                openPage(LoginGestureFragment.class, false);
                 break;
             case R.id.tv_forget_password:
-                XToastUtils.info("忘记密码");
+                ActivityUtils.startActivity(FindpasswdActivity.class);
                 break;
             case R.id.tv_user_protocol:
                 XToastUtils.info("用户协议");
@@ -145,6 +153,10 @@ public class LoginNumberFragment extends BaseFragment {
         }
     }
 
-
+    @Override
+    public void onResume() {    //修改密码后重新加载
+        super.onResume();
+        initSP();
+    }
 }
 

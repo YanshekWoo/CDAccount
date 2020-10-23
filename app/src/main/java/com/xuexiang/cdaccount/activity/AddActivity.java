@@ -39,6 +39,7 @@ import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.WidgetUtils;
+import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowButton;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 
@@ -53,8 +54,9 @@ import java.util.List;
  */
 public class AddActivity extends AppCompatActivity implements OutcomeFragment.OutcomeMessage, IncomeFragment.IncomeMessage, TransferFragment.TransferMessage {
 
-    private ShadowImageView mIvBack;
-    private ShadowButton mBtnConfirm;
+    //    private ShadowImageView mIvBack;
+//    private ShadowButton mBtnConfirm;
+    private TitleBar mTbTitle;
     private TabLayout mTlAdd;
     private ViewPager mVpAdd;
     private Boolean mBlConfirm = false;     //标识变量
@@ -124,46 +126,76 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         mTlAdd.setupWithViewPager(mVpAdd);
         WidgetUtils.setTabLayoutTextFont(mTlAdd);
 
-        /**
-         * 返回按钮
-         */
+//        /**
+//         * 返回按钮
+//         */
+//
+//        mIvBack = findViewById(R.id.iv_back);
+//        mIvBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+//
+//        /**
+//         * 确认按钮
+//         */
+//        mBtnConfirm = findViewById(R.id.btn_confirm);
+//        mBtnConfirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                switch (mVpAdd.getCurrentItem()) {               //判断金额是否已填入
+//                    case 0:
+//                        IsAmountFill = mOutcomeAmount == -1;
+//                        break;
+//                    case 1:
+//                        IsAmountFill = mIncomeAmount == -1;
+//                        break;
+//                    case 2:
+//                        IsAmountFill = mTransferAmount == -1;
+//                        break;
+//                }
+//                if (IsAmountFill) {
+//                    XToastUtils.error("请填写金额");
+//                } else {
+//                    mBlConfirm = true;      //置为true，表示需要插入新数据
+//                    finish();               //利用生命周期的回调函数完成写入数据库
+//                }
+//
+//            }
+//        });
+//
 
-        mIvBack = findViewById(R.id.iv_back);
-        mIvBack.setOnClickListener(new View.OnClickListener() {
+        mTbTitle = findViewById(R.id.add_title);
+        mTbTitle.setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        });
-
-        /**
-         * 确认按钮
-         */
-        mBtnConfirm = findViewById(R.id.btn_confirm);
-        mBtnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (mVpAdd.getCurrentItem()) {               //判断金额是否已填入
-                    case 0:
-                        IsAmountFill = mOutcomeAmount == -1;
-                        break;
-                    case 1:
-                        IsAmountFill = mIncomeAmount == -1;
-                        break;
-                    case 2:
-                        IsAmountFill = mTransferAmount == -1;
-                        break;
-                }
-                if (IsAmountFill) {
-                    XToastUtils.error("请填写金额");
-                } else {
-                    mBlConfirm = true;      //置为true，表示需要插入新数据
-                    finish();               //利用生命周期的回调函数完成写入数据库
-                }
-
-            }
-        });
-
+        })
+                .addAction(new TitleBar.TextAction("确认") {
+                    @Override
+                    public void performAction(View view) {
+                        switch (mVpAdd.getCurrentItem()) {               //判断金额是否已填入
+                            case 0:
+                                IsAmountFill = mOutcomeAmount == -1;
+                                break;
+                            case 1:
+                                IsAmountFill = mIncomeAmount == -1;
+                                break;
+                            case 2:
+                                IsAmountFill = mTransferAmount == -1;
+                                break;
+                        }
+                        if (IsAmountFill) {
+                            XToastUtils.error("请填写金额");
+                        } else {
+                            mBlConfirm = true;      //置为true，表示需要插入新数据
+                            finish();               //利用生命周期的回调函数完成写入数据库
+                        }
+                    }
+                });
 
     }
 

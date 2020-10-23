@@ -35,13 +35,19 @@ import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent;
 import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
 import com.nestia.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.FindpasswdActivity;
 import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.utils.RandomUtils;
+import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
+import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xupdate.utils.Md5Utils;
+import com.xuexiang.xutil.app.ActivityUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -62,8 +68,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class LoginGestureFragment extends BaseFragment {
 
     private String password_gesture;
-    private String login_gesture;
-    private SharedPreferences mSharedPreferences_gesture_login;
 
     private PatternLockView mPatternLockView;
 
@@ -90,15 +94,17 @@ public class LoginGestureFragment extends BaseFragment {
         initFingerPrint();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @OnClick({R.id.tv_other_login1, R.id.tv_forget_password, R.id.tv_user_protocol, R.id.tv_privacy_protocol})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_other_login1:
-                openPage(LoginNumberFragment.class, getActivity().getIntent().getExtras());
+//                openPage(LoginNumberFragment.class, getActivity().getIntent().getExtras());
+                openPage(LoginNumberFragment.class, false);
                 break;
             case R.id.tv_forget_password:
-                XToastUtils.info("忘记密码");
+                ActivityUtils.startActivity(FindpasswdActivity.class);
                 break;
             case R.id.tv_user_protocol:
                 XToastUtils.info("用户协议");
@@ -113,8 +119,8 @@ public class LoginGestureFragment extends BaseFragment {
 
 
     private void initSP() {
-        mSharedPreferences_gesture_login = getActivity().getSharedPreferences("gesture", MODE_PRIVATE);
-        password_gesture =  mSharedPreferences_gesture_login.getString("gesture_sign","");
+        SharedPreferences mSharedPreferences_gesture_login = getActivity().getSharedPreferences("gesture", MODE_PRIVATE);
+        password_gesture = mSharedPreferences_gesture_login.getString("gesture_sign", "");
     }
 
 
@@ -139,7 +145,6 @@ public class LoginGestureFragment extends BaseFragment {
         mPatternLockView.setTactileFeedbackEnabled(true);
         mPatternLockView.setInputEnabled(true);
         mPatternLockView.addPatternLockListener(mPatternLockViewListener);
-
 
 
         RxPatternLockView.patternComplete(mPatternLockView)
@@ -170,7 +175,7 @@ public class LoginGestureFragment extends BaseFragment {
     }
 
     //设置监听器
-    private PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
+    private final PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
         @Override
         public void onStarted() {
             Log.d(getClass().getName(), "Pattern drawing started");
@@ -188,16 +193,25 @@ public class LoginGestureFragment extends BaseFragment {
                     PatternLockUtils.patternToString(mPatternLockView, pattern));
             //密码验证
             String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
-            if(!TextUtils.isEmpty(patternToString)){
-                login_gesture = patternToString;
-                if(login_gesture.equals(password_gesture)){
+            if (!TextUtils.isEmpty(patternToString)) {
+                if (MD5Utils.encode(patternToString).equals(password_gesture)) {
                     //判断为正确
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
+                    String token = RandomUtils.getRandomNumbersAndLetters(16);
+                    TokenUtils.setToken(token);
 //                    XToastUtils.success("密码正确");
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
+//                    Intent intent = null;
+//                    if(TokenUtils.hasToken()){
+//                        intent = new Intent(getContext(), MainActivity.class);
+//                        startActivity(intent);
+//                    }else{
+//                        String token = RandomUtils.getRandomNumbersAndLetters(16);
+//                        TokenUtils.setToken(token);
+//                        startActivity(intent);
+//                    }
+
                     getActivity().finish();
-                }else {
+                } else {
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
                     XToastUtils.error("密码错误");
                 }
@@ -208,8 +222,9 @@ public class LoginGestureFragment extends BaseFragment {
                 public void run() {
                     mPatternLockView.clearPattern();
                 }
-            },1000);
+            }, 1000);
         }
+
         @Override
         public void onCleared() {
             Log.d(getClass().getName(), "Pattern has been cleared");
@@ -252,6 +267,11 @@ public class LoginGestureFragment extends BaseFragment {
                 }
             });
         }
+    }
+    @Override
+    public void onResume() {        //修改密码后重新加载
+        super.onResume();
+        initSP();
     }
 }
 

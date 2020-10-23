@@ -35,7 +35,9 @@ import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent;
 import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
+import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
+import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xutil.app.ActivityUtils;
@@ -79,6 +81,9 @@ public class RegiterGestureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         initSP();
         initLock();
+        if(!SettingUtils.isFirstOpen()){
+            tv_register_gesture.setText("请重置手势密码");
+        }
     }
 
 
@@ -190,7 +195,7 @@ public class RegiterGestureActivity extends BaseActivity {
                     GestureSignUp_sure = patternToString;
                     if(GestureSignUp.equals(GestureSignUp_sure))//两次输入密码一致
                     {
-                        mEditor_gesture.putString("gesture_sign",GestureSignUp);
+                        mEditor_gesture.putString("gesture_sign", MD5Utils.encode(GestureSignUp));
                         mEditor_gesture.apply();
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
 //                        XToastUtils.success("注册成功");
@@ -200,7 +205,11 @@ public class RegiterGestureActivity extends BaseActivity {
                     else//两次输入密码不一致
                     {
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
-                        tv_register_gesture.setText("请输入手势密码");
+                        if(!SettingUtils.isFirstOpen()){
+                            tv_register_gesture.setText("请重置手势密码");
+                        }else {
+                            tv_register_gesture.setText("请输入手势密码");
+                        }
                         XToastUtils.error("两次输入的密码不一致");
                         state = 1;
                     }
@@ -224,12 +233,16 @@ public class RegiterGestureActivity extends BaseActivity {
     };
 
     /**
-     * 登录成功的处理
+     * 注册成功的处理
      */
     private void onLoginSuccess() {
 //        Intent intent = new Intent(RegiterGestureActivity.this, RegisterVerifyActivity.class);
 //        startActivity(intent);
-        ActivityUtils.startActivity(RegisterVerifyActivity.class);
+        if(SettingUtils.isFirstOpen()){                                     //若找回密码时调用此页面，则不跳转
+            ActivityUtils.startActivity(RegisterVerifyActivity.class);
+        }else{
+            XToastUtils.success("手势密码已重置");
+        }
         finish();
     }
 

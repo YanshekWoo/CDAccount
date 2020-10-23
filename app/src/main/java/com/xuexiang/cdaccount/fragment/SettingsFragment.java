@@ -17,7 +17,10 @@
 
 package com.xuexiang.cdaccount.fragment;
 
+import android.annotation.SuppressLint;
+
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.ChangePasswordActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
@@ -26,6 +29,7 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.widget.dialog.DialogLoader;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.app.ActivityUtils;
 
 import butterknife.BindView;
 
@@ -36,12 +40,16 @@ import butterknife.BindView;
 @Page(name = "设置")
 public class SettingsFragment extends BaseFragment implements SuperTextView.OnSuperTextViewClickListener {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_common)
     SuperTextView menuCommon;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_privacy)
     SuperTextView menuPrivacy;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_change_passwd)
     SuperTextView menuChangeAccount;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_clear_data)
     SuperTextView menuLogout;
 
@@ -58,6 +66,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
         menuLogout.setOnSuperTextViewClickListener(this);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @Override
     public void onClick(SuperTextView superTextView) {
@@ -65,8 +74,8 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
             case R.id.menu_common:
             case R.id.menu_privacy:
             case R.id.menu_change_passwd:
-                XToastUtils.toast(superTextView.getCenterString());
-                break;
+                ActivityUtils.startActivity(ChangePasswordActivity.class);
+            break;
             case R.id.menu_clear_data:
                 DialogLoader.getInstance().showConfirmDialog(
                         getContext(),
@@ -85,4 +94,6 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
                 break;
         }
     }
+
+
 }

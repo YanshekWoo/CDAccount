@@ -8,6 +8,7 @@ import com.xuexiang.cdaccount.ExpanableBill.BillDataDay;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataItem;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataMonth;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataYear;
+import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.database.AccountDataEntry;
 import com.xuexiang.cdaccount.database.ChartDataEntry;
 import com.xuexiang.cdaccount.somethingDao.DatabaseHelper;
@@ -18,6 +19,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static com.xuexiang.xutil.XUtil.getResources;
 
 /**
  * Bill账单
@@ -328,7 +331,7 @@ public class BillDao {
             String M = cursor.getString(cursor.getColumnIndex("month"));
             String D = cursor.getString(cursor.getColumnIndex("day"));
             String T = cursor.getString(cursor.getColumnIndex("time"));
-            String ans = Y + " " + M + " " + D + " " + T;
+            String ans = Y + "-" + M + "-" + D + " " + T;
             re.add(ans);
         }
         db.close();
@@ -486,7 +489,7 @@ public class BillDao {
             mp.put(cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutTopCategory_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 0 group by Bill_SubCategory";
         Cursor cursor = db.rawQuery(sql, null);
         List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
@@ -534,7 +537,7 @@ public class BillDao {
             mp.put(cursor1.getInt(cursor1.getColumnIndex("OutSubCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutSubCategory_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 0 group by Bill_SubCategory";
         Cursor cursor = db.rawQuery(sql, null);
         List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
@@ -801,9 +804,9 @@ public class BillDao {
                 }
                 List<BillDataItem> billDataItemList = new LinkedList<>();
                 String sql = "";
-                if(member.equals("不限" ) && account.equals("不限" )) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"'";
-                else if(member.equals("不限")) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND Bill_Account = "+account1+"";
-                else if(account.equals("不限")) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND Bill_Member = "+member1+"";
+                if(member.equals(getResources().getString(R.string.unlimited)) && account.equals(getResources().getString(R.string.unlimited))) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"'";
+                else if(member.equals(getResources().getString(R.string.unlimited))) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND Bill_Account = "+account1+"";
+                else if(account.equals(getResources().getString(R.string.unlimited))) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND Bill_Member = "+member1+"";
                 else sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND Bill_Account = "+account1+" AND Bill_Member = "+member1+"";
                 Cursor cursor = db.rawQuery(sql, null);
                 double income = 0.0, outcome = 0.0;
@@ -866,11 +869,11 @@ public class BillDao {
                 if(!dayexist) continue;
                 monthincome += income;
                 monthoutcome += outcome;
-                BillDataDay tmp = new BillDataDay(jtmp, income, outcome, billDataItemList);
+                BillDataDay tmp = new BillDataDay(Year, itmp, jtmp, income, outcome, billDataItemList);
                 billDataDayList.add(tmp);
             }
             if(!monthexist) continue;
-            BillDataMonth tmp = new BillDataMonth(itmp, monthincome, monthoutcome, billDataDayList);
+            BillDataMonth tmp = new BillDataMonth(Year, itmp, monthincome, monthoutcome, billDataDayList);
             billDataMonthList.add(tmp);
             YearIncome += monthincome;
             YearOutcome += monthoutcome;

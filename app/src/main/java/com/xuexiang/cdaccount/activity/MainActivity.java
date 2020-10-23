@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -63,20 +64,25 @@ import butterknife.BindView;
  */
 public class MainActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, BottomNavigationView.OnNavigationItemSelectedListener, ClickUtils.OnClick2ExitListener, Toolbar.OnMenuItemClickListener {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.view_pager)
     ViewPager viewPager;
     /**
      * 底部导航栏
      */
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
     /**
      * 侧边栏
      */
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.nav_view)
     NavigationView navView;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
@@ -92,7 +98,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
 
         initViews();
-
         initListeners();
     }
 
@@ -120,6 +125,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         viewPager.setAdapter(adapter);
 
         viewPager.setCurrentItem(1, false);
+
         bottomNavigation.setSelectedItemId(bottomNavigation.getMenu().getItem(1).getItemId());
     }
 
@@ -152,6 +158,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         navHeader.setOnClickListener(this);
     }
 
+    @SuppressLint("NonConstantResourceId")
     protected void initListeners() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -171,7 +178,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         openNewPage(AboutFragment.class);
                         break;
                     default:
-                        XToastUtils.toast("点击了:" + menuItem.getTitle());
+//                        XToastUtils.toast("点击了:" + menuItem.getTitle());
                         break;
                 }
             }
@@ -186,8 +193,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * 处理侧边栏点击事件
      *
-     * @param menuItem
-     * @return
+     * @param menuItem 菜单控件
+     * @return boolen
      */
     private boolean handleNavigationItemSelected(@NonNull MenuItem menuItem) {
         int index = CollectionUtils.arrayIndexOf(mTitles, menuItem.getTitle());
@@ -216,7 +223,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.nav_header:
-                XToastUtils.toast("点击头部！");
+//                XToastUtils.toast("点击头部！");
                 break;
             default:
                 break;
