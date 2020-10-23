@@ -18,65 +18,37 @@
 package com.xuexiang.cdaccount.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.Spanned;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.umeng.commonsdk.debug.I;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
-import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
-import com.xuexiang.xaop.util.MD5Utils;
-import com.xuexiang.xpage.annotation.Page;
-import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
 import com.xuexiang.xutil.app.ActivityUtils;
 
-import java.util.Objects;
-import java.util.Set;
-
 import butterknife.BindView;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * @author Chenhao
  * @since 2020-10-22
  */
-@Page(name = "修改密码")
 public class ChangePasswordActivity extends BaseActivity {
 
-    Button mBtSign;
+    private Boolean HasLogin;
 
-    //
-//    @SuppressLint("NonConstantResourceId")
-//    @BindView(R.id.register_user)
-//    TextView mTvUsername;
-//
-//
-//    @SuppressLint("NonConstantResourceId")
-//    @BindView(R.id.register_passwd)
-//    MaterialEditText mEt_password;
-//    @SuppressLint("NonConstantResourceId")
-//    @BindView(R.id.register_passwd_again)
-//    MaterialEditText mEt_password_again;
-//    private SharedPreferences.Editor mEditor_password;
-//    private String user_name,old_passwd;
-//
-//
+    Button mBtSign;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_setpasswd;
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        HasLogin = false;
         super.onCreate(savedInstanceState);
         TokenUtils.clearToken();
         XToastUtils.info("请进行身份验证");
@@ -86,15 +58,22 @@ public class ChangePasswordActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("---changePasswd---", "onResume: ");
         if (TokenUtils.hasToken()) {
             TokenUtils.clearToken();
             XToastUtils.success("身份验证成功，请修改密码");
             ActivityUtils.startActivity(SetpasswdActivity.class);
+        }
+        if(!HasLogin){
+            HasLogin = true;
+        }else{
             finish();
         }
 
     }
-//
+
+
+    //
 //    @SuppressLint("CommitPrefEdits")
 //    private void initSP() {
 //        SharedPreferences mSharedPreferences_user = getSharedPreferences("user", MODE_PRIVATE);
