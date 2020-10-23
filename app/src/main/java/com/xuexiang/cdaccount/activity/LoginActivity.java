@@ -20,6 +20,8 @@ package com.xuexiang.cdaccount.activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+import androidx.annotation.RequiresPermission;
+
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.fragment.login.LoginGestureFragment;
 import com.xuexiang.cdaccount.utils.XToastUtils;
@@ -27,6 +29,8 @@ import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.display.Colors;
+
+import static android.Manifest.permission.KILL_BACKGROUND_PROCESSES;
 
 /**
  * 登录页面
@@ -71,6 +75,7 @@ public class LoginActivity extends BaseActivity implements ClickUtils.OnClick2Ex
 
     @Override
     public void onExit() {
+        XUtil.getActivityLifecycleHelper().exit();
         XUtil.exitApp();
     }
 }
