@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.chartsclass;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -124,20 +125,21 @@ public class MyLineChart {
             public String getFormattedValue(float value) {
                 int mod = length / 15 + 1;
                 int intValue = Math.round(value);
-                if(intValue < length && intValue>=length-3 && intValue==value) {
-                    return "Prediction";
+                String parsedDate = "";
+                String date = chartDataEntries.get(intValue).getDataName();
+                String year = date.substring(0, 4);
+                String month = date.substring(4, 6);
+                String day = date.substring(6, 8);
+                parsedDate = "   "+year+"-"+month+"-"+day;
+
+                if(length>=7 && intValue < length && intValue>=length-3 && intValue==value) {
+                    return "预测值";
                 }
-                if(intValue < length-3 && intValue>=0 && intValue==value && intValue % mod==0) {
-                    String date = chartDataEntries.get(intValue).getDataName();
-                    if(date.length() >= 8) {
-                        String year = date.substring(0, 4);
-                        String month = date.substring(4, 6);
-                        String day = date.substring(6, 8);
-                        return year+"-"+month+"-"+day;
-                    }
-                    else {
-                        return "";
-                    }
+                else if(length>=7 && intValue < length-3 && intValue>=0 && intValue==value && intValue % mod==0) {
+                    return parsedDate;
+                }
+                else if(intValue < length && intValue>=0 && intValue==value && intValue % mod==0) {
+                    return parsedDate;
                 }
                 else {
                     return "";
@@ -157,6 +159,15 @@ public class MyLineChart {
         lineDataSet.setFillDrawable(getResources().getDrawable(R.drawable.line_gradient_bg_shape));
         //设置圆滑线
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+        lineDataSet.setValueFormatter(new ValueFormatter(){
+            @SuppressLint("DefaultLocale")
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format("%.2f", value);
+            }
+        });
+
         // 折线颜色
 //        if(length>=6) {
 //            int[] s = new int[length];
@@ -172,7 +183,7 @@ public class MyLineChart {
 //            lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
 //        }
         lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
-        if(length>=6) {
+        if(length>=7) {
             int[] s = new int[length];
             for(int i=0; i<length-3; i++) {
                 s[i] = getResources().getColor(R.color.app_color_theme_5);

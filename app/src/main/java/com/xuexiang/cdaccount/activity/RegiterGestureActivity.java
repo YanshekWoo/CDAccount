@@ -44,6 +44,7 @@ import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.display.Colors;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
@@ -65,9 +66,7 @@ public class RegiterGestureActivity extends BaseActivity {
     TextView tv_register_gesture;
 
     private String GestureSignUp;
-    private String GestureSignUp_sure;
     private int state = 1;
-    private SharedPreferences mSharedPreferences_gesture;
     private SharedPreferences.Editor mEditor_gesture;
 
     @Override
@@ -107,7 +106,7 @@ public class RegiterGestureActivity extends BaseActivity {
 
     @SuppressLint("CommitPrefEdits")
     private void initSP() {
-        mSharedPreferences_gesture = getSharedPreferences("gesture",MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_gesture = getSharedPreferences("gesture", MODE_PRIVATE);
         mEditor_gesture = mSharedPreferences_gesture.edit();
     }
 
@@ -137,15 +136,15 @@ public class RegiterGestureActivity extends BaseActivity {
         RxPatternLockView.patternComplete(mPatternLockView)
                 .subscribe(new Consumer<PatternLockCompleteEvent>() {
                     @Override
-                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) throws Exception {
-                        Log.d(getClass().getName(), "Complete: " + patternLockCompleteEvent.getPattern().toString());
+                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) {
+                        Log.d(getClass().getName(), "Complete: " + Objects.requireNonNull(patternLockCompleteEvent.getPattern()).toString());
                     }
                 });
 
         RxPatternLockView.patternChanges(mPatternLockView)
                 .subscribe(new Consumer<PatternLockCompoundEvent>() {
                     @Override
-                    public void accept(PatternLockCompoundEvent event) throws Exception {
+                    public void accept(PatternLockCompoundEvent event) {
                         if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_STARTED) {
                             Log.d(getClass().getName(), "Pattern drawing started");
                         } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_PROGRESS) {
@@ -192,8 +191,7 @@ public class RegiterGestureActivity extends BaseActivity {
                 }
                 else if(state == 2)//第二次输入确认密码
                 {
-                    GestureSignUp_sure = patternToString;
-                    if(GestureSignUp.equals(GestureSignUp_sure))//两次输入密码一致
+                    if(GestureSignUp.equals(patternToString))//两次输入密码一致
                     {
                         mEditor_gesture.putString("gesture_sign", MD5Utils.encode(GestureSignUp));
                         mEditor_gesture.apply();

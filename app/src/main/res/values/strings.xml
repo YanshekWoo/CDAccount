@@ -91,4 +91,10 @@
     <string name="header_pulling">下拉加载%04d年流水</string>
     <string name="header_release">释放加载%04d年流水</string>
     <string name="accont_title">%04d年流水</string>
+
+    <string name="tip_warning">警告</string>
+    <string name="content_warning">清除数据会删除所有记账信息和账号密码，是否确定清除数据</string>
+    <string name="hint_please_input_password">请输入登录密码</string>
+    <string name="lab_confirem">确定</string>
+    <string name="lab_cancel">取消</string>
 </resources>

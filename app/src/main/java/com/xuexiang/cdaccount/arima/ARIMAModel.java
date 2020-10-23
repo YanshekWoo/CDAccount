@@ -45,21 +45,43 @@ public class ARIMAModel
 		return tmpData;
 	}
 	
+//	public double [] preDealDiff(int period)
+//	{
+//		if (period >= originalData.length - 1)		// ��6Ҳ��Ϊ�����Բ��
+//		{
+//			period = 0;
+//		}
+//		switch (period)
+//		{
+//		case 0:
+//			return this.originalData;
+//		case 1:
+//			this.dataFirDiff = this.preFirDiff(this.originalData);
+//			return this.dataFirDiff;
+//		default:
+//			return preSeasonDiff(originalData);
+//		}
+//	}
+
 	public double [] preDealDiff(int period)
 	{
-		if (period >= originalData.length - 1)		// ��6Ҳ��Ϊ�����Բ��
-		{
-			period = 0;
-		}
 		switch (period)
 		{
-		case 0:
-			return this.originalData;
-		case 1:		 
-			this.dataFirDiff = this.preFirDiff(this.originalData);
-			return this.dataFirDiff;
-		default:	
-			return preSeasonDiff(originalData);
+			case 0:
+				return this.originalData;
+			case 1:
+				this.dataFirDiff = this.preFirDiff(this.originalData);
+				return this.dataFirDiff;
+			case 2:
+				this.dataFirDiff = this.preFirDiff(this.originalData);
+				this.dataFirDiff = this.preFirDiff(this.dataFirDiff);
+				return this.dataFirDiff;
+
+			default:
+				this.dataFirDiff = this.preFirDiff(this.originalData);
+				this.dataFirDiff = this.preFirDiff(this.dataFirDiff);
+				this.dataFirDiff = this.preFirDiff(this.dataFirDiff);
+				return this.dataFirDiff;
 		}
 	}
 	
@@ -134,22 +156,37 @@ public class ARIMAModel
 		return bestModel;
 	}
 	
+//	public int aftDeal(int predictValue, int period)
+//	{
+//		if (period >= originalData.length)
+//		{
+//			period = 0;
+//		}
+//
+//		switch (period)
+//		{
+//		case 0:
+//			return (int)predictValue;
+//		case 1:
+//			return (int)(predictValue + originalData[originalData.length - 1]);
+//		case 2:
+//		default:
+//			return (int)(predictValue + originalData[originalData.length - 7]);
+//		}
+//	}
+
 	public int aftDeal(int predictValue, int period)
 	{
-		if (period >= originalData.length)
-		{
-			period = 0;
-		}
-		
-		switch (period)
-		{
-		case 0:
-			return (int)predictValue;
-		case 1:
-			return (int)(predictValue + originalData[originalData.length - 1]);
-		case 2:
-		default:	
-			return (int)(predictValue + originalData[originalData.length - 7]);
+
+		switch (period) {
+			case 0:
+				return (int)predictValue;
+			case 1:
+				return (int)(predictValue + originalData[originalData.length - 1]);
+			case 2:
+				return (int)(predictValue + originalData[originalData.length - 1]  + preDealDiff(1)[preDealDiff(1).length -1]);
+			default:
+				return (int)(predictValue + originalData[originalData.length - 1] +  preDealDiff(2)[preDealDiff(2).length - 1]  + preDealDiff(1)[preDealDiff(1).length -1]);
 		}
 	}
 	

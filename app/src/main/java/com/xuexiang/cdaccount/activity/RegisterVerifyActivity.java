@@ -28,9 +28,7 @@ import android.view.View;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
-import com.xuexiang.cdaccount.utils.RandomUtils;
 import com.xuexiang.cdaccount.utils.SettingUtils;
-import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.util.MD5Utils;
@@ -88,7 +86,7 @@ public class RegisterVerifyActivity extends BaseActivity {
     private SharedPreferences.Editor mEditor_answer2;
     private SharedPreferences.Editor mEditor_answer3;
 
-
+    private BillDao billDao;
 
     @Override
     protected int getLayoutId() {
@@ -114,11 +112,13 @@ public class RegisterVerifyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initSP();
+        initialDataTable();
         initSpinner();
         setButtomClickListener();
         initTextView();
-        initialDataTable();
+
     }
 
     private void initTextView() {
@@ -328,7 +328,8 @@ public class RegisterVerifyActivity extends BaseActivity {
 
 
     protected void initialDataTable() {
-        BillDao billDao = new BillDao(this);
+        billDao = new BillDao(this);
+        billDao.MyCreate();
         billDao.Init();
         initDate();
     }
