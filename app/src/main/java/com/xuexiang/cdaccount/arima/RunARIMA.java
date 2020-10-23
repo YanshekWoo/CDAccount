@@ -60,7 +60,6 @@ public class RunARIMA
 			sumPredict += (double)tmpPredict[k] / (double)cnt;
 		}
 		int predict = (int)Math.round(sumPredict);
-//		System.out.println("Predict value="+predict);
 		return (double) predict;
 	}
 }

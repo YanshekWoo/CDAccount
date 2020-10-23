@@ -49,7 +49,7 @@ public class MyPieChart {
         pieChart.setExtraOffsets(5, 10, 5, 5);
         //设置图标中心空白，空心
         pieChart.setDrawHoleEnabled(true);
-        //
+        // 禁止高亮
         pieChart.setHighlightPerTapEnabled(false);
         //设置空心圆的弧度百分比，最大100
         pieChart.setHoleRadius(45f);
