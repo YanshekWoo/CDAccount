@@ -48,7 +48,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.charts.ChartListAdapter;
-import com.xuexiang.cdaccount.arima.RunARIMA;
 import com.xuexiang.cdaccount.chartsclass.MyBarChart;
 import com.xuexiang.cdaccount.chartsclass.MyLineChart;
 import com.xuexiang.cdaccount.chartsclass.MyPieChart;
@@ -370,15 +369,15 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         lineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
 
 
-        // ARIMA预测 predict
-        if(lineEntries.size() >= 7) {
-            RunARIMA ra = new RunARIMA();
-            int length = lineEntries.size();
-            for(int i = length; i < (length + 3); i++) {
-                double predictData = ra.predictNext(lineEntries);
-                lineEntries.add(new ChartDataEntry("9999-99-99", predictData));
-            }
-        }
+//        // ARIMA预测 predict
+//        if(lineEntries.size() >= 7) {
+//            RunARIMA ra = new RunARIMA();
+//            int length = lineEntries.size();
+//            for(int i = length; i < (length + 3); i++) {
+//                double predictData = ra.predictNext(lineEntries);
+//                lineEntries.add(new ChartDataEntry("9999-99-99", predictData));
+//            }
+//        }
     }
 
 

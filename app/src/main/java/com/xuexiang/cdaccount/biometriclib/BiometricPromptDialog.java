@@ -1,4 +1,4 @@
-package com.nestia.biometriclib;
+package com.xuexiang.cdaccount.biometriclib;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import com.xuexiang.cdaccount.R;
 
 
 /**
