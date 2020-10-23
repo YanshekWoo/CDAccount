@@ -22,15 +22,14 @@
     android:id="@+id/account_detail"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="#ffffff"
+    android:background="@drawable/xui_config_list_item_selector"
+    android:foreground="?selectableItemBackgroundBorderless"
     android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/xui_config_list_item_selector"
         android:orientation="horizontal"
-        android:foreground="?selectableItemBackgroundBorderless"
         tools:ignore="UselessParent">
 
         <TextView

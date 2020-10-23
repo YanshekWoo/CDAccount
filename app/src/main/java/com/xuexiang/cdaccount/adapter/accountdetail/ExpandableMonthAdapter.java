@@ -123,7 +123,7 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<BillDataMonth> {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         holder.select(R.id.account_expendable_month, isSelected);
         holder.text(R.id.account_expendable_month_maintime, item.getmMonth()+"月");
-        holder.text(R.id.account_expendable_month_subtime,"0000");
+        holder.text(R.id.account_expendable_month_subtime,item.getmYear());
         holder.text(R.id.account_expendable_month_totalmoney,decimalFormat.format(item.getmMonthIncome()-item.getmMonthOutcome()));
         holder.text(R.id.account_expendable_month_income, decimalFormat.format(item.getmMonthIncome()));
         holder.text(R.id.account_expendable_month_outcome,decimalFormat.format(item.getmMonthOutcome()));

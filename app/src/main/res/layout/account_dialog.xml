@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_amount"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:id="@+id/account_dialog_money"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:text="金额"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_calender"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:id="@+id/account_dialog_time"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:text="时间"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_type"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:id="@+id/account_dialog_category"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:text="分类"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_account"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:id="@+id/account_dialog_account"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:text="账户"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_member"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:id="@+id/account_dialog_member"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:text="成员"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_remark"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:id="@+id/account_dialog_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:text="备注"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+</LinearLayout>
