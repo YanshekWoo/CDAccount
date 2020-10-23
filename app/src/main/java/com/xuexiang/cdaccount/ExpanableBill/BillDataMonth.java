@@ -7,13 +7,15 @@ public class BillDataMonth {
     private boolean mMonthSelected = false;
     private boolean mExpanded;
 
+    private String mYear;
     private String mMonth;
     private Double mMonthIncome;
     private Double mMonthOutcome;
 
     private List<BillDataDay> mBillDataDayList;
 
-    public BillDataMonth(String month, Double monthIncome, Double monthOutcome, List<BillDataDay> billDataDayList) {
+    public BillDataMonth(String year, String month, Double monthIncome, Double monthOutcome, List<BillDataDay> billDataDayList) {
+        this.mYear = year;
         this.mMonth = month;
         this.mMonthIncome = monthIncome;
         this.mMonthOutcome = monthOutcome;
@@ -37,6 +39,14 @@ public class BillDataMonth {
 
     public void setmExpanded(boolean mExpanded) {
         this.mExpanded = mExpanded;
+    }
+
+    public String getmYear() {
+        return mYear;
+    }
+
+    public void setmYear(String mYear) {
+        this.mYear = mYear;
     }
 
     public String getmMonth() {

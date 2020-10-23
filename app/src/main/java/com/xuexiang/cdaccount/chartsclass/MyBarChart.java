@@ -55,9 +55,10 @@ public class MyBarChart {
         barChart.setNoDataText(getResources().getString(R.string.no_data));
         // Y轴禁止缩放
         barChart.setScaleYEnabled(false);
-        // 不可点击
-//        barChart.setClickable(false);
+        // 禁止高亮
+        barChart.setHighlightFullBarEnabled(false);
         barChart.setHighlightPerTapEnabled(false);
+        barChart.setHighlightFullBarEnabled(false);
         //设置动画
         barChart.animateXY(1500, 1500);
 
@@ -78,7 +79,7 @@ public class MyBarChart {
         xAxis.setEnabled(true);
         xAxis.setGranularity(1f);
 //        xAxis.setTextSize(6f);
-        xAxis.setLabelRotationAngle(-70f);
+//        xAxis.setLabelRotationAngle(-70f);
 //        xAxis.setAxisMinimum(0);
 
         yAxisLeft.setDrawGridLines(false);
@@ -98,6 +99,7 @@ public class MyBarChart {
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setForm(Legend.LegendForm.NONE);
     }
 
 
@@ -145,9 +147,24 @@ public class MyBarChart {
             }
         });
 
-        if(lenth>20) {
+        // set text size according to length of datas
+        if(lenth>19){
+            barChart.getXAxis().setTextSize(2f);
+        }
+        else if(lenth>15){
+            barChart.getXAxis().setTextSize(4f);
+        }
+        else if(lenth>11){
             barChart.getXAxis().setTextSize(6f);
         }
+        else if(lenth>7){
+//            barChart.getXAxis().setLabelRotationAngle(0);
+            barChart.getXAxis().setTextSize(8f);
+        }
+        else {
+            barChart.getXAxis().setTextSize(10f);
+        }
+
         barChart.getXAxis().setLabelCount(lenth);
         barChart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
@@ -157,7 +174,7 @@ public class MyBarChart {
                     return chartDataEntries.get(intValue).getDataName();
                 }
                 else {
-                    return "     ";
+                    return "";
                 }
             }
         });

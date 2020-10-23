@@ -17,8 +17,13 @@
 
 package com.xuexiang.cdaccount.adapter.accountdetail;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,15 +32,21 @@ import com.xuexiang.cdaccount.ExpanableBill.BillDataItem;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
+import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+import com.xuexiang.xui.widget.dialog.materialdialog.simplelist.MaterialSimpleListAdapter;
+import com.xuexiang.xui.widget.dialog.materialdialog.simplelist.MaterialSimpleListItem;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
 
     private RecyclerView mRecyclerView;
     private Context context;
+    private Dialog dialog;
 
     public ExpandableItemAdapter(Context context, RecyclerView recyclerView,Collection<BillDataItem> data) {
         super(data);
@@ -53,26 +64,74 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         holder.text(R.id.date, item.getTime());
         holder.text(R.id.money,decimalFormat.format(item.getBill_Money()));
+
         holder.text(R.id.category,item.getBill_SubCategory());
         holder.text(R.id.account,item.getBill_Account());
         holder.text(R.id.member,item.getBill_Mumber());
         holder.click(R.id.account_detail, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSimpleTipDialog();
+                showSimpleTipDialog(item, decimalFormat);
             }
         });
+
+        switch (item.getBill_TYPE()){
+            case 0:
+                holder.getTextView(R.id.money).setTextColor(context.getResources().getColor(R.color.app_color_theme_1));
+                break;
+            case 1:
+                holder.getTextView(R.id.money).setTextColor(context.getResources().getColor(R.color.app_color_theme_5));
+                break;
+            default:
+                holder.getTextView(R.id.money).setTextColor(context.getResources().getColor(R.color.black));
+                break;
+        }
     }
 
     /**
-     * 简单的提示性对话框
+     * 对话框
      */
-    private void showSimpleTipDialog() {
-        new MaterialDialog.Builder(context)
-                //.iconRes(R.drawable.icon_tip)
-                .title(R.string.account_details_title)
-                .content(R.string.account_details_content)
-                .positiveText(R.string.button_confirm)
-                .show();
+    @SuppressLint("SetTextI18n")
+    private void showSimpleTipDialog(BillDataItem item, DecimalFormat decimalFormat) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.account_dialog,null);
+
+        TextView money = view.findViewById(R.id.account_dialog_money);
+        TextView time = view.findViewById(R.id.account_dialog_time);
+        TextView category = view.findViewById(R.id.account_dialog_category);
+        TextView account = view.findViewById(R.id.account_dialog_account);
+        TextView member = view.findViewById(R.id.account_dialog_member);
+        TextView remark = view.findViewById(R.id.account_dialog_remark);
+
+        MaterialDialog.Builder materialDialog = new MaterialDialog.Builder(context)
+                .customView(view, true)
+                .positiveText("确定")
+                .autoDismiss(false);
+
+        money.setText(decimalFormat.format(item.getBill_Money()));
+        time.setText(item.getYear()+"."+item.getMonth()+"."+item.getDay()+" "+item.getTime());
+        category.setText(item.getBill_SubCategory());
+        account.setText(item.getBill_Account());
+        member.setText(item.getBill_Mumber());
+        remark.setText(item.getBill_Remark());
+        materialDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+            }
+        });
+        switch (item.getBill_TYPE()){
+            case 0:
+                materialDialog.title("支出");
+                break;
+            case 1:
+                materialDialog.title("收入");
+                break;
+            default:
+                materialDialog.title("转账");
+                break;
+        }
+    materialDialog.show();
     }
+
 }

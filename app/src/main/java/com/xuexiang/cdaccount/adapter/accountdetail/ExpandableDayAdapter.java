@@ -120,7 +120,7 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         holder.select(R.id.account_expendable_day, isSelected);
         holder.text(R.id.account_expendable_day_maintime, item.getmDay()+"日");
-        holder.text(R.id.account_expendable_day_subtime,"0000");
+        holder.text(R.id.account_expendable_day_subtime,item.getmYear()+"."+item.getmMonth());
         holder.text(R.id.account_expendable_day_totalmoney,decimalFormat.format(item.getmDayIncome()-item.getmDayOutcome()));
         holder.text(R.id.account_expendable_day_income, decimalFormat.format(item.getmDayIncome()));
         holder.text(R.id.account_expendable_day_outcome,decimalFormat.format(item.getmDayOutcome()));

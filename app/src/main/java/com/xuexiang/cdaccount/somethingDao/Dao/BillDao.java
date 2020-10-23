@@ -489,7 +489,7 @@ public class BillDao {
             mp.put(cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutTopCategory_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 0 group by Bill_SubCategory";
         Cursor cursor = db.rawQuery(sql, null);
         List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
@@ -537,7 +537,7 @@ public class BillDao {
             mp.put(cursor1.getInt(cursor1.getColumnIndex("OutSubCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutSubCategory_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 0 group by Bill_SubCategory";
         Cursor cursor = db.rawQuery(sql, null);
         List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
 
@@ -869,11 +869,11 @@ public class BillDao {
                 if(!dayexist) continue;
                 monthincome += income;
                 monthoutcome += outcome;
-                BillDataDay tmp = new BillDataDay(jtmp, income, outcome, billDataItemList);
+                BillDataDay tmp = new BillDataDay(Year, itmp, jtmp, income, outcome, billDataItemList);
                 billDataDayList.add(tmp);
             }
             if(!monthexist) continue;
-            BillDataMonth tmp = new BillDataMonth(itmp, monthincome, monthoutcome, billDataDayList);
+            BillDataMonth tmp = new BillDataMonth(Year, itmp, monthincome, monthoutcome, billDataDayList);
             billDataMonthList.add(tmp);
             YearIncome += monthincome;
             YearOutcome += monthoutcome;
