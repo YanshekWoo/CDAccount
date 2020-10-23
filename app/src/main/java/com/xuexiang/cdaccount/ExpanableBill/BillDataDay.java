@@ -6,13 +6,18 @@ public class BillDataDay {
     private boolean mDaySelected = false;
     private boolean mExpanded;
 
+
+    private String mYear;
+    private String mMonth;
     private String mDay;
     private Double mDayIncome;
     private Double mDayOutcome;
 
     private List<BillDataItem> mBillDataItemList;
 
-    public BillDataDay(String day, Double dayIncome, Double dayOutcome, List<BillDataItem> billDataItem) {
+    public BillDataDay(String year, String month, String day, Double dayIncome, Double dayOutcome, List<BillDataItem> billDataItem) {
+        this.mYear = year;
+        this.mMonth = month;
         this.mDay = day;
         this.mDayIncome = dayIncome;
         this.mDayOutcome = dayOutcome;

@@ -35,6 +35,7 @@ import com.xuexiang.cdaccount.database.ChartDataEntry;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.xuexiang.xutil.XUtil.getContext;
 import static com.xuexiang.xutil.XUtil.getResources;
 
 public class MyLineChart {
@@ -54,7 +55,9 @@ public class MyLineChart {
         lineChart.setScaleYEnabled(false);
         // enable scaling and dragging
         lineChart.setDragEnabled(true);
-        lineChart.setScaleEnabled(true);
+//        // 禁止高亮
+        lineChart.setHighlightPerDragEnabled(false);
+//        lineChart.setHighlightPerTapEnabled(false);
         //无数据时显示
         lineChart.setNoDataText(getResources().getString(R.string.no_data));
         //设置动画
@@ -65,6 +68,12 @@ public class MyLineChart {
         YAxis yAxisRight = lineChart.getAxisRight();
         Legend legend = lineChart.getLegend();
         setLineChartAxis(xAxis, yAxisLeft, yAxisRight, legend);
+
+
+        CustomMPLineChartMarkerView mv = new CustomMPLineChartMarkerView(getContext());
+        mv.setChartView(lineChart);
+        lineChart.setMarker(mv);
+
         return lineChart;
     }
 
@@ -96,47 +105,86 @@ public class MyLineChart {
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setForm(Legend.LegendForm.NONE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public LineData setLinedata(LineChart lineChart, List<ChartDataEntry> chartDataEntries, String legendLable) {
         //设置数据
         List<Entry> entries = new ArrayList<>();
-        int lenth = chartDataEntries.size();
-        for (int i = 0; i < lenth; i++) {
+        int length = chartDataEntries.size();
+        for (int i = 0; i < length; i++) {
             entries.add(new Entry(i, (float) chartDataEntries.get(i).getDataMoney()));
         }
 
         // X轴样式
-        lineChart.getXAxis().setLabelCount(lenth);
+        lineChart.getXAxis().setLabelCount(length);
         lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                int m = lenth / 15 + 1;
+                int mod = length / 15 + 1;
                 int intValue = Math.round(value);
-                if(intValue < lenth && intValue>=0 && intValue==value && intValue % m==0) {
+                if(intValue < length && intValue>=length-3 && intValue==value) {
+                    return "Prediction";
+                }
+                if(intValue < length-3 && intValue>=0 && intValue==value && intValue % mod==0) {
                     String date = chartDataEntries.get(intValue).getDataName();
-                    String year = date.substring(0, 4);
-                    String month = date.substring(4, 6);
-                    String day = date.substring(6, 8);
-                    return year+"-"+month+"-"+day;
+                    if(date.length() >= 8) {
+                        String year = date.substring(0, 4);
+                        String month = date.substring(4, 6);
+                        String day = date.substring(6, 8);
+                        return year+"-"+month+"-"+day;
+                    }
+                    else {
+                        return "";
+                    }
                 }
                 else {
-                    return "     ";
+                    return "";
                 }
             }
         });
 
+
         LineDataSet lineDataSet = new LineDataSet(entries, legendLable);
-        lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
-        lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_7));
+//        lineDataSet.setHighLightColor(R.color.app_color_theme_6);
         lineDataSet.setLineWidth(1f);
-        //设置填充
+        lineDataSet.setDrawCircles(true);
+        //设置填充'
         //设置允许填充，渐变
         lineDataSet.setDrawFilled(true);
-        lineDataSet.setFillAlpha(80);
+        lineDataSet.setFillAlpha(150);
         lineDataSet.setFillDrawable(getResources().getDrawable(R.drawable.line_gradient_bg_shape));
-
+        //设置圆滑线
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        // 折线颜色
+//        if(length>=6) {
+//            int[] s = new int[length];
+//            for(int i=0; i<length-3; i++) {
+//                s[i] = getResources().getColor(R.color.app_color_theme_5);
+//            }
+//            s[length-3] = getResources().getColor(R.color.app_color_theme_1);
+//            s[length-2] = getResources().getColor(R.color.app_color_theme_1);
+//            s[length-1] = getResources().getColor(R.color.app_color_theme_1);
+//            lineDataSet.setColors(s);
+//        }
+//        else {
+//            lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
+//        }
+        lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
+        if(length>=6) {
+            int[] s = new int[length];
+            for(int i=0; i<length-3; i++) {
+                s[i] = getResources().getColor(R.color.app_color_theme_5);
+            }
+            s[length-3] = getResources().getColor(R.color.app_color_theme_1);
+            s[length-2] = getResources().getColor(R.color.app_color_theme_1);
+            s[length-1] = getResources().getColor(R.color.app_color_theme_1);
+            lineDataSet.setCircleColors(s);
+        }
+        else {
+            lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_5));
+        }
 
 
         LineData linedata = new LineData(lineDataSet);
