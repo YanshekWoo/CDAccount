@@ -19,14 +19,9 @@ package com.xuexiang.cdaccount.fragment.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.MainActivity;
@@ -67,6 +62,7 @@ public class LoginNumberFragment extends BaseFragment {
     private SharedPreferences mSharedPreferences_passwd;
 
 
+
     /**
      * @return 返回为 null意为不需要导航栏
      */
@@ -79,6 +75,8 @@ public class LoginNumberFragment extends BaseFragment {
     protected int getLayoutId() {
         return R.layout.fragment_login_number;
     }
+
+
 
 
     @Override

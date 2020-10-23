@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
@@ -32,6 +33,7 @@ import com.andrognito.patternlockview.utils.ResourceUtils;
 import com.andrognito.rxpatternlockview.RxPatternLockView;
 import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent;
 import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
+import com.nestia.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
@@ -65,6 +67,7 @@ public class LoginGestureFragment extends BaseFragment {
 
     private PatternLockView mPatternLockView;
 
+    private BiometricPromptManager mManager;
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -84,6 +87,7 @@ public class LoginGestureFragment extends BaseFragment {
     protected void initViews() {
         initSP();
         initLock();
+        initFingerPrint();
     }
 
     @SingleClick
@@ -212,6 +216,42 @@ public class LoginGestureFragment extends BaseFragment {
         }
     };
 
+    private void initFingerPrint() {
+        mManager = BiometricPromptManager.from(getActivity());
+        if (mManager.isBiometricPromptEnable()) {
+            mManager.authenticate(new BiometricPromptManager.OnBiometricIdentifyCallback() {
+                @Override
+                public void onUsePassword() {
+                    Toast.makeText(getContext(), "onUsePassword", Toast.LENGTH_SHORT).show();
+                }
 
+                @Override
+                public void onSucceeded() {
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+//                    Toast.makeText(getContext(), "onSucceeded", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailed() {
+
+                    Toast.makeText(getContext(), "onFailed", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(int code, String reason) {
+
+                    Toast.makeText(getContext(), "onError", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancel() {
+
+                    Toast.makeText(getContext(), "onCancel", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
 }
 
