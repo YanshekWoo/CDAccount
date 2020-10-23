@@ -19,6 +19,7 @@ package com.xuexiang.cdaccount.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -100,11 +101,7 @@ public class AccountDetailsActivity extends BaseActivity {
     @BindView(R.id.ddm_content)
     DropDownMenu mDropDownMenu;
 
-//    @BindView(R.id.btn_date_start)
-//    XUIAlphaButton Btn_date_start;
-//
-//    @BindView(R.id.btn_date_end)
-//    XUIAlphaButton Btn_date_end;
+
 
     @BindView(R.id.account_header)
     ClassicsHeader mClassicsHeader;

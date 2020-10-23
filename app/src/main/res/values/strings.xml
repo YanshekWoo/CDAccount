@@ -78,6 +78,7 @@
     <string name="item_example_number_day">第%02d天</string>
     <string name="item_example_number">第%02d笔</string>
     <string name="account_content">请输入新建账户名称</string>
+    <string name="account_change_content">请输入修改账户名称</string>
     <string name="button_cancel">取消</string>
     <string name="button_confirm">确认</string>
     <string name="item_example_number_abstract">这是测试的第%02d条数据</string>
