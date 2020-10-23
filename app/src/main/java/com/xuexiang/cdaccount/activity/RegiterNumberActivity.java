@@ -137,9 +137,6 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
                         mEditor_user.apply();
                         mEditor_password.putString("password", MD5Utils.encode(passwd2));
                         mEditor_password.apply();
-
-//                        XToastUtils.success("注册成功");
-
 //                        Intent intent = new Intent(RegiterNumberActivity.this, RegiterGestureActivity.class);
 //                        startActivity(intent);
 
@@ -157,6 +154,7 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @OnClick({R.id.tv_user_protocol, R.id.tv_privacy_protocol})
     public void onViewClicked(View view) {

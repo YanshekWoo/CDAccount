@@ -22,6 +22,7 @@ import android.view.KeyEvent;
 
 import androidx.annotation.RequiresPermission;
 
+import com.xuexiang.cdaccount.CloseAll;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.fragment.login.LoginGestureFragment;
 import com.xuexiang.cdaccount.utils.XToastUtils;
@@ -75,7 +76,7 @@ public class LoginActivity extends BaseActivity implements ClickUtils.OnClick2Ex
 
     @Override
     public void onExit() {
-        XUtil.getActivityLifecycleHelper().exit();
+        CloseAll.isCloseAll = true;
         XUtil.exitApp();
     }
 }

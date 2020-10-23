@@ -34,7 +34,37 @@ public class BillDao {
 
     public int id_num = 0;
 
-    public void changeaccount(int id, int type, double money){
+    /**
+     *
+     */
+    public void MyCreate(){
+        String sql;
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        sql = "create table "+"Bill"+"(Bill_ID int, Bill_TYPE int, Bill_SubCategory int, Bill_Account int, Bill_toAccount int, Bill_Member int, year varchar(5), month varchar(3), day varchar(3), time varchar(15), Bill_Remark varchar(255), Bill_Money double)";
+        db.execSQL(sql);
+
+        sql = "create table "+"OutTopCategory"+"(OutTopCategory_ID int, OutTopCategory_Name String)";
+        db.execSQL(sql);
+
+        sql = "create table "+"OutSubCategory"+"(OutSubCategory_ID int, OutSubCategory_Parent, OutSubCategory_Name varchar(15))";
+        db.execSQL(sql);
+
+        sql = "create table "+"InTopCategory"+"(InTopCategory_ID int, InTopCategory_Name varchar(15))";
+        db.execSQL(sql);
+
+        sql = "create table "+"InSubCategory"+"(InSubCategory_ID int, InSubCategory_Parent, InSubCategory_Name)";
+        db.execSQL(sql);
+
+        sql = "create table "+"Account"+"(Account_ID int, Account_Name varchar(15), Account_InMoney double, Account_OutMoney)";
+        db.execSQL(sql);
+
+        sql = "create table "+"Member"+"(Member_ID int, Member_Name varchar(15))";
+        db.execSQL(sql);
+    }
+
+
+
+    public void changeaccount(int id, int type, double money, int toacc){
         SQLiteDatabase db = mHelper.getWritableDatabase();
         if(type == 0){
             String sql = "select * from Account where Account_ID = "+id+"";
@@ -46,7 +76,7 @@ public class BillDao {
                 db.execSQL(sql);
             }
         }
-        else{
+        else if(type == 1){
             String sql = "select * from Account where Account_ID = "+id+"";
             Cursor cursor = db.rawQuery(sql, null);
             while (cursor.moveToNext()){
@@ -56,7 +86,28 @@ public class BillDao {
                 db.execSQL(sql);
             }
         }
+        else{
+            String sql = "select * from Account where Account_ID = "+id+"";
+            Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()){
+                double m = cursor.getDouble(cursor.getColumnIndex("Account_OutMoney"));
+                m+=money;
+                sql = "update Account set Account_OutMoney = '"+m+"' where Account_ID = "+id+"";
+                db.execSQL(sql);
+            }
+
+            sql = "select * from Account where Account_ID = "+toacc+"";
+            cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()){
+                double m = cursor.getDouble(cursor.getColumnIndex("Account_InMoney"));
+                m+=money;
+                sql = "update Account set Account_InMoney = '"+m+"' where Account_ID = "+toacc+"";
+                db.execSQL(sql);
+            }
+        }
     }
+
+
 
     public void insertBill(int type, int subcategory, int account, int toaccount, int member, String year, String month, String day, String time, String remark, double money) {//通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -96,7 +147,7 @@ public class BillDao {
             mem = cursor.getInt(cursor.getColumnIndex("Member_ID"));
         db.close();
         insertBill(type, sub, acc, toa, mem, year, month, day, time, remark, money);
-        changeaccount(acc, type, money);
+        changeaccount(acc, type, money, toa);
     }
 
     public boolean InsertCategory(String Top, String sub, int type) {   //通过测试,返回值需要判断
@@ -928,5 +979,24 @@ public class BillDao {
         db.close();
     }
 
+
+    public void Destory(){
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String sql = "drop TABLE Bill";
+        db.execSQL(sql);
+        sql = "drop TABLE OutTopCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE OutSubCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE InTopCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE InSubCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE Account";
+        db.execSQL(sql);
+        sql = "drop TABLE Member";
+        db.execSQL(sql);
+        db.close();
+    }
 
 }

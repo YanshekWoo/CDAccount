@@ -67,6 +67,8 @@ import com.xuexiang.xui.widget.picker.widget.TimePickerView;
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xutil.data.DateUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -157,6 +159,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     private ChartListAdapter madapter;
 
     private final List<String> legendSelectArray = Arrays.asList("主类", "次类", "成员", "账户");
+
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -281,6 +284,43 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void refreshCharts() {
 
+        getDataFromDB();
+
+//        new Thread(new ChartDataRunnable()).start();
+
+        String legendInOut = tabInout==0? "支出" : "收入";
+        String legendSelect = legendSelectArray.get(tabSelected);
+        // 加载图表和列表数据
+        BarData barData = myBarChart.setBardata(mBarChart, chartDataEntries, legendSelect+"-"+legendInOut);
+        PieData pieData = myPieChart.setPiedata(mPieChart, chartDataEntries, legendSelect+"-"+legendInOut);
+        LineData lineData = myLineChart.setLinedata(mLineChart, lineEntries, "总"+legendInOut+"趋势");
+
+        // 柱状图刷新
+        mBarChart.setData(barData);
+        mBarChart.animateXY(1500, 1500);
+        mBarChart.invalidate();
+
+        // 饼图刷新
+        mPieChart.setData(pieData);
+        mPieChart.animateXY(1500, 1500);
+        mPieChart.invalidate();
+
+        // 折线图刷新
+        mLineChart.setData(lineData);
+        mLineChart.animateXY(1500, 1500);
+        mLineChart.invalidate();
+
+        // 列表刷新
+        List<ChartDataEntry> sortedCharData = new ArrayList<>(chartDataEntries);
+        Collections.sort(sortedCharData, (ChartDataEntry a, ChartDataEntry b)-> b.compareTo(a));
+        madapter.refresh(sortedCharData);
+    }
+
+    /**
+     * 从数据库取出图表数据并进行初始化
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void getDataFromDB() {
         // parse date to string
         String[] strDateStart = DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()).split("-");
         String[] strDateEnd = DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()).split("-");
@@ -290,10 +330,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         String end_year = strDateEnd[0];
         String end_month = strDateEnd[1];
         String end_day = strDateEnd[2];
-
-        String legendInOut = tabInout==0? "支出" : "收入";
-        String legendSelect = legendSelectArray.get(tabSelected);
-
 
         // 饼图和柱状图数据
         chartDataEntries.clear();
@@ -322,57 +358,29 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 chartDataEntries = billDao.GetDataByAccount(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
                 break;
         }
-        // 折线图数据
-        lineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
 
-
-        // ARIMA预测 predict
-        if(lineEntries.size() >= 6) {
-            RunARIMA ra = new RunARIMA();
-//            RunPrediction rp = new RunPrediction();
-            int length = lineEntries.size();
-            for(int i=length; i<length+1; i++) {
-                double predictData = ra.predictNext(lineEntries);
-//                double predictData = rp.predictNext(lineEntries);
-                lineEntries.add(new ChartDataEntry(i+"", predictData));
-            }
-        }
-
-//        new Thread(new ChartDataRunnable()).start();
-
-//        Collections.sort(chartDataEntries, (ChartDataEntry a, ChartDataEntry b)-> b.compareTo(a));
-
-
+        // 获取总金额
         Double sumMoney = chartDataEntries.stream().map(ChartDataEntry::getDataMoney).reduce(0.00, Double::sum);
         for(ChartDataEntry e: chartDataEntries) {
             e.setSumMoney(sumMoney);
         }
 
-        // 加载图表和列表数据
-        BarData barData = myBarChart.setBardata(mBarChart, chartDataEntries, legendSelect+"-"+legendInOut);
-        PieData pieData = myPieChart.setPiedata(mPieChart, chartDataEntries, legendSelect+"-"+legendInOut);
-        LineData lineData = myLineChart.setLinedata(mLineChart, lineEntries, "总"+legendInOut+"趋势");
+
+        // 折线图数据
+        lineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
 
 
-        // 柱状图刷新
-        mBarChart.setData(barData);
-        mBarChart.animateXY(1500, 1500);
-        mBarChart.invalidate();
-
-        // 饼图刷新
-        mPieChart.setData(pieData);
-        mPieChart.animateXY(1500, 1500);
-        mPieChart.invalidate();
-
-        // 折线图刷新
-        mLineChart.setData(lineData);
-        mLineChart.animateXY(1500, 1500);
-        mLineChart.invalidate();
-
-        List<ChartDataEntry> sortedCharData = new ArrayList<>(chartDataEntries);
-        Collections.sort(sortedCharData, (ChartDataEntry a, ChartDataEntry b)-> b.compareTo(a));
-        madapter.refresh(sortedCharData);
+        // ARIMA预测 predict
+        if(lineEntries.size() >= 7) {
+            RunARIMA ra = new RunARIMA();
+            int length = lineEntries.size();
+            for(int i = length; i < (length + 3); i++) {
+                double predictData = ra.predictNext(lineEntries);
+                lineEntries.add(new ChartDataEntry("9999-99-99", predictData));
+            }
+        }
     }
+
 
 
 
@@ -421,7 +429,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @SuppressLint("NonConstantResourceId")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @OnClick({R.id.btn_date_start, R.id.btn_date_end})
-    public void onViewClicked(View view) {
+    protected void onTimePickerClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_date_start:
                 showDatePickerStart();
@@ -538,7 +546,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                         intent.putExtra("account", account);
 //                        openNewPage(SettingsFragment.class, getActivity().getIntent().getExtras());
 //                        openNewPage(AccountDetailFragment.class);
-                        getContext().startActivity(intent);
+                        Objects.requireNonNull(getContext()).startActivity(intent);
                     }
                 });
             }
@@ -586,6 +594,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     public void onTabReselected(TabLayout.Tab tab) {
         refreshCharts();
     }
+
 
     /**
      * Tab栏点击刷新状态
@@ -648,7 +657,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
 
     /**
-     * 按钮监听
+     * 悬浮按钮监听
      * @param v
      * 当前视图
      */
@@ -656,7 +665,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SingleClick
     @OnClick({R.id.fab_piechart, R.id.fab_barchart, R.id.fab_linechart, R.id.iv_switch})
-    void onClick(View v) {
+    protected void onBottumClick(@NotNull View v) {
         switch (v.getId()) {
             case R.id.fab_piechart:
                 selectChart(0);
