@@ -53,6 +53,7 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         holder.text(R.id.date, item.getTime());
         holder.text(R.id.money,decimalFormat.format(item.getBill_Money()));
+
         holder.text(R.id.category,item.getBill_SubCategory());
         holder.text(R.id.account,item.getBill_Account());
         holder.text(R.id.member,item.getBill_Mumber());
@@ -62,6 +63,18 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
                 showSimpleTipDialog();
             }
         });
+
+        switch (item.getBill_TYPE()){
+            case 0:
+                holder.getTextView(R.id.money).setTextColor(context.getResources().getColor(R.color.app_color_theme_1));
+                break;
+            case 1:
+                holder.getTextView(R.id.money).setTextColor(context.getResources().getColor(R.color.app_color_theme_5));
+                break;
+            default:
+                holder.getTextView(R.id.money).setTextColor(context.getResources().getColor(R.color.black));
+                break;
+        }
     }
 
     /**

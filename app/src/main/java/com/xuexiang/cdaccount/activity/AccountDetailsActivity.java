@@ -20,6 +20,7 @@ package com.xuexiang.cdaccount.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -117,7 +118,7 @@ public class AccountDetailsActivity extends BaseActivity {
 
         initArgs();
         initTitleBar();
-        initSpinner();
+        initDropDownMenu();
 //        initTimePicker();
         initRecyclerViews();
 
@@ -263,9 +264,7 @@ public class AccountDetailsActivity extends BaseActivity {
     /**
      * 下拉菜单设置
      */
-    protected void initSpinner() {
-        int initialPosition = 0;
-
+    protected void initDropDownMenu() {
         //init time menu
         final ListView timeView = new ListView(AccountDetailsActivity.this);
         mTimeAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mTimes);
@@ -278,16 +277,16 @@ public class AccountDetailsActivity extends BaseActivity {
         final ListView memberView = new ListView(AccountDetailsActivity.this);
         memberView.setDividerHeight(0);
         mMemberAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mMembers);
-        initialPosition = Math.max(mMembers.indexOf(selectedMember), 0);
-        mMemberAdapter.setSelectPosition(initialPosition);
+        int initialPosition1 = Math.max(mMembers.indexOf(selectedMember), 0);
+        mMemberAdapter.setSelectPosition(initialPosition1);
         memberView.setAdapter(mMemberAdapter);
 
         //init accout book menu
         final ListView accoutView = new ListView(AccountDetailsActivity.this);
         accoutView.setDividerHeight(0);
         mAccountAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mAccounts);
-        initialPosition = Math.max(mAccounts.indexOf(selectedAccount), 0);
-        mAccountAdapter.setSelectPosition(initialPosition);
+        int initialPosition2 = Math.max(mAccounts.indexOf(selectedAccount), 0);
+        mAccountAdapter.setSelectPosition(initialPosition2);
         accoutView.setAdapter(mAccountAdapter);
 
 
@@ -300,7 +299,7 @@ public class AccountDetailsActivity extends BaseActivity {
         //add item click event
         timeView.setOnItemClickListener((parent, view, position, id) -> {
             mTimeAdapter.setSelectPosition(position);
-            mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[0] : mTimes.get(position));
+            mDropDownMenu.setTabMenuText(mTimes.get(position));
             changeFocusable(position);
             getBillData();
             mDropDownMenu.closeMenu();
@@ -333,7 +332,18 @@ public class AccountDetailsActivity extends BaseActivity {
         contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 3);
 
         //init dropdownview
+//        mHeaders = new String[]{mTimes.get(selectedTime), mMembers.get(initialPosition1), mAccounts.get(initialPosition2)};
+        mHeaders[0] = mTimes.get(selectedTime);
+        if(!mMembers.get(initialPosition1).equals(getResources().getString(R.string.unlimited))) {
+            mHeaders[1] = mMembers.get(initialPosition1);
+        }
+        if(!mAccounts.get(initialPosition2).equals(getResources().getString(R.string.unlimited))) {
+            mHeaders[2] = mAccounts.get(initialPosition2);
+        }
+        Log.i("Hmember", mHeaders[1]);
+        Log.i("Haccount", mHeaders[2]);
         mDropDownMenu.setDropDownMenu(mHeaders, mPopupViews, contentView);
+        mHeaders = new String[]{"年", "成员", "账户"};
     }
 
 

@@ -19,13 +19,16 @@ package com.xuexiang.cdaccount.fragment.account;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.InputType;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.vlayout.DelegateAdapter;
@@ -41,6 +44,7 @@ import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.base.delegate.SimpleDelegateAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.database.AccountDataEntry;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
@@ -49,6 +53,8 @@ import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +78,9 @@ public class AccountFragment extends BaseFragment{
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.refreshLayout)
     RefreshLayout refreshLayout;
+
+    @BindView(R.id.total1)
+    TextView total;
 
     ImageView img;
 
@@ -109,6 +118,7 @@ public class AccountFragment extends BaseFragment{
     /**
      * 初始化控件
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void initViews() {
 
@@ -120,6 +130,7 @@ public class AccountFragment extends BaseFragment{
         RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
         recyclerView.setRecycledViewPool(viewPool);
         viewPool.setMaxRecycledViews(0, 10);
+
 
         adapter = new SimpleDelegateAdapter<AccountDataEntry>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
 //            @SuppressLint("DefaultLocale")
@@ -202,8 +213,20 @@ public class AccountFragment extends BaseFragment{
         initRefreshLayoutListeners();
     }
 
+    @SuppressLint("DefaultLocale")
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void accountSum(){
+        Double totalInMoney = accountDataEntries.stream().map(AccountDataEntry::getInMoney).reduce(0.00, Double::sum);
+        Double totalOutMoney = accountDataEntries.stream().map(AccountDataEntry::getOutMoney).reduce(0.00, Double::sum);
+        total.setText(String.format("%.2f", totalInMoney-totalOutMoney));
+        if(totalInMoney<totalOutMoney){
+            total.setTextColor(getContext().getResources().getColor(R.color.app_color_theme_1));
+        }else{
+            total.setTextColor(getContext().getResources().getColor(R.color.app_color_theme_5));
+        }
+    }
 
-    public void createAccount(){
+    private void createAccount(){
         new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                 .title("添加账户")
                 .inputType(
@@ -238,7 +261,7 @@ public class AccountFragment extends BaseFragment{
                 .show();
     }
 
-    public void changAccount(AccountDataEntry item){
+    private void changAccount(AccountDataEntry item){
         new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                 .title("修改账户")
                 .inputType(
@@ -270,8 +293,8 @@ public class AccountFragment extends BaseFragment{
                 .show();
     }
 
-    public void viewHolderClick(AccountDataEntry item){
-        int focusType = 1;
+    private void viewHolderClick(AccountDataEntry item){
+        int focusType = 0;
         String account = item.getName();
         String member = getResources().getString(R.string.unlimited);
 
@@ -283,6 +306,7 @@ public class AccountFragment extends BaseFragment{
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     protected void initRefreshLayoutListeners() {
         //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -291,6 +315,8 @@ public class AccountFragment extends BaseFragment{
                 accountDataEntries.clear();
                 accountDataEntries = billDao.getBalanceByAccount();
                 adapter.refresh(accountDataEntries);
+                accountSum();
+
                 refreshLayout.finishRefresh();
             }
         });
@@ -342,6 +368,7 @@ public class AccountFragment extends BaseFragment{
     @Override
     public void onResume() {
         super.onResume();
+
         refreshLayout.autoRefresh();
     }
 
