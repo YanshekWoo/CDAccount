@@ -18,7 +18,6 @@
 package com.xuexiang.cdaccount.fragment.login;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -33,10 +32,9 @@ import com.andrognito.patternlockview.utils.ResourceUtils;
 import com.andrognito.rxpatternlockview.RxPatternLockView;
 import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent;
 import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
-import com.nestia.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.FindpasswdActivity;
-import com.xuexiang.cdaccount.activity.MainActivity;
+import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.RandomUtils;
 import com.xuexiang.cdaccount.utils.TokenUtils;
@@ -46,7 +44,6 @@ import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
-import com.xuexiang.xupdate.utils.Md5Utils;
 import com.xuexiang.xutil.app.ActivityUtils;
 
 import java.util.List;
@@ -71,8 +68,6 @@ public class LoginGestureFragment extends BaseFragment {
 
     private PatternLockView mPatternLockView;
 
-    private BiometricPromptManager mManager;
-
     /**
      * @return 返回为 null意为不需要导航栏
      */
@@ -91,6 +86,7 @@ public class LoginGestureFragment extends BaseFragment {
     protected void initViews() {
         initSP();
         initLock();
+//        checkFingerprint();
         initFingerPrint();
     }
 
@@ -119,7 +115,7 @@ public class LoginGestureFragment extends BaseFragment {
 
 
     private void initSP() {
-        SharedPreferences mSharedPreferences_gesture_login = getActivity().getSharedPreferences("gesture", MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_gesture_login = Objects.requireNonNull(getActivity()).getSharedPreferences("gesture", MODE_PRIVATE);
         password_gesture = mSharedPreferences_gesture_login.getString("gesture_sign", "");
     }
 
@@ -150,8 +146,8 @@ public class LoginGestureFragment extends BaseFragment {
         RxPatternLockView.patternComplete(mPatternLockView)
                 .subscribe(new Consumer<PatternLockCompleteEvent>() {
                     @Override
-                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) throws Exception {
-                        Log.d(getClass().getName(), "Complete: " + patternLockCompleteEvent.getPattern().toString());
+                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) {
+                        Log.d(getClass().getName(), "Complete: " + Objects.requireNonNull(patternLockCompleteEvent.getPattern()).toString());
                     }
                 });
 
@@ -210,19 +206,14 @@ public class LoginGestureFragment extends BaseFragment {
 //                        startActivity(intent);
 //                    }
 
-                    getActivity().finish();
+                    Objects.requireNonNull(getActivity()).finish();
                 } else {
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
                     XToastUtils.error("密码错误");
                 }
             }
             //1s后清除图案
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mPatternLockView.clearPattern();
-                }
-            }, 1000);
+            new Handler().postDelayed(() -> mPatternLockView.clearPattern(), 1000);
         }
 
         @Override
@@ -232,7 +223,7 @@ public class LoginGestureFragment extends BaseFragment {
     };
 
     private void initFingerPrint() {
-        mManager = BiometricPromptManager.from(getActivity());
+        BiometricPromptManager mManager = BiometricPromptManager.from(getActivity());
         if (mManager.isBiometricPromptEnable()) {
             mManager.authenticate(new BiometricPromptManager.OnBiometricIdentifyCallback() {
                 @Override
@@ -242,8 +233,6 @@ public class LoginGestureFragment extends BaseFragment {
 
                 @Override
                 public void onSucceeded() {
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
                     getActivity().finish();
 //                    Toast.makeText(getContext(), "onSucceeded", Toast.LENGTH_SHORT).show();
                 }
@@ -268,10 +257,55 @@ public class LoginGestureFragment extends BaseFragment {
             });
         }
     }
+
+
     @Override
     public void onResume() {        //修改密码后重新加载
         super.onResume();
         initSP();
     }
+
+
+//    private void checkFingerprint() {
+//        String TAG = "checktest";
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//            // 构建对话框
+//            BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(getContext())
+//                    .setTitle("指纹验证")
+//                    .setDescription("请验证指纹")
+//                    .setNegativeButton("取消", getActivity().getMainExecutor(), new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            Toast.makeText(getContext(), "取消验证", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }).build();
+//
+//            // 指纹识别回调
+//            BiometricPrompt.AuthenticationCallback authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
+//                @Override
+//                public void onAuthenticationError(int errorCode, CharSequence errString) {
+//                    super.onAuthenticationError(errorCode, errString);
+//                    Log.i(TAG, "onAuthenticationError: errorCode = " + errorCode + ", errString = " + errString);
+//                }
+//
+//                @Override
+//                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+//                    super.onAuthenticationSucceeded(result);
+//                    Log.i(TAG, "onAuthenticationSucceeded:");
+//                    getActivity().finish();
+//                }
+//
+//                @Override
+//                public void onAuthenticationFailed() {
+//                    super.onAuthenticationFailed();
+//                    Log.i(TAG, "onAuthenticationFailed:");
+//                }
+//            };
+//
+//            // 开始验证指纹
+//            CancellationSignal cancellationSignal = new CancellationSignal();
+//            biometricPrompt.authenticate(cancellationSignal, getActivity().getMainExecutor(), authenticationCallback);
+//        }
+//    }
 }
 

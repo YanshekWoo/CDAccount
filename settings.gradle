@@ -1,1 +1,1 @@
-include ':app', ':biometriclib'
+include ':app'
