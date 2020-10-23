@@ -352,7 +352,7 @@ public class BillDao {
             String M = cursor.getString(cursor.getColumnIndex("month"));
             String D = cursor.getString(cursor.getColumnIndex("day"));
             String T = cursor.getString(cursor.getColumnIndex("time"));
-            String ans = Y + " " + M + " " + D + " " + T;
+            String ans = Y + "-" + M + "-" + D + " " + T;
             re.add(ans);
         }
         db.close();
