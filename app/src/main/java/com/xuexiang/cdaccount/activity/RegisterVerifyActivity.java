@@ -29,9 +29,11 @@ import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.RandomUtils;
+import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
+import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
@@ -185,11 +187,11 @@ public class RegisterVerifyActivity extends BaseActivity {
                     mEditor_question3.putInt("verify_qustion3", mMaterialSpinner3.getSelectedIndex());
                     mEditor_question3.apply();
 
-                    mEditor_answer1.putString("verify_answer1", ans1);
+                    mEditor_answer1.putString("verify_answer1", MD5Utils.encode(ans1));
                     mEditor_answer1.apply();
-                    mEditor_answer2.putString("verify_answer2", ans2);
+                    mEditor_answer2.putString("verify_answer2", MD5Utils.encode(ans2));
                     mEditor_answer2.apply();
-                    mEditor_answer3.putString("verify_answer3", ans3);
+                    mEditor_answer3.putString("verify_answer3", MD5Utils.encode(ans3));
                     mEditor_answer3.apply();
 
                     XToastUtils.success("注册成功");
@@ -201,17 +203,23 @@ public class RegisterVerifyActivity extends BaseActivity {
 
 
     /**
-     * 登录成功的处理
+     * 注册成功的处理
      */
     private void onLoginSuccess() {
-        String token = RandomUtils.getRandomNumbersAndLetters(16);
-        if (TokenUtils.handleLoginSuccess(token)) {
-//            initDate();
-//            Intent intent = new Intent(RegisterVerifyActivity.this, MainActivity.class);
-//            startActivity(intent);
-            ActivityUtils.startActivity(MainActivity.class);
-            finish();
-        }
+//        String token = RandomUtils.getRandomNumbersAndLetters(16);
+//        if (TokenUtils.handleLoginSuccess(token)) {
+////            initDate();
+////            Intent intent = new Intent(RegisterVerifyActivity.this, MainActivity.class);
+////            startActivity(intent);
+//
+//        }
+
+        SettingUtils.setIsFirstOpen(false);
+//        String token = RandomUtils.getRandomNumbersAndLetters(16);
+//        TokenUtils.setToken(token);
+        XToastUtils.success("注册成功");
+        ActivityUtils.startActivity(MainActivity.class);
+        finish();
     }
 
 

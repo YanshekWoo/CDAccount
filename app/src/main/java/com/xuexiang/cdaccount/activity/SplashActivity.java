@@ -17,9 +17,11 @@
 
 package com.xuexiang.cdaccount.activity;
 
+import android.content.Intent;
 import android.view.KeyEvent;
 
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.utils.RandomUtils;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.Utils;
@@ -58,24 +60,28 @@ public class SplashActivity extends BaseSplashActivity implements CancelAdapt {
     @Override
     protected void onSplashFinished() {
         if (SettingUtils.isAgreePrivacy()) {
-            loginOrGoMainPage();
+            loginOrRegister();
         } else {
             Utils.showPrivacyDialog(this, (dialog, which) -> {
                 dialog.dismiss();
                 SettingUtils.setIsAgreePrivacy(true);
-                loginOrGoMainPage();
+                loginOrRegister();
             });
         }
     }
 
-    private void loginOrGoMainPage() {
-        if (TokenUtils.hasToken()) {
-            ActivityUtils.startActivity(LoginActivity.class);
-        } else {
+    private void loginOrRegister() {
+        if (SettingUtils.isFirstOpen()) {
             ActivityUtils.startActivity(RegiterNumberActivity.class);
+        } else {
+            Intent[] intents = new Intent[2];
+            intents[0] = new Intent(this,MainActivity.class);
+            intents[1] = new Intent(this,LoginActivity.class);
+            startActivities(intents);
         }
         finish();
     }
+
 
     /**
      * 菜单、返回键响应

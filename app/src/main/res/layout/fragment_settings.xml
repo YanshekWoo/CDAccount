@@ -59,6 +59,7 @@
                     app:sCenterTextString="修改密码"
                     app:sDividerLineType="none" />
 
+
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
                     android:id="@+id/menu_clear_data"
                     style="@style/InfoItem"
