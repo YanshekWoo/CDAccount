@@ -376,7 +376,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
             int length = lineEntries.size();
             for(int i = length; i < (length + 3); i++) {
                 double predictData = ra.predictNext(lineEntries);
-                lineEntries.add(new ChartDataEntry(i+"", predictData));
+                lineEntries.add(new ChartDataEntry("9999-99-99", predictData));
             }
         }
     }

@@ -28,6 +28,7 @@ import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
+import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
@@ -128,7 +129,8 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
                     SharedPreferences mSharedPreferences_passwd = Objects.requireNonNull(getActivity()).getSharedPreferences("password", MODE_PRIVATE);
                     String password = mSharedPreferences_passwd.getString("password","");
                     assert dialog.getInputEditText() != null;
-                    if(dialog.getInputEditText().getText().toString().equals(password)) {
+                    String inputText = MD5Utils.encode(dialog.getInputEditText().getText().toString());
+                    if(inputText.equals(password)) {
                         BillDao billDao = new BillDao(getContext());
                         billDao.Destory();
                         dialog.dismiss();

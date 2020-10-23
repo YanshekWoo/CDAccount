@@ -125,20 +125,21 @@ public class MyLineChart {
             public String getFormattedValue(float value) {
                 int mod = length / 15 + 1;
                 int intValue = Math.round(value);
-                if(intValue < length && intValue>=length-3 && intValue==value) {
+                String parsedDate = "";
+                String date = chartDataEntries.get(intValue).getDataName();
+                String year = date.substring(0, 4);
+                String month = date.substring(4, 6);
+                String day = date.substring(6, 8);
+                parsedDate = "   "+year+"-"+month+"-"+day;
+
+                if(length>=7 && intValue < length && intValue>=length-3 && intValue==value) {
                     return "预测值";
                 }
-                if(intValue < length-3 && intValue>=0 && intValue==value && intValue % mod==0) {
-                    String date = chartDataEntries.get(intValue).getDataName();
-                    if(date.length() >= 8) {
-                        String year = date.substring(0, 4);
-                        String month = date.substring(4, 6);
-                        String day = date.substring(6, 8);
-                        return "   "+year+"-"+month+"-"+day;
-                    }
-                    else {
-                        return "";
-                    }
+                else if(length>=7 && intValue < length-3 && intValue>=0 && intValue==value && intValue % mod==0) {
+                    return parsedDate;
+                }
+                else if(intValue < length && intValue>=0 && intValue==value && intValue % mod==0) {
+                    return parsedDate;
                 }
                 else {
                     return "";

@@ -18,26 +18,20 @@
 package com.xuexiang.cdaccount.fragment.login;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.FindpasswdActivity;
-import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
-import com.xuexiang.cdaccount.utils.RandomUtils;
-import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
-import com.xuexiang.xupdate.utils.Md5Utils;
 import com.xuexiang.xutil.app.ActivityUtils;
 
 import java.util.Objects;
@@ -96,7 +90,7 @@ public class LoginNumberFragment extends BaseFragment {
 
 
     private void initSP() {
-        SharedPreferences mSharedPreferences_user = getActivity().getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_user = Objects.requireNonNull(getActivity()).getSharedPreferences("user", MODE_PRIVATE);
         SharedPreferences mSharedPreferences_passwd = getActivity().getSharedPreferences("password", MODE_PRIVATE);
         user_name = mSharedPreferences_user.getString("user","");
         password = mSharedPreferences_passwd.getString("password","");
@@ -113,20 +107,15 @@ public class LoginNumberFragment extends BaseFragment {
      * 登录按钮监听
      */
     private void setButtomClickListener() {
-        BtLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(password.equals(MD5Utils.encode(etlogin_passwd.getText().toString())))
-                {
+        BtLogin.setOnClickListener(v -> {
+            if(password.equals(MD5Utils.encode(etlogin_passwd.getText().toString())))
+            {
 //                    XToastUtils.success("密码正确");
-                    String token = RandomUtils.getRandomNumbersAndLetters(16);
-                    TokenUtils.setToken(token);
-                    getActivity().finish();
-                }
-                else
-                {
-                    XToastUtils.error("密码错误");
-                }
+                Objects.requireNonNull(getActivity()).finish();
+            }
+            else
+            {
+                XToastUtils.error("密码错误");
             }
         });
     }
