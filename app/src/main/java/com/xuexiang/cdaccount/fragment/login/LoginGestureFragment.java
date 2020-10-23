@@ -33,6 +33,7 @@ import com.andrognito.rxpatternlockview.RxPatternLockView;
 import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent;
 import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.FindpasswdActivity;
 import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.RandomUtils;
@@ -44,6 +45,7 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xupdate.utils.Md5Utils;
+import com.xuexiang.xutil.app.ActivityUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -98,7 +100,7 @@ public class LoginGestureFragment extends BaseFragment {
                 openPage(LoginNumberFragment.class, false);
                 break;
             case R.id.tv_forget_password:
-                XToastUtils.info("忘记密码");
+                ActivityUtils.startActivity(FindpasswdActivity.class);
                 break;
             case R.id.tv_user_protocol:
                 XToastUtils.info("用户协议");
@@ -223,6 +225,10 @@ public class LoginGestureFragment extends BaseFragment {
         }
     };
 
-
+    @Override
+    public void onResume() {        //修改密码后重新加载
+        super.onResume();
+        initSP();
+    }
 }
 

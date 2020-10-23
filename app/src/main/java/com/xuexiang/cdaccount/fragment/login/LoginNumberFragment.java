@@ -23,8 +23,10 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.activity.FindpasswdActivity;
 import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.RandomUtils;
@@ -36,6 +38,7 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xupdate.utils.Md5Utils;
+import com.xuexiang.xutil.app.ActivityUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -61,7 +64,7 @@ public class LoginNumberFragment extends BaseFragment {
     EditText etlogin_passwd;
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_user)
-    EditText etlogin_user;
+    TextView etlogin_user;
 
 
     private String password;
@@ -136,7 +139,7 @@ public class LoginNumberFragment extends BaseFragment {
                 openPage(LoginGestureFragment.class, false);
                 break;
             case R.id.tv_forget_password:
-                XToastUtils.info("忘记密码");
+                ActivityUtils.startActivity(FindpasswdActivity.class);
                 break;
             case R.id.tv_user_protocol:
                 XToastUtils.info("用户协议");
@@ -149,6 +152,10 @@ public class LoginNumberFragment extends BaseFragment {
         }
     }
 
-
+    @Override
+    public void onResume() {    //修改密码后重新加载
+        super.onResume();
+        initSP();
+    }
 }
 
