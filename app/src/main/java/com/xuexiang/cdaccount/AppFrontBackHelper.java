@@ -36,6 +36,7 @@ public class AppFrontBackHelper {
     private Application.ActivityLifecycleCallbacks activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
         //打开的Activity数量统计
         private int activityStartCount = 0;
+        private int totalCount = 0;
 
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -45,8 +46,9 @@ public class AppFrontBackHelper {
         @Override
         public void onActivityStarted(Activity activity) {
             activityStartCount++;
+            totalCount++;
             //数值从0变到1说明是从后台切到前台
-            if (activityStartCount == 1){
+            if (totalCount!= 1 && activityStartCount == 1){
                 //从后台切到前台
                 if(mOnAppStatusListener != null){
                     mOnAppStatusListener.onFront();
