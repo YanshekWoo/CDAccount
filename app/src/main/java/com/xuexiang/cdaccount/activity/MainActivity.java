@@ -34,7 +34,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.xuexiang.cdaccount.CloseAll;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
@@ -93,15 +92,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(CloseAll.isCloseAll){
-            finish();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
