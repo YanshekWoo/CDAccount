@@ -83,6 +83,8 @@ public class SplashActivity extends BaseSplashActivity implements CancelAdapt {
     }
 
 
+
+
     /**
      * 菜单、返回键响应
      */
