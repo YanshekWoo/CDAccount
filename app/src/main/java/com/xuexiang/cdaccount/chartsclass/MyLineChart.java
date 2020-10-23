@@ -126,19 +126,25 @@ public class MyLineChart {
                 int mod = length / 15 + 1;
                 int intValue = Math.round(value);
                 String parsedDate = "";
-                String date = chartDataEntries.get(intValue).getDataName();
-                String year = date.substring(0, 4);
-                String month = date.substring(4, 6);
-                String day = date.substring(6, 8);
-                parsedDate = "   "+year+"-"+month+"-"+day;
+
 
                 if(length>=7 && intValue < length && intValue>=length-3 && intValue==value) {
                     return "预测值";
                 }
                 else if(length>=7 && intValue < length-3 && intValue>=0 && intValue==value && intValue % mod==0) {
+                    String date = chartDataEntries.get(intValue).getDataName();
+                    String year = date.substring(0, 4);
+                    String month = date.substring(4, 6);
+                    String day = date.substring(6, 8);
+                    parsedDate = "   "+year+"-"+month+"-"+day;
                     return parsedDate;
                 }
                 else if(intValue < length && intValue>=0 && intValue==value && intValue % mod==0) {
+                    String date = chartDataEntries.get(intValue).getDataName();
+                    String year = date.substring(0, 4);
+                    String month = date.substring(4, 6);
+                    String day = date.substring(6, 8);
+                    parsedDate = "   "+year+"-"+month+"-"+day;
                     return parsedDate;
                 }
                 else {
