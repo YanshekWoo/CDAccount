@@ -1,5 +1,6 @@
 package com.xuexiang.cdaccount.chartsclass;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,16 +20,15 @@ import com.github.mikephil.charting.utils.Utils;
 import com.xuexiang.cdaccount.R;
 
 public class CustomMPLineChartMarkerView extends MarkerView {
-    private final int DEFAULT_INDICATOR_COLOR = 0xffFD9138;//指示器默认的颜色
     private final int ARROW_HEIGHT = dp2px(5); // 箭头的高度
     private final int ARROW_WIDTH = dp2px(10); // 箭头的宽度
     private final float ARROW_OFFSET = dp2px(2);//箭头偏移量
     private final float BG_CORNER = dp2px(2);//背景圆角
     private final TextView mvXValue;//文本
     private final TextView mvYValue;//文本
-    private Bitmap bitmapForDot;//选中点图片
-    private int bitmapWidth;//点宽
-    private int bitmapHeight;//点高
+    private final Bitmap bitmapForDot;//选中点图片
+    private final int bitmapWidth;//点宽
+    private final int bitmapHeight;//点高
 
     public CustomMPLineChartMarkerView(Context context) {
         super(context, R.layout.layout_for_custom_marker_view);
@@ -40,6 +40,7 @@ public class CustomMPLineChartMarkerView extends MarkerView {
         bitmapHeight = bitmapForDot.getHeight();
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
         if (e instanceof CandleEntry) {
@@ -47,8 +48,8 @@ public class CustomMPLineChartMarkerView extends MarkerView {
             mvXValue.setText(Utils.formatNumber(ce.getLow(), 0, true));
             mvYValue.setText(Utils.formatNumber(ce.getHigh(), 0, true));
         } else {
-            mvXValue.setText(Utils.formatNumber(e.getX(), 0, true));
-            mvYValue.setText(Utils.formatNumber(e.getY(), 0, true));
+            mvXValue.setText(String.format("%.2f", e.getX()));
+            mvYValue.setText("￥"+String.format("%.2f", e.getY()));
         }
 
         super.refreshContent(e, highlight);
@@ -66,6 +67,8 @@ public class CustomMPLineChartMarkerView extends MarkerView {
         Paint bgPaint = new Paint();
         bgPaint.setStyle(Paint.Style.FILL);
         bgPaint.setAntiAlias(true);
+        //指示器默认的颜色
+        int DEFAULT_INDICATOR_COLOR = 0xffFD9138;
         bgPaint.setColor(DEFAULT_INDICATOR_COLOR);
         //剪头画笔
         Paint arrowPaint = new Paint();

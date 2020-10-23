@@ -34,7 +34,7 @@ public class BillDao {
 
     public int id_num = 0;
 
-    public void changeaccount(int id, int type, double money){
+    public void changeaccount(int id, int type, double money, int toacc){
         SQLiteDatabase db = mHelper.getWritableDatabase();
         if(type == 0){
             String sql = "select * from Account where Account_ID = "+id+"";
@@ -46,7 +46,7 @@ public class BillDao {
                 db.execSQL(sql);
             }
         }
-        else{
+        else if(type == 1){
             String sql = "select * from Account where Account_ID = "+id+"";
             Cursor cursor = db.rawQuery(sql, null);
             while (cursor.moveToNext()){
@@ -56,7 +56,28 @@ public class BillDao {
                 db.execSQL(sql);
             }
         }
+        else{
+            String sql = "select * from Account where Account_ID = "+id+"";
+            Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()){
+                double m = cursor.getDouble(cursor.getColumnIndex("Account_OutMoney"));
+                m+=money;
+                sql = "update Account set Account_OutMoney = '"+m+"' where Account_ID = "+id+"";
+                db.execSQL(sql);
+            }
+
+            sql = "select * from Account where Account_ID = "+toacc+"";
+            cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()){
+                double m = cursor.getDouble(cursor.getColumnIndex("Account_InMoney"));
+                m+=money;
+                sql = "update Account set Account_InMoney = '"+m+"' where Account_ID = "+toacc+"";
+                db.execSQL(sql);
+            }
+        }
     }
+
+
 
     public void insertBill(int type, int subcategory, int account, int toaccount, int member, String year, String month, String day, String time, String remark, double money) {//通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -96,7 +117,7 @@ public class BillDao {
             mem = cursor.getInt(cursor.getColumnIndex("Member_ID"));
         db.close();
         insertBill(type, sub, acc, toa, mem, year, month, day, time, remark, money);
-        changeaccount(acc, type, money);
+        changeaccount(acc, type, money, toa);
     }
 
     public boolean InsertCategory(String Top, String sub, int type) {   //通过测试,返回值需要判断
@@ -928,5 +949,24 @@ public class BillDao {
         db.close();
     }
 
+
+    public void Destory(){
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String sql = "drop TABLE Bill";
+        db.execSQL(sql);
+        sql = "drop TABLE OutTopCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE OutSubCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE InTopCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE InSubCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE Account";
+        db.execSQL(sql);
+        sql = "drop TABLE Member";
+        db.execSQL(sql);
+        db.close();
+    }
 
 }

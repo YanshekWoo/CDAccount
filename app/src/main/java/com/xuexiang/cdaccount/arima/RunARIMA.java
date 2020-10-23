@@ -17,16 +17,10 @@ public class RunARIMA
 	@RequiresApi(api = Build.VERSION_CODES.N)
 	public double predictNext(List<ChartDataEntry> entries)
 	{
-		//获取entries数据
-		ArrayList<Double> al=new ArrayList<Double>();
-		for(ChartDataEntry e : entries) {
-			al.add((double) e.getDataMoney());
-		}
-
-		double [] data = new double[al.size()];
+		double [] data = new double[entries.size()];
 		for (int i = 0; i < data.length; ++i)
 		{
-			data[i] = al.get(i);
+			data[i] = entries.get(i).getDataMoney();
 		}
 
 		ARIMAModel arima = new ARIMAModel(data);
@@ -50,16 +44,17 @@ public class RunARIMA
 				tmpPredict[k] = arima.aftDeal(predictDiff, period);
 				cnt++;
 			}
-			System.out.println("BestModel is " + bestModel[0] + " " + bestModel[1]);
+//			System.out.println("BestModel is " + bestModel[0] + " " + bestModel[1]);
+//			Log.i("bestModule", "BestModel is " + bestModel[0] + " " + bestModel[1]);
 			list.add(bestModel);
 		}
-		al.clear();
+
 		double sumPredict = 0.0;
 		for (int k = 0; k < cnt; ++k)
 		{
-			sumPredict += (double)tmpPredict[k] / (double)cnt;
+			sumPredict += (double)tmpPredict[k];
 		}
-		int predict = (int)Math.round(sumPredict);
-		return (double) predict;
+
+		return sumPredict / cnt;
 	}
 }

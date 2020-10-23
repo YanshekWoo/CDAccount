@@ -18,18 +18,25 @@
 package com.xuexiang.cdaccount.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
+import android.text.InputType;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseFragment;
-import com.xuexiang.cdaccount.utils.TokenUtils;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
+import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.annotation.Page;
-import com.xuexiang.xui.widget.dialog.DialogLoader;
+import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 import com.xuexiang.xutil.XUtil;
 
+import java.util.Objects;
+
 import butterknife.BindView;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * @author xuexiang
@@ -75,21 +82,65 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
                 XToastUtils.toast(superTextView.getCenterString());
                 break;
             case R.id.menu_clear_data:
-                DialogLoader.getInstance().showConfirmDialog(
-                        getContext(),
-                        getString(R.string.lab_logout_confirm),
-                        getString(R.string.lab_yes),
-                        (dialog, which) -> {
-                            dialog.dismiss();
-                            XUtil.getActivityLifecycleHelper().exit();
-                            TokenUtils.handleLogoutSuccess();
-                        },
-                        getString(R.string.lab_no),
-                        (dialog, which) -> dialog.dismiss()
-                );
+//                DialogLoader.getInstance().showConfirmDialog(
+//                        getContext(),
+//                        getString(R.string.lab_logout_confirm),
+//                        getString(R.string.lab_yes),
+//                        (dialog, which) -> {
+//                            dialog.dismiss();
+//                            XUtil.getActivityLifecycleHelper().exit();
+//                            TokenUtils.handleLogoutSuccess();
+//                        },
+//                        getString(R.string.lab_no),
+//                        (dialog, which) -> dialog.dismiss()
+//                );
+                showInputDialog();
                 break;
             default:
                 break;
         }
     }
+
+
+    /**
+     * 带输入框的对话框
+     */
+    private void showInputDialog() {
+        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .iconRes(R.drawable.icon_warning)
+                .title(R.string.tip_warning)
+                .content(R.string.content_warning)
+                .inputType(
+                        InputType.TYPE_CLASS_TEXT
+                                | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                                | InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                .input(
+                        getString(R.string.hint_please_input_password),
+                        "",
+                        false,
+                        ((dialog, input) ->{ }))
+                .inputRange(4, 18)
+                .positiveText(R.string.lab_confirem)
+                .negativeText(R.string.lab_cancel)
+                .onPositive((dialog, which) -> {
+                    SharedPreferences mSharedPreferences_passwd = Objects.requireNonNull(getActivity()).getSharedPreferences("password", MODE_PRIVATE);
+                    String password = mSharedPreferences_passwd.getString("password","");
+                    assert dialog.getInputEditText() != null;
+                    if(dialog.getInputEditText().getText().toString().equals(password)) {
+                        BillDao billDao = new BillDao(getContext());
+                        billDao.Destory();
+                        dialog.dismiss();
+                        SettingUtils.setIsFirstOpen(true);
+                        XUtil.getActivityLifecycleHelper().exit();
+                    }
+                    else {
+                        XToastUtils.error("密码错误");
+                    }
+
+                })
+                .cancelable(false)
+                .show();
+    }
+
+
 }

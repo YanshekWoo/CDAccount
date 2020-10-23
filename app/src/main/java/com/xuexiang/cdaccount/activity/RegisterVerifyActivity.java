@@ -112,11 +112,12 @@ public class RegisterVerifyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initialDataTable();
         initSP();
         initSpinner();
         setButtomClickListener();
         initTextView();
-        initialDataTable();
+
     }
 
     private void initTextView() {

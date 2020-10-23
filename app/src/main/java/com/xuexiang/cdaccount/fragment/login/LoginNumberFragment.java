@@ -33,6 +33,8 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -87,7 +89,7 @@ public class LoginNumberFragment extends BaseFragment {
 
 
     private void initSP() {
-        SharedPreferences mSharedPreferences_user = getActivity().getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences mSharedPreferences_user = Objects.requireNonNull(getActivity()).getSharedPreferences("user", MODE_PRIVATE);
         SharedPreferences mSharedPreferences_passwd = getActivity().getSharedPreferences("password", MODE_PRIVATE);
         user_name = mSharedPreferences_user.getString("user","");
         password = mSharedPreferences_passwd.getString("password","");
@@ -104,20 +106,17 @@ public class LoginNumberFragment extends BaseFragment {
      * 登录按钮监听
      */
     private void setButtomClickListener() {
-        BtLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(password.equals(etlogin_passwd.getText().toString()))
-                {
+        BtLogin.setOnClickListener(v -> {
+            if(password.equals(etlogin_passwd.getText().toString()))
+            {
 //                    XToastUtils.success("密码正确");
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();
-                }
-                else
-                {
-                    XToastUtils.error("密码错误");
-                }
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+                Objects.requireNonNull(getActivity()).finish();
+            }
+            else
+            {
+                XToastUtils.error("密码错误");
             }
         });
     }
