@@ -41,6 +41,22 @@ public class BillDataDay {
         this.mExpanded = mExpanded;
     }
 
+    public String getmYear() {
+        return mYear;
+    }
+
+    public void setmYear(String mYear) {
+        this.mYear = mYear;
+    }
+
+    public String getmMonth() {
+        return mMonth;
+    }
+
+    public void setmMonth(String mMonth) {
+        this.mMonth = mMonth;
+    }
+
     public String getmDay() {
         return mDay;
     }
