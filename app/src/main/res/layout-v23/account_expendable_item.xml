@@ -19,18 +19,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/account_detail"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="#ffffff"
+    android:background="@drawable/xui_config_list_item_selector"
+    android:foreground="?selectableItemBackgroundBorderless"
     android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/account_detail"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/xui_config_list_item_selector"
         android:orientation="horizontal"
-        android:foreground="?selectableItemBackgroundBorderless"
         tools:ignore="UselessParent">
 
         <TextView
@@ -38,11 +37,12 @@
             android:layout_height="match_parent"
             android:id="@+id/date"
             android:text="时间"
+            android:textColor="#000000"
             android:gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="160dp"
+        android:layout_width="130dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -57,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="二级分类"
+                android:textColor="#000000"
                 android:layout_marginStart="5dp"/>
 
         </LinearLayout>
@@ -64,7 +65,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
+            android:textColor="#000000"
+            android:paddingBottom="3dp"
             android:orientation="horizontal">
 
             <TextView
@@ -73,8 +76,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="账户"
-                android:layout_marginStart="10dp"
                 android:textSize="10sp"
+                android:textColor="#000000"
                 android:gravity="center"
                 tools:ignore="NestedWeights,SmallSp" />
 
@@ -84,6 +87,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="成员"
+                android:textColor="#000000"
                 android:layout_marginStart="10dp"
                 android:textSize="10sp"
                 android:gravity="center"
@@ -96,14 +100,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="end|center_vertical">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/money"
             android:text="金额"
-            android:gravity="end|center_vertical"
+            android:textColor="#000000"
             android:paddingEnd="30dp"
             tools:ignore="RtlSymmetry" />
 
