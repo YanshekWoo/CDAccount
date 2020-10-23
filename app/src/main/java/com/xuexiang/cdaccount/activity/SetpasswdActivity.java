@@ -119,7 +119,7 @@ public class SetpasswdActivity extends BaseActivity {
                     } else {
                         mEditor_password.putString("password", MD5Utils.encode(passwd2));
                         mEditor_password.apply();
-                        XToastUtils.success("数字密码已重置");
+                        XToastUtils.success("数字密码已设置");
 
 //                        Intent intent = new Intent(RegiterNumberActivity.this, RegiterGestureActivity.class);
 //                        startActivity(intent);

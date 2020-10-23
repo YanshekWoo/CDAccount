@@ -82,7 +82,7 @@ public class SetGestureActivity extends BaseActivity {
         initSP();
         initLock();
         if (!SettingUtils.isFirstOpen()) {
-            tv_register_gesture.setText("请重置手势密码");
+            tv_register_gesture.setText("请设置手势密码");
             tv_register_gesture.setTextColor(0xFFFE6D4B);
         }
     }
@@ -203,7 +203,7 @@ public class SetGestureActivity extends BaseActivity {
                     } else//两次输入密码不一致
                     {
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
-                        tv_register_gesture.setText("请重置手势密码");
+                        tv_register_gesture.setText("请设置手势密码");
                         XToastUtils.error("两次输入的密码不一致");
                         state = 1;
                     }

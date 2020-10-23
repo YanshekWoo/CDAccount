@@ -116,7 +116,7 @@ public class LoginGestureFragment extends BaseFragment {
 
     private void initSP() {
         SharedPreferences mSharedPreferences_gesture_login = getActivity().getSharedPreferences("gesture", MODE_PRIVATE);
-        password_gesture =  mSharedPreferences_gesture_login.getString("gesture_sign","");
+        password_gesture = mSharedPreferences_gesture_login.getString("gesture_sign", "");
     }
 
 
@@ -141,7 +141,6 @@ public class LoginGestureFragment extends BaseFragment {
         mPatternLockView.setTactileFeedbackEnabled(true);
         mPatternLockView.setInputEnabled(true);
         mPatternLockView.addPatternLockListener(mPatternLockViewListener);
-
 
 
         RxPatternLockView.patternComplete(mPatternLockView)
@@ -190,10 +189,12 @@ public class LoginGestureFragment extends BaseFragment {
                     PatternLockUtils.patternToString(mPatternLockView, pattern));
             //密码验证
             String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
-            if(!TextUtils.isEmpty(patternToString)){
-                if(MD5Utils.encode(patternToString).equals(password_gesture)){
+            if (!TextUtils.isEmpty(patternToString)) {
+                if (MD5Utils.encode(patternToString).equals(password_gesture)) {
                     //判断为正确
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
+                    String token = RandomUtils.getRandomNumbersAndLetters(16);
+                    TokenUtils.setToken(token);
 //                    XToastUtils.success("密码正确");
 //                    Intent intent = null;
 //                    if(TokenUtils.hasToken()){
@@ -206,7 +207,7 @@ public class LoginGestureFragment extends BaseFragment {
 //                    }
 
                     getActivity().finish();
-                }else {
+                } else {
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
                     XToastUtils.error("密码错误");
                 }
@@ -217,8 +218,9 @@ public class LoginGestureFragment extends BaseFragment {
                 public void run() {
                     mPatternLockView.clearPattern();
                 }
-            },1000);
+            }, 1000);
         }
+
         @Override
         public void onCleared() {
             Log.d(getClass().getName(), "Pattern has been cleared");

@@ -117,7 +117,8 @@ public class LoginNumberFragment extends BaseFragment {
                 if(password.equals(MD5Utils.encode(etlogin_passwd.getText().toString())))
                 {
 //                    XToastUtils.success("密码正确");
-//
+                    String token = RandomUtils.getRandomNumbersAndLetters(16);
+                    TokenUtils.setToken(token);
                     getActivity().finish();
                 }
                 else
