@@ -41,8 +41,6 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
 
     private RecyclerView mRecyclerView;
     private final Context context;
-    private int tabSeleted;
-
 
     public ChartListAdapter(Context context, RecyclerView recyclerView, Collection<ChartDataEntry> data) {
         super(data);
@@ -54,8 +52,8 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
     /**
      * 适配的布局
      *
-     * @param viewType
-     * @return
+     * @param viewType 控件类型
+     * @return  控件ID
      */
     @Override
     protected int getItemLayoutId(int viewType) { return R.layout.adapter_chart_list; }
@@ -64,7 +62,7 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
     /**
      * 绑定数据
      *
-     * @param holder
+     * @param holder  ViewHolder
      * @param position 索引
      * @param item     列表项
      */
@@ -78,38 +76,11 @@ public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
         }
         progressBar.setProgress(progress);
 
-        holder.text(R.id.adapter_chart_list_position,Integer.toString(position));
-        holder.text(R.id.adapter_chart_list_title,item.getDataName());
-        holder.text(R.id.adapter_chart_list_money,String.format("%.2f", item.dataMoney));
+        holder.text(R.id.adapter_chart_list_position, Integer.toString(position));
+        holder.text(R.id.adapter_chart_list_title, item.getDataName());
+        holder.text(R.id.adapter_chart_list_money, String.format("%.2f", item.dataMoney));
 
-//        holder.click(R.id.adapter_chart_list_card, new View.OnClickListener() {
-//            @SingleClick
-//            @Override
-//            public void onClick(View v) {
-//                int focusType = 1;
-//                String account = getResources().getString(R.string.unlimited);
-//                String member = getResources().getString(R.string.unlimited);
-//                if(tabSeleted==2) {
-//                    member = item.getDataName();
-//                }
-//                else if(tabSeleted==3) {
-//                    account = item.getDataName();
-//                }
-//
-//                Intent intent = new Intent(context, AccountDetailsActivity.class);
-//                intent.putExtra("focusType", focusType);
-//                intent.putExtra("member", member);
-//                intent.putExtra("account", account);
-//                context.startActivity(intent);
-//            }
-//        });
     }
 
-    public int getTabSeleted() {
-        return tabSeleted;
-    }
 
-    public void setTabSeleted(int tabSeleted) {
-        this.tabSeleted = tabSeleted;
-    }
 }
