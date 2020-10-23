@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.xuexiang.cdaccount"
-        minSdkVersion 17
+        minSdkVersion 23
         targetSdkVersion build_versions.target_sdk
         versionCode 1
         versionName "1.0"
@@ -139,6 +139,14 @@ dependencies {
     implementation 'com.andrognito.patternlockview:patternlockview:1.0.0'
     // Optional, for RxJava2 adapter
     implementation 'com.andrognito.patternlockview:patternlockview-reactive:1.0.0'
+    //指纹密码
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation project(':biometriclib')
 
 }
 //自动添加X-Library依赖
