@@ -39,15 +39,13 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.charts.ChartListAdapter;
+import com.xuexiang.cdaccount.arima.RunARIMA;
 import com.xuexiang.cdaccount.chartsclass.MyBarChart;
 import com.xuexiang.cdaccount.chartsclass.MyLineChart;
 import com.xuexiang.cdaccount.chartsclass.MyPieChart;
@@ -154,6 +152,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     //tab选择项
     private int tabSelected;
     private int tabInout;
+    private int tabChart;
 
     private ChartListAdapter madapter;
 
@@ -190,7 +189,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         initRecycleView();
         initTimePicker();
         initChart();
-        selectChart(0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -205,74 +203,22 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void initChart() {
+        // 初始显示饼图
+        tabChart = 0;
+        selectChart(tabChart);
+
         myBarChart = new MyBarChart();
         myPieChart = new MyPieChart();
         myLineChart = new MyLineChart();
 
         //柱状图
         mBarChart = myBarChart.initBarChart(mBarChart);
-//        mBarChart = setBarChartClickListener(mBarChart);
         //饼图
         mPieChart = myPieChart.initPieChart(mPieChart);
-//        mPieChart = setPieChartClickListener(mPieChart);
         //折线图
         mLineChart = myLineChart.initLineChart(mLineChart);
 
         refreshCharts();
-    }
-
-
-
-    /**
-     * 设置柱状图点击事件
-     * @param barChart
-     * 柱状图
-     * @return barChart
-     */
-    protected BarChart setBarChartClickListener(BarChart barChart) {
-        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                if(e == null) {
-                    return;
-                }
-                    XToastUtils.toast(Integer.toString(1));
-            }
-
-            @Override
-            public void onNothingSelected() {
-                // 图表外部点击事件 （二次点击事件）
-            }
-        });
-        return barChart;
-    }
-
-
-
-    /**
-     * 设置饼图点击事件
-     * @param pieChart
-     * 饼图
-     * @return pieChart
-     */
-    protected PieChart setPieChartClickListener(PieChart pieChart) {
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                if(e == null) {
-                    return;
-                }
-                    XToastUtils.toast(Integer.toString(2));
-            }
-
-            @Override
-            public void onNothingSelected() {
-                // 图表外部点击事件 （二次点击事件）
-            }
-        });
-        return pieChart;
     }
 
 
@@ -289,25 +235,34 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
         String legendInOut = tabInout==0? "支出" : "收入";
         String legendSelect = legendSelectArray.get(tabSelected);
-        // 加载图表和列表数据
-        BarData barData = myBarChart.setBardata(mBarChart, chartDataEntries, legendSelect+"-"+legendInOut);
-        PieData pieData = myPieChart.setPiedata(mPieChart, chartDataEntries, legendSelect+"-"+legendInOut);
-        LineData lineData = myLineChart.setLinedata(mLineChart, lineEntries, "总"+legendInOut+"趋势");
 
-        // 柱状图刷新
-        mBarChart.setData(barData);
-        mBarChart.animateXY(1500, 1500);
-        mBarChart.invalidate();
+        switch (tabChart) {
+            case 0:
+                // 饼图刷新
+                PieData pieData = myPieChart.setPiedata(mPieChart, chartDataEntries, legendSelect+"-"+legendInOut);
+                mPieChart.setData(pieData);
+                mPieChart.animateXY(1500, 1500);
+                mPieChart.invalidate();
 
-        // 饼图刷新
-        mPieChart.setData(pieData);
-        mPieChart.animateXY(1500, 1500);
-        mPieChart.invalidate();
+                break;
+            case 1:
+                // 柱状图刷新
+                BarData barData = myBarChart.setBardata(mBarChart, chartDataEntries, legendSelect+"-"+legendInOut);
+                mBarChart.setData(barData);
+                mBarChart.animateXY(1500, 1500);
+                mBarChart.invalidate();
+                break;
+            case 2:
+                // 折线图刷新
+                LineData lineData = myLineChart.setLinedata(mLineChart, lineEntries, "总"+legendInOut+"趋势");
+                mLineChart.setData(lineData);
+                mLineChart.animateXY(1500, 1500);
+                mLineChart.invalidate();
+                break;
+            default:
+                break;
+        }
 
-        // 折线图刷新
-        mLineChart.setData(lineData);
-        mLineChart.animateXY(1500, 1500);
-        mLineChart.invalidate();
 
         // 列表刷新
         List<ChartDataEntry> sortedCharData = new ArrayList<>(chartDataEntries);
@@ -329,6 +284,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         String end_year = strDateEnd[0];
         String end_month = strDateEnd[1];
         String end_day = strDateEnd[2];
+
 
         // 饼图和柱状图数据
         chartDataEntries.clear();
@@ -369,15 +325,15 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         lineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
 
 
-//        // ARIMA预测 predict
-//        if(lineEntries.size() >= 7) {
-//            RunARIMA ra = new RunARIMA();
-//            int length = lineEntries.size();
-//            for(int i = length; i < (length + 3); i++) {
-//                double predictData = ra.predictNext(lineEntries);
-//                lineEntries.add(new ChartDataEntry("9999-99-99", predictData));
-//            }
-//        }
+        // ARIMA预测 predict
+        if(lineEntries.size() >= 14) {
+            RunARIMA ra = new RunARIMA();
+            int length = lineEntries.size();
+            for(int i = length; i < (length + 3); i++) {
+                double predictData = ra.runPrediction(lineEntries);
+                lineEntries.add(new ChartDataEntry("9999-99-99", predictData));
+            }
+        }
     }
 
 
@@ -572,15 +528,15 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         switch (tab.parent.getId()) {
             case R.id.chart_tab_inout:
                 tabInout = tab.getPosition();
+                refreshCharts();
                 break;
             case R.id.chart_tab_selector:
                 tabSelected = tab.getPosition();
+                refreshCharts();
                 break;
             default:
                 break;
         }
-
-        refreshCharts();
     }
 
     @Override
@@ -650,7 +606,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 mLineChart.setVisibility(View.VISIBLE);
                 break;
         }
-        refreshCharts();
     }
 
 
@@ -667,16 +622,22 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     protected void onBottumClick(@NotNull View v) {
         switch (v.getId()) {
             case R.id.fab_piechart:
-                selectChart(0);
+                tabChart = 0;
+                selectChart(tabChart);
                 mFloatingActionMenu.toggle(false);
+                refreshCharts();
                 break;
             case R.id.fab_barchart:
-                selectChart(1);
+                tabChart = 1;
+                selectChart(tabChart);
                 mFloatingActionMenu.toggle(false);
+                refreshCharts();
                 break;
             case R.id.fab_linechart:
-                selectChart(2);
+                tabChart = 2;
+                selectChart(tabChart);
                 mFloatingActionMenu.toggle(false);
+                refreshCharts();
                 break;
             case R.id.iv_switch:
                 refreshStatus(mIsShowNavigationView = !mIsShowNavigationView);
@@ -685,7 +646,6 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
                 selectChart(0);
                 break;
         }
-
     }
 
 }

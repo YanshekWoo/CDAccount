@@ -33,6 +33,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.database.ChartDataEntry;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class MyLineChart {
      * 折线图
      * @return lineChart
      */
-    public LineChart initLineChart(LineChart lineChart) {
+    public LineChart initLineChart(@NotNull LineChart lineChart) {
         lineChart.setDescription(null);
         lineChart.setDrawGridBackground(false);
         // 开启手势触摸
@@ -78,7 +80,7 @@ public class MyLineChart {
         return lineChart;
     }
 
-    public void setLineChartAxis(XAxis xAxis, YAxis yAxisLeft, YAxis yAxisRight, Legend legend) {
+    public void setLineChartAxis(@NotNull XAxis xAxis, @NotNull YAxis yAxisLeft, @NotNull YAxis yAxisRight, @NotNull Legend legend) {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisLineWidth(1);
         xAxis.setDrawAxisLine(true);
@@ -102,7 +104,7 @@ public class MyLineChart {
         yAxisRight.setAxisMinimum(0);
 
         //设置Lengend位置
-        legend.setTextColor(getResources().getColor(R.color.colorAccent)); //设置Legend 文本颜色
+        legend.setTextColor(getContext().getColor(R.color.colorAccent)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -110,7 +112,7 @@ public class MyLineChart {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public LineData setLinedata(LineChart lineChart, List<ChartDataEntry> chartDataEntries, String legendLable) {
+    public LineData setLinedata(LineChart lineChart, @NotNull List<ChartDataEntry> chartDataEntries, String legendLable) {
         //设置数据
         List<Entry> entries = new ArrayList<>();
         int length = chartDataEntries.size();
@@ -125,13 +127,12 @@ public class MyLineChart {
             public String getFormattedValue(float value) {
                 int mod = length / 15 + 1;
                 int intValue = Math.round(value);
-                String parsedDate = "";
+                String parsedDate;
 
-
-                if(length>=7 && intValue < length && intValue>=length-3 && intValue==value) {
+                if(length>=14 && intValue < length && intValue>=length-3 && intValue==value) {
                     return "预测值";
                 }
-                else if(length>=7 && intValue < length-3 && intValue>=0 && intValue==value && intValue % mod==0) {
+                else if(length>=14 && intValue < length-3 && intValue>=0 && intValue==value && intValue % mod==0) {
                     String date = chartDataEntries.get(intValue).getDataName();
                     String year = date.substring(0, 4);
                     String month = date.substring(4, 6);
@@ -162,7 +163,7 @@ public class MyLineChart {
         //设置允许填充，渐变
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillAlpha(150);
-        lineDataSet.setFillDrawable(getResources().getDrawable(R.drawable.line_gradient_bg_shape));
+        lineDataSet.setFillDrawable(getContext().getDrawable(R.drawable.line_gradient_bg_shape));
         //设置圆滑线
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
@@ -188,19 +189,19 @@ public class MyLineChart {
 //        else {
 //            lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
 //        }
-        lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
-        if(length>=7) {
+        lineDataSet.setColor(getContext().getColor(R.color.app_color_theme_5));
+        if(length>=14) {
             int[] s = new int[length];
             for(int i=0; i<length-3; i++) {
-                s[i] = getResources().getColor(R.color.app_color_theme_5);
+                s[i] = getContext().getColor(R.color.app_color_theme_5);
             }
-            s[length-3] = getResources().getColor(R.color.app_color_theme_1);
-            s[length-2] = getResources().getColor(R.color.app_color_theme_1);
-            s[length-1] = getResources().getColor(R.color.app_color_theme_1);
+            s[length-3] = getContext().getColor(R.color.app_color_theme_1);
+            s[length-2] = getContext().getColor(R.color.app_color_theme_1);
+            s[length-1] = getContext().getColor(R.color.app_color_theme_1);
             lineDataSet.setCircleColors(s);
         }
         else {
-            lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_5));
+            lineDataSet.setCircleColor(getContext().getColor(R.color.app_color_theme_5));
         }
 
 

@@ -94,7 +94,7 @@ public class MyBarChart {
         yAxisRight.setAxisMinimum(0);
 
         //设置Lengend位置
-        legend.setTextColor(getResources().getColor(R.color.colorAccent)); //设置Legend 文本颜色
+        legend.setTextColor(getContext().getColor(R.color.colorAccent)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -147,7 +147,7 @@ public class MyBarChart {
         });
 
         // set text size according to length of datas
-        float textSize = 0f;
+        float textSize;
         if(lenth>19){
             textSize = 2f;
         }

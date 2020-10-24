@@ -2,6 +2,8 @@ package com.xuexiang.cdaccount.database;
 
 import androidx.annotation.NonNull;
 
+import org.jetbrains.annotations.NotNull;
+
 public class ChartDataEntry implements Comparable<ChartDataEntry>{
     public String dataName;
     public double dataMoney;
@@ -43,7 +45,7 @@ public class ChartDataEntry implements Comparable<ChartDataEntry>{
     }
 
     @Override
-    public int compareTo(ChartDataEntry chartDataEntry) {
+    public int compareTo(@NotNull ChartDataEntry chartDataEntry) {
         return (int) (this.dataMoney - chartDataEntry.getDataMoney());
     }
 

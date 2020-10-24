@@ -7,14 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    /**
-     *  @param context
-     *
-     */
-    private Context mContext;
     public DatabaseHelper(@Nullable Context context) {
         super(context, Constants.DATA_BASE_NAME, null, Constants.VERSION_CODE);
-        mContext = context;
     }
 
     @Override
