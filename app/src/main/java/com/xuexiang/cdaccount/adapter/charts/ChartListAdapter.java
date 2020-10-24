@@ -39,13 +39,8 @@ import java.util.Collection;
  */
 public class ChartListAdapter extends BaseRecyclerAdapter<ChartDataEntry> {
 
-    private RecyclerView mRecyclerView;
-    private final Context context;
-
     public ChartListAdapter(Context context, RecyclerView recyclerView, Collection<ChartDataEntry> data) {
         super(data);
-        this.mRecyclerView = recyclerView;
-        this.context = context;
     }
 
 

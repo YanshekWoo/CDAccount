@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        app:srcCompat="@drawable/ic_findpasswd"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="44dp"
+        android:layout_marginTop="10dp"
+        android:paddingEnd="44dp"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:tint="?attr/colorAccent"
+                app:srcCompat="@drawable/ic_verify_question" />
+
+            <com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner
+                android:id="@+id/verify_question1"
+                android:layout_width="match_parent"
+                style="@style/Material.SpinnerStyle"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="?attr/xui_config_content_spacing_vertical" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:tint="?attr/colorAccent"
+                app:srcCompat="@drawable/ic_verify_answer" />
+
+            <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
+                android:id="@+id/verify_answer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="38dp"
+                android:paddingRight="-30dp"
+                android:hint="答案"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="16sp"
+                app:met_minCharacters="1"
+                app:met_maxCharacters="12"
+                app:met_clearButton="true"
+                app:met_floatingLabel="none"
+                app:met_floatingLabelText="答案" />
+
+        </FrameLayout>
+    </LinearLayout>
+    <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+        android:id="@+id/register_verify_commit"
+        style="@style/SuperButton.Primary.Login"
+        android:layout_marginTop="40dp"
+        android:text="确认" />
+</LinearLayout>

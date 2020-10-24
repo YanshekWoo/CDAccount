@@ -5,6 +5,9 @@
 
     <!--进程杀死-->
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <application
         android:name="com.xuexiang.cdaccount.MyApp"
@@ -44,7 +47,7 @@
         <activity
             android:name="com.xuexiang.cdaccount.activity.LoginActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -56,21 +59,44 @@
         <activity
             android:name="com.xuexiang.cdaccount.activity.RegiterGestureActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.xuexiang.cdaccount.activity.RegiterNumberActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.xuexiang.cdaccount.activity.RegisterVerifyActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.xuexiang.cdaccount.activity.FindpasswdActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.xuexiang.cdaccount.activity.SetpasswdActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.xuexiang.cdaccount.activity.SetGestureActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.xuexiang.cdaccount.activity.ChangePasswordActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.xuexiang.cdaccount.activity.ReLoginActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+
 
 
 

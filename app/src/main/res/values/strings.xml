@@ -91,4 +91,20 @@
     <string name="header_pulling">下拉加载%04d年流水</string>
     <string name="header_release">释放加载%04d年流水</string>
     <string name="accont_title">%04d年流水</string>
+
+    <string name="tip_warning">警告</string>
+    <string name="content_warning">清除数据会删除所有记账信息和账号密码，是否确定清除数据</string>
+    <string name="hint_please_input_password">请输入登录密码</string>
+    <string name="lab_confirem">确定</string>
+    <string name="lab_cancel">取消</string>
+
+    <string name="biometric_dialog_cancel">Cancel</string>
+    <string name="biometric_dialog_title">Verification</string>
+    <string name="biometric_dialog_subtitle">Verify fingerprint to continue</string>
+    <string name="biometric_dialog_state_normal">Fingerprint sensor</string>
+    <string name="biometric_dialog_state_failed">Failed to identify, please try again</string>
+    <string name="biometric_dialog_state_error">Verification error, please enter payment password</string>
+    <string name="biometric_dialog_state_error_enable_process">Verification error, setup failed</string>
+    <string name="biometric_dialog_state_succeeded">Verification successful</string>
+    <string name="biometric_dialog_use_password">Use Password</string>
 </resources>

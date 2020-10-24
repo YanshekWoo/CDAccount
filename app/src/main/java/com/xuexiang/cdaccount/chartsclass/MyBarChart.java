@@ -58,7 +58,6 @@ public class MyBarChart {
         // 禁止高亮
         barChart.setHighlightFullBarEnabled(false);
         barChart.setHighlightPerTapEnabled(false);
-        barChart.setHighlightFullBarEnabled(false);
         //设置动画
         barChart.animateXY(1500, 1500);
 
@@ -148,23 +147,25 @@ public class MyBarChart {
         });
 
         // set text size according to length of datas
+        float textSize = 0f;
         if(lenth>19){
-            barChart.getXAxis().setTextSize(2f);
+            textSize = 2f;
         }
         else if(lenth>15){
-            barChart.getXAxis().setTextSize(4f);
+            textSize = 4f;
         }
         else if(lenth>11){
-            barChart.getXAxis().setTextSize(6f);
+            textSize = 6f;
         }
         else if(lenth>7){
-//            barChart.getXAxis().setLabelRotationAngle(0);
-            barChart.getXAxis().setTextSize(8f);
+            textSize = 8f;
+
         }
         else {
-            barChart.getXAxis().setTextSize(10f);
+            textSize = 10f;
         }
-
+        barChart.getXAxis().setTextSize(textSize);
+//            barChart.getXAxis().setLabelRotationAngle(0);
         barChart.getXAxis().setLabelCount(lenth);
         barChart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
@@ -181,7 +182,7 @@ public class MyBarChart {
 
 
         BarData bardata = new BarData(barDataSet);
-        bardata.setValueTextSize(6f);
+        bardata.setValueTextSize(textSize);
 
 
         return bardata;

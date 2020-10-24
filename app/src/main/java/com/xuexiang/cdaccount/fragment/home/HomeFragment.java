@@ -34,6 +34,7 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
+import com.xuexiang.xui.widget.textview.autofit.AutoFitTextView;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -50,7 +51,7 @@ public class HomeFragment extends BaseFragment {
     private List<String> mRecentDate, mRecentInfo;
     private List<Integer>mRecentType;
 
-    private TextView mTvIn,mTvOut;
+    private AutoFitTextView  mTvIn,mTvOut;
     private String mAmountIn, mAmountOut;
     private BillDao mDataBaseHelper;
 

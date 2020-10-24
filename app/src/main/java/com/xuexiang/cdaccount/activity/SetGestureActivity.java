@@ -44,7 +44,6 @@ import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.display.Colors;
 
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
@@ -55,7 +54,7 @@ import io.reactivex.functions.Consumer;
  * @author xuexiang
  * @since 2019-11-17 22:21
  */
-public class RegiterGestureActivity extends BaseActivity {
+public class SetGestureActivity extends BaseActivity {
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_patter_lock_view)
@@ -66,12 +65,14 @@ public class RegiterGestureActivity extends BaseActivity {
     TextView tv_register_gesture;
 
     private String GestureSignUp;
+    private String GestureSignUp_sure;
     private int state = 1;
+    private SharedPreferences mSharedPreferences_gesture;
     private SharedPreferences.Editor mEditor_gesture;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_register_gesture;
+        return R.layout.activity_setgestutre;
     }
 
 
@@ -80,8 +81,9 @@ public class RegiterGestureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         initSP();
         initLock();
-        if(!SettingUtils.isFirstOpen()){
-            tv_register_gesture.setText("请重置手势密码");
+        if (!SettingUtils.isFirstOpen()) {
+            tv_register_gesture.setText("请设置手势密码");
+            tv_register_gesture.setTextColor(0xFFFE6D4B);
         }
     }
 
@@ -106,7 +108,7 @@ public class RegiterGestureActivity extends BaseActivity {
 
     @SuppressLint("CommitPrefEdits")
     private void initSP() {
-        SharedPreferences mSharedPreferences_gesture = getSharedPreferences("gesture", MODE_PRIVATE);
+        mSharedPreferences_gesture = getSharedPreferences("gesture", MODE_PRIVATE);
         mEditor_gesture = mSharedPreferences_gesture.edit();
     }
 
@@ -132,19 +134,18 @@ public class RegiterGestureActivity extends BaseActivity {
         mPatternLockView.addPatternLockListener(mPatternLockViewListener);
 
 
-
         RxPatternLockView.patternComplete(mPatternLockView)
                 .subscribe(new Consumer<PatternLockCompleteEvent>() {
                     @Override
-                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) {
-                        Log.d(getClass().getName(), "Complete: " + Objects.requireNonNull(patternLockCompleteEvent.getPattern()).toString());
+                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) throws Exception {
+                        Log.d(getClass().getName(), "Complete: " + patternLockCompleteEvent.getPattern().toString());
                     }
                 });
 
         RxPatternLockView.patternChanges(mPatternLockView)
                 .subscribe(new Consumer<PatternLockCompoundEvent>() {
                     @Override
-                    public void accept(PatternLockCompoundEvent event) {
+                    public void accept(PatternLockCompoundEvent event) throws Exception {
                         if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_STARTED) {
                             Log.d(getClass().getName(), "Pattern drawing started");
                         } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_PROGRESS) {
@@ -180,18 +181,18 @@ public class RegiterGestureActivity extends BaseActivity {
                     PatternLockUtils.patternToString(mPatternLockView, pattern));
             //手势密码注册
             String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
-            if(!TextUtils.isEmpty(patternToString)){
-                if(state == 1)//第一次输入密码
+            if (!TextUtils.isEmpty(patternToString)) {
+                if (state == 1)//第一次输入密码
                 {
                     GestureSignUp = patternToString;
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
                     tv_register_gesture.setText("请再次输入密码");
                     XToastUtils.info("请再次输入密码");
                     state = 2;
-                }
-                else if(state == 2)//第二次输入确认密码
+                } else if (state == 2)//第二次输入确认密码
                 {
-                    if(GestureSignUp.equals(patternToString))//两次输入密码一致
+                    GestureSignUp_sure = patternToString;
+                    if (GestureSignUp.equals(GestureSignUp_sure))//两次输入密码一致
                     {
                         mEditor_gesture.putString("gesture_sign", MD5Utils.encode(GestureSignUp));
                         mEditor_gesture.apply();
@@ -199,15 +200,10 @@ public class RegiterGestureActivity extends BaseActivity {
 //                        XToastUtils.success("注册成功");
 
                         onLoginSuccess();
-                    }
-                    else//两次输入密码不一致
+                    } else//两次输入密码不一致
                     {
                         mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
-                        if(!SettingUtils.isFirstOpen()){
-                            tv_register_gesture.setText("请重置手势密码");
-                        }else {
-                            tv_register_gesture.setText("请输入手势密码");
-                        }
+                        tv_register_gesture.setText("请设置手势密码");
                         XToastUtils.error("两次输入的密码不一致");
                         state = 1;
                     }
@@ -219,7 +215,7 @@ public class RegiterGestureActivity extends BaseActivity {
                 public void run() {
                     mPatternLockView.clearPattern();
                 }
-            },200);
+            }, 200);
         }
 
 
@@ -236,11 +232,8 @@ public class RegiterGestureActivity extends BaseActivity {
     private void onLoginSuccess() {
 //        Intent intent = new Intent(RegiterGestureActivity.this, RegisterVerifyActivity.class);
 //        startActivity(intent);
-        if(SettingUtils.isFirstOpen()){                                     //若找回密码时调用此页面，则不跳转
-            ActivityUtils.startActivity(RegisterVerifyActivity.class);
-        }else{
-            XToastUtils.success("手势密码已重置");
-        }
+
+        XToastUtils.success("手势密码已重置");
         finish();
     }
 
