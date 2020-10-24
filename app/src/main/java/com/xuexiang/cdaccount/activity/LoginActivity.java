@@ -17,6 +17,10 @@
 
 package com.xuexiang.cdaccount.activity;
 
+import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
@@ -27,6 +31,8 @@ import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.display.Colors;
+
+import java.util.List;
 
 /**
  * 登录页面
@@ -71,6 +77,16 @@ public class LoginActivity extends BaseActivity implements ClickUtils.OnClick2Ex
 
     @Override
     public void onExit() {
+        ClearTaskStack();
         XUtil.exitApp();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)//清空任务栈
+    private void ClearTaskStack() {
+        ActivityManager activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.AppTask> appTaskList = activityManager.getAppTasks();
+        for (ActivityManager.AppTask appTask : appTaskList) {
+            appTask.finishAndRemoveTask();
+        }
     }
 }
