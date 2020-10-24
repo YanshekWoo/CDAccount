@@ -78,10 +78,11 @@
     <string name="item_example_number_day">第%02d天</string>
     <string name="item_example_number">第%02d笔</string>
     <string name="account_content">请输入新建账户名称</string>
+    <string name="account_change_content">请输入修改账户名称</string>
     <string name="button_cancel">取消</string>
     <string name="button_confirm">确认</string>
     <string name="item_example_number_abstract">这是测试的第%02d条数据</string>
-    <string name="account_details_title">详细</string>
+    <string name="account_details_title">备注</string>
     <string name="account_details_content">这里是流水详细情况</string>
     <string name="gesture_register">请输入手势密码</string>
     <string name="gesture_login">请绘制手势密码登录</string>
@@ -89,4 +90,21 @@
     <string name="footer_release">释放加载%04d年流水</string>
     <string name="header_pulling">下拉加载%04d年流水</string>
     <string name="header_release">释放加载%04d年流水</string>
+    <string name="accont_title">%04d年流水</string>
+
+    <string name="tip_warning">警告</string>
+    <string name="content_warning">清除数据会删除所有记账信息和账号密码，是否确定清除数据</string>
+    <string name="hint_please_input_password">请输入登录密码</string>
+    <string name="lab_confirem">确定</string>
+    <string name="lab_cancel">取消</string>
+
+    <string name="biometric_dialog_cancel">Cancel</string>
+    <string name="biometric_dialog_title">Verification</string>
+    <string name="biometric_dialog_subtitle">Verify fingerprint to continue</string>
+    <string name="biometric_dialog_state_normal">Fingerprint sensor</string>
+    <string name="biometric_dialog_state_failed">Failed to identify, please try again</string>
+    <string name="biometric_dialog_state_error">Verification error, please enter payment password</string>
+    <string name="biometric_dialog_state_error_enable_process">Verification error, setup failed</string>
+    <string name="biometric_dialog_state_succeeded">Verification successful</string>
+    <string name="biometric_dialog_use_password">Use Password</string>
 </resources>

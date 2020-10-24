@@ -63,13 +63,14 @@
                     android:textSize="20sp" />
 
             </LinearLayout>
-            <TextView
+            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
                 android:id="@+id/tv_in"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="0.00"
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp" />
@@ -173,13 +174,14 @@
                     android:textSize="20sp" />
 
             </LinearLayout>
-            <TextView
+            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
                 android:id="@+id/tv_out"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="0.00"
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp" />

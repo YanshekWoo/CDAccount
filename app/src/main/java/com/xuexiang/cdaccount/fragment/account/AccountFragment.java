@@ -19,32 +19,48 @@ package com.xuexiang.cdaccount.fragment.account;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.text.InputType;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.adapter.SmartRecyclerAdapter;
+import com.scwang.smartrefresh.layout.adapter.SmartViewHolder;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.base.delegate.SimpleDelegateAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.database.AccountDataEntry;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.LogRecord;
+
 
 import butterknife.BindView;
 
@@ -53,21 +69,33 @@ import butterknife.BindView;
  * @since 2020-09-26 20:46
  */
 @Page(anim = CoreAnim.none)
-public class AccountFragment extends BaseFragment {
+public class AccountFragment extends BaseFragment{
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.refreshLayout)
-    SmartRefreshLayout refreshLayout;
+    RefreshLayout refreshLayout;
+
+    @BindView(R.id.total1)
+    TextView total;
+
     ImageView img;
 
     BillDao billDao;
+
     private SimpleDelegateAdapter<AccountDataEntry> adapter;
+//    private SmartRecyclerAdapter<AccountDataEntry> mAdapter;
     private List<AccountDataEntry> accountDataEntries;
 
+    int countClick = 0;
+    android.os.Handler handler = new Handler();
 
+//    private static final long clickTime = 300;
+//    private static long lastClickTime = 0;
+//    private static long currentClickTime;
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -90,6 +118,7 @@ public class AccountFragment extends BaseFragment {
     /**
      * 初始化控件
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void initViews() {
 
@@ -104,6 +133,20 @@ public class AccountFragment extends BaseFragment {
 
 
         adapter = new SimpleDelegateAdapter<AccountDataEntry>(R.layout.adapter_account_list_item,new LinearLayoutHelper()) {
+//            @SuppressLint("DefaultLocale")
+//            @Override
+//            protected void onBindViewHolder(SmartViewHolder holder, AccountDataEntry item, int position) {
+//                holder.text(R.id.account_name, item.getName());
+//                holder.text(R.id.account_income, String.format("%.2f", item.getInMoney()));
+//                holder.text(R.id.account_outcome, String.format("%.2f", item.getOutMoney()));
+//                holder.text(R.id.account_money, String.format("%.2f", item.getInMoney() - item.getOutMoney()));
+////                holder.click(R.id.account_card, new View.OnClickListener() {
+////                    @Override
+////                    public void onClick(View view) {
+////                        viewHolderClick(item);
+////                    }
+////                });
+//            }
             @SuppressLint("DefaultLocale")
             @Override
             protected void bindData(@NonNull RecyclerViewHolder holder, int position, AccountDataEntry item) {
@@ -111,27 +154,147 @@ public class AccountFragment extends BaseFragment {
                 holder.text(R.id.account_income, String.format("%.2f", item.getInMoney()));
                 holder.text(R.id.account_outcome,String.format("%.2f", item.getOutMoney()));
                 holder.text(R.id.account_money, String.format("%.2f", item.getInMoney()-item.getOutMoney()));
-                holder.click(R.id.account_card,view -> viewHolderClick(item));
-            }
+                holder.click(R.id.account_card, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        countClick++;
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(countClick == 1){
+                                    viewHolderClick(item);
+                                }else {
+                                    showAccountChangeDialog(item);
+                                }
+                                handler.removeCallbacksAndMessages(null);
+                                countClick = 0;
+                            }
+                        },700);
+                    }
+                });
+//                holder.click(R.id.account_card,view -> onItemLongClick(view,item,position));
+//                holder.getView(R.id.account_card).setOnLongClickListener(new View.OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//
+//                        showAccountChangeDialog(item);
+//                        return true;
+//                    }
+//                });
+                }
+            };
+        recyclerView.setAdapter(adapter);
 
-        };
+//        mAdapter.setOnItemClickListener(new SmartViewHolder.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View itemView, int position) {
+//                createAccount();
+//            }
+//        });
+//
+//        mAdapter.setOnItemLongClickListener(new SmartViewHolder.OnItemLongClickListener() {
+//            @Override
+//            public void onItemLongClick(View itemView, int position) {
+//                createAccount();
+//            }
+//        });
+//        DelegateAdapter delegateAdapter = new DelegateAdapter(virtualLayoutManager);
+//        delegateAdapter.addAdapter(adapter);
 
-        DelegateAdapter delegateAdapter = new DelegateAdapter(virtualLayoutManager);
-        delegateAdapter.addAdapter(adapter);
 
-        recyclerView.setAdapter(delegateAdapter);
 
         img = findViewById(R.id.account_add);
-        img.setOnClickListener(view -> {
-            showInputDialog();
+        img.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                createAccount();
+            }
         });
 
         initRefreshLayoutListeners();
     }
 
+    @SuppressLint("DefaultLocale")
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void accountSum(){
+        Double totalInMoney = accountDataEntries.stream().map(AccountDataEntry::getInMoney).reduce(0.00, Double::sum);
+        Double totalOutMoney = accountDataEntries.stream().map(AccountDataEntry::getOutMoney).reduce(0.00, Double::sum);
+        total.setText(String.format("%.2f", totalInMoney-totalOutMoney));
+        if(totalInMoney<totalOutMoney){
+            total.setTextColor(getContext().getResources().getColor(R.color.app_color_theme_1));
+        }else{
+            total.setTextColor(getContext().getResources().getColor(R.color.app_color_theme_5));
+        }
+    }
 
-    public void viewHolderClick(AccountDataEntry item){
-        int focusType = 1;
+    private void createAccount(){
+        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .title("添加账户")
+                .inputType(
+                        InputType.TYPE_CLASS_TEXT)
+                .input(
+                        "请输入新账户",
+                        "",
+                        false,
+                        new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                            }
+                        })
+                .inputRange(1,5)
+                .positiveText("确定")
+                .negativeText("取消")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                mAccount = dialog.getInputEditText().getText().toString();
+//                                mTvAccount.setText(mAccount);
+                        //TODO:insert_new_account
+                        assert dialog.getInputEditText() != null;
+                        if(billDao.InsertAccount(dialog.getInputEditText().getText().toString())){
+                            XToastUtils.success("添加账户成功");
+                            refreshLayout.autoRefresh();
+                        }else{
+                            XToastUtils.error("添加账户失败，该账户已存在");
+                        }
+                    }
+                })
+                .show();
+    }
+
+    private void changAccount(AccountDataEntry item){
+        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .title("修改账户")
+                .inputType(
+                        InputType.TYPE_CLASS_TEXT)
+                .input(
+                        "请输入新账户",
+                        "",
+                        false,
+                        new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                            }
+                        })
+                .inputRange(1,5)
+                .positiveText("确定")
+                .negativeText("取消")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        assert dialog.getInputEditText() != null;
+                        if(billDao.ChangeAccountName(item.getName(),dialog.getInputEditText().getText().toString())){
+                            XToastUtils.success("修改账户成功");
+                            refreshLayout.autoRefresh();
+                        }else{
+                            XToastUtils.error("修改账户失败，该账户已存在");
+                        }
+                    }
+                })
+                .show();
+    }
+
+    private void viewHolderClick(AccountDataEntry item){
+        int focusType = 0;
         String account = item.getName();
         String member = getResources().getString(R.string.unlimited);
 
@@ -143,16 +306,21 @@ public class AccountFragment extends BaseFragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     protected void initRefreshLayoutListeners() {
         //下拉刷新
-        refreshLayout.setOnRefreshListener(refreshLayout -> {
-            refreshLayout.getLayout().postDelayed(() -> {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 accountDataEntries.clear();
                 accountDataEntries = billDao.getBalanceByAccount();
                 adapter.refresh(accountDataEntries);
+                accountSum();
+
                 refreshLayout.finishRefresh();
-            }, 1000);
+            }
         });
+
         //上拉加载
 //        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
 //            refreshLayout.getLayout().postDelayed(() -> {
@@ -165,42 +333,43 @@ public class AccountFragment extends BaseFragment {
 //                }
 //            }, 1000);
 //        });
-        refreshLayout.autoRefresh();//第一次进入触发自动刷新，演示效果
+        refreshLayout.autoRefresh();    //第一次进入触发自动刷新，演示效果
     }
 
 
-    private void showInputDialog() {
+    private void showAccountChangeDialog(AccountDataEntry item) {
         new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                 //.iconRes(R.drawable.icon_warning)
                 //.title(R.string.tip_warning)
-                .content(R.string.account_content)
+                .content(R.string.account_change_content)
                 .inputType(
                         InputType.TYPE_CLASS_TEXT)
                 .input(
-                        getString(R.string.account_content),
+                        getString(R.string.account_change_content),
                         "",
                         false,
                         ((dialog, input) -> XToastUtils.toast(input.toString())))
-                .inputRange(1, 10)
+                .inputRange(1, 5)
                 .positiveText(R.string.button_confirm)
                 .negativeText(R.string.button_cancel)
                 .onPositive((dialog, which) -> {
                     assert dialog.getInputEditText() != null;
-                    XToastUtils.toast("你输入了:" + dialog.getInputEditText().getText().toString());
+                    if(billDao.ChangeAccountName(item.getName(),dialog.getInputEditText().getText().toString())){
+                        XToastUtils.success("修改账户成功");
+                        refreshLayout.autoRefresh();
+                    }else{
+                        XToastUtils.error("修改账户失败，该账户已存在");
+                    }
                 })
                 .cancelable(false)
                 .show();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
-//    private void showCustomDialog() {
-//        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
-//                .customView(R.layout.add_account, true)
-//                .title("新建账户")
-//                .positiveText(R.string.button_confirm)
-//                .negativeText(R.string.button_cancel)
-//                .cancelable(false)
-//                .show();
-//
-//    }
+        refreshLayout.autoRefresh();
+    }
+
 }

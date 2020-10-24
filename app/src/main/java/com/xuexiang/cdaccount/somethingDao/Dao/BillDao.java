@@ -1,5 +1,6 @@
 package com.xuexiang.cdaccount.somethingDao.Dao;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +9,7 @@ import com.xuexiang.cdaccount.ExpanableBill.BillDataDay;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataItem;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataMonth;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataYear;
+import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.database.AccountDataEntry;
 import com.xuexiang.cdaccount.database.ChartDataEntry;
 import com.xuexiang.cdaccount.somethingDao.DatabaseHelper;
@@ -18,6 +20,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static com.xuexiang.xutil.XUtil.getResources;
 
 /**
  * Bill账单
@@ -31,11 +35,42 @@ public class BillDao {
 
     public int id_num = 0;
 
-    public void changeaccount(int id, int type, double money){
+    /**
+     *
+     */
+    public void MyCreate(){
+        String sql;
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        sql = "create table "+"Bill"+"(Bill_ID int, Bill_TYPE int, Bill_SubCategory int, Bill_Account int, Bill_toAccount int, Bill_Member int, year varchar(5), month varchar(3), day varchar(3), time varchar(15), Bill_Remark varchar(255), Bill_Money double)";
+        db.execSQL(sql);
+
+        sql = "create table "+"OutTopCategory"+"(OutTopCategory_ID int, OutTopCategory_Name String)";
+        db.execSQL(sql);
+
+        sql = "create table "+"OutSubCategory"+"(OutSubCategory_ID int, OutSubCategory_Parent, OutSubCategory_Name varchar(15))";
+        db.execSQL(sql);
+
+        sql = "create table "+"InTopCategory"+"(InTopCategory_ID int, InTopCategory_Name varchar(15))";
+        db.execSQL(sql);
+
+        sql = "create table "+"InSubCategory"+"(InSubCategory_ID int, InSubCategory_Parent, InSubCategory_Name)";
+        db.execSQL(sql);
+
+        sql = "create table "+"Account"+"(Account_ID int, Account_Name varchar(15), Account_InMoney double, Account_OutMoney)";
+        db.execSQL(sql);
+
+        sql = "create table "+"Member"+"(Member_ID int, Member_Name varchar(15))";
+        db.execSQL(sql);
+    }
+
+
+
+    @SuppressLint("Recycle")
+    public void changeaccount(int id, int type, double money, int toacc){
         SQLiteDatabase db = mHelper.getWritableDatabase();
         if(type == 0){
             String sql = "select * from Account where Account_ID = "+id+"";
-            Cursor cursor = db.rawQuery(sql, null);
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
             while (cursor.moveToNext()){
                 double m = cursor.getDouble(cursor.getColumnIndex("Account_OutMoney"));
                 m+=money;
@@ -43,9 +78,9 @@ public class BillDao {
                 db.execSQL(sql);
             }
         }
-        else{
+        else if(type == 1){
             String sql = "select * from Account where Account_ID = "+id+"";
-            Cursor cursor = db.rawQuery(sql, null);
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
             while (cursor.moveToNext()){
                 double m = cursor.getDouble(cursor.getColumnIndex("Account_InMoney"));
                 m+=money;
@@ -53,7 +88,28 @@ public class BillDao {
                 db.execSQL(sql);
             }
         }
+        else{
+            String sql = "select * from Account where Account_ID = "+id+"";
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()){
+                double m = cursor.getDouble(cursor.getColumnIndex("Account_OutMoney"));
+                m+=money;
+                sql = "update Account set Account_OutMoney = '"+m+"' where Account_ID = "+id+"";
+                db.execSQL(sql);
+            }
+
+            sql = "select * from Account where Account_ID = "+toacc+"";
+            cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()){
+                double m = cursor.getDouble(cursor.getColumnIndex("Account_InMoney"));
+                m+=money;
+                sql = "update Account set Account_InMoney = '"+m+"' where Account_ID = "+toacc+"";
+                db.execSQL(sql);
+            }
+        }
     }
+
+
 
     public void insertBill(int type, int subcategory, int account, int toaccount, int member, String year, String month, String day, String time, String remark, double money) {//通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -63,12 +119,13 @@ public class BillDao {
         db.close();
     }
 
+    @SuppressLint("Recycle")
     public void InsertBill(int type, String subcategory, String account, String toaccount, String member, String year, String month, String day, String time, String remark, double money) {  //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         int sub = 0, acc = 0, toa = 0, mem = 0;
         if (type == 0) {
             String sql = "select * from OutSubCategory where OutSubCategory_Name = '" + subcategory + "'";
-            Cursor cursor = db.rawQuery(sql, null);
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
             while (cursor.moveToNext())
                 sub = cursor.getInt(cursor.getColumnIndex("OutSubCategory_ID"));
         } else {
@@ -93,9 +150,10 @@ public class BillDao {
             mem = cursor.getInt(cursor.getColumnIndex("Member_ID"));
         db.close();
         insertBill(type, sub, acc, toa, mem, year, month, day, time, remark, money);
-        changeaccount(acc, type, money);
+        changeaccount(acc, type, money, toa);
     }
 
+    @SuppressLint("Recycle")
     public boolean InsertCategory(String Top, String sub, int type) {   //通过测试,返回值需要判断
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
@@ -103,7 +161,7 @@ public class BillDao {
         boolean sucessSub = false;
         if (type == 0) {
             String sql = "select OutTopCategory_Name from OutTopCategory where OutTopCategory_Name = '" + Top + "'";
-            Cursor cursor = db.rawQuery(sql, null);
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
             while (cursor.moveToNext()) {
                 if (cursor.getString(cursor.getColumnIndex("OutTopCategory_Name")).equals(Top))
                     sucessTop = true;
@@ -203,11 +261,12 @@ public class BillDao {
         return true;
     }
 
+    @SuppressLint("Recycle")
     public boolean InsertMember(String name) { //通过测试,返回值需要判断
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
         String sql = "select Member_Name from Member where Member_Name = '" + name + "'";
-        Cursor cursor = db.rawQuery(sql, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
         boolean sucess = false;
         while (cursor.moveToNext()) {
             if (cursor.getString(cursor.getColumnIndex("Member_Name")).equals(name)) {
@@ -232,10 +291,11 @@ public class BillDao {
         return true;
     }
 
+    @SuppressLint("Recycle")
     public boolean InsertAccount(String name) {   //通过测试,返回值需要判断
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select Account_Name from Account where Account_Name = '" + name + "'";
-        Cursor cursor = db.rawQuery(sql, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
         boolean sucess = false;
         while (cursor.moveToNext()) {
             if (cursor.getString(cursor.getColumnIndex("Account_Name")).equals(name)) {
@@ -262,8 +322,8 @@ public class BillDao {
     public List<String> QueryMember() {  //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select Member_name from Member";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<String> re = new LinkedList<String>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<String> re = new LinkedList<>();
         while (cursor.moveToNext()) {
             String tmp = cursor.getString(cursor.getColumnIndex("Member_Name"));
             re.add(tmp);
@@ -275,8 +335,8 @@ public class BillDao {
     public List<String> QueryAccount() {  //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select Account_name from Account where Account_ID > 0";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<String> re = new LinkedList<String>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<String> re = new LinkedList<>();
         while (cursor.moveToNext()) {
             String tmp = cursor.getString(cursor.getColumnIndex("Account_Name"));
             re.add(tmp);
@@ -293,7 +353,7 @@ public class BillDao {
         String Year = "" + tmp1;
         SQLiteDatabase db = mHelper.getReadableDatabase();
         String sql = "select sum(Bill_Money) as ans from Bill where month = '" + Month + "' AND Bill_TYPE = 1 AND year = '" + Year + "'";
-        Cursor cursor = db.rawQuery(sql, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
         double re = 0;
         if (cursor.moveToNext()) re = cursor.getDouble(cursor.getColumnIndex("ans"));
         db.close();
@@ -308,7 +368,7 @@ public class BillDao {
         String Year = "" + tmp1;
         SQLiteDatabase db = mHelper.getReadableDatabase();
         String sql = "select sum(Bill_Money) as ans from Bill where month = '" + Month + "' AND Bill_TYPE = 0 AND year = '" + Year + "'";
-        Cursor cursor = db.rawQuery(sql, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
         double re = 0;
         if (cursor.moveToNext()) re = cursor.getDouble(cursor.getColumnIndex("ans"));
         db.close();
@@ -318,8 +378,8 @@ public class BillDao {
     public List<String> GetRecentDate() {  //通过测试
         SQLiteDatabase db = mHelper.getReadableDatabase();
         String sql = "select * from Bill order by year || month || day || time DESC";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<String> re = new LinkedList<String>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<String> re = new LinkedList<>();
         int cnt = 0;
         while (cursor.moveToNext() && cnt < 20) {
             if (cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) == 2) continue;
@@ -328,7 +388,7 @@ public class BillDao {
             String M = cursor.getString(cursor.getColumnIndex("month"));
             String D = cursor.getString(cursor.getColumnIndex("day"));
             String T = cursor.getString(cursor.getColumnIndex("time"));
-            String ans = Y + " " + M + " " + D + " " + T;
+            String ans = Y + "-" + M + "-" + D + " " + T;
             re.add(ans);
         }
         db.close();
@@ -339,8 +399,8 @@ public class BillDao {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         SQLiteDatabase db = mHelper.getReadableDatabase();
         String sql = "select * from Bill order by year || month || day || time DESC";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<String> re = new LinkedList<String>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<String> re = new LinkedList<>();
         int cnt = 0;
         while(cursor.moveToNext() && cnt < 20){
             if(cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) == 2) continue;
@@ -351,7 +411,7 @@ public class BillDao {
             if(cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) == 0)
             {
                 sql = "select * from OutSubCategory where OutSubCategory_ID ="+txt+"";
-                Cursor cursor1 = db.rawQuery(sql, null);
+                @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql, null);
                 while(cursor1.moveToNext())
                 {
                     nametmp = cursor1.getString(cursor1.getColumnIndex("OutSubCategory_Name"));
@@ -359,7 +419,7 @@ public class BillDao {
             }
             else{
                 sql = "select * from InSubCategory where InSubCategory_ID ="+txt+"";
-                Cursor cursor1 = db.rawQuery(sql, null);
+                @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql, null);
                 while(cursor1.moveToNext())
                 {
                     nametmp = cursor1.getString(cursor1.getColumnIndex("InSubCategory_Name"));
@@ -376,8 +436,8 @@ public class BillDao {
     public List<Integer> GetRecentIO() {   //通过测试
         SQLiteDatabase db = mHelper.getReadableDatabase();
         String sql = "select * from Bill order by year || month || day || time DESC";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<Integer> re = new LinkedList<Integer>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<Integer> re = new LinkedList<>();
         int cnt = 0;
         while (cursor.moveToNext() && cnt < 20) {
             if (cursor.getInt(cursor.getColumnIndex("Bill_TYPE")) == 2) continue;
@@ -392,8 +452,8 @@ public class BillDao {
     public List<String> QueryOutTopCategory() {  //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select OutTopCategory_Name from OutTopCategory";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<String> re = new LinkedList<String>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<String> re = new LinkedList<>();
         while (cursor.moveToNext()) {
             String tmp = cursor.getString(cursor.getColumnIndex("OutTopCategory_Name"));
             re.add(tmp);
@@ -405,14 +465,14 @@ public class BillDao {
     public List<List<String>> QueryOutSubCategory() {   //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select * from OutTopCategory";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<List<String>> re = new LinkedList<List<String>>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<List<String>> re = new LinkedList<>();
 
         while (cursor.moveToNext()) {
             int tmp1 = cursor.getInt(cursor.getColumnIndex("OutTopCategory_ID"));
             String sql1 = "select OutSubCategory_Name from OutSubCategory where OutSubCategory_Parent = " + tmp1 + "";
-            Cursor cursor1 = db.rawQuery(sql1, null);
-            List<String> tmp = new LinkedList<String>();
+            @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql1, null);
+            List<String> tmp = new LinkedList<>();
             while (cursor1.moveToNext()) {
                 String tmp3 = cursor1.getString(cursor1.getColumnIndex("OutSubCategory_Name"));
                 tmp.add(tmp3);
@@ -426,8 +486,8 @@ public class BillDao {
     public List<String> QueryInTopCategory() {  //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select InTopCategory_Name from InTopCategory";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<String> re = new LinkedList<String>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<String> re = new LinkedList<>();
         while (cursor.moveToNext()) {
             String tmp = cursor.getString(cursor.getColumnIndex("InTopCategory_Name"));
             re.add(tmp);
@@ -439,14 +499,14 @@ public class BillDao {
     public List<List<String>> QueryInSubCategory() {   //通过测试
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select * from InTopCategory";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<List<String>> re = new LinkedList<List<String>>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<List<String>> re = new LinkedList<>();
 
         while (cursor.moveToNext()) {
             int tmp1 = cursor.getInt(cursor.getColumnIndex("InTopCategory_ID"));
             String sql1 = "select InSubCategory_Name from InSubCategory where InSubCategory_Parent = " + tmp1 + "";
-            Cursor cursor1 = db.rawQuery(sql1, null);
-            List<String> tmp = new LinkedList<String>();
+            @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql1, null);
+            List<String> tmp = new LinkedList<>();
             while (cursor1.moveToNext()) {
                 String tmp3 = cursor1.getString(cursor1.getColumnIndex("InSubCategory_Name"));
                 tmp.add(tmp3);
@@ -472,28 +532,28 @@ public class BillDao {
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
-        Map<Integer, Integer> mp1 = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> mp1 = new HashMap<>();
         String sql2 = "select * from OutSubCategory";
-        Cursor cursor2 = db.rawQuery(sql2, null);
+        @SuppressLint("Recycle") Cursor cursor2 = db.rawQuery(sql2, null);
         while(cursor2.moveToNext()){
             mp1.put(cursor2.getInt(cursor2.getColumnIndex("OutSubCategory_ID")),cursor2.getInt(cursor2.getColumnIndex("OutSubCategory_Parent")));
         }
 
-        Map<Integer, String> mp = new HashMap<Integer, String>();
+        Map<Integer, String> mp = new HashMap<>();
         String sql1 = "select * from OutTopCategory";
-        Cursor cursor1 = db.rawQuery(sql1, null);
+        @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql1, null);
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutTopCategory_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 0 group by Bill_SubCategory";
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<ChartDataEntry> re = new LinkedList<>();
 
-        Map<String,Double> ans =  new HashMap<String,Double>();
+        Map<String,Double> ans = new HashMap<>();
         while(cursor.moveToNext()){
-            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_SubCategory")));
-            Integer tmp3 =  new Integer(mp1.get(tmp1));
+            Integer tmp1 = cursor.getInt(cursor.getColumnIndex("Bill_SubCategory"));
+            Integer tmp3 = mp1.get(tmp1);
             String tmp2 = mp.get(tmp3);
             double tmp4 = cursor.getDouble(cursor.getColumnIndex("nums"));
             if(ans.containsKey(tmp2)){
@@ -527,19 +587,19 @@ public class BillDao {
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
-        Map<Integer, String> mp = new HashMap<Integer, String>();
+        Map<Integer, String> mp = new HashMap<>();
         String sql1 = "select * from OutSubCategory";
-        Cursor cursor1 = db.rawQuery(sql1, null);
+        @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql1, null);
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("OutSubCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutSubCategory_Name")));
         }
 
-        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' group by Bill_SubCategory";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
+        String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 0 group by Bill_SubCategory";
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<ChartDataEntry> re = new LinkedList<>();
 
         while(cursor.moveToNext()){
-            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_SubCategory")));
+            Integer tmp1 = cursor.getInt(cursor.getColumnIndex("Bill_SubCategory"));
             ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
@@ -563,28 +623,28 @@ public class BillDao {
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
-        Map<Integer, Integer> mp1 = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> mp1 = new HashMap<>();
         String sql2 = "select * from InSubCategory";
-        Cursor cursor2 = db.rawQuery(sql2, null);
+        @SuppressLint("Recycle") Cursor cursor2 = db.rawQuery(sql2, null);
         while(cursor2.moveToNext()){
             mp1.put(cursor2.getInt(cursor2.getColumnIndex("InSubCategory_ID")),cursor2.getInt(cursor2.getColumnIndex("InSubCategory_Parent")));
         }
 
-        Map<Integer, String> mp = new HashMap<Integer, String>();
+        Map<Integer, String> mp = new HashMap<>();
         String sql1 = "select * from InTopCategory";
-        Cursor cursor1 = db.rawQuery(sql1, null);
+        @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql1, null);
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("InTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("InTopCategory_Name")));
         }
 
         String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 1 group by Bill_SubCategory";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<ChartDataEntry> re = new LinkedList<>();
 
-        Map<String,Double> ans =  new HashMap<String,Double>();
+        Map<String,Double> ans = new HashMap<>();
         while(cursor.moveToNext()){
-            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_SubCategory")));
-            Integer tmp3 =  new Integer(mp1.get(tmp1));
+            Integer tmp1 = cursor.getInt(cursor.getColumnIndex("Bill_SubCategory"));
+            Integer tmp3 = mp1.get(tmp1);
             String tmp2 = mp.get(tmp3);
             double tmp4 = cursor.getDouble(cursor.getColumnIndex("nums"));
             if(ans.containsKey(tmp2)){
@@ -618,19 +678,19 @@ public class BillDao {
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
-        Map<Integer, String> mp = new HashMap<Integer, String>();
+        Map<Integer, String> mp = new HashMap<>();
         String sql1 = "select * from InSubCategory";
-        Cursor cursor1 = db.rawQuery(sql1, null);
+        @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql1, null);
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("InSubCategory_ID")),cursor1.getString(cursor1.getColumnIndex("InSubCategory_Name")));
         }
 
         String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 1 group by Bill_SubCategory";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<ChartDataEntry> re = new LinkedList<>();
 
         while(cursor.moveToNext()){
-            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_SubCategory")));
+            Integer tmp1 = cursor.getInt(cursor.getColumnIndex("Bill_SubCategory"));
             ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
@@ -655,19 +715,19 @@ public class BillDao {
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
-        Map<Integer, String> mp = new HashMap<Integer, String>();
+        Map<Integer, String> mp = new HashMap<>();
         String sql1 = "select * from Member";
-        Cursor cursor1 = db.rawQuery(sql1, null);
+        @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql1, null);
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("Member_ID")),cursor1.getString(cursor1.getColumnIndex("Member_Name")));
         }
 
         String sql = "select Bill_ID, Bill_Member, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = "+type+" group by Bill_Member";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<ChartDataEntry> re = new LinkedList<>();
 
         while(cursor.moveToNext()){
-            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_Member")));
+            Integer tmp1 = cursor.getInt(cursor.getColumnIndex("Bill_Member"));
             ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
@@ -692,19 +752,19 @@ public class BillDao {
         String ed = end_year+end_month+end_day;
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
-        Map<Integer, String> mp = new HashMap<Integer, String>();
+        Map<Integer, String> mp = new HashMap<>();
         String sql1 = "select * from Account";
-        Cursor cursor1 = db.rawQuery(sql1, null);
+        @SuppressLint("Recycle") Cursor cursor1 = db.rawQuery(sql1, null);
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("Account_ID")),cursor1.getString(cursor1.getColumnIndex("Account_Name")));
         }
 
         String sql = "select Bill_ID, Bill_Account, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = "+type+" group by Bill_Account";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<ChartDataEntry> re = new LinkedList<>();
 
         while(cursor.moveToNext()){
-            Integer tmp1 = new Integer(cursor.getInt(cursor.getColumnIndex("Bill_Account")));
+            Integer tmp1 = cursor.getInt(cursor.getColumnIndex("Bill_Account"));
             ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
@@ -730,8 +790,8 @@ public class BillDao {
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
         String sql = "select year || month || day as date, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = "+type+" group by date";
-        Cursor cursor = db.rawQuery(sql, null);
-        List<ChartDataEntry> re = new LinkedList<ChartDataEntry>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+        List<ChartDataEntry> re = new LinkedList<>();
 
         while(cursor.moveToNext()){
             ChartDataEntry tmp = new ChartDataEntry(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
@@ -749,7 +809,7 @@ public class BillDao {
     public List<AccountDataEntry> getBalanceByAccount() {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select * from Account where Account_ID >= 1";
-        Cursor cursor = db.rawQuery(sql, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
         List<AccountDataEntry> re = new LinkedList<>();
         while (cursor.moveToNext()) {
             AccountDataEntry tmp = new AccountDataEntry(cursor.getString(cursor.getColumnIndex("Account_Name")), cursor.getDouble(cursor.getColumnIndex("Account_InMoney")), cursor.getDouble(cursor.getColumnIndex("Account_OutMoney")));
@@ -767,6 +827,7 @@ public class BillDao {
      * @param account  筛选的账户
      * @return BillDataYear
      */
+    @SuppressLint("Recycle")
     public BillDataYear getJournalAccount(String Year, String member, String account){
         double YearIncome = 0, YearOutcome = 0;
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -800,11 +861,11 @@ public class BillDao {
                     jtmp = "0"+tmp;
                 }
                 List<BillDataItem> billDataItemList = new LinkedList<>();
-                String sql = "";
-                if(member.equals("不限" ) && account.equals("不限" )) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"'";
-                else if(member.equals("不限")) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND Bill_Account = "+account1+"";
-                else if(account.equals("不限")) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND Bill_Member = "+member1+"";
-                else sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND Bill_Account = "+account1+" AND Bill_Member = "+member1+"";
+                String sql;
+                if(member.equals(getResources().getString(R.string.unlimited)) && account.equals(getResources().getString(R.string.unlimited))) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"'";
+                else if(member.equals(getResources().getString(R.string.unlimited))) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND (Bill_Account = "+account1+" or Bill_toAccount = "+account1+")";
+                else if(account.equals(getResources().getString(R.string.unlimited))) sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND Bill_Member = "+member1+"";
+                else sql = "select * from Bill where year = '"+Year+"' AND month = '"+itmp+"' AND day = '"+jtmp+"' AND (Bill_Account = "+account1+" or Bill_toAccount = "+account1+") AND Bill_Member = "+member1+"";
                 Cursor cursor = db.rawQuery(sql, null);
                 double income = 0.0, outcome = 0.0;
                 boolean dayexist = false;
@@ -866,11 +927,11 @@ public class BillDao {
                 if(!dayexist) continue;
                 monthincome += income;
                 monthoutcome += outcome;
-                BillDataDay tmp = new BillDataDay(jtmp, income, outcome, billDataItemList);
+                BillDataDay tmp = new BillDataDay(Year, itmp, jtmp, income, outcome, billDataItemList);
                 billDataDayList.add(tmp);
             }
             if(!monthexist) continue;
-            BillDataMonth tmp = new BillDataMonth(itmp, monthincome, monthoutcome, billDataDayList);
+            BillDataMonth tmp = new BillDataMonth(Year, itmp, monthincome, monthoutcome, billDataDayList);
             billDataMonthList.add(tmp);
             YearIncome += monthincome;
             YearOutcome += monthoutcome;
@@ -885,13 +946,13 @@ public class BillDao {
      * 修改账户名称
      * @param preaccountname 原账户名
      * @param nowname 新账户名
-     * @return
+     * @return boolen
      */
     public boolean ChangeAccountName(String preaccountname, String nowname){
         boolean eixt = false;
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select * from Account where Account_Name = '"+preaccountname+"'";
-        Cursor cursor = db.rawQuery(sql, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
         while(cursor.moveToNext()){
             eixt = true;
         }
@@ -925,5 +986,24 @@ public class BillDao {
         db.close();
     }
 
+
+    public void Destory(){
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String sql = "drop TABLE Bill";
+        db.execSQL(sql);
+        sql = "drop TABLE OutTopCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE OutSubCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE InTopCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE InSubCategory";
+        db.execSQL(sql);
+        sql = "drop TABLE Account";
+        db.execSQL(sql);
+        sql = "drop TABLE Member";
+        db.execSQL(sql);
+        db.close();
+    }
 
 }

@@ -30,4 +30,9 @@
     <color name="drop_down_unselected">#111111</color>
     <color name="check_bg">#f2f2f2</color>
     <color name="un_press_color">#9C27B0</color>
+
+    <color name="bg_biometric_prompt_dialog">#99000000</color>
+    <color name="text_quaternary">#CDCED0</color>
+    <color name="text_red">#FF5555</color>
+    <color name="text_green">#82C785</color>
 </resources>

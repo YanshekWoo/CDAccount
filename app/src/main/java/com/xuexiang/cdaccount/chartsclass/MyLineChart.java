@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.chartsclass;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -32,9 +33,12 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.database.ChartDataEntry;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.xuexiang.xutil.XUtil.getContext;
 import static com.xuexiang.xutil.XUtil.getResources;
 
 public class MyLineChart {
@@ -45,14 +49,18 @@ public class MyLineChart {
      * 折线图
      * @return lineChart
      */
-    public LineChart initLineChart(LineChart lineChart) {
+    public LineChart initLineChart(@NotNull LineChart lineChart) {
         lineChart.setDescription(null);
         lineChart.setDrawGridBackground(false);
         // 开启手势触摸
         lineChart.setTouchEnabled(true);
+        // Y轴禁止缩放
+        lineChart.setScaleYEnabled(false);
         // enable scaling and dragging
         lineChart.setDragEnabled(true);
-        lineChart.setScaleEnabled(true);
+//        // 禁止高亮
+        lineChart.setHighlightPerDragEnabled(false);
+//        lineChart.setHighlightPerTapEnabled(false);
         //无数据时显示
         lineChart.setNoDataText(getResources().getString(R.string.no_data));
         //设置动画
@@ -63,58 +71,82 @@ public class MyLineChart {
         YAxis yAxisRight = lineChart.getAxisRight();
         Legend legend = lineChart.getLegend();
         setLineChartAxis(xAxis, yAxisLeft, yAxisRight, legend);
+
+
+        CustomMPLineChartMarkerView mv = new CustomMPLineChartMarkerView(getContext());
+        mv.setChartView(lineChart);
+        lineChart.setMarker(mv);
+
         return lineChart;
     }
 
-    public void setLineChartAxis(XAxis xAxis, YAxis yAxisLeft, YAxis yAxisRight, Legend legend) {
+    public void setLineChartAxis(@NotNull XAxis xAxis, @NotNull YAxis yAxisLeft, @NotNull YAxis yAxisRight, @NotNull Legend legend) {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisLineWidth(1);
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setEnabled(true);
-        xAxis.setTextSize(7f);
+        xAxis.setGranularity(1f);
+        xAxis.setTextSize(4f);
+        xAxis.setLabelRotationAngle(-70f);
 //        xAxis.setAxisMinimum(0);
 
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setDrawAxisLine(true);
         yAxisLeft.setAxisLineWidth(1);
         yAxisLeft.setEnabled(true);
+        yAxisLeft.setAxisMinimum(0);
 
         yAxisRight.setDrawGridLines(false);
         yAxisRight.setDrawAxisLine(true);
         yAxisRight.setAxisLineWidth(1);
         yAxisRight.setEnabled(true);
+        yAxisRight.setAxisMinimum(0);
 
         //设置Lengend位置
-        legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
+        legend.setTextColor(getContext().getColor(R.color.colorAccent)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setForm(Legend.LegendForm.NONE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public LineData setLinedata(LineChart lineChart, List<ChartDataEntry> chartDataEntries) {
+    public LineData setLinedata(LineChart lineChart, @NotNull List<ChartDataEntry> chartDataEntries, String legendLable) {
         //设置数据
         List<Entry> entries = new ArrayList<>();
-        int lenth = chartDataEntries.size();
-        for (int i = 0; i < lenth; i++) {
+        int length = chartDataEntries.size();
+        for (int i = 0; i < length; i++) {
             entries.add(new Entry(i, (float) chartDataEntries.get(i).getDataMoney()));
         }
 
         // X轴样式
-        lineChart.getXAxis().setLabelCount(lenth);
-        lineChart.getXAxis().setLabelRotationAngle(-60f);
+        lineChart.getXAxis().setLabelCount(length);
         lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                int m = lenth / 5 + 1;
+                int mod = length / 15 + 1;
                 int intValue = Math.round(value);
-                if(intValue < lenth && intValue>=0 && intValue==value && intValue%m==0) {
+                String parsedDate;
+
+                if(length>=14 && intValue < length && intValue>=length-3 && intValue==value) {
+                    return "预测值";
+                }
+                else if(length>=14 && intValue < length-3 && intValue>=0 && intValue==value && intValue % mod==0) {
                     String date = chartDataEntries.get(intValue).getDataName();
                     String year = date.substring(0, 4);
                     String month = date.substring(4, 6);
                     String day = date.substring(6, 8);
-                    return year+"-"+month+"-"+day;
+                    parsedDate = "   "+year+"-"+month+"-"+day;
+                    return parsedDate;
+                }
+                else if(intValue < length && intValue>=0 && intValue==value && intValue % mod==0) {
+                    String date = chartDataEntries.get(intValue).getDataName();
+                    String year = date.substring(0, 4);
+                    String month = date.substring(4, 6);
+                    String day = date.substring(6, 8);
+                    parsedDate = "   "+year+"-"+month+"-"+day;
+                    return parsedDate;
                 }
                 else {
                     return "";
@@ -122,20 +154,59 @@ public class MyLineChart {
             }
         });
 
-        LineDataSet lineDataSet = new LineDataSet(entries, "折线图数据");
-        lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
-        lineDataSet.setCircleColor(getResources().getColor(R.color.app_color_theme_7));
-        lineDataSet.setLineWidth(2f);
-        //设置填充
+
+        LineDataSet lineDataSet = new LineDataSet(entries, legendLable);
+//        lineDataSet.setHighLightColor(R.color.app_color_theme_6);
+        lineDataSet.setLineWidth(1f);
+        lineDataSet.setDrawCircles(true);
+        //设置填充'
         //设置允许填充，渐变
         lineDataSet.setDrawFilled(true);
-        lineDataSet.setFillAlpha(80);
-        lineDataSet.setFillDrawable(getResources().getDrawable(R.drawable.line_gradient_bg_shape));
+        lineDataSet.setFillAlpha(150);
+        lineDataSet.setFillDrawable(getContext().getDrawable(R.drawable.line_gradient_bg_shape));
+        //设置圆滑线
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
+        lineDataSet.setValueFormatter(new ValueFormatter(){
+            @SuppressLint("DefaultLocale")
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format("%.2f", value);
+            }
+        });
+
+        // 折线颜色
+//        if(length>=6) {
+//            int[] s = new int[length];
+//            for(int i=0; i<length-3; i++) {
+//                s[i] = getResources().getColor(R.color.app_color_theme_5);
+//            }
+//            s[length-3] = getResources().getColor(R.color.app_color_theme_1);
+//            s[length-2] = getResources().getColor(R.color.app_color_theme_1);
+//            s[length-1] = getResources().getColor(R.color.app_color_theme_1);
+//            lineDataSet.setColors(s);
+//        }
+//        else {
+//            lineDataSet.setColor(getResources().getColor(R.color.app_color_theme_5));
+//        }
+        lineDataSet.setColor(getContext().getColor(R.color.app_color_theme_5));
+        if(length>=14) {
+            int[] s = new int[length];
+            for(int i=0; i<length-3; i++) {
+                s[i] = getContext().getColor(R.color.app_color_theme_5);
+            }
+            s[length-3] = getContext().getColor(R.color.app_color_theme_1);
+            s[length-2] = getContext().getColor(R.color.app_color_theme_1);
+            s[length-1] = getContext().getColor(R.color.app_color_theme_1);
+            lineDataSet.setCircleColors(s);
+        }
+        else {
+            lineDataSet.setCircleColor(getContext().getColor(R.color.app_color_theme_5));
+        }
 
 
         LineData linedata = new LineData(lineDataSet);
-        linedata.setValueTextSize(7f);
+        linedata.setValueTextSize(6f);
         return linedata;
     }
 

@@ -103,7 +103,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="418dp">
+                android:layout_height="428dp">
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
@@ -132,8 +132,8 @@
                     android:layout_height="200dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="15dp" />
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="18dp" />
 
             </RelativeLayout>
 
@@ -142,7 +142,7 @@
                 android:id="@+id/chart_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="20dp"
+                android:layout_marginBottom="20dp"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
 

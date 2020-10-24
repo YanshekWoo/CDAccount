@@ -53,6 +53,11 @@ public class MyBarChart {
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
         barChart.setNoDataText(getResources().getString(R.string.no_data));
+        // Y轴禁止缩放
+        barChart.setScaleYEnabled(false);
+        // 禁止高亮
+        barChart.setHighlightFullBarEnabled(false);
+        barChart.setHighlightPerTapEnabled(false);
         //设置动画
         barChart.animateXY(1500, 1500);
 
@@ -71,24 +76,29 @@ public class MyBarChart {
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setEnabled(true);
-        xAxis.setTextSize(7f);
+        xAxis.setGranularity(1f);
+//        xAxis.setTextSize(6f);
+//        xAxis.setLabelRotationAngle(-70f);
 //        xAxis.setAxisMinimum(0);
 
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setDrawAxisLine(true);
         yAxisLeft.setAxisLineWidth(1);
         yAxisLeft.setEnabled(true);
+        yAxisLeft.setAxisMinimum(0);
 
         yAxisRight.setDrawGridLines(false);
         yAxisRight.setDrawAxisLine(true);
         yAxisRight.setAxisLineWidth(1);
         yAxisRight.setEnabled(true);
+        yAxisRight.setAxisMinimum(0);
 
         //设置Lengend位置
-        legend.setTextColor(getResources().getColor(R.color.app_color_theme_5)); //设置Legend 文本颜色
+        legend.setTextColor(getContext().getColor(R.color.colorAccent)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setForm(Legend.LegendForm.NONE);
     }
 
 
@@ -96,14 +106,14 @@ public class MyBarChart {
      * 设置图表数据
      * @return bardata
      */
-    public BarData setBardata(BarChart barChart, List<ChartDataEntry> chartDataEntries) {
+    public BarData setBardata(BarChart barChart, List<ChartDataEntry> chartDataEntries, String legendLable) {
         List<BarEntry> entries = new ArrayList<>();
         int lenth = chartDataEntries.size();
         for(int i = 0; i < lenth; i++) {
-            entries.add(new BarEntry(i, (float) chartDataEntries.get(i).getDataMoney()));
+            entries.add(new BarEntry(i, (float) chartDataEntries.get(i).getDataMoney(), chartDataEntries.get(i).getDataName()));
         }
 
-        BarDataSet barDataSet = new BarDataSet(entries, "柱状图数据");
+        BarDataSet barDataSet = new BarDataSet(entries, legendLable);
 
         barDataSet.setDrawIcons(false);
         //双色柱状图
@@ -136,8 +146,27 @@ public class MyBarChart {
             }
         });
 
+        // set text size according to length of datas
+        float textSize;
+        if(lenth>19){
+            textSize = 2f;
+        }
+        else if(lenth>15){
+            textSize = 4f;
+        }
+        else if(lenth>11){
+            textSize = 6f;
+        }
+        else if(lenth>7){
+            textSize = 8f;
+
+        }
+        else {
+            textSize = 10f;
+        }
+        barChart.getXAxis().setTextSize(textSize);
+//            barChart.getXAxis().setLabelRotationAngle(0);
         barChart.getXAxis().setLabelCount(lenth);
-        barChart.getXAxis().setLabelRotationAngle(-60f);
         barChart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -146,14 +175,14 @@ public class MyBarChart {
                     return chartDataEntries.get(intValue).getDataName();
                 }
                 else {
-                    return "    ";
+                    return "";
                 }
             }
         });
 
 
         BarData bardata = new BarData(barDataSet);
-        bardata.setValueTextSize(7f);
+        bardata.setValueTextSize(textSize);
 
 
         return bardata;
