@@ -1,4 +1,4 @@
-package com.nestia.biometriclib;
+package com.xuexiang.cdaccount.biometriclib;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
@@ -17,7 +17,7 @@ public class BiometricPromptManager {
 
     private static final String TAG = "BiometricPromptManager";
     private IBiometricPromptImpl mImpl;
-    private Activity mActivity;
+    private final Activity mActivity;
 
     public interface OnBiometricIdentifyCallback {
         void onUsePassword();
@@ -98,17 +98,13 @@ public class BiometricPromptManager {
 
     public boolean isKeyguardSecure() {
         KeyguardManager keyguardManager = (KeyguardManager) mActivity.getSystemService(Context.KEYGUARD_SERVICE);
-        if (keyguardManager.isKeyguardSecure()) {
-            return true;
-        }
-
-        return false;
+        return keyguardManager.isKeyguardSecure();
     }
 
     /**
      * Whether the device support biometric.
      *
-     * @return
+     * @return  API是否23
      */
     public boolean isBiometricPromptEnable() {
         return isAboveApi23()
@@ -119,8 +115,6 @@ public class BiometricPromptManager {
 
     /**
      * Whether fingerprint identification is turned on in app setting.
-     *
-     * @return
      */
     public boolean isBiometricSettingEnable() {
         return SPUtils.getBoolean(mActivity, SPUtils.KEY_BIOMETRIC_SWITCH_ENABLE, false);
@@ -128,8 +122,6 @@ public class BiometricPromptManager {
 
     /**
      * Set fingerprint identification enable in app setting.
-     *
-     * @return
      */
     public void setBiometricSettingEnable(boolean enable) {
         SPUtils.put(mActivity, SPUtils.KEY_BIOMETRIC_SWITCH_ENABLE, enable);

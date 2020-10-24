@@ -1,4 +1,4 @@
-package com.nestia.biometriclib;
+package com.xuexiang.cdaccount.biometriclib;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by gaoyang on 2018/06/19.
  */
@@ -15,12 +17,12 @@ import androidx.annotation.Nullable;
 public class BiometricPromptApi23 implements IBiometricPromptImpl {
 
     private static final String TAG = "BiometricPromptApi23";
-    private Activity mActivity;
+    private final Activity mActivity;
     private BiometricPromptDialog mDialog;
     private FingerprintManager mFingerprintManager;
     private CancellationSignal mCancellationSignal;
     private BiometricPromptManager.OnBiometricIdentifyCallback mManagerIdentifyCallback;
-    private FingerprintManager.AuthenticationCallback mFmAuthCallback
+    private final FingerprintManager.AuthenticationCallback mFmAuthCallback
             = new FingerprintManageCallbackImpl();
 
     public BiometricPromptApi23(Activity activity) {
@@ -31,14 +33,10 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
 
     @Override
     public void authenticate(@Nullable CancellationSignal cancel,
-                              BiometricPromptManager.OnBiometricIdentifyCallback callback) {
+                             @NotNull BiometricPromptManager.OnBiometricIdentifyCallback callback) {
         //指纹识别的回调
         mManagerIdentifyCallback = callback;
 
-        /**
-         * 我实现了一个自定义dialog，
-         * BiometricPromptDialog.OnBiometricPromptDialogActionCallback是自定义dialog的回调
-         */
         mDialog = BiometricPromptDialog.newInstance();
         mDialog.setOnBiometricPromptDialogActionCallback(new BiometricPromptDialog.OnBiometricPromptDialogActionCallback() {
             @Override
@@ -71,12 +69,7 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
         if (mCancellationSignal == null) {
             mCancellationSignal = new CancellationSignal();
         }
-        mCancellationSignal.setOnCancelListener(new CancellationSignal.OnCancelListener() {
-            @Override
-            public void onCancel() {
-                mDialog.dismiss();
-            }
-        });
+        mCancellationSignal.setOnCancelListener(() -> mDialog.dismiss());
 
         try {
             CryptoObjectHelper cryptoObjectHelper = new CryptoObjectHelper();
