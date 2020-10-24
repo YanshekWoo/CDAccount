@@ -20,6 +20,7 @@ package com.xuexiang.cdaccount.fragment;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.text.InputType;
+import android.widget.CompoundButton;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.ChangePasswordActivity;
@@ -35,6 +36,8 @@ import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.app.ActivityUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -49,17 +52,20 @@ import static android.content.Context.MODE_PRIVATE;
 public class SettingsFragment extends BaseFragment implements SuperTextView.OnSuperTextViewClickListener {
 
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.menu_common)
-    SuperTextView menuCommon;
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.menu_privacy)
-    SuperTextView menuPrivacy;
+    @BindView(R.id.stv_switch_custom_theme)
+    SuperTextView stvSwitchBiometric;
+
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_change_passwd)
     SuperTextView menuChangeAccount;
+
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_clear_data)
     SuperTextView menuLogout;
+
+    private static void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        XToastUtils.info("Open");
+    }
 
     @Override
     protected int getLayoutId() {
@@ -68,35 +74,31 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
 
     @Override
     protected void initViews() {
-        menuCommon.setOnSuperTextViewClickListener(this);
-        menuPrivacy.setOnSuperTextViewClickListener(this);
+        initBiometric();
+
         menuChangeAccount.setOnSuperTextViewClickListener(this);
         menuLogout.setOnSuperTextViewClickListener(this);
     }
 
+    /**
+     * 手势密码开关
+     */
+    private void initBiometric() {
+        stvSwitchBiometric.setSwitchIsChecked(false);
+        stvSwitchBiometric.setOnSuperTextViewClickListener(superTextView -> stvSwitchBiometric.setSwitchIsChecked(!stvSwitchBiometric.getSwitchIsChecked(), false));
+        stvSwitchBiometric.setSwitchCheckedChangeListener(SettingsFragment::onCheckedChanged);
+    }
+
+    
     @SuppressLint("NonConstantResourceId")
     @SingleClick
     @Override
-    public void onClick(SuperTextView superTextView) {
+    public void onClick(@NotNull SuperTextView superTextView) {
         switch (superTextView.getId()) {
-            case R.id.menu_common:
-            case R.id.menu_privacy:
             case R.id.menu_change_passwd:
                 ActivityUtils.startActivity(ChangePasswordActivity.class);
             break;
             case R.id.menu_clear_data:
-//                DialogLoader.getInstance().showConfirmDialog(
-//                        getContext(),
-//                        getString(R.string.lab_logout_confirm),
-//                        getString(R.string.lab_yes),
-//                        (dialog, which) -> {
-//                            dialog.dismiss();
-//                            XUtil.getActivityLifecycleHelper().exit();
-//                            TokenUtils.handleLogoutSuccess();
-//                        },
-//                        getString(R.string.lab_no),
-//                        (dialog, which) -> dialog.dismiss()
-//                );
                 showInputDialog();
                 break;
             default:

@@ -1,4 +1,4 @@
-package com.xuexiang.cdaccount.arima;
+package com.xuexiang.cdaccount.arimaprediction;
 
 import android.os.Build;
 

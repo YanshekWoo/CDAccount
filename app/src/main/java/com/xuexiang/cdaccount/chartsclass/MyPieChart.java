@@ -33,14 +33,15 @@ import com.xuexiang.cdaccount.database.ChartDataEntry;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.xuexiang.xutil.XUtil.getContext;
 import static com.xuexiang.xutil.XUtil.getResources;
 
 public class MyPieChart {
 
     /**
      * 初始化折线图
-     * @param pieChart
-     * @return
+     * @param pieChart  饼图
+     * @return 饼图
      */
     public PieChart initPieChart(PieChart pieChart) {
         //设置百分比显示
@@ -74,7 +75,7 @@ public class MyPieChart {
 
     public void setPieChartAxis(Legend legend) {
         //设置Lengend位置
-        legend.setTextColor(getResources().getColor(R.color.colorAccent)); //设置Legend 文本颜色
+        legend.setTextColor(getContext().getColor(R.color.colorAccent)); //设置Legend 文本颜色
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -83,7 +84,6 @@ public class MyPieChart {
 
     public PieData setPiedata(PieChart pieChart, List<ChartDataEntry> chartDataEntries, String legendLable) {
         //设置数据
-        int lenth = chartDataEntries.size();
         List<PieEntry> entries = new ArrayList<>();
         PieEntry others = new PieEntry((float) 0.00, "其他");
         int othersCount = 0;
@@ -139,7 +139,7 @@ public class MyPieChart {
         piedata.setValueFormatter(new PercentFormatter(pieChart));
         piedata.setDrawValues(true);
         piedata.setValueTextSize(12f);
-        piedata.setValueTextColor(getResources().getColor(R.color.black));
+        piedata.setValueTextColor(getContext().getColor(R.color.black));
         return piedata;
     }
 
