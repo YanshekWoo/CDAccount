@@ -1,4 +1,4 @@
-package com.xuexiang.cdaccount.arima;
+package com.xuexiang.cdaccount.arimaprediction;
 
 
 import java.util.Random;
