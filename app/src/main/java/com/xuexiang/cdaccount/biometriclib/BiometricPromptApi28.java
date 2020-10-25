@@ -1,6 +1,5 @@
 package com.xuexiang.cdaccount.biometriclib;
 
-import android.app.Activity;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.CancellationSignal;
@@ -23,6 +22,8 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.ECGenParameterSpec;
 
+import static com.xuexiang.xui.XUI.getContext;
+
 /**
  * Created by gaoyang on 2018/06/19.
  */
@@ -30,22 +31,20 @@ public class BiometricPromptApi28 implements IBiometricPromptImpl {
 
     private static final String KEY_NAME = "BiometricPromptApi28";
 
-    private final Activity mActivity;
     private final BiometricPrompt mBiometricPrompt;
     private BiometricPromptManager.OnBiometricIdentifyCallback mManagerIdentifyCallback;
     private CancellationSignal mCancellationSignal;
     private final Signature mSignature;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
-    public BiometricPromptApi28(Activity activity) {
-        mActivity = activity;
+    public BiometricPromptApi28() {
         mBiometricPrompt = new BiometricPrompt
-                .Builder(activity)
-                .setTitle(activity.getResources().getString(R.string.biometric_dialog_title))
-                .setDescription(activity.getResources().getString(R.string.biometric_dialog_subtitle))
+                .Builder(getContext())
+                .setTitle(getContext().getResources().getString(R.string.biometric_dialog_title))
+                .setDescription(getContext().getResources().getString(R.string.biometric_dialog_subtitle))
                 .setSubtitle("")
-                .setNegativeButton(activity.getResources().getString(R.string.biometric_dialog_use_password),
-                        activity.getMainExecutor(), (dialogInterface, i) -> {
+                .setNegativeButton(getContext().getResources().getString(R.string.biometric_dialog_use_password),
+                        getContext().getMainExecutor(), (dialogInterface, i) -> {
                             if (mManagerIdentifyCallback != null) {
                                 mManagerIdentifyCallback.onUsePassword();
                             }
@@ -88,7 +87,7 @@ public class BiometricPromptApi28 implements IBiometricPromptImpl {
         });
 
         mBiometricPrompt.authenticate(new BiometricPrompt.CryptoObject(mSignature),
-                mCancellationSignal, mActivity.getMainExecutor(), new BiometricPromptCallbackImpl());
+                mCancellationSignal, getContext().getMainExecutor(), new BiometricPromptCallbackImpl());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
