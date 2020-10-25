@@ -217,8 +217,8 @@ public class LoginGestureFragment extends BaseFragment {
     };
 
     private void initFingerPrint() {
-        BiometricPromptManager mManager = new BiometricPromptManager();
-        if (mManager.isBiometricPromptEnable()) {
+        if(BiometricPromptManager.isBiometricPromptEnable() && BiometricPromptManager.isBiometricSettingEnable()){
+            BiometricPromptManager mManager = new BiometricPromptManager();
             mManager.authenticate(new BiometricPromptManager.OnBiometricIdentifyCallback() {
                 @Override
                 public void onUsePassword() {
@@ -227,6 +227,8 @@ public class LoginGestureFragment extends BaseFragment {
 
                 @Override
                 public void onSucceeded() {
+                    String token = RandomUtils.getRandomNumbersAndLetters(16);
+                    TokenUtils.setToken(token);
                     getActivity().finish();
                 }
 
