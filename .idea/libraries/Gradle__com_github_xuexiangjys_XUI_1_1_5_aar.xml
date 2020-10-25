@@ -1,18 +1,18 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.xuexiangjys:XUI:1.1.5@aar">
     <ANNOTATIONS>
-      <root url="jar://D:/Program Files/Gradle/caches/transforms-2/files-2.1/33b66d8fe8cddd2eab22505ce89c5058/jetified-XUI-1.1.5/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../gradle-6.1.1/caches/transforms-2/files-2.1/33b66d8fe8cddd2eab22505ce89c5058/jetified-XUI-1.1.5/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://D:/Program Files/Gradle/caches/transforms-2/files-2.1/33b66d8fe8cddd2eab22505ce89c5058/jetified-XUI-1.1.5/AndroidManifest.xml" />
-      <root url="jar://D:/Program Files/Gradle/caches/transforms-2/files-2.1/33b66d8fe8cddd2eab22505ce89c5058/jetified-XUI-1.1.5/jars/classes.jar!/" />
-      <root url="file://D:/Program Files/Gradle/caches/transforms-2/files-2.1/33b66d8fe8cddd2eab22505ce89c5058/jetified-XUI-1.1.5/res" />
+      <root url="file://$PROJECT_DIR$/../gradle-6.1.1/caches/transforms-2/files-2.1/33b66d8fe8cddd2eab22505ce89c5058/jetified-XUI-1.1.5/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../gradle-6.1.1/caches/transforms-2/files-2.1/33b66d8fe8cddd2eab22505ce89c5058/jetified-XUI-1.1.5/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../gradle-6.1.1/caches/transforms-2/files-2.1/33b66d8fe8cddd2eab22505ce89c5058/jetified-XUI-1.1.5/res" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/Program Files/Gradle/caches/modules-2/files-2.1/com.github.xuexiangjys/XUI/1.1.5/2a1f76d5645e39fe8bcce075d4dbcfc5e2c90a93/XUI-1.1.5-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../gradle-6.1.1/caches/modules-2/files-2.1/com.github.xuexiangjys/XUI/1.1.5/2a1f76d5645e39fe8bcce075d4dbcfc5e2c90a93/XUI-1.1.5-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/Program Files/Gradle/caches/modules-2/files-2.1/com.github.xuexiangjys/XUI/1.1.5/a0645ac1cb565b823a5b08c8ade5250b295acff2/XUI-1.1.5-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../gradle-6.1.1/caches/modules-2/files-2.1/com.github.xuexiangjys/XUI/1.1.5/a0645ac1cb565b823a5b08c8ade5250b295acff2/XUI-1.1.5-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

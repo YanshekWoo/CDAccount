@@ -64,9 +64,6 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         holder.text(R.id.date, item.getTime());
         holder.text(R.id.money,decimalFormat.format(item.getBill_Money()));
-
-        holder.text(R.id.category,item.getBill_SubCategory());
-        holder.text(R.id.account,item.getBill_Account());
         holder.text(R.id.member,item.getBill_Mumber());
         holder.click(R.id.account_detail, new View.OnClickListener() {
             @Override
@@ -74,6 +71,14 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
                 showSimpleTipDialog(item, decimalFormat);
             }
         });
+
+        if (item.getBill_TYPE() == 2) {
+            holder.text(R.id.category,item.getBill_Account()+"   >   "+item.getBill_toAccount());
+            holder.getTextView(R.id.account).setVisibility(View.GONE);
+        } else {
+            holder.text(R.id.category, item.getBill_SubCategory());
+            holder.text(R.id.account, item.getBill_Account());
+        }
 
         switch (item.getBill_TYPE()){
             case 0:
@@ -107,13 +112,17 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
                 .customView(view, true)
                 .positiveText("确定")
                 .autoDismiss(false);
-
+        account.setText(item.getBill_Account());
         money.setText(decimalFormat.format(item.getBill_Money()));
         time.setText(item.getYear()+"."+item.getMonth()+"."+item.getDay()+" "+item.getTime());
         category.setText(item.getBill_SubCategory());
-        account.setText(item.getBill_Account());
         member.setText(item.getBill_Mumber());
-        remark.setText(item.getBill_Remark());
+        if(item.getBill_Remark().equals("")){
+            remark.setText("无");
+        }else{
+            remark.setText(item.getBill_Remark());
+        }
+
         materialDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -129,6 +138,8 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
                 break;
             default:
                 materialDialog.title("转账");
+                category.setText("无");
+                account.setText(item.getBill_Account()+"   >   "+item.getBill_toAccount());
                 break;
         }
     materialDialog.show();
