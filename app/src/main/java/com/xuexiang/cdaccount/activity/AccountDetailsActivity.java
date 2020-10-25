@@ -17,9 +17,9 @@
 
 package com.xuexiang.cdaccount.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -29,15 +29,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataDay;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataMonth;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataYear;
@@ -63,7 +59,7 @@ public class AccountDetailsActivity extends BaseActivity {
 
     private BillDao mBillDao;
     private String[] mHeaders = {"年",  "成员", "账户"};
-    private List<View> mPopupViews = new ArrayList<>();
+    private final List<View> mPopupViews = new ArrayList<>();
 
     private ListDropDownAdapter mMemberAdapter;
     private ListDropDownAdapter mAccountAdapter;
@@ -88,22 +84,27 @@ public class AccountDetailsActivity extends BaseActivity {
     private String selectedMember;
     private String selectedAccount;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
 
     private ExpandableYearAdapter adapter;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.account_title)
     TitleBar mTitleBar;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.ddm_content)
     DropDownMenu mDropDownMenu;
 
 
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.account_header)
     ClassicsHeader mClassicsHeader;
 
@@ -127,9 +128,7 @@ public class AccountDetailsActivity extends BaseActivity {
 
     protected void initTitleBar() {
         mTitleBar.setTitle(getString(R.string.accont_title,selectedYear));
-        mTitleBar.setLeftClickListener(view -> {
-            finish();
-        });
+        mTitleBar.setLeftClickListener(view -> finish());
     }
 
     protected boolean isSupportSlideBack() {
@@ -157,26 +156,19 @@ public class AccountDetailsActivity extends BaseActivity {
         mClassicsHeader.setEnableLastTime(false);
 
         //下拉刷新
-        refreshLayout.setOnRefreshListener(new OnRefreshListener(){
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                selectedYear++;
-                printHeaderAndFooter();
-                getBillData();
-                refreshLayout.finishRefresh();
-            }
+        refreshLayout.setOnRefreshListener(refreshLayout -> {
+            selectedYear++;
+            printHeaderAndFooter();
+            getBillData();
+            refreshLayout.finishRefresh();
         });
 
         //上拉加载
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                selectedYear--;
-                printHeaderAndFooter();
-                getBillData();
-                refreshLayout.finishLoadMore();
-            }
-
+        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            selectedYear--;
+            printHeaderAndFooter();
+            getBillData();
+            refreshLayout.finishLoadMore();
         });
 
     }

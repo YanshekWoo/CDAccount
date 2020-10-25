@@ -1,6 +1,5 @@
 package com.xuexiang.cdaccount.biometriclib;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.CancellationSignal;
@@ -10,6 +9,9 @@ import androidx.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
+import static com.xuexiang.xutil.XUtil.getActivityLifecycleHelper;
+import static com.xuexiang.xutil.XUtil.getContext;
+
 /**
  * Created by gaoyang on 2018/06/19.
  */
@@ -17,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 public class BiometricPromptApi23 implements IBiometricPromptImpl {
 
     private static final String TAG = "BiometricPromptApi23";
-    private final Activity mActivity;
     private BiometricPromptDialog mDialog;
     private FingerprintManager mFingerprintManager;
     private CancellationSignal mCancellationSignal;
@@ -25,10 +26,9 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
     private final FingerprintManager.AuthenticationCallback mFmAuthCallback
             = new FingerprintManageCallbackImpl();
 
-    public BiometricPromptApi23(Activity activity) {
-        mActivity = activity;
+    public BiometricPromptApi23() {
 
-        mFingerprintManager = getFingerprintManager(activity);
+        mFingerprintManager = getFingerprintManager(getContext());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
                 }
             }
         });
-        mDialog.show(mActivity.getFragmentManager(), "BiometricPromptApi23");
+        mDialog.show(getActivityLifecycleHelper().getCurrentActivity().getFragmentManager(), "BiometricPromptApi23");
 
         mCancellationSignal = cancel;
         if (mCancellationSignal == null) {
@@ -73,7 +73,7 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
 
         try {
             CryptoObjectHelper cryptoObjectHelper = new CryptoObjectHelper();
-            getFingerprintManager(mActivity).authenticate(
+            getFingerprintManager(getContext()).authenticate(
                     cryptoObjectHelper.buildCryptoObject(), mCancellationSignal,
                     0, mFmAuthCallback, null);
         } catch (Exception e) {

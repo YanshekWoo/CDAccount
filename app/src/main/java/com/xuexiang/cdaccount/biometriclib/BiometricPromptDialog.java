@@ -31,7 +31,6 @@ public class BiometricPromptDialog extends DialogFragment {
     public static final int STATE_ERROR = 3;
     public static final int STATE_SUCCEED = 4;
     private TextView mStateTv;
-    private TextView mUsePasswordBtn;
     private TextView mCancelBtn;
     private Activity mActivity;
     private OnBiometricPromptDialogActionCallback mDialogActionCallback;
@@ -43,8 +42,7 @@ public class BiometricPromptDialog extends DialogFragment {
     }
 
     public static BiometricPromptDialog newInstance() {
-        BiometricPromptDialog dialog = new BiometricPromptDialog();
-        return dialog;
+        return new BiometricPromptDialog();
     }
 
     public void setOnBiometricPromptDialogActionCallback(OnBiometricPromptDialogActionCallback callback) {
@@ -66,28 +64,22 @@ public class BiometricPromptDialog extends DialogFragment {
         rootView.setClickable(false);
 
         mStateTv = view.findViewById(R.id.state_tv);
-        mUsePasswordBtn = view.findViewById(R.id.use_password_btn);
+        TextView mUsePasswordBtn = view.findViewById(R.id.use_password_btn);
         mCancelBtn = view.findViewById(R.id.cancel_btn);
 
         mUsePasswordBtn.setVisibility(View.GONE);
-        mUsePasswordBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mDialogActionCallback != null) {
-                    mDialogActionCallback.onUsePassword();
-                }
+        mUsePasswordBtn.setOnClickListener(view1 -> {
+            if (mDialogActionCallback != null) {
+                mDialogActionCallback.onUsePassword();
+            }
 
-                dismiss();
-            }
+            dismiss();
         });
-        mCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mDialogActionCallback != null) {
-                    mDialogActionCallback.onCancel();
-                }
-                dismiss();
+        mCancelBtn.setOnClickListener(view12 -> {
+            if (mDialogActionCallback != null) {
+                mDialogActionCallback.onCancel();
             }
+            dismiss();
         });
         return view;
     }
@@ -95,14 +87,14 @@ public class BiometricPromptDialog extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity = (Activity) context;
+        mActivity = getActivity();
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
-    }
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        mActivity = activity;
+//    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -157,12 +149,7 @@ public class BiometricPromptDialog extends DialogFragment {
                 mStateTv.setText(mActivity.getString(R.string.biometric_dialog_state_succeeded));
                 mCancelBtn.setVisibility(View.VISIBLE);
 
-                mStateTv.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dismiss();
-                    }
-                }, 500);
+                mStateTv.postDelayed(() -> dismiss(), 500);
                 break;
         }
     }

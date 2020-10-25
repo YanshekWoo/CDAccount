@@ -37,7 +37,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
                     app:sDividerLineType="both"
-                    app:sLeftTextString="自定义主题"
+                    app:sLeftTextString="指纹解锁"
                     app:sRightViewType="switchBtn"
                     app:sSwitchIsChecked="false"
                     app:sThumbResource="@drawable/thumb"
