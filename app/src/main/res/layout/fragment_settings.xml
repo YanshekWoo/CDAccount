@@ -17,6 +17,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -36,12 +37,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
+                    android:paddingStart="10dp"
                     app:sDividerLineType="both"
                     app:sLeftTextString="指纹解锁"
                     app:sRightViewType="switchBtn"
                     app:sSwitchIsChecked="false"
                     app:sThumbResource="@drawable/thumb"
-                    app:sTrackResource="@drawable/track" />
+                    app:sTrackResource="@drawable/track"
+                    tools:ignore="RtlSymmetry" />
 
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
                     android:id="@+id/menu_change_passwd"

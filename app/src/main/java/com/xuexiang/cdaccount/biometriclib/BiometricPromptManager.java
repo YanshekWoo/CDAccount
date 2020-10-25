@@ -16,9 +16,7 @@ import static com.xuexiang.xui.XUI.getContext;
  */
 public class BiometricPromptManager {
 
-    private static final String TAG = "BiometricPromptManager";
-    private static IBiometricPromptImpl mImpl;
-//    private final Activity mActivity;
+    private IBiometricPromptImpl mImpl;
 
     public interface OnBiometricIdentifyCallback {
         void onUsePassword();
@@ -60,17 +58,13 @@ public class BiometricPromptManager {
         mImpl.authenticate(new CancellationSignal(), callback);
     }
 
-    public void authenticate(@NonNull CancellationSignal cancel,
-                             @NonNull OnBiometricIdentifyCallback callback) {
-        mImpl.authenticate(cancel, callback);
-    }
 
     /**
      * Determine if there is at least one fingerprint enrolled.
      *
      * @return true if at least one fingerprint is enrolled, false otherwise
      */
-    public static boolean hasEnrolledFingerprints() {
+    public boolean hasEnrolledFingerprints() {
         if (isAboveApi28()) {
             //TODO 这是Api23的判断方法，也许以后有针对Api28的判断方法
             final FingerprintManager manager = getContext().getSystemService(FingerprintManager.class);
@@ -82,12 +76,13 @@ public class BiometricPromptManager {
         }
     }
 
+
     /**
      * Determine if fingerprint hardware is present and functional.
      *
      * @return true if hardware is present and functional, false otherwise.
      */
-    public static boolean isHardwareDetected() {
+    public boolean isHardwareDetected() {
         if (isAboveApi28()) {
             //TODO 这是Api23的判断方法，也许以后有针对Api28的判断方法
             final FingerprintManager fm = getContext().getSystemService(FingerprintManager.class);
@@ -99,6 +94,7 @@ public class BiometricPromptManager {
         }
     }
 
+
     public static boolean isKeyguardSecure() {
         KeyguardManager keyguardManager = (KeyguardManager) getContext().getSystemService(Context.KEYGUARD_SERVICE);
         return keyguardManager.isKeyguardSecure();
@@ -109,7 +105,7 @@ public class BiometricPromptManager {
      *
      * @return  API是否23
      */
-    public static boolean isBiometricPromptEnable() {
+    public boolean isBiometricPromptEnable() {
         return isAboveApi23()
                 && isHardwareDetected()
                 && hasEnrolledFingerprints()
@@ -128,5 +124,13 @@ public class BiometricPromptManager {
      */
     public static void setBiometricSettingEnable(boolean enable) {
         SPUtils.put(getContext(), SPUtils.KEY_BIOMETRIC_SWITCH_ENABLE, enable);
+    }
+
+    public IBiometricPromptImpl getmImpl() {
+        return mImpl;
+    }
+
+    public void setmImpl(IBiometricPromptImpl mImpl) {
+        this.mImpl = mImpl;
     }
 }

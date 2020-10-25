@@ -108,8 +108,8 @@ public class MyBarChart {
      */
     public BarData setBardata(BarChart barChart, List<ChartDataEntry> chartDataEntries, String legendLable) {
         List<BarEntry> entries = new ArrayList<>();
-        int lenth = chartDataEntries.size();
-        for(int i = 0; i < lenth; i++) {
+        final int length = chartDataEntries.size();
+        for(int i = 0; i < length; i++) {
             entries.add(new BarEntry(i, (float) chartDataEntries.get(i).getDataMoney(), chartDataEntries.get(i).getDataName()));
         }
 
@@ -148,16 +148,16 @@ public class MyBarChart {
 
         // set text size according to length of datas
         float textSize;
-        if(lenth>19){
+        if(length>19){
             textSize = 2f;
         }
-        else if(lenth>15){
+        else if(length>15){
             textSize = 4f;
         }
-        else if(lenth>11){
+        else if(length>11){
             textSize = 6f;
         }
-        else if(lenth>7){
+        else if(length>7){
             textSize = 8f;
 
         }
@@ -166,12 +166,12 @@ public class MyBarChart {
         }
         barChart.getXAxis().setTextSize(textSize);
 //            barChart.getXAxis().setLabelRotationAngle(0);
-        barChart.getXAxis().setLabelCount(lenth);
+        barChart.getXAxis().setLabelCount(length);
         barChart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 int intValue = (int) value;
-                if(intValue < lenth && intValue>=0 && intValue==value) {
+                if(intValue < length && intValue>=0 && intValue==value) {
                     return chartDataEntries.get(intValue).getDataName();
                 }
                 else {
