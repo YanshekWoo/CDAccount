@@ -24,6 +24,7 @@ import android.widget.CompoundButton;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.ChangePasswordActivity;
+import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.SettingUtils;
@@ -81,12 +82,18 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     }
 
     /**
-     * 手势密码开关
+     * 指纹密码开关
      */
     private void initBiometric() {
-        stvSwitchBiometric.setSwitchIsChecked(false);
+        stvSwitchBiometric.setSwitchIsChecked(BiometricPromptManager.isBiometricSettingEnable());
         stvSwitchBiometric.setOnSuperTextViewClickListener(superTextView -> stvSwitchBiometric.setSwitchIsChecked(!stvSwitchBiometric.getSwitchIsChecked(), false));
-        stvSwitchBiometric.setSwitchCheckedChangeListener(SettingsFragment::onCheckedChanged);
+        stvSwitchBiometric.setSwitchCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                BiometricPromptManager.setBiometricSettingEnable(stvSwitchBiometric.getSwitchIsChecked());
+                XToastUtils.info(stvSwitchBiometric.getSwitchIsChecked()?"已开启指纹解锁":"已关闭指纹解锁");
+            }
+        });
     }
 
     

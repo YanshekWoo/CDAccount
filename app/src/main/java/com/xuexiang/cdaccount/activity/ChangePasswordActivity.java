@@ -51,7 +51,7 @@ public class ChangePasswordActivity extends BaseActivity {
         HasLogin = false;
         super.onCreate(savedInstanceState);
         TokenUtils.clearToken();
-        XToastUtils.info("请进行身份验证");
+        XToastUtils.info("请进行身份验证",1500);
         ActivityUtils.startActivity(ReLoginActivity.class);
     }
 

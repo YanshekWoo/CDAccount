@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.view.KeyEvent;
 
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.Utils;
 import com.xuexiang.xui.utils.KeyboardUtils;
@@ -70,6 +71,7 @@ public class SplashActivity extends BaseSplashActivity implements CancelAdapt {
 
     private void loginOrRegister() {
         if (SettingUtils.isFirstOpen()) {
+            BiometricPromptManager.setBiometricSettingEnable(false);
             ActivityUtils.startActivity(RegiterNumberActivity.class);
         } else {
             Intent[] intents = new Intent[2];
