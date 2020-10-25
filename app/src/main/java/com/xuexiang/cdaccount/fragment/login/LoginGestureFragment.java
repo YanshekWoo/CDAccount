@@ -41,6 +41,8 @@ import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xutil.app.ActivityUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -87,7 +89,7 @@ public class LoginGestureFragment extends BaseFragment {
     @SuppressLint("NonConstantResourceId")
     @SingleClick
     @OnClick({R.id.tv_other_login1, R.id.tv_forget_password, R.id.tv_user_protocol, R.id.tv_privacy_protocol})
-    public void onViewClicked(View view) {
+    public void onViewClicked(@NotNull View view) {
         switch (view.getId()) {
             case R.id.tv_other_login1:
 //                openPage(LoginNumberFragment.class, getActivity().getIntent().getExtras());

@@ -24,7 +24,6 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
@@ -33,6 +32,7 @@ import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
+import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.common.ClickUtils;
@@ -53,7 +53,7 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_commit)
-    Button mBtSign;
+    SuperButton mBtSign;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_user)
