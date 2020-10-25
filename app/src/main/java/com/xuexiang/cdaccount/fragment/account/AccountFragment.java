@@ -172,6 +172,26 @@ public class AccountFragment extends BaseFragment{
                         },700);
                     }
                 });
+                switch (position){
+                    case 0:
+                        holder.image(R.id.account_img,R.drawable.ic_cash);
+                        break;
+                    case 1:
+                        holder.image(R.id.account_img,R.drawable.ic_creditcard);
+                        break;
+                    case 2:
+                        holder.image(R.id.account_img,R.drawable.ic_debitcard);
+                        break;
+                    case 3:
+                        holder.image(R.id.account_img,R.drawable.ic_alipay);
+                        break;
+                    case 4:
+                        holder.image(R.id.account_img,R.drawable.ic_fund);
+                        break;
+                    default:
+                        holder.image(R.id.account_img,R.drawable.ic_otheraccount);
+                        break;
+                }
 //                holder.click(R.id.account_card,view -> onItemLongClick(view,item,position));
 //                holder.getView(R.id.account_card).setOnLongClickListener(new View.OnLongClickListener() {
 //                    @Override
