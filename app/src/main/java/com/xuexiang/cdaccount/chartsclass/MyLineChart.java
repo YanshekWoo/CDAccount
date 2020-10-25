@@ -42,7 +42,7 @@ import static com.xuexiang.xutil.XUtil.getContext;
 import static com.xuexiang.xutil.XUtil.getResources;
 
 public class MyLineChart {
-
+    private CustomMPLineChartMarkerView mv;
     /**
      * 初始化折线图
      * @param lineChart
@@ -73,7 +73,7 @@ public class MyLineChart {
         setLineChartAxis(xAxis, yAxisLeft, yAxisRight, legend);
 
 
-        CustomMPLineChartMarkerView mv = new CustomMPLineChartMarkerView(getContext());
+        mv = new CustomMPLineChartMarkerView(getContext());
         mv.setChartView(lineChart);
         lineChart.setMarker(mv);
 
@@ -115,10 +115,15 @@ public class MyLineChart {
     public LineData setLinedata(LineChart lineChart, @NotNull List<ChartDataEntry> chartDataEntries, String legendLable) {
         //设置数据
         List<Entry> entries = new ArrayList<>();
-        int length = chartDataEntries.size();
+        final int length = chartDataEntries.size();
         for (int i = 0; i < length; i++) {
             entries.add(new Entry(i, (float) chartDataEntries.get(i).getDataMoney()));
         }
+
+        // 加在Markerview新的XValue
+        mv.setChartDataEntries(chartDataEntries);
+        mv.setChartView(lineChart);
+        lineChart.setMarker(mv);
 
         // X轴样式
         lineChart.getXAxis().setLabelCount(length);
@@ -175,15 +180,15 @@ public class MyLineChart {
             }
         });
 
-        // 折线颜色
-//        if(length>=6) {
+//        // 折线颜色
+//        if(length>=14) {
 //            int[] s = new int[length];
 //            for(int i=0; i<length-3; i++) {
-//                s[i] = getResources().getColor(R.color.app_color_theme_5);
+//                s[i] = getContext().getColor(R.color.app_color_theme_5);
 //            }
-//            s[length-3] = getResources().getColor(R.color.app_color_theme_1);
-//            s[length-2] = getResources().getColor(R.color.app_color_theme_1);
-//            s[length-1] = getResources().getColor(R.color.app_color_theme_1);
+//            s[length-3] = getContext().getColor(R.color.app_color_theme_1);
+//            s[length-2] = getContext().getColor(R.color.app_color_theme_1);
+//            s[length-1] = getContext().getColor(R.color.app_color_theme_1);
 //            lineDataSet.setColors(s);
 //        }
 //        else {

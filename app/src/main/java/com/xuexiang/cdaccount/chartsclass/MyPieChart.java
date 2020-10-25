@@ -87,7 +87,8 @@ public class MyPieChart {
         List<PieEntry> entries = new ArrayList<>();
         PieEntry others = new PieEntry((float) 0.00, "其他");
         int othersCount = 0;
-        for (int i = 0; i < chartDataEntries.size(); i++) {
+        final int lenght = chartDataEntries.size();
+        for (int i = 0; i < lenght; i++) {
             float money = (float) chartDataEntries.get(i).getDataMoney();
             if(chartDataEntries.get(i).getSumMoney() / money > 20) {
                 money += others.getValue();

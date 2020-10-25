@@ -77,6 +77,7 @@ public class BillDao {
                 sql = "update Account set Account_OutMoney = '"+m+"' where Account_ID = "+id+"";
                 db.execSQL(sql);
             }
+            cursor.close();
         }
         else if(type == 1){
             String sql = "select * from Account where Account_ID = "+id+"";
@@ -87,6 +88,7 @@ public class BillDao {
                 sql = "update Account set Account_InMoney = '"+m+"' where Account_ID = "+id+"";
                 db.execSQL(sql);
             }
+            cursor.close();
         }
         else{
             String sql = "select * from Account where Account_ID = "+id+"";
@@ -106,7 +108,9 @@ public class BillDao {
                 sql = "update Account set Account_InMoney = '"+m+"' where Account_ID = "+toacc+"";
                 db.execSQL(sql);
             }
+            cursor.close();
         }
+        db.close();
     }
 
 
@@ -148,6 +152,7 @@ public class BillDao {
         cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext())
             mem = cursor.getInt(cursor.getColumnIndex("Member_ID"));
+        cursor.close();
         db.close();
         insertBill(type, sub, acc, toa, mem, year, month, day, time, remark, money);
         changeaccount(acc, type, money, toa);
@@ -172,6 +177,7 @@ public class BillDao {
                 if (cursor.getString(cursor.getColumnIndex("OutSubCategory_Name")).equals(sub))
                     sucessSub = true;
             }
+            cursor.close();
         } else {
             String sql = "select InTopCategory_Name from InTopCategory where InTopCategory_Name = '" + Top + "'";
             Cursor cursor = db.rawQuery(sql, null);
@@ -185,16 +191,18 @@ public class BillDao {
                 if (cursor.getString(cursor.getColumnIndex("InSubCategory_Name")).equals(sub))
                     sucessSub = true;
             }
+            cursor.close();
         }
         if (sucessSub && sucessTop) {
             db.close();
             return false;
         }
 
+        Cursor cursor;
+        int cnt = 0;
         if (type == 0) { //支出
 
-            Cursor cursor = db.query("OutTopCategory", null, null, null, null, null, null);
-            int cnt = 0;
+            cursor = db.query("OutTopCategory", null, null, null, null, null, null);
             while (cursor.moveToNext()) {
                 cnt = cursor.getInt(cursor.getColumnIndex("OutTopCategory_ID"));
                 cnt++;
@@ -224,9 +232,9 @@ public class BillDao {
                 sql = "insert into OutSubCategory(OutSubCategory_Id, OutSubCategory_Parent, OutSubCategory_name) values(?,?,?)";
                 db.execSQL(sql, new Object[]{cnt1, tmp, sub});
             }
-        } else {
-            Cursor cursor = db.query("InTopCategory", null, null, null, null, null, null);
-            int cnt = 0;
+        }
+        else {
+            cursor = db.query("InTopCategory", null, null, null, null, null, null);
             while (cursor.moveToNext()) {
                 cnt = cursor.getInt(cursor.getColumnIndex("InTopCategory_ID"));
                 cnt++;
@@ -257,6 +265,7 @@ public class BillDao {
                 db.execSQL(sql, new Object[]{cnt1, tmp, sub});
             }
         }
+        cursor.close();
         db.close();
         return true;
     }
@@ -287,6 +296,7 @@ public class BillDao {
         sql = "insert into Member(Member_Id, Member_Name) values(?,?)";
         db.execSQL(sql, new Object[]{tmp, name});
 
+        cursor.close();
         db.close();
         return true;
     }
@@ -315,6 +325,8 @@ public class BillDao {
         }
         sql = "insert into Account(Account_Id, Account_Name, Account_InMoney, Account_OutMoney) values(?,?,?,?)";
         db.execSQL(sql, new Object[]{tmp, name,0,0});
+
+        cursor.close();
         db.close();
         return true;
     }
@@ -328,6 +340,7 @@ public class BillDao {
             String tmp = cursor.getString(cursor.getColumnIndex("Member_Name"));
             re.add(tmp);
         }
+        cursor.close();
         db.close();
         return re;
     }
@@ -341,6 +354,7 @@ public class BillDao {
             String tmp = cursor.getString(cursor.getColumnIndex("Account_Name"));
             re.add(tmp);
         }
+        cursor.close();
         db.close();
         return re;
     }
@@ -356,6 +370,7 @@ public class BillDao {
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
         double re = 0;
         if (cursor.moveToNext()) re = cursor.getDouble(cursor.getColumnIndex("ans"));
+        cursor.close();
         db.close();
         return re;
     }
@@ -371,6 +386,7 @@ public class BillDao {
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
         double re = 0;
         if (cursor.moveToNext()) re = cursor.getDouble(cursor.getColumnIndex("ans"));
+        cursor.close();
         db.close();
         return re;
     }
@@ -391,11 +407,12 @@ public class BillDao {
             String ans = Y + "-" + M + "-" + D + " " + T;
             re.add(ans);
         }
+        cursor.close();
         db.close();
         return re;
     }
 
-       public List<String> GetRecentInformation(){   //通过测试
+    public List<String> GetRecentInformation() {   //通过测试
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         SQLiteDatabase db = mHelper.getReadableDatabase();
         String sql = "select * from Bill order by year || month || day || time DESC";
@@ -429,6 +446,7 @@ public class BillDao {
             String ans = IO+nametmp+Mon;
             re.add(ans);
         }
+        cursor.close();
         db.close();
         return re;
     }
@@ -445,6 +463,7 @@ public class BillDao {
             Integer IO = cursor.getInt(cursor.getColumnIndex("Bill_TYPE"));
             re.add(IO);
         }
+        cursor.close();
         db.close();
         return re;
     }
@@ -458,6 +477,7 @@ public class BillDao {
             String tmp = cursor.getString(cursor.getColumnIndex("OutTopCategory_Name"));
             re.add(tmp);
         }
+        cursor.close();
         db.close();
         return re;
     }
@@ -479,6 +499,7 @@ public class BillDao {
             }
             re.add(tmp);
         }
+        cursor.close();
         db.close();
         return re;
     }
@@ -492,6 +513,7 @@ public class BillDao {
             String tmp = cursor.getString(cursor.getColumnIndex("InTopCategory_Name"));
             re.add(tmp);
         }
+        cursor.close();
         db.close();
         return re;
     }
@@ -513,6 +535,7 @@ public class BillDao {
             }
             re.add(tmp);
         }
+        cursor.close();
         db.close();
         return re;
     }
@@ -535,9 +558,10 @@ public class BillDao {
         Map<Integer, Integer> mp1 = new HashMap<>();
         String sql2 = "select * from OutSubCategory";
         @SuppressLint("Recycle") Cursor cursor2 = db.rawQuery(sql2, null);
-        while(cursor2.moveToNext()){
+        while(cursor2.moveToNext()) {
             mp1.put(cursor2.getInt(cursor2.getColumnIndex("OutSubCategory_ID")),cursor2.getInt(cursor2.getColumnIndex("OutSubCategory_Parent")));
         }
+        cursor2.close();
 
         Map<Integer, String> mp = new HashMap<>();
         String sql1 = "select * from OutTopCategory";
@@ -545,6 +569,7 @@ public class BillDao {
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("OutTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutTopCategory_Name")));
         }
+        cursor1.close();
 
         String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 0 group by Bill_SubCategory";
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
@@ -558,15 +583,20 @@ public class BillDao {
             double tmp4 = cursor.getDouble(cursor.getColumnIndex("nums"));
             if(ans.containsKey(tmp2)){
                 double tmp5 = ans.get(tmp2);
+                assert tmp2 != null;
                 ans.put(tmp2, tmp4+tmp5);
             }
-            else
+            else {
+                assert tmp2 != null;
                 ans.put(tmp2, tmp4);
+            }
         }
         for (Map.Entry<String, Double> entry : ans.entrySet()) {
             ChartDataEntry tmp = new ChartDataEntry(entry.getKey(), entry.getValue());
             re.add(tmp);
         }
+        cursor.close();
+
         db.close();
         return re;
     }
@@ -593,6 +623,7 @@ public class BillDao {
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("OutSubCategory_ID")),cursor1.getString(cursor1.getColumnIndex("OutSubCategory_Name")));
         }
+        cursor1.close();
 
         String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 0 group by Bill_SubCategory";
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
@@ -603,6 +634,8 @@ public class BillDao {
             ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
+        cursor.close();
+
         db.close();
         return re;
     }
@@ -629,6 +662,7 @@ public class BillDao {
         while(cursor2.moveToNext()){
             mp1.put(cursor2.getInt(cursor2.getColumnIndex("InSubCategory_ID")),cursor2.getInt(cursor2.getColumnIndex("InSubCategory_Parent")));
         }
+        cursor2.close();
 
         Map<Integer, String> mp = new HashMap<>();
         String sql1 = "select * from InTopCategory";
@@ -636,6 +670,7 @@ public class BillDao {
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("InTopCategory_ID")),cursor1.getString(cursor1.getColumnIndex("InTopCategory_Name")));
         }
+        cursor1.close();
 
         String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 1 group by Bill_SubCategory";
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
@@ -649,15 +684,20 @@ public class BillDao {
             double tmp4 = cursor.getDouble(cursor.getColumnIndex("nums"));
             if(ans.containsKey(tmp2)){
                 double tmp5 = ans.get(tmp2);
+                assert tmp2 != null;
                 ans.put(tmp2, tmp4+tmp5);
             }
-            else
+            else {
+                assert tmp2 != null;
                 ans.put(tmp2, tmp4);
+            }
         }
         for (Map.Entry<String, Double> entry : ans.entrySet()) {
             ChartDataEntry tmp = new ChartDataEntry(entry.getKey(), entry.getValue());
             re.add(tmp);
         }
+        cursor.close();
+
         db.close();
         return re;
     }
@@ -684,6 +724,7 @@ public class BillDao {
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("InSubCategory_ID")),cursor1.getString(cursor1.getColumnIndex("InSubCategory_Name")));
         }
+        cursor1.close();
 
         String sql = "select Bill_ID, Bill_SubCategory, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = 1 group by Bill_SubCategory";
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
@@ -694,6 +735,8 @@ public class BillDao {
             ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
+        cursor.close();
+
         db.close();
         return re;
     }
@@ -721,6 +764,7 @@ public class BillDao {
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("Member_ID")),cursor1.getString(cursor1.getColumnIndex("Member_Name")));
         }
+        cursor1.close();
 
         String sql = "select Bill_ID, Bill_Member, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = "+type+" group by Bill_Member";
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
@@ -731,6 +775,8 @@ public class BillDao {
             ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
+        cursor.close();
+
         db.close();
         return re;
     }
@@ -758,6 +804,7 @@ public class BillDao {
         while(cursor1.moveToNext()){
             mp.put(cursor1.getInt(cursor1.getColumnIndex("Account_ID")),cursor1.getString(cursor1.getColumnIndex("Account_Name")));
         }
+        cursor1.close();
 
         String sql = "select Bill_ID, Bill_Account, sum(Bill_Money) as nums from Bill where year || month || day >= '"+st+"' AND year || month || day <= '"+ed+"' AND Bill_TYPE = "+type+" group by Bill_Account";
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
@@ -768,6 +815,8 @@ public class BillDao {
             ChartDataEntry tmp = new ChartDataEntry(mp.get(tmp1),cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
+        cursor.close();
+
         db.close();
         return re;
     }
@@ -797,6 +846,8 @@ public class BillDao {
             ChartDataEntry tmp = new ChartDataEntry(cursor.getString(cursor.getColumnIndex("date")), cursor.getDouble(cursor.getColumnIndex("nums")));
             re.add(tmp);
         }
+        cursor.close();
+
         db.close();
         return re;
     }
@@ -815,6 +866,7 @@ public class BillDao {
             AccountDataEntry tmp = new AccountDataEntry(cursor.getString(cursor.getColumnIndex("Account_Name")), cursor.getDouble(cursor.getColumnIndex("Account_InMoney")), cursor.getDouble(cursor.getColumnIndex("Account_OutMoney")));
             re.add(tmp);
         }
+        cursor.close();
         db.close();
         return re;
     }
@@ -845,6 +897,8 @@ public class BillDao {
         {
             member1 = cursor1.getInt(cursor1.getColumnIndex("Member_ID"));
         }
+        cursor1.close();
+
         for(int i = 12; i >0 ; i--){
             boolean monthexist = false;
             String itmp = String.valueOf(i);
@@ -883,6 +937,7 @@ public class BillDao {
                         while (cursor2.moveToNext()){
                             category = cursor2.getString(cursor2.getColumnIndex("OutSubCategory_Name"));
                         }
+                        cursor2.close();
                     }
                     else{
                         sql3 = "select * from InSubCategory where InSubCategory_ID = "+category1+"";
@@ -890,6 +945,7 @@ public class BillDao {
                         while (cursor2.moveToNext()){
                             category = cursor2.getString(cursor2.getColumnIndex("InSubCategory_Name"));
                         }
+                        cursor2.close();
                     }
 
                     int acc1 = cursor.getInt(cursor.getColumnIndex("Bill_Account"));
@@ -929,6 +985,7 @@ public class BillDao {
                 monthoutcome += outcome;
                 BillDataDay tmp = new BillDataDay(Year, itmp, jtmp, income, outcome, billDataItemList);
                 billDataDayList.add(tmp);
+                cursor.close();
             }
             if(!monthexist) continue;
             BillDataMonth tmp = new BillDataMonth(Year, itmp, monthincome, monthoutcome, billDataDayList);
@@ -959,10 +1016,12 @@ public class BillDao {
         if(eixt){
             sql = "update Account set Account_Name = '"+nowname+"' where Account_Name = '"+preaccountname+"'";
             db.execSQL(sql);
+            cursor.close();
             db.close();
             return true;
         }
         else {
+            cursor.close();
             db.close();
             return false;
         }
