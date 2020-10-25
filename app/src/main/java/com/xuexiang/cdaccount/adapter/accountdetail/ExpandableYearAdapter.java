@@ -147,7 +147,6 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<BillDataYear> {
             @Override
             public void onClick(View v) {
                 onClickItem(v, expandableLayout, position);
-                XToastUtils.toast("点击了:" + mSelectPosition +"he" + position);
             }
         });
 
