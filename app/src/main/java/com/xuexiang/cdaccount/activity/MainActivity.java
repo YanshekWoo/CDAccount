@@ -18,7 +18,6 @@
 package com.xuexiang.cdaccount.activity;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -53,6 +52,8 @@ import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.common.CollectionUtils;
 import com.xuexiang.xutil.display.Colors;
+
+import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 
@@ -139,15 +140,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (Utils.isColorDark(ThemeUtils.resolveColor(this, R.attr.colorAccent))) {
             tvAvatar.setTextColor(Colors.WHITE);
             tvSign.setTextColor(Colors.WHITE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ivAvatar.setImageTintList(ResUtils.getColors(R.color.xui_config_color_white));
-            }
+            ivAvatar.setImageTintList(ResUtils.getColors(R.color.xui_config_color_white));
         } else {
             tvAvatar.setTextColor(ThemeUtils.resolveColor(this, R.attr.xui_config_color_title_text));
             tvSign.setTextColor(ThemeUtils.resolveColor(this, R.attr.xui_config_color_explain_text));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ivAvatar.setImageTintList(ResUtils.getColors(R.color.xui_config_color_gray_3));
-            }
+            ivAvatar.setImageTintList(ResUtils.getColors(R.color.xui_config_color_gray_3));
         }
 
         // TODO: 2019-10-09 初始化数据
@@ -207,12 +204,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_privacy:
-                Utils.showPrivacyDialog(this, null);
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.action_privacy) {
+            Utils.showPrivacyDialog(this, null);
         }
         return false;
     }
@@ -220,13 +213,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @SingleClick
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.nav_header:
-//                XToastUtils.toast("点击头部！");
-                break;
-            default:
-                break;
-        }
+        
     }
 
     //=============ViewPager===================//
@@ -255,8 +242,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * 底部导航栏点击事件
      *
-     * @param menuItem
-     * @return
+     * @param menuItem 菜单项
+     * @return boolen
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -274,9 +261,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * 更新侧边栏菜单选中状态
      *
-     * @param menuItem
+     * @param menuItem  菜单项
      */
-    private void updateSideNavStatus(MenuItem menuItem) {
+    private void updateSideNavStatus(@NotNull MenuItem menuItem) {
         MenuItem side = navView.getMenu().findItem(menuItem.getItemId());
         if (side != null) {
             side.setChecked(true);

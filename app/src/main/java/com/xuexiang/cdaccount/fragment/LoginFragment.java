@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.fragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.View;
 
@@ -52,10 +53,15 @@ import butterknife.OnClick;
 @Page(anim = CoreAnim.none)
 public class LoginFragment extends BaseFragment {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.et_phone_number)
     MaterialEditText etPhoneNumber;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.et_verify_code)
     MaterialEditText etVerifyCode;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.btn_get_verify_code)
     RoundButton btnGetVerifyCode;
 
@@ -96,6 +102,7 @@ public class LoginFragment extends BaseFragment {
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @SingleClick
     @OnClick({R.id.btn_get_verify_code, R.id.btn_login, R.id.tv_other_login, R.id.tv_forget_password, R.id.tv_user_protocol, R.id.tv_privacy_protocol})
     public void onViewClicked(View view) {
