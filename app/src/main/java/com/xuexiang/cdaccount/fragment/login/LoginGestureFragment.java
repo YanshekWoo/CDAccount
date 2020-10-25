@@ -21,17 +21,12 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
 import com.andrognito.patternlockview.utils.PatternLockUtils;
 import com.andrognito.patternlockview.utils.ResourceUtils;
-import com.andrognito.rxpatternlockview.RxPatternLockView;
-import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent;
-import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.FindpasswdActivity;
 import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
@@ -50,7 +45,6 @@ import java.util.List;
 import java.util.Objects;
 
 import butterknife.OnClick;
-import io.reactivex.functions.Consumer;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -143,50 +137,50 @@ public class LoginGestureFragment extends BaseFragment {
         mPatternLockView.addPatternLockListener(mPatternLockViewListener);
 
 
-        RxPatternLockView.patternComplete(mPatternLockView)
-                .subscribe(new Consumer<PatternLockCompleteEvent>() {
-                    @Override
-                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) {
-                        Log.d(getClass().getName(), "Complete: " + Objects.requireNonNull(patternLockCompleteEvent.getPattern()).toString());
-                    }
-                });
-
-        RxPatternLockView.patternChanges(mPatternLockView)
-                .subscribe(new Consumer<PatternLockCompoundEvent>() {
-                    @Override
-                    public void accept(PatternLockCompoundEvent event) throws Exception {
-                        if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_STARTED) {
-                            Log.d(getClass().getName(), "Pattern drawing started");
-                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_PROGRESS) {
-                            Log.d(getClass().getName(), "Pattern progress: " +
-                                    PatternLockUtils.patternToString(mPatternLockView, event.getPattern()));
-                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_COMPLETE) {
-                            Log.d(getClass().getName(), "Pattern complete: " +
-                                    PatternLockUtils.patternToString(mPatternLockView, event.getPattern()));
-                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_CLEARED) {
-                            Log.d(getClass().getName(), "Pattern has been cleared");
-                        }
-                    }
-                });
+//        RxPatternLockView.patternComplete(mPatternLockView)
+//                .subscribe(new Consumer<PatternLockCompleteEvent>() {
+//                    @Override
+//                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) {
+//                        Log.d(getClass().getName(), "Complete: " + Objects.requireNonNull(patternLockCompleteEvent.getPattern()).toString());
+//                    }
+//                });
+//
+//        RxPatternLockView.patternChanges(mPatternLockView)
+//                .subscribe(new Consumer<PatternLockCompoundEvent>() {
+//                    @Override
+//                    public void accept(PatternLockCompoundEvent event) {
+//                        if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_STARTED) {
+//                            Log.d(getClass().getName(), "Pattern drawing started");
+//                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_PROGRESS) {
+//                            Log.d(getClass().getName(), "Pattern progress: " +
+//                                    PatternLockUtils.patternToString(mPatternLockView, event.getPattern()));
+//                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_COMPLETE) {
+//                            Log.d(getClass().getName(), "Pattern complete: " +
+//                                    PatternLockUtils.patternToString(mPatternLockView, event.getPattern()));
+//                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_CLEARED) {
+//                            Log.d(getClass().getName(), "Pattern has been cleared");
+//                        }
+//                    }
+//                });
     }
 
     //设置监听器
     private final PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
         @Override
         public void onStarted() {
-            Log.d(getClass().getName(), "Pattern drawing started");
+//            Log.d(getClass().getName(), "Pattern drawing started");
         }
 
         @Override
         public void onProgress(List<PatternLockView.Dot> progressPattern) {
-            Log.d(getClass().getName(), "Pattern progress: " +
-                    PatternLockUtils.patternToString(mPatternLockView, progressPattern));
+//            Log.d(getClass().getName(), "Pattern progress: " +
+//                    PatternLockUtils.patternToString(mPatternLockView, progressPattern));
         }
 
         @Override
         public void onComplete(List<PatternLockView.Dot> pattern) {
-            Log.d(getClass().getName(), "Pattern complete: " +
-                    PatternLockUtils.patternToString(mPatternLockView, pattern));
+//            Log.d(getClass().getName(), "Pattern complete: " +
+//                    PatternLockUtils.patternToString(mPatternLockView, pattern));
             //密码验证
             String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
             if (!TextUtils.isEmpty(patternToString)) {
@@ -213,46 +207,42 @@ public class LoginGestureFragment extends BaseFragment {
                 }
             }
             //1s后清除图案
-            new Handler().postDelayed(() -> mPatternLockView.clearPattern(), 1000);
+            new Handler().postDelayed(() -> mPatternLockView.clearPattern(), 800);
         }
 
         @Override
         public void onCleared() {
-            Log.d(getClass().getName(), "Pattern has been cleared");
+//            Log.d(getClass().getName(), "Pattern has been cleared");
         }
     };
 
     private void initFingerPrint() {
-        BiometricPromptManager mManager = BiometricPromptManager.from(getActivity());
+        BiometricPromptManager mManager = new BiometricPromptManager();
         if (mManager.isBiometricPromptEnable()) {
             mManager.authenticate(new BiometricPromptManager.OnBiometricIdentifyCallback() {
                 @Override
                 public void onUsePassword() {
-                    Toast.makeText(getContext(), "onUsePassword", Toast.LENGTH_SHORT).show();
+
                 }
 
                 @Override
                 public void onSucceeded() {
                     getActivity().finish();
-//                    Toast.makeText(getContext(), "onSucceeded", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailed() {
 
-                    Toast.makeText(getContext(), "onFailed", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onError(int code, String reason) {
 
-                    Toast.makeText(getContext(), "onError", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onCancel() {
 
-                    Toast.makeText(getContext(), "onCancel", Toast.LENGTH_SHORT).show();
                 }
             });
         }
