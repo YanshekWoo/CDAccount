@@ -35,7 +35,7 @@
                 android:tint="?attr/colorAccent"
                 app:srcCompat="@drawable/ic_phone" />
 
-            <TextView
+            <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
                 android:id="@+id/login_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

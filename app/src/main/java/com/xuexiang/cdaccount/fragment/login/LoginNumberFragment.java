@@ -19,9 +19,9 @@ package com.xuexiang.cdaccount.fragment.login;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.FindpasswdActivity;
@@ -32,6 +32,8 @@ import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText;
+import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 import com.xuexiang.xutil.app.ActivityUtils;
 
 import java.util.Objects;
@@ -53,14 +55,15 @@ public class LoginNumberFragment extends BaseFragment {
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_commit)
-    Button BtLogin;
+    SuperButton BtLogin;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_passwd)
-    EditText etlogin_passwd;
+    MaterialEditText etlogin_passwd;
+
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.login_user)
-    EditText etlogin_user;
+    MaterialEditText etlogin_user;
 
 
     private String password;
@@ -100,6 +103,8 @@ public class LoginNumberFragment extends BaseFragment {
     private void initEditText() {
         etlogin_user.setText(user_name);
         etlogin_user.setFocusable(false);
+
+        etlogin_passwd.setFilters(new InputFilter[]{new LengthFilter(18)});
     }
 
 
@@ -108,7 +113,7 @@ public class LoginNumberFragment extends BaseFragment {
      */
     private void setButtomClickListener() {
         BtLogin.setOnClickListener(v -> {
-            if(password.equals(MD5Utils.encode(etlogin_passwd.getText().toString())))
+            if(password.equals(MD5Utils.encode(Objects.requireNonNull(etlogin_passwd.getText()).toString())))
             {
 //                    XToastUtils.success("密码正确");
                 Objects.requireNonNull(getActivity()).finish();
@@ -148,6 +153,41 @@ public class LoginNumberFragment extends BaseFragment {
     public void onResume() {    //修改密码后重新加载
         super.onResume();
         initSP();
+    }
+
+    /**
+     * 限制最大长度
+     */
+    public static class LengthFilter implements InputFilter {
+        private final int mMax;
+
+        public LengthFilter(int max) {
+            mMax = max;
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            int keep = mMax - (dest.length() - (dend - dstart));
+
+            if (keep <= 0) {
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
+                return "";
+            } else if (keep >= end - start) {
+                return null; // keep original
+            } else {
+                keep += start;
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
+                if (Character.isHighSurrogate(source.charAt(keep - 1))) {
+                    --keep;
+                    if (keep == start) {
+                        return "";
+                    }
+                }
+                return source.subSequence(start, keep);
+            }
+        }
+
     }
 }
 
