@@ -17,7 +17,6 @@
 
 package com.xuexiang.cdaccount.activity;
 
-import android.content.Intent;
 import android.view.KeyEvent;
 
 import com.xuexiang.cdaccount.R;
@@ -78,8 +77,8 @@ public class SplashActivity extends BaseSplashActivity implements CancelAdapt {
 //            intents[0] = new Intent(this,MainActivity.class);
 //            intents[1] = new Intent(this,LoginActivity.class);
 //            startActivities(intents);
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+
+            ActivityUtils.startActivity(LoginActivity.class);
         }
         finish();
     }

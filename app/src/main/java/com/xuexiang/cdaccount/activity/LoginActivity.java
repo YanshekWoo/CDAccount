@@ -45,8 +45,12 @@ public class LoginActivity extends BaseActivity implements ClickUtils.OnClick2Ex
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle bundle  = new Bundle();
+        bundle.putInt("isChangePasswd", 0);
+        openPage(LoginGestureFragment.class, bundle);
+//        openPage(LoginGestureFragment.class, getIntent().getExtras());
 //        openPage(LoginGestureFragment.class, false);
-        openPage(LoginGestureFragment.class, getIntent().getExtras());
     }
 
     @Override

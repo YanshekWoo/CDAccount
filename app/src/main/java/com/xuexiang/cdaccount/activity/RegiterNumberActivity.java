@@ -24,9 +24,11 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
+import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.util.MD5Utils;
@@ -58,12 +60,18 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_user)
     MaterialEditText mEt_user;
+
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_passwd)
     MaterialEditText mEt_password;
+
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.register_passwd_again)
     MaterialEditText mEt_password_again;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.register_number_img)
+    ImageView imageView;
 
 
     private SharedPreferences.Editor mEditor_user;
@@ -105,7 +113,21 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
 
 
     public void initTextView() {
-        mEt_user.setFilters(new InputFilter[]{new LengthFilter(12)});
+        if(TokenUtils.hasToken()) {
+            // 获取已有账户名。设置图片
+            SharedPreferences mSharedPreferences_user = this.getSharedPreferences("user", MODE_PRIVATE);
+            String user_name = mSharedPreferences_user.getString("user","");
+            mEt_user.setText(user_name);
+            mEt_user.setFocusable(false);
+
+            imageView.setImageResource(R.drawable.ic_findpasswd);
+        }
+        else {
+            // 限制输入长度
+            mEt_user.setFilters(new InputFilter[]{new LengthFilter(12)});
+
+        }
+
         mEt_password.setFilters(new InputFilter[]{new LengthFilter(18)});
         mEt_password_again.setFilters(new InputFilter[]{new LengthFilter(18)});
     }

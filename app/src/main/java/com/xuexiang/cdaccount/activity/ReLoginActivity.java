@@ -18,14 +18,10 @@
 package com.xuexiang.cdaccount.activity;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.fragment.login.LoginGestureFragment;
-import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
-import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.display.Colors;
 
 /**
@@ -34,17 +30,20 @@ import com.xuexiang.xutil.display.Colors;
  * @author xuexiang
  * @since 2019-11-17 22:21
  */
-public class ReLoginActivity extends BaseActivity{
+public class ReLoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        openPage(LoginGestureFragment.class, getIntent().getExtras());
+
+        Bundle bundle  = new Bundle();
+        bundle.putInt("isChangePasswd", 1);
+        openPage(LoginGestureFragment.class, bundle);
     }
 
     @Override
     protected boolean isSupportSlideBack() {
-        return false;
+        return true;
     }
 
     @Override
