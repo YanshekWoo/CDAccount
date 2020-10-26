@@ -42,10 +42,11 @@ import com.xuexiang.cdaccount.adapter.accountdetail.ExpandableYearAdapter;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
-import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.spinner.DropDownMenu;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,7 +56,6 @@ import butterknife.BindView;
 
 
 public class AccountDetailsActivity extends BaseActivity {
-
 
     private BillDao mBillDao;
     private String[] mHeaders = {"年",  "成员", "账户"};
@@ -68,12 +68,6 @@ public class AccountDetailsActivity extends BaseActivity {
     private List<String> mMembers;
     private List<String> mAccounts;
     private List<String> mTimes;
-
-
-//    private TimePickerView mDatePickerStart;
-//    private TimePickerView mDatePickerEnd;
-//    private Date mDateStart;
-//    private Date mDateEnd;
 
     private boolean yearFocusable = true;
     private boolean monthFocusable =false;
@@ -102,16 +96,18 @@ public class AccountDetailsActivity extends BaseActivity {
     @BindView(R.id.ddm_content)
     DropDownMenu mDropDownMenu;
 
-
-
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.account_header)
     ClassicsHeader mClassicsHeader;
+
+
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_account_details;
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +116,7 @@ public class AccountDetailsActivity extends BaseActivity {
         initArgs();
         initTitleBar();
         initDropDownMenu();
-//        initTimePicker();
         initRecyclerViews();
-
     }
 
 
@@ -131,9 +125,11 @@ public class AccountDetailsActivity extends BaseActivity {
         mTitleBar.setLeftClickListener(view -> finish());
     }
 
+
     protected boolean isSupportSlideBack() {
         return true;
     }
+
 
     /**
      *初始化Recycle布局
@@ -181,28 +177,6 @@ public class AccountDetailsActivity extends BaseActivity {
     }
 
 
-//    protected List<BillDataYear> getTestData(int year) {
-//        List<BillDataYear> billDataYearList = new ArrayList<>();
-//            List<BillDataMonth> billDataMonthList = new ArrayList<>();
-//
-//            for(int m=1;m < 3;m++) {
-//                List<BillDataDay> billDataDayList = new ArrayList<>();
-//
-//                for(int d=1;d < 5; d++) {
-//                    List<BillDataItem> billDataItemList = new ArrayList<>();
-//                    for(int i=1;i< 4;i++) {
-//                        billDataItemList.add(new BillDataItem(new Random().nextInt(2), "早午晚餐", "信用卡", "to账户", "本人", Integer.toString(year), Integer.toString(m), Integer.toString(d), "20:34", (double) new Random().nextInt(2000), "这是备注"));
-//                    }
-//                    billDataDayList.add(new BillDataDay(Integer.toString(d), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataItemList));
-//                }
-//
-//                billDataMonthList.add(new BillDataMonth(Integer.toString(m), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataDayList));
-//            }
-//
-//            billDataYearList.add(new BillDataYear(Integer.toString(year), (double) new Random().nextInt(2000), (double) new Random().nextInt(2000), billDataMonthList));
-//        return billDataYearList;
-//    }
-
 
     /**
      * 从数据库中获取数据，加载到适配器
@@ -239,14 +213,16 @@ public class AccountDetailsActivity extends BaseActivity {
         selectedAccount = intent.getStringExtra("account");
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event, DropDownMenu mDropDownMenu) {
+
+    public boolean onKeyDown(int keyCode, DropDownMenu mDropDownMenu) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             handleBackPressed(mDropDownMenu);
         }
         return true;
     }
 
-    private void handleBackPressed(DropDownMenu mDropDownMenu) {
+
+    private void handleBackPressed(@NotNull DropDownMenu mDropDownMenu) {
         if (mDropDownMenu.isShowing()) {
             mDropDownMenu.closeMenu();
         }
@@ -261,6 +237,8 @@ public class AccountDetailsActivity extends BaseActivity {
         final ListView timeView = new ListView(AccountDetailsActivity.this);
         mTimeAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mTimes);
         mTimeAdapter.setSelectPosition(selectedTime);
+        changeFocusable(selectedTime);
+
         timeView.setDividerHeight(0);
         timeView.setAdapter(mTimeAdapter);
 
@@ -300,7 +278,6 @@ public class AccountDetailsActivity extends BaseActivity {
         memberView.setOnItemClickListener((parent, view, position, id) -> {
             mMemberAdapter.setSelectPosition(position);
             mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[1] : mMembers.get(position));
-            XToastUtils.toast("点击了:" + mMembers.get(position));
             selectedMember = mMembers.get(position);
             getBillData();
             mDropDownMenu.closeMenu();
@@ -309,7 +286,6 @@ public class AccountDetailsActivity extends BaseActivity {
         accoutView.setOnItemClickListener((parent, view, position, id) -> {
             mAccountAdapter.setSelectPosition(position);
             mDropDownMenu.setTabMenuText(position == 0 ? mHeaders[2] : mAccounts.get(position));
-            XToastUtils.toast("点击了:" + mAccounts.get(position));
             selectedAccount = mAccounts.get(position);
             getBillData();
             mDropDownMenu.closeMenu();
@@ -372,105 +348,4 @@ public class AccountDetailsActivity extends BaseActivity {
         }
     }
 
-
-//    protected void initTimePicker() {
-//        Calendar calendar = Calendar.getInstance();
-//        mDateEnd = calendar.getTime();
-//        Btn_date_end.setText(DateUtils.date2String(mDateEnd, DateUtils.yyyyMMdd.get()));
-//
-//        calendar.roll(Calendar.MONTH, -1);
-//        mDateStart = calendar.getTime();
-//        Btn_date_start.setText(DateUtils.date2String(mDateStart, DateUtils.yyyyMMdd.get()));
-//
-//    }
-//
-//
-//    /**
-//     * 日期选择控件
-//     *
-//     **/
-//    @SuppressLint("NonConstantResourceId")
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    @OnClick({R.id.btn_date_start, R.id.btn_date_end})
-//    public void onViewClicked(View view) {
-//        switch (view.getId()) {
-//            case R.id.btn_date_start:
-//                showDatePickerStart();
-//                break;
-//            case R.id.btn_date_end:
-//                showDatePickerEnd();
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//
-//
-//    private void showDatePickerStart() {
-//        if (mDatePickerStart == null) {
-//            //选择器初始化
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.roll(Calendar.MONTH, -1);
-//            mDatePickerStart = new TimePickerBuilder(this, (date, v) ->
-//            {
-//                //选择器监听
-//                mDateStart = date;
-//                Btn_date_start.setText(DateUtils.date2String(date, DateUtils.yyyyMMdd.get()));
-//                if(mDateStart.after(mDateEnd)) {
-//                    XToastUtils.error("开始日期不能晚于结束日期");
-//                }
-//            })
-//                    .setDate(calendar)  //默认日期为当前的前一个月
-//                    .setTimeSelectChangeListener(date -> {
-//                        if(date.after(mDateEnd)) {
-//                            XToastUtils.error("开始日期不能晚于结束日期");
-//                        }
-//                    })
-//                    .setTitleText("开始日期")
-//                    .build();
-//        }
-//        mDatePickerStart.show();
-//    }
-//
-//
-//    private void showDatePickerEnd() {
-//        if (mDatePickerEnd == null) {
-//            //选择器初始化
-//            mDatePickerEnd = new TimePickerBuilder(this, (date, v) ->
-//            {
-//                //选择器监听
-//                mDateEnd = date;
-//                Btn_date_end.setText(DateUtils.date2String(date, DateUtils.yyyyMMdd.get()));
-//                if(mDateStart.after(mDateEnd)) {
-//                    XToastUtils.error("结束日期不能早于开始日期");
-//                }
-//            })
-//                    .setTimeSelectChangeListener(date -> {
-//                        if(date.before(mDateStart)) {
-//                            XToastUtils.error("结束日期不能早于开始日期");
-//                        }
-//                    })
-//                    .setTitleText("结束日期")
-//                    .build();
-//        }
-//        mDatePickerEnd.show();
-//    }
-
-//    protected void initListeners() {
-//        //下拉刷新
-//        refreshLayout.setOnRefreshListener(refreshLayout -> {
-//            refreshLayout.getLayout().postDelayed(() -> {
-//                adapter.refresh(datas);
-//                refreshLayout.finishRefresh();
-//            }, 500);
-//        });
-//        //上拉加载
-//        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-//            refreshLayout.getLayout().postDelayed(() -> {
-//                adapter.loadMore(datas);
-//                refreshLayout.finishLoadMore();
-//            }, 1000);
-//        });
-//        refreshLayout.autoRefresh();//第一次进入触发自动刷新，演示效果
-//    }
 }

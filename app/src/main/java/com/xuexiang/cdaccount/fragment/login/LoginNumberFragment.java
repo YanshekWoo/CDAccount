@@ -19,13 +19,18 @@ package com.xuexiang.cdaccount.fragment.login;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.View;
 
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.FindpasswdActivity;
+import com.xuexiang.cdaccount.activity.MainActivity;
+import com.xuexiang.cdaccount.activity.RegiterNumberActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.utils.RandomUtils;
+import com.xuexiang.cdaccount.utils.SettingUtils;
+import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.util.MD5Utils;
@@ -69,6 +74,9 @@ public class LoginNumberFragment extends BaseFragment {
     private String password;
     private String user_name;
 
+    private Bundle bundle;
+    private boolean isChangePasswd;
+
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -86,6 +94,10 @@ public class LoginNumberFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+        bundle = getArguments();
+        assert bundle != null;
+        isChangePasswd = bundle.getInt("isChangePasswd", 0) == 1;
+
         initSP();
         initEditText();
         setButtomClickListener();
@@ -116,13 +128,39 @@ public class LoginNumberFragment extends BaseFragment {
             if(password.equals(MD5Utils.encode(Objects.requireNonNull(etlogin_passwd.getText()).toString())))
             {
 //                    XToastUtils.success("密码正确");
-                Objects.requireNonNull(getActivity()).finish();
+                logInSuccess();
             }
             else
             {
                 XToastUtils.error("密码错误");
             }
         });
+    }
+
+
+    private void logInSuccess() {
+//        if(TokenUtils.hasToken()) {
+//            String token = RandomUtils.getRandomNumbersAndLetters(16);
+//            TokenUtils.setToken(token);
+//            Intent intent = new Intent(getActivity(), MainActivity.class);
+//            Objects.requireNonNull(getActivity()).startActivity(intent);
+//        }
+//        Objects.requireNonNull(getActivity()).finish();
+
+        // 是否需要修改密码
+        if(!isChangePasswd) {
+            //进入首页
+            ActivityUtils.startActivity(MainActivity.class);
+        }
+        else {
+            // 进入重置密码页
+            SettingUtils.setIsFirstOpen(true);
+            String token = RandomUtils.getRandomNumbersAndLetters(16);
+            TokenUtils.setToken(token);
+            ActivityUtils.startActivity(RegiterNumberActivity.class);
+
+        }
+        Objects.requireNonNull(getActivity()).finish();
     }
 
 
@@ -133,10 +171,10 @@ public class LoginNumberFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_other_login2:
 //                openPage(LoginGestureFragment.class, getActivity().getIntent().getExtras());
-                openPage(LoginGestureFragment.class, false);
+                openPage(LoginGestureFragment.class, bundle);
                 break;
             case R.id.tv_forget_password:
-                ActivityUtils.startActivity(FindpasswdActivity.class);
+                openNewPage(FindPasswdFragment.class);
                 break;
             case R.id.tv_user_protocol:
                 XToastUtils.info("用户协议");

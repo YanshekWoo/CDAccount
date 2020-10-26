@@ -23,7 +23,7 @@ import android.text.InputType;
 import android.widget.CompoundButton;
 
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.ChangePasswordActivity;
+import com.xuexiang.cdaccount.activity.ReLoginActivity;
 import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
@@ -103,7 +103,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     public void onClick(@NotNull SuperTextView superTextView) {
         switch (superTextView.getId()) {
             case R.id.menu_change_passwd:
-                ActivityUtils.startActivity(ChangePasswordActivity.class);
+                ActivityUtils.startActivity(ReLoginActivity.class);
             break;
             case R.id.menu_clear_data:
                 showInputDialog();
@@ -143,6 +143,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
                         BillDao billDao = new BillDao(getContext());
                         billDao.Destory();
                         dialog.dismiss();
+                        SettingUtils.setIsAgreePrivacy(false);
                         SettingUtils.setIsFirstOpen(true);
                         XUtil.getActivityLifecycleHelper().exit();
                     }

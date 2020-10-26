@@ -9,6 +9,7 @@
 
 
     <ImageView
+        android:id="@+id/register_number_img"
         android:layout_width="84dp"
         android:layout_height="84dp"
         android:layout_gravity="center_horizontal"

@@ -33,7 +33,7 @@
                 app:srcCompat="@drawable/ic_verify_question" />
 
             <com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner
-                android:id="@+id/verify_question1"
+                android:id="@+id/findpasswd_verify_question1"
                 android:layout_width="match_parent"
                 style="@style/Material.SpinnerStyle"
                 android:layout_marginStart="36dp"
@@ -53,7 +53,7 @@
                 app:srcCompat="@drawable/ic_verify_answer" />
 
             <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
-                android:id="@+id/verify_answer1"
+                android:id="@+id/findpasswd_verify_answer1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="38dp"
@@ -71,7 +71,7 @@
         </FrameLayout>
     </LinearLayout>
     <com.xuexiang.xui.widget.textview.supertextview.SuperButton
-        android:id="@+id/register_verify_commit"
+        android:id="@+id/findpasswd_verify_commit"
         style="@style/SuperButton.Primary.Login"
         android:layout_marginTop="40dp"
         android:text="确认" />

@@ -21,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.text.InputType;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,12 +30,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.adapter.SmartRecyclerAdapter;
-import com.scwang.smartrefresh.layout.adapter.SmartViewHolder;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xuexiang.cdaccount.R;
@@ -44,7 +39,6 @@ import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.base.delegate.SimpleDelegateAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.database.AccountDataEntry;
-import com.xuexiang.cdaccount.database.ChartDataEntry;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
@@ -54,13 +48,9 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.LogRecord;
-
 
 import butterknife.BindView;
 
@@ -169,7 +159,7 @@ public class AccountFragment extends BaseFragment{
                                 handler.removeCallbacksAndMessages(null);
                                 countClick = 0;
                             }
-                        },700);
+                        },400);
                     }
                 });
                 switch (position){
