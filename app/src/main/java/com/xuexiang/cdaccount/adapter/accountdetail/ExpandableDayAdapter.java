@@ -148,8 +148,8 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
             holder.getTextView(R.id.account_expendable_day_totalmoney).setTextColor(context.getResources().getColor(R.color.black));
         }
         else {
-            holder.getTextView(R.id.account_expendable_day_maintime).setTextSize(10);
-            holder.getTextView(R.id.account_expendable_day_totalmoney).setTextSize(10);
+            holder.getTextView(R.id.account_expendable_day_maintime).setTextSize(12);
+            holder.getTextView(R.id.account_expendable_day_totalmoney).setTextSize(12);
 //            holder.getImageView(R.id.month_indicator).setMaxHeight(10);
             holder.getTextView(R.id.account_expendable_day_subtime).setVisibility(View.GONE);
             holder.getTextView(R.id.account_expendable_day_income).setVisibility(View.GONE);
