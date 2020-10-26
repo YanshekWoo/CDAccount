@@ -164,8 +164,8 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<BillDataYear> {
             holder.getTextView(R.id.account_expendable_year_totalmoney).setTextColor(context.getResources().getColor(R.color.black));
         }
         else {
-            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(10);
-            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(10);
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(12);
+            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(12);
 //            holder.getImageView(R.id.year_indicator).setMaxHeight(10);
             holder.getTextView(R.id.account_expendable_year_subtime).setVisibility(View.GONE);
             holder.getTextView(R.id.account_expendable_year_income).setVisibility(View.GONE);
