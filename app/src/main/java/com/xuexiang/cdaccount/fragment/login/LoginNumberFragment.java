@@ -158,7 +158,7 @@ public class LoginNumberFragment extends BaseFragment {
     /**
      * 限制最大长度
      */
-    public static class LengthFilter implements InputFilter {
+    private static class LengthFilter implements InputFilter {
         private final int mMax;
 
         public LengthFilter(int max) {

@@ -6,9 +6,10 @@ import java.util.List;
 
 public class RunARIMA {
 
-	public double runPrediction(List<ChartDataEntry> chartDataEntryList) {
-		double[] dataArray = new double[chartDataEntryList.size()];
-		for (int i = 0; i < chartDataEntryList.size(); i++) {
+	public static double runPrediction(List<ChartDataEntry> chartDataEntryList) {
+		final int length = chartDataEntryList.size();
+		double[] dataArray = new double[length];
+		for (int i = 0; i < length; i++) {
 			dataArray[i] = chartDataEntryList.get(i).getDataMoney();
 		}
 

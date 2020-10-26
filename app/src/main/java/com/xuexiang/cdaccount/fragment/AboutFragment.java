@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.fragment;
 
+import android.annotation.SuppressLint;
 import android.widget.TextView;
 
 import com.xuexiang.cdaccount.R;
@@ -39,10 +40,13 @@ import butterknife.BindView;
 @Page(name = "关于")
 public class AboutFragment extends BaseFragment {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.tv_version)
     TextView mVersionTextView;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.about_list)
     XUIGroupListView mAboutGroupListView;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.tv_copyright)
     TextView mCopyrightTextView;
 
@@ -58,12 +62,13 @@ public class AboutFragment extends BaseFragment {
         XUIGroupListView.newSection(getContext())
                 .addItemView(mAboutGroupListView.createItemView(getResources().getString(R.string.about_item_homepage)), v -> AgentWebActivity.goWeb(getContext(), getString(R.string.url_project_github)))
                 .addItemView(mAboutGroupListView.createItemView(getResources().getString(R.string.about_item_author_github)), v -> AgentWebActivity.goWeb(getContext(), getString(R.string.url_author_github)))
-                .addItemView(mAboutGroupListView.createItemView(getResources().getString(R.string.about_item_donation_link)), v -> AgentWebActivity.goWeb(getContext(), getString(R.string.url_donation_link)))
+//                .addItemView(mAboutGroupListView.createItemView(getResources().getString(R.string.about_item_donation_link)), v -> AgentWebActivity.goWeb(getContext(), getString(R.string.url_donation_link)))
 //                .addItemView(mAboutGroupListView.createItemView(getResources().getString(R.string.about_item_add_qq_group)), v -> AgentWebActivity.goWeb(getContext(), getString(R.string.url_add_qq_group)))
                 .addTo(mAboutGroupListView);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy", Locale.CHINA);
         String currentYear = dateFormat.format(new Date());
-        mCopyrightTextView.setText(String.format(getResources().getString(R.string.about_copyright), currentYear));
+//        mCopyrightTextView.setText(String.format(getResources().getString(R.string.about_copyright), currentYear));
+        mCopyrightTextView.setText("");
     }
 }

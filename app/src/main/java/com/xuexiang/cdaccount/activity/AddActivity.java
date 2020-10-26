@@ -40,8 +40,6 @@ import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
-import com.xuexiang.xui.widget.button.shadowbutton.ShadowButton;
-import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +52,6 @@ import java.util.List;
  */
 public class AddActivity extends AppCompatActivity implements OutcomeFragment.OutcomeMessage, IncomeFragment.IncomeMessage, TransferFragment.TransferMessage {
 
-    //    private ShadowImageView mIvBack;
-//    private ShadowButton mBtnConfirm;
-    private TitleBar mTbTitle;
-    private TabLayout mTlAdd;
     private ViewPager mVpAdd;
     private Boolean mBlConfirm = false;     //标识变量
 
@@ -97,7 +91,7 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
         titles.add("支出");
         titles.add("收入");
         titles.add("转账");
-        mTlAdd = findViewById(R.id.tl_add);
+        TabLayout mTlAdd = findViewById(R.id.tl_add);
 
         BaseFragment[] fragments = new BaseFragment[]{
                 new OutcomeFragment(),
@@ -167,7 +161,9 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
 //        });
 //
 
-        mTbTitle = findViewById(R.id.add_title);
+        //    private ShadowImageView mIvBack;
+        //    private ShadowButton mBtnConfirm;
+        TitleBar mTbTitle = findViewById(R.id.add_title);
         mTbTitle.setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -22,7 +22,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
@@ -30,9 +29,6 @@ import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
 import com.andrognito.patternlockview.utils.PatternLockUtils;
 import com.andrognito.patternlockview.utils.ResourceUtils;
-import com.andrognito.rxpatternlockview.RxPatternLockView;
-import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent;
-import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.SettingUtils;
@@ -44,10 +40,8 @@ import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.display.Colors;
 
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 
 /**
  * 登录页面
@@ -66,8 +60,13 @@ public class RegiterGestureActivity extends BaseActivity {
     TextView tv_register_gesture;
 
     private String GestureSignUp;
-    private int state = 1;
+//    private int state = 1;
     private SharedPreferences.Editor mEditor_gesture;
+
+    MyPatternLockViewListener myPatternLockViewListener;
+
+
+
 
     @Override
     protected int getLayoutId() {
@@ -129,55 +128,57 @@ public class RegiterGestureActivity extends BaseActivity {
         mPatternLockView.setInStealthMode(false);
         mPatternLockView.setTactileFeedbackEnabled(true);
         mPatternLockView.setInputEnabled(true);
-        mPatternLockView.addPatternLockListener(mPatternLockViewListener);
 
 
+        myPatternLockViewListener = new MyPatternLockViewListener();
+        mPatternLockView.addPatternLockListener(myPatternLockViewListener);
 
-        RxPatternLockView.patternComplete(mPatternLockView)
-                .subscribe(new Consumer<PatternLockCompleteEvent>() {
-                    @Override
-                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) {
-                        Log.d(getClass().getName(), "Complete: " + Objects.requireNonNull(patternLockCompleteEvent.getPattern()).toString());
-                    }
-                });
 
-        RxPatternLockView.patternChanges(mPatternLockView)
-                .subscribe(new Consumer<PatternLockCompoundEvent>() {
-                    @Override
-                    public void accept(PatternLockCompoundEvent event) {
-                        if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_STARTED) {
-                            Log.d(getClass().getName(), "Pattern drawing started");
-                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_PROGRESS) {
-                            Log.d(getClass().getName(), "Pattern progress: " +
-                                    PatternLockUtils.patternToString(mPatternLockView, event.getPattern()));
-                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_COMPLETE) {
-                            Log.d(getClass().getName(), "Pattern complete: " +
-                                    PatternLockUtils.patternToString(mPatternLockView, event.getPattern()));
-                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_CLEARED) {
-                            Log.d(getClass().getName(), "Pattern has been cleared");
-                        }
-                    }
-                });
+//        RxPatternLockView.patternComplete(mPatternLockView)
+//                .subscribe(new Consumer<PatternLockCompleteEvent>() {
+//                    @Override
+//                    public void accept(PatternLockCompleteEvent patternLockCompleteEvent) {
+//                        Log.d(getClass().getName(), "Complete: " + Objects.requireNonNull(patternLockCompleteEvent.getPattern()).toString());
+//                    }
+//                });
+//
+//        RxPatternLockView.patternChanges(mPatternLockView)
+//                .subscribe(new Consumer<PatternLockCompoundEvent>() {
+//                    @Override
+//                    public void accept(PatternLockCompoundEvent event) {
+//                        if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_STARTED) {
+//                            Log.d(getClass().getName(), "Pattern drawing started");
+//                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_PROGRESS) {
+//                            Log.d(getClass().getName(), "Pattern progress: " +
+//                                    PatternLockUtils.patternToString(mPatternLockView, event.getPattern()));
+//                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_COMPLETE) {
+//                            Log.d(getClass().getName(), "Pattern complete: " +
+//                                    PatternLockUtils.patternToString(mPatternLockView, event.getPattern()));
+//                        } else if (event.getEventType() == PatternLockCompoundEvent.EventType.PATTERN_CLEARED) {
+//                            Log.d(getClass().getName(), "Pattern has been cleared");
+//                        }
+//                    }
+//                });
+
     }
 
 
-    //设置监听器
-    private final PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
+
+    private class MyPatternLockViewListener implements PatternLockViewListener {
+        private int state = 1;
+
         @Override
         public void onStarted() {
-            Log.d(getClass().getName(), "Pattern drawing started");
+
         }
 
         @Override
         public void onProgress(List<PatternLockView.Dot> progressPattern) {
-            Log.d(getClass().getName(), "Pattern progress: " +
-                    PatternLockUtils.patternToString(mPatternLockView, progressPattern));
+
         }
 
         @Override
         public void onComplete(List<PatternLockView.Dot> pattern) {
-            Log.d(getClass().getName(), "Pattern complete: " +
-                    PatternLockUtils.patternToString(mPatternLockView, pattern));
             //手势密码注册
             String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
             if(!TextUtils.isEmpty(patternToString)){
@@ -188,6 +189,8 @@ public class RegiterGestureActivity extends BaseActivity {
                     tv_register_gesture.setText("请再次输入密码");
                     XToastUtils.info("请再次输入密码");
                     state = 2;
+                    //1s后清除图案
+                    new Handler().postDelayed(() -> mPatternLockView.clearPattern(),500);
                 }
                 else if(state == 2)//第二次输入确认密码
                 {
@@ -210,38 +213,38 @@ public class RegiterGestureActivity extends BaseActivity {
                         }
                         XToastUtils.error("两次输入的密码不一致");
                         state = 1;
+                        //1s后清除图案
+                        new Handler().postDelayed(() -> mPatternLockView.clearPattern(),500);
                     }
                 }
             }
-            //1s后清除图案
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mPatternLockView.clearPattern();
-                }
-            },200);
+
         }
-
-
         @Override
         public void onCleared() {
-//            Log.d(getClass().getName(), "Pattern has been cleared");
-        }
 
-    };
+        }
+    }
+
+
 
     /**
      * 注册成功的处理
      */
     private void onLoginSuccess() {
-//        Intent intent = new Intent(RegiterGestureActivity.this, RegisterVerifyActivity.class);
-//        startActivity(intent);
         if(SettingUtils.isFirstOpen()){                                     //若找回密码时调用此页面，则不跳转
             ActivityUtils.startActivity(RegisterVerifyActivity.class);
         }else{
             XToastUtils.success("手势密码已重置");
         }
         finish();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        myPatternLockViewListener = null;
+        super.onDestroy();
     }
 
 

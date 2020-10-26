@@ -46,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Objects;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -60,9 +61,17 @@ import static android.content.Context.MODE_PRIVATE;
 @Page(anim = CoreAnim.none)
 public class LoginGestureFragment extends BaseFragment {
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.login_patter_lock_view)
+    PatternLockView mPatternLockView;
+
     private String password_gesture;
 
-    private PatternLockView mPatternLockView;
+    private MyPatternLockViewListener mPatternLockViewListener;
+    private BiometricPromptManager biometricPromptManager;
+    private MyOnBiometricIdentifyCallback myOnBiometricIdentifyCallback = new MyOnBiometricIdentifyCallback();
+    private BiometricPromptManager mManager;
+
 
     /**
      * @return 返回为 null意为不需要导航栏
@@ -118,8 +127,6 @@ public class LoginGestureFragment extends BaseFragment {
 
     @SuppressLint("CheckResult")
     protected void initLock() {
-        //获取控件对象
-        mPatternLockView = (PatternLockView) findViewById(R.id.login_patter_lock_view);
         // n*n大小   3*3
         mPatternLockView.setDotCount(3);
         //没有点击时点的大小
@@ -136,8 +143,10 @@ public class LoginGestureFragment extends BaseFragment {
         mPatternLockView.setInStealthMode(false);
         mPatternLockView.setTactileFeedbackEnabled(true);
         mPatternLockView.setInputEnabled(true);
-        mPatternLockView.addPatternLockListener(mPatternLockViewListener);
 
+        //设置监听器
+        mPatternLockViewListener = new MyPatternLockViewListener(password_gesture);
+        mPatternLockView.addPatternLockListener(mPatternLockViewListener);
 
 //        RxPatternLockView.patternComplete(mPatternLockView)
 //                .subscribe(new Consumer<PatternLockCompleteEvent>() {
@@ -164,93 +173,104 @@ public class LoginGestureFragment extends BaseFragment {
 //                        }
 //                    }
 //                });
+
     }
 
-    //设置监听器
-    private final PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
+
+
+    private class MyPatternLockViewListener implements PatternLockViewListener {
+
+        private final String password_gesture;
+
+        public MyPatternLockViewListener(String passwd) {
+            this.password_gesture = passwd;
+        }
+
         @Override
         public void onStarted() {
-//            Log.d(getClass().getName(), "Pattern drawing started");
+
         }
 
         @Override
         public void onProgress(List<PatternLockView.Dot> progressPattern) {
-//            Log.d(getClass().getName(), "Pattern progress: " +
-//                    PatternLockUtils.patternToString(mPatternLockView, progressPattern));
+
         }
 
         @Override
         public void onComplete(List<PatternLockView.Dot> pattern) {
-//            Log.d(getClass().getName(), "Pattern complete: " +
-//                    PatternLockUtils.patternToString(mPatternLockView, pattern));
-            //密码验证
-            String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
+                    //密码验证
+                    String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
             if (!TextUtils.isEmpty(patternToString)) {
                 if (MD5Utils.encode(patternToString).equals(password_gesture)) {
                     //判断为正确
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
-                    String token = RandomUtils.getRandomNumbersAndLetters(16);
-                    TokenUtils.setToken(token);
-//                    XToastUtils.success("密码正确");
-//                    Intent intent = null;
-//                    if(TokenUtils.hasToken()){
-//                        intent = new Intent(getContext(), MainActivity.class);
-//                        startActivity(intent);
-//                    }else{
-//                        String token = RandomUtils.getRandomNumbersAndLetters(16);
-//                        TokenUtils.setToken(token);
-//                        startActivity(intent);
-//                    }
-
-                    Objects.requireNonNull(getActivity()).finish();
+                    //  finish登录 activity
+                    logInSuccess();
                 } else {
                     mPatternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG);
                     XToastUtils.error("密码错误");
+
+                    //1s后清除图案
+                    new Handler().postDelayed(() -> mPatternLockView.clearPattern(), 500);
                 }
             }
-            //1s后清除图案
-            new Handler().postDelayed(() -> mPatternLockView.clearPattern(), 800);
+
+        }
+        @Override
+        public void onCleared() {
+
+        }
+    }
+
+
+    /**
+     * 登录成功
+     */
+    public void logInSuccess() {
+        String token = RandomUtils.getRandomNumbersAndLetters(16);
+        TokenUtils.setToken(token);
+
+        Objects.requireNonNull(getActivity()).finish();
+    }
+
+
+    private void initFingerPrint() {
+        biometricPromptManager = new BiometricPromptManager();
+        if(biometricPromptManager.isBiometricPromptEnable() && BiometricPromptManager.isBiometricSettingEnable()){
+            mManager = new BiometricPromptManager();
+            myOnBiometricIdentifyCallback = new MyOnBiometricIdentifyCallback();
+            mManager.authenticate(myOnBiometricIdentifyCallback);
+        }
+    }
+
+
+    private class MyOnBiometricIdentifyCallback implements BiometricPromptManager.OnBiometricIdentifyCallback {
+        @Override
+        public void onUsePassword() {
+
         }
 
         @Override
-        public void onCleared() {
-//            Log.d(getClass().getName(), "Pattern has been cleared");
+        public void onSucceeded() {
+            logInSuccess();
         }
-    };
 
-    private void initFingerPrint() {
-        if(BiometricPromptManager.isBiometricPromptEnable() && BiometricPromptManager.isBiometricSettingEnable()){
-            BiometricPromptManager mManager = new BiometricPromptManager();
-            mManager.authenticate(new BiometricPromptManager.OnBiometricIdentifyCallback() {
-                @Override
-                public void onUsePassword() {
+        @Override
+        public void onFailed() {
 
-                }
+        }
 
-                @Override
-                public void onSucceeded() {
-                    String token = RandomUtils.getRandomNumbersAndLetters(16);
-                    TokenUtils.setToken(token);
-                    getActivity().finish();
-                }
+        @Override
+        public void onError(int code, String reason) {
 
-                @Override
-                public void onFailed() {
+        }
 
-                }
+        @Override
+        public void onCancel() {
 
-                @Override
-                public void onError(int code, String reason) {
-
-                }
-
-                @Override
-                public void onCancel() {
-
-                }
-            });
         }
     }
+
 
 
     @Override
@@ -259,6 +279,15 @@ public class LoginGestureFragment extends BaseFragment {
         initSP();
     }
 
+    @Override
+    public void onDestroy() {
+        mPatternLockViewListener = null;
+        myOnBiometricIdentifyCallback = null;
+        mManager = null;
+        biometricPromptManager.setmImpl(null);
+        biometricPromptManager = null;
+        super.onDestroy();
+    }
 
 //    private void checkFingerprint() {
 //        String TAG = "checktest";
@@ -301,5 +330,7 @@ public class LoginGestureFragment extends BaseFragment {
 //            biometricPrompt.authenticate(cancellationSignal, getActivity().getMainExecutor(), authenticationCallback);
 //        }
 //    }
+
+
 }
 

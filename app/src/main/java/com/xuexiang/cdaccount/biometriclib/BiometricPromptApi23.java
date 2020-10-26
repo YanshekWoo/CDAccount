@@ -1,6 +1,5 @@
 package com.xuexiang.cdaccount.biometriclib;
 
-import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.CancellationSignal;
 import android.util.Log;
@@ -28,7 +27,7 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
 
     public BiometricPromptApi23() {
 
-        mFingerprintManager = getFingerprintManager(getContext());
+        mFingerprintManager = getFingerprintManager();
     }
 
     @Override
@@ -73,7 +72,7 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
 
         try {
             CryptoObjectHelper cryptoObjectHelper = new CryptoObjectHelper();
-            getFingerprintManager(getContext()).authenticate(
+            getFingerprintManager().authenticate(
                     cryptoObjectHelper.buildCryptoObject(), mCancellationSignal,
                     0, mFmAuthCallback, null);
         } catch (Exception e) {
@@ -119,9 +118,9 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
         }
     }
 
-    private FingerprintManager getFingerprintManager(Context context) {
+    private FingerprintManager getFingerprintManager() {
         if (mFingerprintManager == null) {
-            mFingerprintManager = context.getSystemService(FingerprintManager.class);
+            mFingerprintManager = getContext().getSystemService(FingerprintManager.class);
         }
         return mFingerprintManager;
     }

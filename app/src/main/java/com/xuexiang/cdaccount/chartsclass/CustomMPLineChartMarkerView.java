@@ -18,6 +18,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.xuexiang.cdaccount.R;
+import com.xuexiang.cdaccount.database.ChartDataEntry;
+
+import java.util.List;
 
 public class CustomMPLineChartMarkerView extends MarkerView {
     private final int ARROW_HEIGHT = dp2px(5); // 箭头的高度
@@ -29,6 +32,7 @@ public class CustomMPLineChartMarkerView extends MarkerView {
     private final Bitmap bitmapForDot;//选中点图片
     private final int bitmapWidth;//点宽
     private final int bitmapHeight;//点高
+    private List<ChartDataEntry> chartDataEntries;
 
     public CustomMPLineChartMarkerView(Context context) {
         super(context, R.layout.layout_for_custom_marker_view);
@@ -48,7 +52,17 @@ public class CustomMPLineChartMarkerView extends MarkerView {
             mvXValue.setText(Utils.formatNumber(ce.getLow(), 0, true));
             mvYValue.setText(Utils.formatNumber(ce.getHigh(), 0, true));
         } else {
-            mvXValue.setText(String.format("%.2f", e.getX()));
+            String date = chartDataEntries.get((int) e.getX()).getDataName();
+            String year = date.substring(0, 4);
+            String month = date.substring(4, 6);
+            String day = date.substring(6, 8);
+            String parsedDate = year+"-"+month+"-"+day;
+            if(year.equals("9999")) {
+                mvXValue.setText("预测值");
+            }
+            else {
+                mvXValue.setText(parsedDate);
+            }
             mvYValue.setText("￥"+String.format("%.2f", e.getY()));
         }
 
@@ -122,5 +136,10 @@ public class CustomMPLineChartMarkerView extends MarkerView {
         return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dpValues,
                 getResources().getDisplayMetrics());
+    }
+
+
+    public void setChartDataEntries(List<ChartDataEntry> chartDataEntries) {
+        this.chartDataEntries = chartDataEntries;
     }
 }

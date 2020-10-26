@@ -327,10 +327,10 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
         // ARIMA预测 predict
         if(lineEntries.size() >= 14) {
-            RunARIMA ra = new RunARIMA();
+//            RunARIMA ra = new RunARIMA();
             int length = lineEntries.size();
             for(int i = length; i < (length + 3); i++) {
-                double predictData = ra.runPrediction(lineEntries);
+                double predictData = RunARIMA.runPrediction(lineEntries);
                 lineEntries.add(new ChartDataEntry("9999-99-99", predictData));
             }
         }
