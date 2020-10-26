@@ -232,7 +232,7 @@ public class SetGestureActivity extends BaseActivity {
     private void onLoginSuccess() {
 //        Intent intent = new Intent(RegiterGestureActivity.this, RegisterVerifyActivity.class);
 //        startActivity(intent);
-
+        Log.d("---register---", "onLoginSuccess: ");
         XToastUtils.success("手势密码已重置");
         finish();
     }
