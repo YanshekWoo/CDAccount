@@ -21,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.andrognito.patternlockview.PatternLockView;
@@ -276,7 +277,14 @@ public class LoginGestureFragment extends BaseFragment {
     @Override
     public void onResume() {        //修改密码后重新加载
         super.onResume();
+        Log.d("---LoginGesture---", "onResume: ");
         initSP();
+        //设置监听器
+        mPatternLockView.removePatternLockListener(mPatternLockViewListener);
+        mPatternLockViewListener = new MyPatternLockViewListener(password_gesture);
+        mPatternLockView.addPatternLockListener(mPatternLockViewListener);
+
+//        initLock();
     }
 
     @Override
