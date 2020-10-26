@@ -18,6 +18,7 @@
 package com.xuexiang.cdaccount.fragment.login;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import com.andrognito.patternlockview.utils.PatternLockUtils;
 import com.andrognito.patternlockview.utils.ResourceUtils;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.FindpasswdActivity;
+import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.RandomUtils;
@@ -69,7 +71,7 @@ public class LoginGestureFragment extends BaseFragment {
 
     private MyPatternLockViewListener mPatternLockViewListener;
     private BiometricPromptManager biometricPromptManager;
-    private MyOnBiometricIdentifyCallback myOnBiometricIdentifyCallback = new MyOnBiometricIdentifyCallback();
+    private MyOnBiometricIdentifyCallback myOnBiometricIdentifyCallback;
     private BiometricPromptManager mManager;
 
 
@@ -229,8 +231,10 @@ public class LoginGestureFragment extends BaseFragment {
     public void logInSuccess() {
         String token = RandomUtils.getRandomNumbersAndLetters(16);
         TokenUtils.setToken(token);
-
-        Objects.requireNonNull(getActivity()).finish();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        Objects.requireNonNull(getActivity()).startActivity(intent);
+        getActivity().finish();
+//        Objects.requireNonNull(getActivity()).finish();
     }
 
 
@@ -245,6 +249,8 @@ public class LoginGestureFragment extends BaseFragment {
 
 
     private class MyOnBiometricIdentifyCallback implements BiometricPromptManager.OnBiometricIdentifyCallback {
+
+
         @Override
         public void onUsePassword() {
 

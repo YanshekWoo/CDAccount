@@ -18,7 +18,6 @@
 package com.xuexiang.cdaccount.adapter.accountdetail;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -34,13 +33,9 @@ import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
-import com.xuexiang.xui.widget.dialog.materialdialog.simplelist.MaterialSimpleListAdapter;
-import com.xuexiang.xui.widget.dialog.materialdialog.simplelist.MaterialSimpleListItem;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
 
@@ -82,13 +77,13 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
 
         switch (item.getBill_TYPE()){
             case 0:
-                holder.getTextView(R.id.money).setTextColor(context.getResources().getColor(R.color.app_color_theme_1));
+                holder.getTextView(R.id.money).setTextColor(mRecyclerView.getContext().getResources().getColor(R.color.app_color_theme_1));
                 break;
             case 1:
-                holder.getTextView(R.id.money).setTextColor(context.getResources().getColor(R.color.app_color_theme_5));
+                holder.getTextView(R.id.money).setTextColor(mRecyclerView.getContext().getResources().getColor(R.color.app_color_theme_5));
                 break;
             default:
-                holder.getTextView(R.id.money).setTextColor(context.getResources().getColor(R.color.black));
+                holder.getTextView(R.id.money).setTextColor(mRecyclerView.getContext().getResources().getColor(R.color.black));
                 break;
         }
     }

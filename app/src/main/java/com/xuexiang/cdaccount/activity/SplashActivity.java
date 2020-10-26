@@ -74,10 +74,12 @@ public class SplashActivity extends BaseSplashActivity implements CancelAdapt {
             BiometricPromptManager.setBiometricSettingEnable(false);
             ActivityUtils.startActivity(RegiterNumberActivity.class);
         } else {
-            Intent[] intents = new Intent[2];
-            intents[0] = new Intent(this,MainActivity.class);
-            intents[1] = new Intent(this,LoginActivity.class);
-            startActivities(intents);
+//            Intent[] intents = new Intent[2];
+//            intents[0] = new Intent(this,MainActivity.class);
+//            intents[1] = new Intent(this,LoginActivity.class);
+//            startActivities(intents);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
         finish();
     }

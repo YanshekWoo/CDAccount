@@ -45,7 +45,8 @@ public class LoginActivity extends BaseActivity implements ClickUtils.OnClick2Ex
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        openPage(LoginGestureFragment.class, false);
+//        openPage(LoginGestureFragment.class, false);
+        openPage(LoginGestureFragment.class, getIntent().getExtras());
     }
 
     @Override

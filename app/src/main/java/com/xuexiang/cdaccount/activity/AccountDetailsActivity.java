@@ -261,6 +261,8 @@ public class AccountDetailsActivity extends BaseActivity {
         final ListView timeView = new ListView(AccountDetailsActivity.this);
         mTimeAdapter = new ListDropDownAdapter(AccountDetailsActivity.this, mTimes);
         mTimeAdapter.setSelectPosition(selectedTime);
+        changeFocusable(selectedTime);
+
         timeView.setDividerHeight(0);
         timeView.setAdapter(mTimeAdapter);
 

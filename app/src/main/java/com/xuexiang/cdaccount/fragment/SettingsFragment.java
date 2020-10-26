@@ -143,6 +143,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
                         BillDao billDao = new BillDao(getContext());
                         billDao.Destory();
                         dialog.dismiss();
+                        SettingUtils.setIsAgreePrivacy(false);
                         SettingUtils.setIsFirstOpen(true);
                         XUtil.getActivityLifecycleHelper().exit();
                     }

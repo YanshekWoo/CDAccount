@@ -18,6 +18,7 @@
 package com.xuexiang.cdaccount.fragment.login;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -25,7 +26,10 @@ import android.view.View;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.FindpasswdActivity;
+import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.utils.RandomUtils;
+import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.util.MD5Utils;
@@ -116,13 +120,22 @@ public class LoginNumberFragment extends BaseFragment {
             if(password.equals(MD5Utils.encode(Objects.requireNonNull(etlogin_passwd.getText()).toString())))
             {
 //                    XToastUtils.success("密码正确");
-                Objects.requireNonNull(getActivity()).finish();
+                logInSuccess();
             }
             else
             {
                 XToastUtils.error("密码错误");
             }
         });
+    }
+
+
+    private void logInSuccess() {
+        String token = RandomUtils.getRandomNumbersAndLetters(16);
+        TokenUtils.setToken(token);
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
+        Objects.requireNonNull(getActivity()).finish();
     }
 
 
