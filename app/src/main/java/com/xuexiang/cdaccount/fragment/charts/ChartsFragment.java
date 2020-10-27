@@ -292,25 +292,25 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         switch (tabSelected) {
             case 0:
                 if(tabInout==0) {
-                    chartDataEntries = billDao.GetDataByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                    chartDataEntries = billDao.getDataByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 }
                 else if(tabInout==1) {
-                    chartDataEntries = billDao.GetDataByInTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                    chartDataEntries = billDao.getDataByInTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 }
                 break;
             case 1:
                 if(tabInout==0) {
-                    chartDataEntries = billDao.GetDataByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                    chartDataEntries = billDao.getDataByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 }
                 else if(tabInout==1) {
-                    chartDataEntries = billDao.GetDataByInSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                    chartDataEntries = billDao.getDataByInSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 }
                 break;
             case 2:
-                chartDataEntries = billDao.GetDataByMember(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
+                chartDataEntries = billDao.getDataByMember(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
                 break;
             case 3:
-                chartDataEntries = billDao.GetDataByAccount(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
+                chartDataEntries = billDao.getDataByAccount(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
                 break;
         }
 
@@ -322,7 +322,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
 
         // 折线图数据
-        lineEntries = billDao.GetSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
+        lineEntries = billDao.getSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
 
 
         // ARIMA预测 predict

@@ -260,8 +260,8 @@ public class AccountFragment extends BaseFragment{
 //                                mTvAccount.setText(mAccount);
                         //TODO:insert_new_account
                         assert dialog.getInputEditText() != null;
-                        if(billDao.InsertAccount(dialog.getInputEditText().getText().toString())){
-                            XToastUtils.success("添加账户成功");
+                        if(billDao.insertAccount(dialog.getInputEditText().getText().toString())){
+//                            XToastUtils.success("添加账户成功");
                             refreshLayout.autoRefresh();
                         }else{
                             XToastUtils.error("添加账户失败，该账户已存在");
@@ -293,7 +293,7 @@ public class AccountFragment extends BaseFragment{
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         assert dialog.getInputEditText() != null;
                         if(billDao.ChangeAccountName(item.getName(),dialog.getInputEditText().getText().toString())){
-                            XToastUtils.success("修改账户成功");
+//                            XToastUtils.success("修改账户成功");
                             refreshLayout.autoRefresh();
                         }else{
                             XToastUtils.error("修改账户失败，该账户已存在");

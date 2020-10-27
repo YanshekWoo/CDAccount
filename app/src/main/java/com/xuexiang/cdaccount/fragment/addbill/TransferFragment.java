@@ -298,7 +298,7 @@ public class TransferFragment extends BaseFragment {
                                                                   mAccount1 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount1.setText(mAccount1);
                                                                   //TODO:insert_new_account
-                                                                  if(mDatabaseHelper.InsertAccount(mAccount1)){
+                                                                  if(mDatabaseHelper.insertAccount(mAccount1)){
                                                                       XToastUtils.success("添加账户成功");
                                                                       loadAccountData();
                                                                   }else{
@@ -348,7 +348,7 @@ public class TransferFragment extends BaseFragment {
                                                               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                                   mAccount2 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount2.setText(mAccount2);
-                                                                  if(mDatabaseHelper.InsertAccount(mAccount2)){
+                                                                  if(mDatabaseHelper.insertAccount(mAccount2)){
                                                                       XToastUtils.success("添加账户成功");
                                                                       loadAccountData();
                                                                   }else{
@@ -407,7 +407,7 @@ public class TransferFragment extends BaseFragment {
                                     mTvMember.setTextColor(0xFF000000 );
                                 }
                                 //TODO:insert new member
-                                if(mDatabaseHelper.InsertMember(mMember)){
+                                if(mDatabaseHelper.insertMember(mMember)){
                                     XToastUtils.success("添加成员成功");
                                     loadMemberData();
                                 }else{
@@ -530,7 +530,7 @@ public class TransferFragment extends BaseFragment {
     private void loadAccountData() {                        //仅重复一次
 //        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
 //        Accounts1Item = Arrays.asList(str1);
-        Accounts1Item = mDatabaseHelper.QueryAccount();
+        Accounts1Item = mDatabaseHelper.queryAccountList();
 
     }
 
@@ -594,7 +594,7 @@ public class TransferFragment extends BaseFragment {
     private void loadMemberData() {
 //        String[] str1 = {"无成员","本人", "配偶", "子女"};
 //        MembersItem = Arrays.asList(str1);
-        MembersItem = mDatabaseHelper.QueryMember();
+        MembersItem = mDatabaseHelper.queryMemberList();
 
     }
 

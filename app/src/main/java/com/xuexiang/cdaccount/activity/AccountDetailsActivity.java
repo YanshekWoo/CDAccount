@@ -200,9 +200,9 @@ public class AccountDetailsActivity extends BaseActivity {
         mTimes.add("年");
         mTimes.add("月");
         mTimes.add("日");
-        mMembers = mBillDao.QueryMember();
+        mMembers = mBillDao.queryMemberList();
         mMembers.add(0,getResources().getString(R.string.unlimited));
-        mAccounts = mBillDao.QueryAccount();
+        mAccounts = mBillDao.queryAccountList();
         mAccounts.add(0,getResources().getString(R.string.unlimited));
 
         Calendar calendar = Calendar.getInstance();
