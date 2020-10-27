@@ -27,10 +27,6 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.widget.grouplist.XUIGroupListView;
 import com.xuexiang.xutil.app.AppUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import butterknife.BindView;
 
 /**
@@ -43,12 +39,15 @@ public class AboutFragment extends BaseFragment {
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.tv_version)
     TextView mVersionTextView;
+
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.about_list)
     XUIGroupListView mAboutGroupListView;
+
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.tv_copyright)
     TextView mCopyrightTextView;
+
 
     @Override
     protected int getLayoutId() {
@@ -66,8 +65,8 @@ public class AboutFragment extends BaseFragment {
 //                .addItemView(mAboutGroupListView.createItemView(getResources().getString(R.string.about_item_add_qq_group)), v -> AgentWebActivity.goWeb(getContext(), getString(R.string.url_add_qq_group)))
                 .addTo(mAboutGroupListView);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy", Locale.CHINA);
-        String currentYear = dateFormat.format(new Date());
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy", Locale.CHINA);
+//        String currentYear = dateFormat.format(new Date());
 //        mCopyrightTextView.setText(String.format(getResources().getString(R.string.about_copyright), currentYear));
         mCopyrightTextView.setText("");
     }

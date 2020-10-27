@@ -17,16 +17,14 @@
 
 package com.xuexiang.cdaccount.fragment.home;
 
-import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.AddActivity;
+import com.xuexiang.cdaccount.activity.AddBillActivity;
 import com.xuexiang.cdaccount.adapter.record.RecordAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
@@ -35,6 +33,7 @@ import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 import com.xuexiang.xui.widget.textview.autofit.AutoFitTextView;
+import com.xuexiang.xutil.app.ActivityUtils;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -105,8 +104,9 @@ public class HomeFragment extends BaseFragment {
         mIbAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getContext(), AddBillActivity.class);
+//                startActivity(intent);
+                ActivityUtils.startActivity(AddBillActivity.class);
             }
         });
     }

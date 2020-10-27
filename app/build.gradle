@@ -88,7 +88,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation files('libs\\Jama-1.0.2.jar')
+    implementation files('libs/Jama-1.0.2.jar')
     testImplementation deps.junit
     androidTestImplementation deps.runner
     androidTestImplementation deps.espresso.core
@@ -139,6 +139,10 @@ dependencies {
     implementation 'com.andrognito.patternlockview:patternlockview:1.0.0'
     // Optional, for RxJava2 adapter
     implementation 'com.andrognito.patternlockview:patternlockview-reactive:1.0.0'
+
+//    // 数据库加密
+//    implementation 'net.zetetic:android-database-sqlcipher:4.4.0@aar'
+//    implementation "androidx.sqlite:sqlite:2.0.1"
 
 
 }

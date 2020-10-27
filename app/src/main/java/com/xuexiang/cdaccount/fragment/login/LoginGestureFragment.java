@@ -19,8 +19,10 @@ package com.xuexiang.cdaccount.fragment.login;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.andrognito.patternlockview.PatternLockView;
@@ -28,10 +30,12 @@ import com.andrognito.patternlockview.listener.PatternLockViewListener;
 import com.andrognito.patternlockview.utils.PatternLockUtils;
 import com.andrognito.patternlockview.utils.ResourceUtils;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.FindpasswdActivity;
+import com.xuexiang.cdaccount.activity.MainActivity;
+import com.xuexiang.cdaccount.activity.RegiterNumberActivity;
 import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.utils.RandomUtils;
+import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
@@ -69,8 +73,12 @@ public class LoginGestureFragment extends BaseFragment {
 
     private MyPatternLockViewListener mPatternLockViewListener;
     private BiometricPromptManager biometricPromptManager;
-    private MyOnBiometricIdentifyCallback myOnBiometricIdentifyCallback = new MyOnBiometricIdentifyCallback();
-    private BiometricPromptManager mManager;
+//    private BiometricPromptManager mManager;
+    private MyOnBiometricIdentifyCallback myOnBiometricIdentifyCallback;
+
+
+    private Bundle bundle;
+    private boolean isChangePasswd;
 
 
     /**
@@ -89,10 +97,16 @@ public class LoginGestureFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+        bundle = getArguments();
+        assert bundle != null;
+        isChangePasswd = bundle.getInt("isChangePasswd", 0) == 1;
+
         initSP();
         initLock();
+        if(!isChangePasswd) {
+            initFingerPrint();
+        }
 //        checkFingerprint();
-        initFingerPrint();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -102,10 +116,11 @@ public class LoginGestureFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_other_login1:
 //                openPage(LoginNumberFragment.class, getActivity().getIntent().getExtras());
-                openPage(LoginNumberFragment.class, false);
+//                openPage(LoginNumberFragment.class, false);
+                openPage(LoginNumberFragment.class, bundle);
                 break;
             case R.id.tv_forget_password:
-                ActivityUtils.startActivity(FindpasswdActivity.class);
+                openNewPage(FindPasswdFragment.class);
                 break;
             case R.id.tv_user_protocol:
                 XToastUtils.info("用户协议");
@@ -227,24 +242,47 @@ public class LoginGestureFragment extends BaseFragment {
      * 登录成功
      */
     public void logInSuccess() {
-        String token = RandomUtils.getRandomNumbersAndLetters(16);
-        TokenUtils.setToken(token);
+//        if(TokenUtils.hasToken()) {
+//            String token = RandomUtils.getRandomNumbersAndLetters(16);
+//            TokenUtils.setToken(token);
+//            Intent intent = new Intent(getActivity(), MainActivity.class);
+//            Objects.requireNonNull(getActivity()).startActivity(intent);
+//        }
+//        Objects.requireNonNull(getActivity()).finish();
+////        Objects.requireNonNull(getActivity()).finish();
 
+        // 是否需要修改密码
+        if(!isChangePasswd) {
+            //进入首页
+            ActivityUtils.startActivity(MainActivity.class);
+        }
+        else {
+            // 进入重置密码页
+            SettingUtils.setIsFirstOpen(true);
+            String token = RandomUtils.getRandomNumbersAndLetters(16);
+            TokenUtils.setToken(token);
+            ActivityUtils.startActivity(RegiterNumberActivity.class);
+        }
         Objects.requireNonNull(getActivity()).finish();
+
     }
 
 
     private void initFingerPrint() {
         biometricPromptManager = new BiometricPromptManager();
         if(biometricPromptManager.isBiometricPromptEnable() && BiometricPromptManager.isBiometricSettingEnable()){
-            mManager = new BiometricPromptManager();
             myOnBiometricIdentifyCallback = new MyOnBiometricIdentifyCallback();
-            mManager.authenticate(myOnBiometricIdentifyCallback);
+            biometricPromptManager.authenticate(myOnBiometricIdentifyCallback);
+//            mManager = new BiometricPromptManager();
+//            myOnBiometricIdentifyCallback = new MyOnBiometricIdentifyCallback();
+//            mManager.authenticate(myOnBiometricIdentifyCallback);
         }
     }
 
 
     private class MyOnBiometricIdentifyCallback implements BiometricPromptManager.OnBiometricIdentifyCallback {
+
+
         @Override
         public void onUsePassword() {
 
@@ -276,16 +314,26 @@ public class LoginGestureFragment extends BaseFragment {
     @Override
     public void onResume() {        //修改密码后重新加载
         super.onResume();
+        Log.d("---LoginGesture---", "onResume: ");
         initSP();
+        //设置监听器
+        mPatternLockView.removePatternLockListener(mPatternLockViewListener);
+        mPatternLockViewListener = new MyPatternLockViewListener(password_gesture);
+        mPatternLockView.addPatternLockListener(mPatternLockViewListener);
+
+//        initLock();
     }
 
     @Override
     public void onDestroy() {
         mPatternLockViewListener = null;
-        myOnBiometricIdentifyCallback = null;
-        mManager = null;
-        biometricPromptManager.setmImpl(null);
-        biometricPromptManager = null;
+        if(!isChangePasswd) {
+            myOnBiometricIdentifyCallback = null;
+            biometricPromptManager.destroyImpl();
+            biometricPromptManager = null;
+//            mManager.destroyImpl();
+//            mManager = null;
+        }
         super.onDestroy();
     }
 

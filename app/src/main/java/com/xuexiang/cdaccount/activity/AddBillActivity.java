@@ -32,9 +32,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseFragment;
-import com.xuexiang.cdaccount.fragment.add.IncomeFragment;
-import com.xuexiang.cdaccount.fragment.add.OutcomeFragment;
-import com.xuexiang.cdaccount.fragment.add.TransferFragment;
+import com.xuexiang.cdaccount.fragment.addbill.IncomeFragment;
+import com.xuexiang.cdaccount.fragment.addbill.OutcomeFragment;
+import com.xuexiang.cdaccount.fragment.addbill.TransferFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.adapter.FragmentAdapter;
@@ -51,7 +51,7 @@ import java.util.List;
  * @author Chenhao
  * @since 2020年10月2日22:02:18
  */
-public class AddActivity extends AppCompatActivity implements OutcomeFragment.OutcomeMessage, IncomeFragment.IncomeMessage, TransferFragment.TransferMessage {
+public class AddBillActivity extends AppCompatActivity implements OutcomeFragment.OutcomeMessage, IncomeFragment.IncomeMessage, TransferFragment.TransferMessage {
 
     private ViewPager mVpAdd;
     private Boolean mBlConfirm = false;     //标识变量
@@ -67,7 +67,7 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add);
+        setContentView(R.layout.activity_addbill);
 
         mDataBaseHelper = new BillDao(this);
 //        initDate();

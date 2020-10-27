@@ -59,7 +59,7 @@
                     style="@style/InfoItem"
                     android:layout_marginTop="16dp"
                     app:sCenterTextColor="@color/xui_config_color_red"
-                    app:sCenterTextString="清除数据"
+                    app:sCenterTextString="注销账号"
                     app:sDividerLineType="none" />
 
             </LinearLayout>

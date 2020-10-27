@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andrognito.patternlockview.PatternLockView;
@@ -32,6 +33,7 @@ import com.andrognito.patternlockview.utils.ResourceUtils;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.utils.SettingUtils;
+import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xui.utils.KeyboardUtils;
@@ -59,8 +61,13 @@ public class RegiterGestureActivity extends BaseActivity {
     @BindView(R.id.register_gesture_text)
     TextView tv_register_gesture;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.register_gesture_img)
+    ImageView imageView;
+
+
     private String GestureSignUp;
-//    private int state = 1;
+
     private SharedPreferences.Editor mEditor_gesture;
 
     MyPatternLockViewListener myPatternLockViewListener;
@@ -78,6 +85,7 @@ public class RegiterGestureActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initSP();
+        initImageView();
         initLock();
         if(!SettingUtils.isFirstOpen()){
             tv_register_gesture.setText("请重置手势密码");
@@ -109,6 +117,12 @@ public class RegiterGestureActivity extends BaseActivity {
         mEditor_gesture = mSharedPreferences_gesture.edit();
     }
 
+
+    private void initImageView() {
+        if(TokenUtils.hasToken()) {
+            imageView.setImageResource(R.drawable.ic_findpasswd);
+        }
+    }
 
     @SuppressLint("CheckResult")
     private void initLock() {
@@ -232,10 +246,20 @@ public class RegiterGestureActivity extends BaseActivity {
      * 注册成功的处理
      */
     private void onLoginSuccess() {
-        if(SettingUtils.isFirstOpen()){                                     //若找回密码时调用此页面，则不跳转
+//        if(SettingUtils.isFirstOpen()){                                     //若找回密码时调用此页面，则不跳转
+//            ActivityUtils.startActivity(RegisterVerifyActivity.class);
+//        }else{
+//            XToastUtils.success("手势密码已重置");
+//        }
+//        finish();
+
+        if(!TokenUtils.hasToken()) {
             ActivityUtils.startActivity(RegisterVerifyActivity.class);
-        }else{
-            XToastUtils.success("手势密码已重置");
+        }
+        else {
+            TokenUtils.clearToken();
+            SettingUtils.setIsFirstOpen(false);
+            ActivityUtils.startActivity(MainActivity.class);
         }
         finish();
     }

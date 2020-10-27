@@ -124,8 +124,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         viewPager.setOffscreenPageLimit(mTitles.length - 1);
         viewPager.setAdapter(adapter);
 
+        // 初始化页面为首页
         viewPager.setCurrentItem(1, false);
-
+        // 侧边栏初始化选中
+        MenuItem side = navView.getMenu().findItem(R.id.nav_home);
+        side.setChecked(true);
+        // 底部导航栏初始化选中
         bottomNavigation.setSelectedItemId(bottomNavigation.getMenu().getItem(1).getItemId());
     }
 
@@ -171,7 +175,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         openNewPage(SettingsFragment.class);
                         break;
                     case R.id.nav_about:
+//                        openPage(AboutFragment.class, false);
                         openNewPage(AboutFragment.class);
+//                        openNewPage(AboutFragment.class);
                         break;
                     default:
 //                        XToastUtils.toast("点击了:" + menuItem.getTitle());
