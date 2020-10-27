@@ -38,11 +38,13 @@ public class BiometricPromptManager {
 //    }
 
     public BiometricPromptManager() {
-//        mActivity = activity;
-        if (isAboveApi28()) {
-            mImpl = new BiometricPromptApi28();
-        } else if (isAboveApi23()) {
-            mImpl = new BiometricPromptApi23();
+        if(hasEnrolledFingerprints() && isHardwareDetected())
+        {
+            if (isAboveApi28()) {
+                mImpl = new BiometricPromptApi28();
+            } else if (isAboveApi23()) {
+                mImpl = new BiometricPromptApi23();
+            }
         }
     }
 

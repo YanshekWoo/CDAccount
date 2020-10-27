@@ -9,6 +9,7 @@
     android:padding="30dp">
 
     <com.xuexiang.xui.widget.alpha.XUIAlphaImageView
+        android:id="@+id/register_gesture_img"
         android:layout_width="84dp"
         android:layout_height="84dp"
         android:layout_gravity="center_horizontal"

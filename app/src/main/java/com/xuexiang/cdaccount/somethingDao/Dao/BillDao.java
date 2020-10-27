@@ -908,7 +908,8 @@ public class BillDao {
             }
             double monthincome = 0.0, monthoutcome = 0.0;
             List<BillDataDay> billDataDayList = new LinkedList<>();
-            for(int j = 31; j > 0; j--){
+            for(int j = 31; j > 0; j--)
+            {
                 String jtmp = String.valueOf(j);
                 if(j < 10){
                     String tmp = String.valueOf(j);
@@ -923,7 +924,8 @@ public class BillDao {
                 Cursor cursor = db.rawQuery(sql, null);
                 double income = 0.0, outcome = 0.0;
                 boolean dayexist = false;
-                while(cursor.moveToNext()){
+                while(cursor.moveToNext())
+                {
                     dayexist = true;
                     monthexist = true;
                     String category = "", acc = "", toaccount = "", mem = "";
@@ -968,6 +970,7 @@ public class BillDao {
                     while (cursor2.moveToNext()){
                         mem = cursor2.getString(cursor2.getColumnIndex("Member_Name"));
                     }
+                    cursor2.close();
 
                     String yea = cursor.getString(cursor.getColumnIndex("year"));
                     String month = cursor.getString(cursor.getColumnIndex("month"));
@@ -980,12 +983,15 @@ public class BillDao {
                     if(type == 0) outcome += money;
                     else income += money;
                 }
-                if(!dayexist) continue;
+                cursor.close();
+                if(!dayexist) {
+                    continue;
+                }
                 monthincome += income;
                 monthoutcome += outcome;
                 BillDataDay tmp = new BillDataDay(Year, itmp, jtmp, income, outcome, billDataItemList);
                 billDataDayList.add(tmp);
-                cursor.close();
+
             }
             if(!monthexist) continue;
             BillDataMonth tmp = new BillDataMonth(Year, itmp, monthincome, monthoutcome, billDataDayList);
