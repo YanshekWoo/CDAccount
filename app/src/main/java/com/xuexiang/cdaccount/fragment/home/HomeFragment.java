@@ -126,11 +126,11 @@ public class HomeFragment extends BaseFragment {
 
     private void loadData(){
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        mAmountIn = decimalFormat.format(mDataBaseHelper.QueryMonthIncome());
-        mAmountOut = decimalFormat.format(mDataBaseHelper.QueryMonthpay());
-        mRecentInfo = mDataBaseHelper.GetRecentInformation();
-        mRecentDate = mDataBaseHelper.GetRecentDate();
-        mRecentType = mDataBaseHelper.GetRecentIO();
+        mAmountIn = decimalFormat.format(mDataBaseHelper.queryMonthIncome());
+        mAmountOut = decimalFormat.format(mDataBaseHelper.queryMonthOutcome());
+        mRecentInfo = mDataBaseHelper.getRecentInformation();
+        mRecentDate = mDataBaseHelper.getRecentBillDate();
+        mRecentType = mDataBaseHelper.getRecentIO();
 
     }
 }

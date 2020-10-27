@@ -273,7 +273,7 @@ public class OutcomeFragment extends BaseFragment {
                         //TODO:Insert_Category
                         if(mStrNewItem1.length()==0 || mStrNewItem2.length()==0){
                             XToastUtils.error("添加分类不可为空");
-                        }else if(mDatabaseHelper.InsertCategory(mStrNewItem1, mStrNewItem2, 0)){
+                        }else if(mDatabaseHelper.insertCategory(mStrNewItem1, mStrNewItem2, 0)){
                             mOption1 = mStrNewItem1;
                             mOption2 = mStrNewItem2;
                             mOption = mOption1 + '-' + mOption2;
@@ -330,7 +330,7 @@ public class OutcomeFragment extends BaseFragment {
                                                                   mAccount = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount.setText(mAccount);
                                                                   //TODO:insert_new_account
-                                                                  if(mDatabaseHelper.InsertAccount(mAccount)){
+                                                                  if(mDatabaseHelper.insertAccount(mAccount)){
                                                                       XToastUtils.success("添加账户成功");
                                                                       loadAccountData();
                                                                   }else{
@@ -389,7 +389,7 @@ public class OutcomeFragment extends BaseFragment {
                                     mTvMember.setTextColor(0xFF000000);
                                 }
                                 //TODO:insert new member
-                                if(mDatabaseHelper.InsertMember(mMember)){
+                                if(mDatabaseHelper.insertMember(mMember)){
                                     XToastUtils.success("添加成员成功");
                                     loadMemberData();
                                 }else{
@@ -479,8 +479,8 @@ public class OutcomeFragment extends BaseFragment {
 //        options2Item.add(Arrays.asList(str2_1));
 //        options2Item.add(Arrays.asList(str2_2));
 //        options2Item.add(Arrays.asList(str2_3));
-        options1Item = mDatabaseHelper.QueryOutTopCategory();
-        options2Item = mDatabaseHelper.QueryOutSubCategory();
+        options1Item = mDatabaseHelper.queryOutTopCategory();
+        options2Item = mDatabaseHelper.queryOutSubCategory();
     }
 
     private void showOptionPickerView(boolean isDialog) {// 弹出选择器
@@ -518,7 +518,7 @@ public class OutcomeFragment extends BaseFragment {
     private void loadAccountData() {
 //        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
 //        Accounts1Item = Arrays.asList(str1);
-        Accounts1Item = mDatabaseHelper.QueryAccount();
+        Accounts1Item = mDatabaseHelper.queryAccountList();
     }
 
     private void showAccountPickerView(boolean isDialog) {// 弹出选择器
@@ -552,7 +552,7 @@ public class OutcomeFragment extends BaseFragment {
     private void loadMemberData() {
 //        String[] str1 = {"无成员","本人", "配偶", "子女"};
 //        MembersItem = Arrays.asList(str1);
-        MembersItem = mDatabaseHelper.QueryMember();
+        MembersItem = mDatabaseHelper.queryMemberList();
     }
 
     private void showMemberPickerView(boolean isDialog) {// 弹出选择器

@@ -242,52 +242,52 @@ public class RegisterVerifyActivity extends BaseActivity {
 
     public void initDate(){
         BillDao mDataBaseHelper = new BillDao(this);
-        mDataBaseHelper.InsertCategory("餐饮","早餐",0);
-        mDataBaseHelper.InsertCategory("餐饮","午餐",0);
-        mDataBaseHelper.InsertCategory("餐饮","晚餐",0);
-        mDataBaseHelper.InsertCategory("餐饮","水果",0);
-        mDataBaseHelper.InsertCategory("餐饮","零食",0);
-        mDataBaseHelper.InsertCategory("交通","公交",0);
-        mDataBaseHelper.InsertCategory("交通","地铁",0);
-        mDataBaseHelper.InsertCategory("交通","火车",0);
-        mDataBaseHelper.InsertCategory("交通","飞机",0);
-        mDataBaseHelper.InsertCategory("交通","出租",0);
-        mDataBaseHelper.InsertCategory("娱乐","电影",0);
-        mDataBaseHelper.InsertCategory("娱乐","健身",0);
-        mDataBaseHelper.InsertCategory("娱乐","游戏",0);
-        mDataBaseHelper.InsertCategory("娱乐","旅游",0);
-        mDataBaseHelper.InsertCategory("娱乐","按摩",0);
-        mDataBaseHelper.InsertCategory("购物","电器",0);
-        mDataBaseHelper.InsertCategory("购物","家具",0);
-        mDataBaseHelper.InsertCategory("购物","数码",0);
-        mDataBaseHelper.InsertCategory("购物","服饰",0);
-        mDataBaseHelper.InsertCategory("购物","美妆",0);
+        mDataBaseHelper.insertCategory("餐饮","早餐",0);
+        mDataBaseHelper.insertCategory("餐饮","午餐",0);
+        mDataBaseHelper.insertCategory("餐饮","晚餐",0);
+        mDataBaseHelper.insertCategory("餐饮","水果",0);
+        mDataBaseHelper.insertCategory("餐饮","零食",0);
+        mDataBaseHelper.insertCategory("交通","公交",0);
+        mDataBaseHelper.insertCategory("交通","地铁",0);
+        mDataBaseHelper.insertCategory("交通","火车",0);
+        mDataBaseHelper.insertCategory("交通","飞机",0);
+        mDataBaseHelper.insertCategory("交通","出租",0);
+        mDataBaseHelper.insertCategory("娱乐","电影",0);
+        mDataBaseHelper.insertCategory("娱乐","健身",0);
+        mDataBaseHelper.insertCategory("娱乐","游戏",0);
+        mDataBaseHelper.insertCategory("娱乐","旅游",0);
+        mDataBaseHelper.insertCategory("娱乐","按摩",0);
+        mDataBaseHelper.insertCategory("购物","电器",0);
+        mDataBaseHelper.insertCategory("购物","家具",0);
+        mDataBaseHelper.insertCategory("购物","数码",0);
+        mDataBaseHelper.insertCategory("购物","服饰",0);
+        mDataBaseHelper.insertCategory("购物","美妆",0);
 
 
 
-        mDataBaseHelper.InsertCategory("职业收入","工资",1);
-        mDataBaseHelper.InsertCategory("职业收入","福利",1);
-        mDataBaseHelper.InsertCategory("职业收入","提成",1);
-        mDataBaseHelper.InsertCategory("生意收入","提成",1);
-        mDataBaseHelper.InsertCategory("生意收入","退款",1);
-        mDataBaseHelper.InsertCategory("生意收入","贷款",1);
-        mDataBaseHelper.InsertCategory("人情收入","红包",1);
-        mDataBaseHelper.InsertCategory("人情收入","礼金",1);
-        mDataBaseHelper.InsertCategory("人情收入","压岁钱",1);
+        mDataBaseHelper.insertCategory("职业收入","工资",1);
+        mDataBaseHelper.insertCategory("职业收入","福利",1);
+        mDataBaseHelper.insertCategory("职业收入","提成",1);
+        mDataBaseHelper.insertCategory("生意收入","提成",1);
+        mDataBaseHelper.insertCategory("生意收入","退款",1);
+        mDataBaseHelper.insertCategory("生意收入","贷款",1);
+        mDataBaseHelper.insertCategory("人情收入","红包",1);
+        mDataBaseHelper.insertCategory("人情收入","礼金",1);
+        mDataBaseHelper.insertCategory("人情收入","压岁钱",1);
 
 
 //        mDataBaseHelper.InsertAccount("");
-        mDataBaseHelper.InsertAccount("现金");
-        mDataBaseHelper.InsertAccount("信用卡");
-        mDataBaseHelper.InsertAccount("储蓄卡");
-        mDataBaseHelper.InsertAccount("支付宝");
-        mDataBaseHelper.InsertAccount("基金");
+        mDataBaseHelper.insertAccount("现金");
+        mDataBaseHelper.insertAccount("信用卡");
+        mDataBaseHelper.insertAccount("储蓄卡");
+        mDataBaseHelper.insertAccount("支付宝");
+        mDataBaseHelper.insertAccount("基金");
 
-        mDataBaseHelper.InsertMember("无成员");
-        mDataBaseHelper.InsertMember("本人");
-        mDataBaseHelper.InsertMember("配偶");
-        mDataBaseHelper.InsertMember("子女");
-        mDataBaseHelper.InsertMember("父母");
+        mDataBaseHelper.insertMember("无成员");
+        mDataBaseHelper.insertMember("本人");
+        mDataBaseHelper.insertMember("配偶");
+        mDataBaseHelper.insertMember("子女");
+        mDataBaseHelper.insertMember("父母");
     }
 
 
