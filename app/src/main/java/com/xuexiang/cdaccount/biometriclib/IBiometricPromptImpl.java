@@ -12,4 +12,7 @@ interface IBiometricPromptImpl {
     void authenticate(@NonNull CancellationSignal cancel,
                       @NonNull BiometricPromptManager.OnBiometricIdentifyCallback callback);
 
+
+    void destroy();
+
 }

@@ -22,7 +22,7 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
     private FingerprintManager mFingerprintManager;
     private CancellationSignal mCancellationSignal;
     private BiometricPromptManager.OnBiometricIdentifyCallback mManagerIdentifyCallback;
-    private final FingerprintManager.AuthenticationCallback mFmAuthCallback
+    private FingerprintManager.AuthenticationCallback mFmAuthCallback
             = new FingerprintManageCallbackImpl();
 
     public BiometricPromptApi23() {
@@ -79,6 +79,16 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void destroy() {
+        mFmAuthCallback = null;
+        mDialog = null;
+        mFingerprintManager = null;
+        mCancellationSignal = null;
+        mManagerIdentifyCallback = null;
+    }
+
 
     private class FingerprintManageCallbackImpl extends FingerprintManager.AuthenticationCallback {
 

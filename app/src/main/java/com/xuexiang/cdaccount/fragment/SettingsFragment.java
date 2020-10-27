@@ -64,9 +64,10 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     @BindView(R.id.menu_clear_data)
     SuperTextView menuLogout;
 
-    private static void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        XToastUtils.info("Open");
-    }
+//
+//    private static void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//        XToastUtils.info("Open");
+//    }
 
     @Override
     protected int getLayoutId() {
@@ -75,7 +76,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
 
     @Override
     protected void initViews() {
-        initBiometric();
+        initBiometricSwitch();
 
         menuChangeAccount.setOnSuperTextViewClickListener(this);
         menuLogout.setOnSuperTextViewClickListener(this);
@@ -84,7 +85,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     /**
      * 指纹密码开关
      */
-    private void initBiometric() {
+    private void initBiometricSwitch() {
         stvSwitchBiometric.setSwitchIsChecked(BiometricPromptManager.isBiometricSettingEnable());
         stvSwitchBiometric.setOnSuperTextViewClickListener(superTextView -> stvSwitchBiometric.setSwitchIsChecked(!stvSwitchBiometric.getSwitchIsChecked(), false));
         stvSwitchBiometric.setSwitchCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
