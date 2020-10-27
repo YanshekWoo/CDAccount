@@ -329,8 +329,8 @@ public class RegisterVerifyActivity extends BaseActivity {
 
     protected void initialDataTable() {
         billDao = new BillDao(this);
-        billDao.MyCreate();
-        billDao.Init();
+        billDao.myCreateTable();
+        billDao.initSpecialData();
         initDate();
     }
 

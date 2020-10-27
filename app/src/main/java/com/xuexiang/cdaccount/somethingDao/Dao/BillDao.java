@@ -35,10 +35,11 @@ public class BillDao {
 
     public int id_num = 0;
 
+
     /**
-     *
+     *  初始化数据库，建立表
      */
-    public void MyCreate(){
+    public void myCreateTable(){
         String sql;
         SQLiteDatabase db = mHelper.getWritableDatabase();
         sql = "create table "+"Bill"+"(Bill_ID int, Bill_TYPE int, Bill_SubCategory int, Bill_Account int, Bill_toAccount int, Bill_Member int, year varchar(5), month varchar(3), day varchar(3), time varchar(15), Bill_Remark varchar(255), Bill_Money double)";
@@ -64,9 +65,99 @@ public class BillDao {
     }
 
 
+    /**
+     * 数据库初始化内容，插入特殊数据
+     */
+    public void initSpecialData(){
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String sql = "insert into OutSubCategory(OutSubCategory_ID, OutSubCategory_Parent, OutSubCategory_Name) values(?,?,?)";
+        db.execSQL(sql,new Object[]{0, 999999, ""});
+
+        sql = "insert into InSubCategory(InSubCategory_ID, InSubCategory_Parent, InSubCategory_Name) values(?,?,?)";
+        db.execSQL(sql,new Object[]{0, 999999, ""});
+
+        sql = "insert into Account(Account_ID, Account_Name) values(?,?)";
+        db.execSQL(sql,new Object[]{0,""});
+
+        db.close();
+    }
+
+
+    /**
+     * 插入一条流水账单(包含查询对应选项在相应表中的ID)
+     * @param type  类型：支出、收入、转账
+     * @param subcategory  二级分类
+     * @param account  账户
+     * @param toAccount  转账到账的账户
+     * @param member  成员
+     * @param year  年份
+     * @param month  月份
+     * @param day  日
+     * @param time  时刻
+     * @param remark  备注
+     * @param money  金额
+     */
+    @SuppressLint("Recycle")
+    public void insertBill(int type, String subcategory, String account, String toAccount, String member, String year, String month, String day, String time, String remark, double money) {  //通过测试
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        int subAccountID = 0, accontID = 0, toa = 0, memberID = 0;
+        if (type == 0) {
+            String sql = "select * from OutSubCategory where OutSubCategory_Name = '" + subcategory + "'";
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext())
+                subAccountID = cursor.getInt(cursor.getColumnIndex("OutSubCategory_ID"));
+        } else {
+            String sql = "select * from InSubCategory where InSubCategory_Name = '" + subcategory + "'";
+            Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext())
+                subAccountID = cursor.getInt(cursor.getColumnIndex("InSubCategory_ID"));
+        }
+        String sql = "select * from Account where Account_Name = '" + account + "'";
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext())
+            accontID = cursor.getInt(cursor.getColumnIndex("Account_ID"));
+
+        sql = "select * from Account where Account_Name = '" + toAccount + "'";
+        cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext())
+            toa = cursor.getInt(cursor.getColumnIndex("Account_ID"));
+
+        sql = "select * from Member where Member_Name = '" + member + "'";
+        cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext())
+            memberID = cursor.getInt(cursor.getColumnIndex("Member_ID"));
+        cursor.close();
+        db.close();
+        insertBillByID(type, subAccountID, accontID, toa, memberID, year, month, day, time, remark, money);
+        changeAccountMoneyWithBill(accontID, type, money, toa);
+    }
+
+
+    /**
+     * 用ID插入一条流水记账
+     * @param type  类型：支出、收入、转账
+     * @param subcategory  二级分类
+     * @param account  账户
+     * @param toaccount  转账到账的账户
+     * @param member  成员
+     * @param year  年份
+     * @param month  月份
+     * @param day  日
+     * @param time  时刻
+     * @param remark  备注
+     * @param money  金额
+     */
+    public void insertBillByID(int type, int subcategory, int account, int toaccount, int member, String year, String month, String day, String time, String remark, double money) {//通过测试
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        String sql = "insert into Bill(Bill_ID, Bill_TYPE, Bill_SubCategory, Bill_Account, Bill_toAccount, Bill_Member, year, month, day, time, Bill_Remark, Bill_Money) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+        db.execSQL(sql, new Object[]{id_num, type, subcategory, account, toaccount, member, year, month, day, time, remark, money});
+        id_num++;
+        db.close();
+    }
+
 
     @SuppressLint("Recycle")
-    public void changeaccount(int id, int type, double money, int toacc){
+    public void changeAccountMoneyWithBill(int id, int type, double money, int toacc){
         SQLiteDatabase db = mHelper.getWritableDatabase();
         if(type == 0){
             String sql = "select * from Account where Account_ID = "+id+"";
@@ -113,50 +204,6 @@ public class BillDao {
         db.close();
     }
 
-
-
-    public void insertBill(int type, int subcategory, int account, int toaccount, int member, String year, String month, String day, String time, String remark, double money) {//通过测试
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "insert into Bill(Bill_ID, Bill_TYPE, Bill_SubCategory, Bill_Account, Bill_toAccount, Bill_Member, year, month, day, time, Bill_Remark, Bill_Money) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-        db.execSQL(sql, new Object[]{id_num, type, subcategory, account, toaccount, member, year, month, day, time, remark, money});
-        id_num++;
-        db.close();
-    }
-
-    @SuppressLint("Recycle")
-    public void InsertBill(int type, String subcategory, String account, String toaccount, String member, String year, String month, String day, String time, String remark, double money) {  //通过测试
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        int sub = 0, acc = 0, toa = 0, mem = 0;
-        if (type == 0) {
-            String sql = "select * from OutSubCategory where OutSubCategory_Name = '" + subcategory + "'";
-            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(sql, null);
-            while (cursor.moveToNext())
-                sub = cursor.getInt(cursor.getColumnIndex("OutSubCategory_ID"));
-        } else {
-            String sql = "select * from InSubCategory where InSubCategory_Name = '" + subcategory + "'";
-            Cursor cursor = db.rawQuery(sql, null);
-            while (cursor.moveToNext())
-                sub = cursor.getInt(cursor.getColumnIndex("InSubCategory_ID"));
-        }
-        String sql = "select * from Account where Account_Name = '" + account + "'";
-        Cursor cursor = db.rawQuery(sql, null);
-        while (cursor.moveToNext())
-            acc = cursor.getInt(cursor.getColumnIndex("Account_ID"));
-
-        sql = "select * from Account where Account_Name = '" + toaccount + "'";
-        cursor = db.rawQuery(sql, null);
-        while (cursor.moveToNext())
-            toa = cursor.getInt(cursor.getColumnIndex("Account_ID"));
-
-        sql = "select * from Member where Member_Name = '" + member + "'";
-        cursor = db.rawQuery(sql, null);
-        while (cursor.moveToNext())
-            mem = cursor.getInt(cursor.getColumnIndex("Member_ID"));
-        cursor.close();
-        db.close();
-        insertBill(type, sub, acc, toa, mem, year, month, day, time, remark, money);
-        changeaccount(acc, type, money, toa);
-    }
 
     @SuppressLint("Recycle")
     public boolean InsertCategory(String Top, String sub, int type) {   //通过测试,返回值需要判断
@@ -301,6 +348,12 @@ public class BillDao {
         return true;
     }
 
+
+    /**
+     * 新建一个账户
+     * @param name  账户名
+     * @return  是否成功
+     */
     @SuppressLint("Recycle")
     public boolean InsertAccount(String name) {   //通过测试,返回值需要判断
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -1019,7 +1072,15 @@ public class BillDao {
         while(cursor.moveToNext()){
             eixt = true;
         }
+        boolean exit = true;
         if(eixt){
+            sql = "select * from Account where Account_Name = '"+nowname+"'";
+            cursor = db.rawQuery(sql, null);
+            while(cursor.moveToNext()){
+                eixt = false;
+            }
+        }
+        if(eixt && exit){
             sql = "update Account set Account_Name = '"+nowname+"' where Account_Name = '"+preaccountname+"'";
             db.execSQL(sql);
             cursor.close();
@@ -1033,23 +1094,6 @@ public class BillDao {
         }
     }
 
-
-    /**
-     * 数据库初始化
-     */
-    public void Init(){
-        SQLiteDatabase db = mHelper.getReadableDatabase();
-        String sql = "insert into OutSubCategory(OutSubCategory_ID, OutSubCategory_Parent, OutSubCategory_Name) values(?,?,?)";
-        db.execSQL(sql,new Object[]{0, 999999, ""});
-
-        sql = "insert into InSubCategory(InSubCategory_ID, InSubCategory_Parent, InSubCategory_Name) values(?,?,?)";
-        db.execSQL(sql,new Object[]{0, 999999, ""});
-
-        sql = "insert into Account(Account_ID, Account_Name) values(?,?)";
-        db.execSQL(sql,new Object[]{0,""});
-
-        db.close();
-    }
 
 
     public void Destory(){

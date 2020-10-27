@@ -20,7 +20,6 @@ package com.xuexiang.cdaccount.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -70,23 +69,17 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
 
         mDataBaseHelper = new BillDao(this);
 //        initDate();
-        /**
-         * 金额初始值
-         */
+
+        // 金额初始值
         mIncomeAmount = -1;
         mOutcomeAmount = -1;
         mTransferAmount = -1;
 
-        /**
-         *设置viewpager
-         * */
-
+        // 设置viewpager
         mVpAdd = findViewById(R.id.vp_add);
         mVpAdd.setOffscreenPageLimit(5);
 
-        /**
-         * 设置tab
-         */
+        // 设置tab
         List<String> titles = new ArrayList<>();
         titles.add("支出");
         titles.add("收入");
@@ -164,12 +157,7 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
         //    private ShadowImageView mIvBack;
         //    private ShadowButton mBtnConfirm;
         TitleBar mTbTitle = findViewById(R.id.add_title);
-        mTbTitle.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        })
+        mTbTitle.setLeftClickListener(v -> finish())
                 .addAction(new TitleBar.TextAction("确认") {
                     @Override
                     public void performAction(View view) {
@@ -212,37 +200,35 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
         return super.dispatchTouchEvent(ev);
     }
 
+
     /**
      * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
      *
-     * @param v
-     * @param event
-     * @return
+     * @param v 视图
+     * @param event  点击事件
+     * @return  布尔值
      */
     private boolean isShouldHideKeyboard(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
+        if ((v instanceof EditText)) {
             int[] l = {0, 0};
             v.getLocationInWindow(l);
             int left = l[0],
                     top = l[1],
                     bottom = top + v.getHeight(),
                     right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击EditText的事件，忽略它。
-                return false;
-            } else {
-                return true;
-            }
+            // 点击EditText的事件，忽略它。
+            return !(event.getX() > left) || !(event.getX() < right)
+                    || !(event.getY() > top) || !(event.getY() < bottom);
         }
         // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
         return false;
     }
 
+
     /**
      * 获取InputMethodManager，隐藏软键盘
      *
-     * @param token
+     * @param token  token
      */
     private void hideKeyboard(IBinder token) {
         if (token != null) {
@@ -255,8 +241,8 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
     @Override
     public void InsertOutcome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
         if (mBlConfirm && mVpAdd.getCurrentItem() == 0) {
-            Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
-            mDataBaseHelper.InsertBill(0, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+//            Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
+            mDataBaseHelper.insertBill(0, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
             XToastUtils.success("记账成功");
 
         }
@@ -271,8 +257,8 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
     @Override
     public void InsertIncome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
         if (mBlConfirm && mVpAdd.getCurrentItem() == 1) {
-            Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
-            mDataBaseHelper.InsertBill(1, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+//            Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
+            mDataBaseHelper.insertBill(1, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
             XToastUtils.success("记账成功");
         }
     }
@@ -286,8 +272,8 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
     @Override
     public void InsertTransfer(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
         if (mBlConfirm && mVpAdd.getCurrentItem() == 2) {
-            Log.d("---InsertTransfer---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
-            mDataBaseHelper.InsertBill(2, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+//            Log.d("---InsertTransfer---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
+            mDataBaseHelper.insertBill(2, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
             XToastUtils.success("记账成功");
 
         }
