@@ -39,6 +39,7 @@ import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,6 +177,9 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
                             XToastUtils.error("请填写金额");
                         } else {
                             mBlConfirm = true;      //置为true，表示需要插入新数据
+//                            if(mDataBaseHelper.QueryMonthpay()-mDataBaseHelper.QueryMonthIncome()>5000){
+//                                showSimpleTipDialog();
+//                            }
                             finish();               //利用生命周期的回调函数完成写入数据库
                         }
                     }
@@ -183,6 +187,14 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
 
     }
 
+//    private void showSimpleTipDialog() {
+//        new MaterialDialog.Builder(AddActivity.this)
+//                .iconRes(R.drawable.icon_tip)
+//                .title(R.string.tip_infos)
+//                .content(R.string.content_simple_confirm_dialog)
+//                .positiveText("确认")
+//                .show();
+//    }
 
     /**
      * 函数
