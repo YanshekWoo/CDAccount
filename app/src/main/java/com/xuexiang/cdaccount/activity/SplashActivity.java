@@ -58,6 +58,7 @@ public class SplashActivity extends BaseSplashActivity implements CancelAdapt {
      */
     @Override
     protected void onSplashFinished() {
+        SettingUtils.setIsConfirm(false);
         if (SettingUtils.isAgreePrivacy()) {
             loginOrRegister();
         } else {

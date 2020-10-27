@@ -42,5 +42,16 @@ public final class SettingUtils {
         MMKVUtils.put(IS_AGREE_PRIVACY_KEY, isAgreePrivacy);
     }
 
+    /**
+     * @return 是否刚刚记账
+     */
+    public static boolean isConfirm() {
+        return MMKVUtils.getBoolean("is_confirm", false);
+    }
+
+    public static void setIsConfirm(boolean isConfirm) {
+        MMKVUtils.put("is_confirm", isConfirm);
+    }
+
 
 }

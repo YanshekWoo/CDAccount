@@ -36,6 +36,7 @@ import com.xuexiang.cdaccount.fragment.add.IncomeFragment;
 import com.xuexiang.cdaccount.fragment.add.OutcomeFragment;
 import com.xuexiang.cdaccount.fragment.add.TransferFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
+import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.WidgetUtils;
@@ -188,6 +189,7 @@ public class AddActivity extends AppCompatActivity implements OutcomeFragment.Ou
                             XToastUtils.error("请填写金额");
                         } else {
                             mBlConfirm = true;      //置为true，表示需要插入新数据
+                            SettingUtils.setIsConfirm(true);                //表面刚刚插入一笔数据
                             finish();               //利用生命周期的回调函数完成写入数据库
                         }
                     }
