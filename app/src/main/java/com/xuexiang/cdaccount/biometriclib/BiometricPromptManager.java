@@ -18,7 +18,7 @@ public class BiometricPromptManager {
 
     private IBiometricPromptImpl mImpl;
 
-    public interface OnBiometricIdentifyCallback {
+    public static interface OnBiometricIdentifyCallback {
         void onUsePassword();
 
         void onSucceeded();
@@ -128,11 +128,12 @@ public class BiometricPromptManager {
         SPUtils.put(getContext(), SPUtils.KEY_BIOMETRIC_SWITCH_ENABLE, enable);
     }
 
-    public IBiometricPromptImpl getmImpl() {
-        return mImpl;
+
+    public void destroyImpl() {
+        if(mImpl!=null) {
+            mImpl.destroy();
+        }
     }
 
-    public void setmImpl(IBiometricPromptImpl mImpl) {
-        this.mImpl = mImpl;
-    }
+
 }
