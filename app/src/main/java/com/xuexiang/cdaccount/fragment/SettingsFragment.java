@@ -18,12 +18,13 @@
 package com.xuexiang.cdaccount.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.InputType;
 import android.widget.CompoundButton;
 
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.ReLoginActivity;
+import com.xuexiang.cdaccount.activity.LoginActivity;
 import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
@@ -35,7 +36,6 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 import com.xuexiang.xutil.XUtil;
-import com.xuexiang.xutil.app.ActivityUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -104,7 +104,10 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     public void onClick(@NotNull SuperTextView superTextView) {
         switch (superTextView.getId()) {
             case R.id.menu_change_passwd:
-                ActivityUtils.startActivity(ReLoginActivity.class);
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.putExtra("LogInTYPE", 1);
+                startActivity(intent);
+//                ActivityUtils.startActivity(ReLoginActivity.class);
             break;
             case R.id.menu_clear_data:
                 showInputDialog();

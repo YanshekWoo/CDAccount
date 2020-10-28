@@ -86,8 +86,6 @@ public class RegisterVerifyActivity extends BaseActivity {
     private SharedPreferences.Editor mEditor_answer2;
     private SharedPreferences.Editor mEditor_answer3;
 
-    private BillDao billDao;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_register_verify;
@@ -114,7 +112,6 @@ public class RegisterVerifyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         initSP();
-        initialDataTable();
         initSpinner();
         setButtomClickListener();
         initTextView();
@@ -122,9 +119,9 @@ public class RegisterVerifyActivity extends BaseActivity {
     }
 
     private void initTextView() {
-        mEt_answer1.setFilters(new InputFilter[]{new RegiterNumberActivity.LengthFilter(12)});
-        mEt_answer2.setFilters(new InputFilter[]{new RegiterNumberActivity.LengthFilter(12)});
-        mEt_answer3.setFilters(new InputFilter[]{new RegiterNumberActivity.LengthFilter(12)});
+        mEt_answer1.setFilters(new InputFilter[]{new LengthFilter(12)});
+        mEt_answer2.setFilters(new InputFilter[]{new LengthFilter(12)});
+        mEt_answer3.setFilters(new InputFilter[]{new LengthFilter(12)});
     }
 
 
@@ -180,6 +177,7 @@ public class RegisterVerifyActivity extends BaseActivity {
                     XToastUtils.error("填写超出长度范围");
                 }
                 else {
+
                     mEditor_question1.putInt("verify_qustion1", mMaterialSpinner1.getSelectedIndex());
                     mEditor_question1.apply();
                     mEditor_question2.putInt("verify_qustion2", mMaterialSpinner2.getSelectedIndex());
@@ -194,7 +192,8 @@ public class RegisterVerifyActivity extends BaseActivity {
                     mEditor_answer3.putString("verify_answer3", MD5Utils.encode(ans3));
                     mEditor_answer3.apply();
 
-                    XToastUtils.success("注册成功");
+                    initialDataTable();
+
                     onLoginSuccess();
                 }
             }
@@ -213,11 +212,10 @@ public class RegisterVerifyActivity extends BaseActivity {
 ////            startActivity(intent);
 //
 //        }
-
+        XToastUtils.success("注册成功");
         SettingUtils.setIsFirstOpen(false);
 //        String token = RandomUtils.getRandomNumbersAndLetters(16);
 //        TokenUtils.setToken(token);
-        XToastUtils.success("注册成功");
         ActivityUtils.startActivity(MainActivity.class);
         finish();
     }
@@ -240,55 +238,7 @@ public class RegisterVerifyActivity extends BaseActivity {
     }
 
 
-    public void initDate(){
-        BillDao mDataBaseHelper = new BillDao(this);
-        mDataBaseHelper.insertCategory("餐饮","早餐",0);
-        mDataBaseHelper.insertCategory("餐饮","午餐",0);
-        mDataBaseHelper.insertCategory("餐饮","晚餐",0);
-        mDataBaseHelper.insertCategory("餐饮","水果",0);
-        mDataBaseHelper.insertCategory("餐饮","零食",0);
-        mDataBaseHelper.insertCategory("交通","公交",0);
-        mDataBaseHelper.insertCategory("交通","地铁",0);
-        mDataBaseHelper.insertCategory("交通","火车",0);
-        mDataBaseHelper.insertCategory("交通","飞机",0);
-        mDataBaseHelper.insertCategory("交通","出租",0);
-        mDataBaseHelper.insertCategory("娱乐","电影",0);
-        mDataBaseHelper.insertCategory("娱乐","健身",0);
-        mDataBaseHelper.insertCategory("娱乐","游戏",0);
-        mDataBaseHelper.insertCategory("娱乐","旅游",0);
-        mDataBaseHelper.insertCategory("娱乐","按摩",0);
-        mDataBaseHelper.insertCategory("购物","电器",0);
-        mDataBaseHelper.insertCategory("购物","家具",0);
-        mDataBaseHelper.insertCategory("购物","数码",0);
-        mDataBaseHelper.insertCategory("购物","服饰",0);
-        mDataBaseHelper.insertCategory("购物","美妆",0);
 
-
-
-        mDataBaseHelper.insertCategory("职业收入","工资",1);
-        mDataBaseHelper.insertCategory("职业收入","福利",1);
-        mDataBaseHelper.insertCategory("职业收入","提成",1);
-        mDataBaseHelper.insertCategory("生意收入","提成",1);
-        mDataBaseHelper.insertCategory("生意收入","退款",1);
-        mDataBaseHelper.insertCategory("生意收入","贷款",1);
-        mDataBaseHelper.insertCategory("人情收入","红包",1);
-        mDataBaseHelper.insertCategory("人情收入","礼金",1);
-        mDataBaseHelper.insertCategory("人情收入","压岁钱",1);
-
-
-//        mDataBaseHelper.InsertAccount("");
-        mDataBaseHelper.insertAccount("现金");
-        mDataBaseHelper.insertAccount("信用卡");
-        mDataBaseHelper.insertAccount("储蓄卡");
-        mDataBaseHelper.insertAccount("支付宝");
-        mDataBaseHelper.insertAccount("基金");
-
-        mDataBaseHelper.insertMember("无成员");
-        mDataBaseHelper.insertMember("本人");
-        mDataBaseHelper.insertMember("配偶");
-        mDataBaseHelper.insertMember("子女");
-        mDataBaseHelper.insertMember("父母");
-    }
 
 
     /**
@@ -327,13 +277,62 @@ public class RegisterVerifyActivity extends BaseActivity {
     }
 
 
-    protected void initialDataTable() {
-        billDao = new BillDao(this);
+    private void initialDataTable() {
+        BillDao billDao = new BillDao(this);
         billDao.myCreateTable();
         billDao.initSpecialData();
-        initDate();
+        billDao.initData();
     }
 
-
+//    private void initDate(){
+//        BillDao mDataBaseHelper = new BillDao(this);
+//        // 支出分类（一级 & 二级）
+//        mDataBaseHelper.insertCategory("餐饮","早餐",0);
+//        mDataBaseHelper.insertCategory("餐饮","午餐",0);
+//        mDataBaseHelper.insertCategory("餐饮","晚餐",0);
+//        mDataBaseHelper.insertCategory("餐饮","水果",0);
+//        mDataBaseHelper.insertCategory("餐饮","零食",0);
+//        mDataBaseHelper.insertCategory("交通","公交",0);
+//        mDataBaseHelper.insertCategory("交通","地铁",0);
+//        mDataBaseHelper.insertCategory("交通","火车",0);
+//        mDataBaseHelper.insertCategory("交通","飞机",0);
+//        mDataBaseHelper.insertCategory("交通","出租",0);
+//        mDataBaseHelper.insertCategory("娱乐","电影",0);
+//        mDataBaseHelper.insertCategory("娱乐","健身",0);
+//        mDataBaseHelper.insertCategory("娱乐","游戏",0);
+//        mDataBaseHelper.insertCategory("娱乐","旅游",0);
+//        mDataBaseHelper.insertCategory("娱乐","按摩",0);
+//        mDataBaseHelper.insertCategory("购物","电器",0);
+//        mDataBaseHelper.insertCategory("购物","家具",0);
+//        mDataBaseHelper.insertCategory("购物","数码",0);
+//        mDataBaseHelper.insertCategory("购物","服饰",0);
+//        mDataBaseHelper.insertCategory("购物","美妆",0);
+//
+//
+//        // 收入分类（一级 & 二级）
+//        mDataBaseHelper.insertCategory("职业收入","工资",1);
+//        mDataBaseHelper.insertCategory("职业收入","福利",1);
+//        mDataBaseHelper.insertCategory("职业收入","提成",1);
+//        mDataBaseHelper.insertCategory("生意收入","提成",1);
+//        mDataBaseHelper.insertCategory("生意收入","退款",1);
+//        mDataBaseHelper.insertCategory("生意收入","贷款",1);
+//        mDataBaseHelper.insertCategory("人情收入","红包",1);
+//        mDataBaseHelper.insertCategory("人情收入","礼金",1);
+//        mDataBaseHelper.insertCategory("人情收入","压岁钱",1);
+//
+//        // 账户
+//        mDataBaseHelper.insertAccount("现金");
+//        mDataBaseHelper.insertAccount("信用卡");
+//        mDataBaseHelper.insertAccount("储蓄卡");
+//        mDataBaseHelper.insertAccount("支付宝");
+//        mDataBaseHelper.insertAccount("基金");
+//
+//        // 成员
+//        mDataBaseHelper.insertMember("无成员");
+//        mDataBaseHelper.insertMember("本人");
+//        mDataBaseHelper.insertMember("配偶");
+//        mDataBaseHelper.insertMember("子女");
+//        mDataBaseHelper.insertMember("父母");
+//    }
 
 }

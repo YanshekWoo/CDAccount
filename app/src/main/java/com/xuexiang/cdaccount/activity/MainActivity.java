@@ -175,12 +175,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         openNewPage(SettingsFragment.class);
                         break;
                     case R.id.nav_about:
-//                        openPage(AboutFragment.class, false);
                         openNewPage(AboutFragment.class);
-//                        openNewPage(AboutFragment.class);
                         break;
                     default:
-//                        XToastUtils.toast("点击了:" + menuItem.getTitle());
                         break;
                 }
             }

@@ -20,6 +20,7 @@ package com.xuexiang.cdaccount.activity;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -46,8 +47,9 @@ public class LoginActivity extends BaseActivity implements ClickUtils.OnClick2Ex
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
         Bundle bundle  = new Bundle();
-        bundle.putInt("isChangePasswd", 0);
+        bundle.putInt("isChangePasswd", intent.getIntExtra("LogInTYPE", 0));
         openPage(LoginGestureFragment.class, bundle);
 //        openPage(LoginGestureFragment.class, getIntent().getExtras());
 //        openPage(LoginGestureFragment.class, false);

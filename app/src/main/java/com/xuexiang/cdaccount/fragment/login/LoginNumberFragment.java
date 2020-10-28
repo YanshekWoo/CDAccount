@@ -149,7 +149,6 @@ public class LoginNumberFragment extends BaseFragment {
 
         // 是否需要修改密码
         if(!isChangePasswd) {
-            //进入首页
             ActivityUtils.startActivity(MainActivity.class);
         }
         else {
