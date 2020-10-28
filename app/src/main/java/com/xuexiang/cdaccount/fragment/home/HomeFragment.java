@@ -18,20 +18,25 @@
 package com.xuexiang.cdaccount.fragment.home;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AddBillActivity;
 import com.xuexiang.cdaccount.adapter.record.RecordAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.SettingUtils;
+import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
+import com.xuexiang.xui.utils.SnackbarUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
@@ -51,9 +56,9 @@ public class HomeFragment extends BaseFragment {
     private RecyclerView mRvRecord;
     private ShadowImageView mIbAdd;
     private List<String> mRecentDate, mRecentInfo;
-    private List<Integer>mRecentType;
+    private List<Integer> mRecentType;
 
-    private AutoFitTextView  mTvIn,mTvOut;
+    private AutoFitTextView mTvIn, mTvOut;
     private String mAmountIn, mAmountOut;
     private BillDao mDataBaseHelper;
 
@@ -116,36 +121,45 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("---Home---","Resume");
+        Log.d("---Home---", "Resume");
         loadData();
         RecordAdapter adapter = new RecordAdapter(getContext(), mRecentDate, mRecentInfo, mRecentType);
         mRvRecord.setAdapter(adapter);
         mRvRecord.scrollToPosition(0);
         mTvIn.setText((String.valueOf(mAmountIn)));
         mTvOut.setText((String.valueOf(mAmountOut)));
-        if(SettingUtils.isConfirm()){                   //记账后，检查是否超支
+        if (SettingUtils.isConfirm()) {                   //记账后，检查是否超支
             SettingUtils.setIsConfirm(false);
             double budget = 0;                          //TODO：增加写入预算的接口
             DecimalFormat decimalFormat = new DecimalFormat("0.00");
-            double surplus = (mDataBaseHelper.QueryMonthpay()-budget-mDataBaseHelper.QueryMonthIncome());
+            double surplus = (mDataBaseHelper.QueryMonthpay() - budget - mDataBaseHelper.QueryMonthIncome());
             String Str_surplus = decimalFormat.format(surplus);
-            if(surplus>0) {
-                showSimpleTipDialog(Str_surplus);
+            if (surplus > 0) {
+//                showSimpleTipDialog(Str_surplus);
+                SnackbarUtils.Long(getView(), "本月已超支" + surplus + "元。\n请合理安排收支。")
+                        .backColor(Color.WHITE)
+                        .messageColor(Color.BLACK)
+                        .setAction("知道了", v -> {
+
+                        })
+                        .gravityFrameLayout(Gravity.TOP)
+                        .show();
             }
         }
     }
 
     private void showSimpleTipDialog(String surplus) {
+
         new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                 .iconRes(R.drawable.ic_warning)
                 .title("超支提醒")
-                .content("本月已超支"+surplus+"元。\n请合理安排收支。")
+                .content("本月已超支" + surplus + "元。\n请合理安排收支。")
                 .positiveText("确认")
                 .show();
     }
 
 
-    private void loadData(){
+    private void loadData() {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         mAmountIn = decimalFormat.format(mDataBaseHelper.QueryMonthIncome());
         mAmountOut = decimalFormat.format(mDataBaseHelper.QueryMonthpay());
