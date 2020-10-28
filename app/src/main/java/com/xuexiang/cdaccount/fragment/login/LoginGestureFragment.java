@@ -213,8 +213,8 @@ public class LoginGestureFragment extends BaseFragment {
 
         @Override
         public void onComplete(List<PatternLockView.Dot> pattern) {
-                    //密码验证
-                    String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
+            //密码验证
+            String patternToString = PatternLockUtils.patternToString(mPatternLockView, pattern);
             if (!TextUtils.isEmpty(patternToString)) {
                 if (MD5Utils.encode(patternToString).equals(password_gesture)) {
                     //判断为正确
@@ -253,7 +253,6 @@ public class LoginGestureFragment extends BaseFragment {
 
         // 是否需要修改密码
         if(!isChangePasswd) {
-            //进入首页
             ActivityUtils.startActivity(MainActivity.class);
         }
         else {

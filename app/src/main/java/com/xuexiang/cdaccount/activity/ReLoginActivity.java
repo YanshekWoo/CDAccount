@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.xuexiang.cdaccount.core.BaseActivity;
@@ -36,8 +37,9 @@ public class ReLoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
         Bundle bundle  = new Bundle();
-        bundle.putInt("isChangePasswd", 1);
+        bundle.putInt("isChangePasswd", intent.getIntExtra("LogInTYPE", 1));
         openPage(LoginGestureFragment.class, bundle);
     }
 

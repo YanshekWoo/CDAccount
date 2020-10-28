@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
-        android:layout_marginTop="126dp"
+        android:layout_marginTop="113dp"
         android:layout_marginEnd="44dp"
         android:orientation="vertical">
 
@@ -118,7 +118,7 @@
     <com.xuexiang.xui.widget.textview.supertextview.SuperButton
         android:id="@+id/login_commit"
         style="@style/SuperButton.Primary.Login"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:text="登录" />
 
 

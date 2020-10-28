@@ -1,14 +1,22 @@
 package com.xuexiang.cdaccount.somethingDao;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
+
+//import android.database.sqlite.SQLiteDatabase;
+//import android.database.sqlite.SQLiteOpenHelper;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
+
     public DatabaseHelper(@Nullable Context context) {
         super(context, Constants.DATA_BASE_NAME, null, Constants.VERSION_CODE);
+//        String key = "abc";
+        assert context != null;
+        SQLiteDatabase.loadLibs(context);
     }
 
     @Override
