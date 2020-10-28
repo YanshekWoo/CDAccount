@@ -19,14 +19,17 @@ package com.xuexiang.cdaccount.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.text.InputType;
-import android.widget.CompoundButton;
+
+import androidx.annotation.RequiresApi;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.ReLoginActivity;
 import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
+import com.xuexiang.cdaccount.utils.MMKVUtils;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
@@ -56,6 +59,9 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     @BindView(R.id.stv_switch_custom_theme)
     SuperTextView stvSwitchBiometric;
 
+    @BindView(R.id.stv_switch_budget)
+    SuperTextView switch_budget;
+
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_change_passwd)
     SuperTextView menuChangeAccount;
@@ -64,6 +70,9 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     @BindView(R.id.menu_clear_data)
     SuperTextView menuLogout;
 
+    Boolean budgetIsOpen = false;
+
+    int budget;
 //
 //    private static void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //        XToastUtils.info("Open");
@@ -74,9 +83,11 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
         return R.layout.fragment_settings;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void initViews() {
         initBiometricSwitch();
+        initBudgetSwitch();
 
         menuChangeAccount.setOnSuperTextViewClickListener(this);
         menuLogout.setOnSuperTextViewClickListener(this);
@@ -88,15 +99,60 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     private void initBiometricSwitch() {
         stvSwitchBiometric.setSwitchIsChecked(BiometricPromptManager.isBiometricSettingEnable());
         stvSwitchBiometric.setOnSuperTextViewClickListener(superTextView -> stvSwitchBiometric.setSwitchIsChecked(!stvSwitchBiometric.getSwitchIsChecked(), false));
-        stvSwitchBiometric.setSwitchCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                BiometricPromptManager.setBiometricSettingEnable(stvSwitchBiometric.getSwitchIsChecked());
-                XToastUtils.info(stvSwitchBiometric.getSwitchIsChecked()?"已开启指纹解锁":"已关闭指纹解锁");
+        stvSwitchBiometric.setSwitchCheckedChangeListener((buttonView, isChecked) -> {
+            BiometricPromptManager.setBiometricSettingEnable(stvSwitchBiometric.getSwitchIsChecked());
+            XToastUtils.info(stvSwitchBiometric.getSwitchIsChecked()?"已开启指纹解锁":"已关闭指纹解锁");
+        });
+    }
+
+    /**
+     * 预算开关
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void initBudgetSwitch() {
+        budget = (int)MMKVUtils.get("Budget", -1);
+        budgetIsOpen = budget > 0;
+        if (budgetIsOpen){
+            switch_budget.setTooltipText("wahhh");
+        }
+        switch_budget.setSwitchIsChecked(budgetIsOpen);
+        switch_budget.setOnSuperTextViewClickListener(superTextView -> switch_budget.setSwitchIsChecked(!switch_budget.getSwitchIsChecked(),false));
+        switch_budget.setSwitchCheckedChangeListener((compoundButton, b) -> {
+            // 从关闭状态开启
+            if(b) {
+                changeBudget();
             }
         });
     }
 
+    private void changeBudget(){
+        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .title("修改预算")
+                .inputType(
+                        InputType.TYPE_CLASS_NUMBER)
+                .input(
+                        "请输入预算",
+                        "",
+                        false,
+                        (dialog, input) -> {
+                        })
+                .inputRange(1,10)
+                .positiveText("确定")
+                .negativeText("取消")
+                .onPositive((dialog, which) -> {
+                    // 点击确认后存入budget值
+                    assert dialog.getInputEditText() != null;
+                    MMKVUtils.put("Budget", Integer.parseInt(dialog.getInputEditText().getText().toString()));
+                    budgetIsOpen = true;
+                })
+                .onNegative((dialog, which) -> {
+                    //  点击取消按钮，仍然关闭预算提醒，开关关闭。budget置-1
+                    MMKVUtils.put("Budget", -1);
+                    budgetIsOpen = false;
+                    switch_budget.setSwitchIsChecked(false);
+                })
+                .show();
+    }
     
     @SuppressLint("NonConstantResourceId")
     @SingleClick
