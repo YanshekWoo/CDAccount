@@ -26,11 +26,12 @@ import androidx.multidex.MultiDex;
 
 import com.xuexiang.cdaccount.activity.LoginActivity;
 import com.xuexiang.cdaccount.utils.SettingUtils;
-import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.sdkinit.ANRWatchDogInit;
 import com.xuexiang.cdaccount.utils.sdkinit.UMengInit;
 import com.xuexiang.cdaccount.utils.sdkinit.XBasicLibInit;
 import com.xuexiang.cdaccount.utils.sdkinit.XUpdateInit;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -59,12 +60,19 @@ public class MyApp extends Application {
                 //应用切到前台处理
                 Log.d("---MyApp", "onFront: ");
                 if (!SettingUtils.isFirstOpen()) {          //若已完成注册，则进入登录界面
+//                    Intent intent = new Intent(getContext(), LoginActivity.class);
+//                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//                    intent.setAction(Intent.ACTION_MAIN);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+//                    Log.d("---MyApp", "test");
+
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     intent.addCategory(Intent.CATEGORY_LAUNCHER);
                     intent.setAction(Intent.ACTION_MAIN);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("LogInTYPE", 2);
                     startActivity(intent);
-                    Log.d("---MyApp", "test");
 
                 }
 
@@ -74,6 +82,8 @@ public class MyApp extends Application {
             public void onBack() {
                 //应用切到后台处理
                 Log.d("---MyApp", "onBack: ");
+
+
             }
         });
 
@@ -83,8 +93,10 @@ public class MyApp extends Application {
      * 初始化基础库
      */
     private void initLibs() {
-        XBasicLibInit.init(this);
+        // SQLcipher 加密库
+        SQLiteDatabase.loadLibs(this);
 
+        XBasicLibInit.init(this);
         XUpdateInit.init(this);
 
         //运营统计数据运行时不初始化
