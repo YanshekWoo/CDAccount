@@ -34,6 +34,7 @@ import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.activity.RegiterNumberActivity;
 import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.fragment.docs.PrivacyFragment;
 import com.xuexiang.cdaccount.utils.RandomUtils;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.TokenUtils;
@@ -127,6 +128,7 @@ public class LoginGestureFragment extends BaseFragment {
                 break;
             case R.id.tv_privacy_protocol:
                 XToastUtils.info("隐私政策");
+                openNewPage(PrivacyFragment.class);
                 break;
             default:
                 break;

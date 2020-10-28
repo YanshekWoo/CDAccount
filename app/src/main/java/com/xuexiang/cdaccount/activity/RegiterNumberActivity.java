@@ -28,6 +28,7 @@ import android.widget.ImageView;
 
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
+import com.xuexiang.cdaccount.fragment.docs.PrivacyFragment;
 import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
@@ -185,7 +186,8 @@ public class RegiterNumberActivity extends BaseActivity implements ClickUtils.On
                 XToastUtils.info("用户协议");
                 break;
             case R.id.tv_privacy_protocol:
-                XToastUtils.info("隐私政策");
+//                XToastUtils.info("隐私政策");
+                openNewPage(PrivacyFragment.class);
                 break;
             default:
                 break;
