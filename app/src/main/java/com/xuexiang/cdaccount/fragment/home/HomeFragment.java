@@ -41,6 +41,7 @@ import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 import com.xuexiang.xui.widget.textview.autofit.AutoFitTextView;
+import com.xuexiang.xutil.app.ActivityUtils;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -112,8 +113,9 @@ public class HomeFragment extends BaseFragment {
         mIbAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddBillActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getContext(), AddBillActivity.class);
+//                startActivity(intent);
+                ActivityUtils.startActivity(AddBillActivity.class);
             }
         });
     }
@@ -161,11 +163,11 @@ public class HomeFragment extends BaseFragment {
 
     private void loadData() {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        mAmountIn = decimalFormat.format(mDataBaseHelper.QueryMonthIncome());
-        mAmountOut = decimalFormat.format(mDataBaseHelper.QueryMonthpay());
-        mRecentInfo = mDataBaseHelper.GetRecentInformation();
-        mRecentDate = mDataBaseHelper.GetRecentDate();
-        mRecentType = mDataBaseHelper.GetRecentIO();
+        mAmountIn = decimalFormat.format(mDataBaseHelper.queryMonthIncome());
+        mAmountOut = decimalFormat.format(mDataBaseHelper.queryMonthOutcome());
+        mRecentInfo = mDataBaseHelper.getRecentInformation();
+        mRecentDate = mDataBaseHelper.getRecentBillDate();
+        mRecentType = mDataBaseHelper.getRecentIO();
 
     }
 }

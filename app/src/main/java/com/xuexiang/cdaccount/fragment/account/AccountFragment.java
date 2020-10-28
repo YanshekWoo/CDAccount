@@ -154,7 +154,7 @@ public class AccountFragment extends BaseFragment{
                                 if(countClick == 1){
                                     viewHolderClick(item);
                                 }else {
-                                    showAccountChangeDialog(item);
+                                    changAccount(item);
                                 }
                                 handler.removeCallbacksAndMessages(null);
                                 countClick = 0;
@@ -260,8 +260,8 @@ public class AccountFragment extends BaseFragment{
 //                                mTvAccount.setText(mAccount);
                         //TODO:insert_new_account
                         assert dialog.getInputEditText() != null;
-                        if(billDao.InsertAccount(dialog.getInputEditText().getText().toString())){
-                            XToastUtils.success("添加账户成功");
+                        if(billDao.insertAccount(dialog.getInputEditText().getText().toString())){
+//                            XToastUtils.success("添加账户成功");
                             refreshLayout.autoRefresh();
                         }else{
                             XToastUtils.error("添加账户失败，该账户已存在");
@@ -293,7 +293,7 @@ public class AccountFragment extends BaseFragment{
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         assert dialog.getInputEditText() != null;
                         if(billDao.ChangeAccountName(item.getName(),dialog.getInputEditText().getText().toString())){
-                            XToastUtils.success("修改账户成功");
+//                            XToastUtils.success("修改账户成功");
                             refreshLayout.autoRefresh();
                         }else{
                             XToastUtils.error("修改账户失败，该账户已存在");
@@ -347,33 +347,34 @@ public class AccountFragment extends BaseFragment{
     }
 
 
-    private void showAccountChangeDialog(AccountDataEntry item) {
-        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
-                //.iconRes(R.drawable.icon_warning)
-                //.title(R.string.tip_warning)
-                .content(R.string.account_change_content)
-                .inputType(
-                        InputType.TYPE_CLASS_TEXT)
-                .input(
-                        getString(R.string.account_change_content),
-                        "",
-                        false,
-                        ((dialog, input) -> XToastUtils.toast(input.toString())))
-                .inputRange(1, 5)
-                .positiveText(R.string.button_confirm)
-                .negativeText(R.string.button_cancel)
-                .onPositive((dialog, which) -> {
-                    assert dialog.getInputEditText() != null;
-                    if(billDao.ChangeAccountName(item.getName(),dialog.getInputEditText().getText().toString())){
-                        XToastUtils.success("修改账户成功");
-                        refreshLayout.autoRefresh();
-                    }else{
-                        XToastUtils.error("修改账户失败，该账户已存在");
-                    }
-                })
-                .cancelable(false)
-                .show();
-    }
+//    private void showAccountChangeDialog(AccountDataEntry item) {
+//        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+//                //.iconRes(R.drawable.icon_warning)
+//                //.title(R.string.tip_warning)
+//                .content(R.string.account_change_content)
+//                .inputType(
+//                        InputType.TYPE_CLASS_TEXT)
+//                .input(
+//                        getString(R.string.account_change_content),
+//                        "",
+//                        false,
+//                        ((dialog, input) -> XToastUtils.toast(input.toString())))
+//                .inputRange(1, 5)
+//                .positiveText(R.string.button_confirm)
+//                .negativeText(R.string.button_cancel)
+//                .onPositive((dialog, which) -> {
+//                    assert dialog.getInputEditText() != null;
+//                    if(billDao.ChangeAccountName(item.getName(),dialog.getInputEditText().getText().toString())){
+//                        XToastUtils.success("修改账户成功");
+//                        refreshLayout.autoRefresh();
+//                    }else{
+//                        XToastUtils.error("修改账户失败，该账户已存在");
+//                    }
+//                })
+//                .cancelable(false)
+//                .show();
+//    }
+
 
     @Override
     public void onResume() {

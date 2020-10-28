@@ -109,7 +109,7 @@ public class ExpandableItemAdapter extends BaseRecyclerAdapter<BillDataItem> {
                 .autoDismiss(false);
         account.setText(item.getBill_Account());
         money.setText(decimalFormat.format(item.getBill_Money()));
-        time.setText(item.getYear()+"."+item.getMonth()+"."+item.getDay()+" "+item.getTime());
+        time.setText(item.getYear()+"-"+item.getMonth()+"-"+item.getDay()+"    "+item.getTime());
         category.setText(item.getBill_SubCategory());
         member.setText(item.getBill_Mumber());
         if(item.getBill_Remark().equals("")){

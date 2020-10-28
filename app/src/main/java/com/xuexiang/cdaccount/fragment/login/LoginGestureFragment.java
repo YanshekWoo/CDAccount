@@ -73,8 +73,9 @@ public class LoginGestureFragment extends BaseFragment {
 
     private MyPatternLockViewListener mPatternLockViewListener;
     private BiometricPromptManager biometricPromptManager;
+//    private BiometricPromptManager mManager;
     private MyOnBiometricIdentifyCallback myOnBiometricIdentifyCallback;
-    private BiometricPromptManager mManager;
+
 
     private Bundle bundle;
     private boolean isChangePasswd;
@@ -270,9 +271,11 @@ public class LoginGestureFragment extends BaseFragment {
     private void initFingerPrint() {
         biometricPromptManager = new BiometricPromptManager();
         if(biometricPromptManager.isBiometricPromptEnable() && BiometricPromptManager.isBiometricSettingEnable()){
-            mManager = new BiometricPromptManager();
             myOnBiometricIdentifyCallback = new MyOnBiometricIdentifyCallback();
-            mManager.authenticate(myOnBiometricIdentifyCallback);
+            biometricPromptManager.authenticate(myOnBiometricIdentifyCallback);
+//            mManager = new BiometricPromptManager();
+//            myOnBiometricIdentifyCallback = new MyOnBiometricIdentifyCallback();
+//            mManager.authenticate(myOnBiometricIdentifyCallback);
         }
     }
 
@@ -326,9 +329,10 @@ public class LoginGestureFragment extends BaseFragment {
         mPatternLockViewListener = null;
         if(!isChangePasswd) {
             myOnBiometricIdentifyCallback = null;
-            mManager = null;
-            biometricPromptManager.setmImpl(null);
+            biometricPromptManager.destroyImpl();
             biometricPromptManager = null;
+//            mManager.destroyImpl();
+//            mManager = null;
         }
         super.onDestroy();
     }

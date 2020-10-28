@@ -31,10 +31,10 @@ public class BiometricPromptApi28 implements IBiometricPromptImpl {
 
     private static final String KEY_NAME = "BiometricPromptApi28";
 
-    private final BiometricPrompt mBiometricPrompt;
+    private BiometricPrompt mBiometricPrompt;
     private BiometricPromptManager.OnBiometricIdentifyCallback mManagerIdentifyCallback;
     private CancellationSignal mCancellationSignal;
-    private final Signature mSignature;
+    private Signature mSignature;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     public BiometricPromptApi28() {
@@ -45,11 +45,14 @@ public class BiometricPromptApi28 implements IBiometricPromptImpl {
                 .setSubtitle("")
                 .setNegativeButton(getContext().getResources().getString(R.string.biometric_dialog_use_password),
                         getContext().getMainExecutor(), (dialogInterface, i) -> {
-                            if (mManagerIdentifyCallback != null) {
-                                mManagerIdentifyCallback.onUsePassword();
-                            }
-                            mCancellationSignal.cancel();
                         })
+//                .setNegativeButton(getContext().getResources().getString(R.string.biometric_dialog_use_password),
+//                        getContext().getMainExecutor(), (dialogInterface, i) -> {
+//                            if (mManagerIdentifyCallback != null) {
+//                                mManagerIdentifyCallback.onUsePassword();
+//                            }
+//                            mCancellationSignal.cancel();
+//                        })
                 .build();
 
 
@@ -88,6 +91,14 @@ public class BiometricPromptApi28 implements IBiometricPromptImpl {
 
         mBiometricPrompt.authenticate(new BiometricPrompt.CryptoObject(mSignature),
                 mCancellationSignal, getContext().getMainExecutor(), new BiometricPromptCallbackImpl());
+    }
+
+    @Override
+    public void destroy() {
+        mBiometricPrompt = null;
+        mManagerIdentifyCallback = null;
+        mCancellationSignal = null;
+        mSignature = null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -167,5 +178,9 @@ public class BiometricPromptApi28 implements IBiometricPromptImpl {
         }
         return null;
     }
+
+
+
+
 
 }

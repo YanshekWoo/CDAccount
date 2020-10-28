@@ -106,4 +106,6 @@
 
     <string name="tip_info">本月已超支%.2f元</string>
 
+    <string name="tip_infos">提示</string>
+    <string name="content_simple_confirm_dialog">请注意，您本月的净支出已超出预期支出！</string>
 </resources>
