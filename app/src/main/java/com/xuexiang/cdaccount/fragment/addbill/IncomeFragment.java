@@ -311,7 +311,7 @@ public class IncomeFragment extends BaseFragment {
                                               @Override
                                               public void onClick(View v) {
                                                   if (mAcountDialog == null) {
-                                                      new MaterialDialog.Builder(getContext())
+                                                      mAcountDialog = new MaterialDialog.Builder(getContext())
                                                               .title("添加账户")
                                                               .inputType(
                                                                       InputType.TYPE_CLASS_TEXT)
