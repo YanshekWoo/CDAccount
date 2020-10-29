@@ -40,9 +40,11 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 import com.xuexiang.xutil.XUtil;
+import com.xuexiang.xutil.data.DateUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -81,12 +83,10 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     SuperTextView menuLogout;
 
     Boolean budgetIsOpen = false;
-
     int budget;
-//
-//    private static void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//        XToastUtils.info("Open");
-//    }
+
+//    MaterialDialog changeBudgetDialog;
+
 
     @Override
     protected int getLayoutId() {
@@ -139,6 +139,38 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
         });
     }
 
+
+    
+    @SuppressLint("NonConstantResourceId")
+    @SingleClick
+    @Override
+    public void onClick(@NotNull SuperTextView superTextView) {
+        switch (superTextView.getId()) {
+            case R.id.db_backup:
+                databaseBackup();
+
+                break;
+            case R.id.db_restore:
+                databaseRestoe();
+
+                break;
+            case R.id.menu_change_passwd:
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.putExtra("LogInTYPE", 1);
+                startActivity(intent);
+//                ActivityUtils.startActivity(ReLoginActivity.class);
+            break;
+            case R.id.menu_clear_data:
+                clearDataDialog();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 设置预算
+     */
     private void changeBudget(){
         new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                 .title("修改预算")
@@ -167,33 +199,58 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
                 })
                 .show();
     }
-    
-    @SuppressLint("NonConstantResourceId")
-    @SingleClick
-    @Override
-    public void onClick(@NotNull SuperTextView superTextView) {
-        BackupTask backupTask = new BackupTask(getContext());
-        switch (superTextView.getId()) {
-            case R.id.db_backup:
-                backupTask.execute(BackupTask.COMMAND_BACKUP);
-                XToastUtils.success("备份成功");
-                break;
-            case R.id.db_restore:
-                backupTask.execute(BackupTask.COMMAND_RESTORE);
-                XToastUtils.success("恢复成功");
-                break;
-            case R.id.menu_change_passwd:
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                intent.putExtra("LogInTYPE", 1);
-                startActivity(intent);
-//                ActivityUtils.startActivity(ReLoginActivity.class);
-            break;
-            case R.id.menu_clear_data:
-                clearDataDialog();
-                break;
-            default:
-                break;
+
+
+    private void databaseBackup(){
+        String backupTime = (String)MMKVUtils.get("BackpTime", "");
+        String dialogContext;
+        if(backupTime.equals("")) {
+            dialogContext = "当前无备份";
         }
+        else {
+            dialogContext = "上一次备份时间"+"\n"+backupTime;
+        }
+        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .title("数据备份")
+                .content(dialogContext)
+                .positiveText("更新")
+                .negativeText("取消")
+                .onPositive((dialog, which) -> {
+                    new BackupTask(getContext()).execute(BackupTask.COMMAND_BACKUP);
+
+                    Calendar calendar = Calendar.getInstance();
+                    String currentTime = DateUtils.date2String(calendar.getTime(), DateUtils.yyyyMMddHHmmss.get());
+                    MMKVUtils.put("BackpTime", currentTime);
+
+                })
+                .onNegative((dialog, which) -> {
+                })
+                .show();
+    }
+
+
+    private void databaseRestoe(){
+        String backupTime = (String)MMKVUtils.get("BackpTime", "");
+        String dialogContext;
+        if(backupTime.equals("")) {
+            dialogContext = "当前无备份";
+        }
+        else {
+            dialogContext = "上一次备份时间"+"\n"+backupTime;
+        }
+        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .title("数据恢复")
+                .content(dialogContext)
+                .positiveText("恢复")
+                .negativeText("取消")
+                .onPositive((dialog, which) -> {
+                    if(!backupTime.equals("")) {
+                        new BackupTask(getContext()).execute(BackupTask.COMMAND_RESTORE);
+                    }
+                })
+                .onNegative((dialog, which) -> {
+                })
+                .show();
     }
 
 

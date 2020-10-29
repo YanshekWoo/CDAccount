@@ -30,6 +30,7 @@ import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.fragment.docs.PrivacyFragment;
 import com.xuexiang.cdaccount.fragment.docs.ProtocolFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
+import com.xuexiang.cdaccount.utils.MMKVUtils;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
@@ -162,42 +163,39 @@ public class RegisterVerifyActivity extends BaseActivity {
 
 
     public void setButtomClickListener() {
-        mBtSign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mBtSign.setOnClickListener(v -> {
 
-                String ans1 = Objects.requireNonNull(mEt_answer1.getText()).toString();
-                String ans2 = Objects.requireNonNull(mEt_answer2.getText()).toString();
-                String ans3 = Objects.requireNonNull(mEt_answer3.getText()).toString();
+            String ans1 = Objects.requireNonNull(mEt_answer1.getText()).toString();
+            String ans2 = Objects.requireNonNull(mEt_answer2.getText()).toString();
+            String ans3 = Objects.requireNonNull(mEt_answer3.getText()).toString();
 
-                if(ans1.length()==0 || ans2.length()==0 || ans3.length()==0)
-                {
-                    XToastUtils.error("填写不能为空");
-                }
-                else if(ans1.length()>12 || ans2.length()>12 || ans3.length()>12)
-                {
-                    XToastUtils.error("填写超出长度范围");
-                }
-                else {
+            if(ans1.length()==0 || ans2.length()==0 || ans3.length()==0)
+            {
+                XToastUtils.error("填写不能为空");
+            }
+            else if(ans1.length()>12 || ans2.length()>12 || ans3.length()>12)
+            {
+                XToastUtils.error("填写超出长度范围");
+            }
+            else {
 
-                    mEditor_question1.putInt("verify_qustion1", mMaterialSpinner1.getSelectedIndex());
-                    mEditor_question1.apply();
-                    mEditor_question2.putInt("verify_qustion2", mMaterialSpinner2.getSelectedIndex());
-                    mEditor_question2.apply();
-                    mEditor_question3.putInt("verify_qustion3", mMaterialSpinner3.getSelectedIndex());
-                    mEditor_question3.apply();
+                mEditor_question1.putInt("verify_qustion1", mMaterialSpinner1.getSelectedIndex());
+                mEditor_question1.apply();
+                mEditor_question2.putInt("verify_qustion2", mMaterialSpinner2.getSelectedIndex());
+                mEditor_question2.apply();
+                mEditor_question3.putInt("verify_qustion3", mMaterialSpinner3.getSelectedIndex());
+                mEditor_question3.apply();
 
-                    mEditor_answer1.putString("verify_answer1", MD5Utils.encode(ans1));
-                    mEditor_answer1.apply();
-                    mEditor_answer2.putString("verify_answer2", MD5Utils.encode(ans2));
-                    mEditor_answer2.apply();
-                    mEditor_answer3.putString("verify_answer3", MD5Utils.encode(ans3));
-                    mEditor_answer3.apply();
+                mEditor_answer1.putString("verify_answer1", MD5Utils.encode(ans1));
+                mEditor_answer1.apply();
+                mEditor_answer2.putString("verify_answer2", MD5Utils.encode(ans2));
+                mEditor_answer2.apply();
+                mEditor_answer3.putString("verify_answer3", MD5Utils.encode(ans3));
+                mEditor_answer3.apply();
 
-                    initialDataTable();
-
-                    onLoginSuccess();
-                }
+                initialDataTable();
+                MMKVUtils.put("BackpTime", "");
+                onLoginSuccess();
             }
         });
     }
@@ -207,17 +205,7 @@ public class RegisterVerifyActivity extends BaseActivity {
      * 注册成功的处理
      */
     private void onLoginSuccess() {
-//        String token = RandomUtils.getRandomNumbersAndLetters(16);
-//        if (TokenUtils.handleLoginSuccess(token)) {
-////            initDate();
-////            Intent intent = new Intent(RegisterVerifyActivity.this, MainActivity.class);
-////            startActivity(intent);
-//
-//        }
-//        XToastUtils.success("注册成功");
         SettingUtils.setIsFirstOpen(false);
-//        String token = RandomUtils.getRandomNumbersAndLetters(16);
-//        TokenUtils.setToken(token);
         ActivityUtils.startActivity(MainActivity.class);
         finish();
     }
