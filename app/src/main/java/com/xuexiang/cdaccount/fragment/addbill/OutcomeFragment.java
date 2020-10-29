@@ -153,7 +153,7 @@ public class OutcomeFragment extends BaseFragment {
     @Override
     protected void initViews() {
 
-        MyApp.billDao = new BillDao(getContext());
+//        MyApp.billDao = new BillDao(getContext());
 
         //记账金额
 
