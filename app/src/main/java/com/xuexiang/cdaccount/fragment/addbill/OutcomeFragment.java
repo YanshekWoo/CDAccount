@@ -273,7 +273,7 @@ public class OutcomeFragment extends BaseFragment {
                                 mOption2 = mStrNewItem2;
                                 mOption = mOption1 + '-' + mOption2;
                                 mTvType.setText(mOption);
-                                XToastUtils.success("添加分类成功");
+//                                XToastUtils.success("添加分类成功");
                                 loadOptionData();
                                 dialog.dismiss();
                             } else {
@@ -388,7 +388,7 @@ public class OutcomeFragment extends BaseFragment {
                                     }
                                     //TODO:insert new member
                                     if (MyApp.billDao.insertMember(mMember)) {
-                                        XToastUtils.success("添加成员成功");
+//                                        XToastUtils.success("添加成员成功");
                                         loadMemberData();
                                     } else {
                                         XToastUtils.error("添加成员失败，该成员已存在");

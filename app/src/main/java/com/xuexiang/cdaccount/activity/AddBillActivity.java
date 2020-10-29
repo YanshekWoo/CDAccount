@@ -193,14 +193,7 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
 
     }
 
-//    private void showSimpleTipDialog() {
-//        new MaterialDialog.Builder(AddActivity.this)
-//                .iconRes(R.drawable.icon_tip)
-//                .title(R.string.tip_infos)
-//                .content(R.string.content_simple_confirm_dialog)
-//                .positiveText("确认")
-//                .show();
-//    }
+
 
     /**
      * 函数

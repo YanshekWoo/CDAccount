@@ -424,7 +424,7 @@ public class TransferFragment extends BaseFragment {
                         mAccount2 = dialog.getInputEditText().getText().toString();
                         mTvAccount2.setText(mAccount2);
                         if (MyApp.billDao.insertAccount(mAccount2)) {
-                            XToastUtils.success("添加账户成功");
+//                            XToastUtils.success("添加账户成功");
                             loadAccountData();
                         } else {
                             XToastUtils.error("添加账户失败，该账户已存在");
