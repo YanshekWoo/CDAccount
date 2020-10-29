@@ -37,11 +37,11 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataDay;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataMonth;
 import com.xuexiang.cdaccount.ExpanableBill.BillDataYear;
+import com.xuexiang.cdaccount.MyApp;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.adapter.accountdetail.ExpandableYearAdapter;
 import com.xuexiang.cdaccount.adapter.dropdownmenu.ListDropDownAdapter;
 import com.xuexiang.cdaccount.core.BaseActivity;
-import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.spinner.DropDownMenu;
@@ -57,7 +57,7 @@ import butterknife.BindView;
 
 public class AccountDetailsActivity extends BaseActivity {
 
-    private BillDao mBillDao;
+//    private BillDao mBillDao;
     private String[] mHeaders = {"年",  "成员", "账户"};
     private final List<View> mPopupViews = new ArrayList<>();
 
@@ -182,7 +182,7 @@ public class AccountDetailsActivity extends BaseActivity {
      * 从数据库中获取数据，加载到适配器
      */
     protected void getBillData() {
-        BillDataYear billDataYear = mBillDao.getJournalAccount(Integer.toString(selectedYear), selectedMember, selectedAccount);
+        BillDataYear billDataYear = MyApp.billDao.getJournalAccount(Integer.toString(selectedYear), selectedMember, selectedAccount);
         billDataYearList.clear();
         billDataYearList.add(billDataYear);
         setFocusedExpandable(yearFocusable, monthFocusable, dayFocusable);
@@ -195,14 +195,14 @@ public class AccountDetailsActivity extends BaseActivity {
      * 用数组初始化菜单选项
      */
     protected void initArgs() {
-        mBillDao = new BillDao(AccountDetailsActivity.this);
+//        mBillDao = new BillDao(AccountDetailsActivity.this);
         mTimes = new ArrayList<>();
         mTimes.add("年");
         mTimes.add("月");
         mTimes.add("日");
-        mMembers = mBillDao.queryMemberList();
+        mMembers = MyApp.billDao.queryMemberList();
         mMembers.add(0,getResources().getString(R.string.unlimited));
-        mAccounts = mBillDao.queryAccountList();
+        mAccounts = MyApp.billDao.queryAccountList();
         mAccounts.add(0,getResources().getString(R.string.unlimited));
 
         Calendar calendar = Calendar.getInstance();

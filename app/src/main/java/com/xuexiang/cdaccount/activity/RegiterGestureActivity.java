@@ -34,6 +34,7 @@ import com.andrognito.patternlockview.utils.ResourceUtils;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
 import com.xuexiang.cdaccount.fragment.docs.PrivacyFragment;
+import com.xuexiang.cdaccount.fragment.docs.ProtocolFragment;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
@@ -251,10 +252,9 @@ public class RegiterGestureActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_user_protocol:
-                XToastUtils.info("用户协议");
+                openNewPage(ProtocolFragment.class);
                 break;
             case R.id.tv_privacy_protocol:
-//                XToastUtils.info("隐私政策");
                 openNewPage(PrivacyFragment.class);
                 break;
             default:

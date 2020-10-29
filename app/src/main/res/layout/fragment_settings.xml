@@ -61,6 +61,21 @@
                     tools:ignore="RtlSymmetry" />
 
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                    android:id="@+id/db_backup"
+                    style="@style/InfoItem"
+                    android:layout_marginTop="16dp"
+                    app:sCenterTextString="数据备份"
+                    app:sDividerLineType="none" />
+
+                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                    android:id="@+id/db_restore"
+                    style="@style/InfoItem"
+                    android:layout_marginTop="16dp"
+                    app:sCenterTextString="数据恢复"
+                    app:sDividerLineType="none" />
+
+
+                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
                     android:id="@+id/menu_change_passwd"
                     style="@style/InfoItem"
                     android:layout_marginTop="16dp"

@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.fragment.addbill;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.xuexiang.cdaccount.MyApp;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
@@ -56,13 +58,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Page(anim = CoreAnim.none)
 public class TransferFragment extends BaseFragment {
 
-    private Context mContext;
 
-    private EditText mEtAmount;
     private double mAmount = -1;    //负数作空标志
 
     private TextView mTvDate,mTvTime;
@@ -73,21 +74,18 @@ public class TransferFragment extends BaseFragment {
 
     private TextView mTvType;
     private List<String> options1Item = new ArrayList<>();
-    private List<List<String>> options2Item = new ArrayList<>();
+    private final List<List<String>> options2Item = new ArrayList<>();
     private String mOption1, mOption2, mOption;
-    private ShadowImageView mBtnNewType;
+
 
     private TextView mTvAccount1,mTvAccount2;
     private List<String> Accounts1Item = new ArrayList<>();
     private String mAccount1,mAccount2;
-    private ShadowImageView mBtnNewAccount1,mBtnNewAccount2;
 
     private TextView mTvMember;
     private List<String> MembersItem = new ArrayList<>();
     private String mMember;
-    private ShadowImageView mBtnNewMember;
 
-    private MaterialEditText mEtRemark;
     private String mRemark = "";
 
 
@@ -98,7 +96,10 @@ public class TransferFragment extends BaseFragment {
 
     private TransferMessage Transfer;
 
-    private BillDao mDatabaseHelper;
+    public TransferFragment() {
+    }
+
+//    private BillDao mDatabaseHelper;
 
 
     public interface TransferMessage{
@@ -134,15 +135,16 @@ public class TransferFragment extends BaseFragment {
         return null;
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     protected void initViews() {
 
-        mDatabaseHelper = new BillDao(getContext());
+        MyApp.billDao = new BillDao(getContext());
 
 
         //记账金额
 
-        mEtAmount = findViewById(R.id.et_amount);
+        EditText mEtAmount = findViewById(R.id.et_amount);
         Drawable drawable1 = getResources().getDrawable(R.drawable.ic_yuan);
         drawable1.setBounds(0, 0, 50, 50);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
         mEtAmount.setCompoundDrawables(null, null, drawable1, null);//只放右边
@@ -272,11 +274,11 @@ public class TransferFragment extends BaseFragment {
 
             }
         });
-        mBtnNewAccount1 = findViewById(R.id.btn_new_account1);
+        ShadowImageView mBtnNewAccount1 = findViewById(R.id.btn_new_account1);
         mBtnNewAccount1.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View v) {
-                                                  new MaterialDialog.Builder(getContext())
+                                                  new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                                                           .title("添加账户")
                                                           .inputType(
                                                                   InputType.TYPE_CLASS_TEXT)
@@ -295,10 +297,11 @@ public class TransferFragment extends BaseFragment {
                                                           .onPositive(new MaterialDialog.SingleButtonCallback() {
                                                               @Override
                                                               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                                  assert dialog.getInputEditText() != null;
                                                                   mAccount1 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount1.setText(mAccount1);
                                                                   //TODO:insert_new_account
-                                                                  if(mDatabaseHelper.insertAccount(mAccount1)){
+                                                                  if(MyApp.billDao.insertAccount(mAccount1)){
                                                                       XToastUtils.success("添加账户成功");
                                                                       loadAccountData();
                                                                   }else{
@@ -323,11 +326,11 @@ public class TransferFragment extends BaseFragment {
 
             }
         });
-        mBtnNewAccount2 = findViewById(R.id.btn_new_account2);
+        ShadowImageView mBtnNewAccount2 = findViewById(R.id.btn_new_account2);
         mBtnNewAccount2.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View v) {
-                                                  new MaterialDialog.Builder(getContext())
+                                                  new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                                                           .title("添加账户")
                                                           .inputType(
                                                                   InputType.TYPE_CLASS_TEXT)
@@ -346,9 +349,10 @@ public class TransferFragment extends BaseFragment {
                                                           .onPositive(new MaterialDialog.SingleButtonCallback() {
                                                               @Override
                                                               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                                  assert dialog.getInputEditText() != null;
                                                                   mAccount2 = dialog.getInputEditText().getText().toString();
                                                                   mTvAccount2.setText(mAccount2);
-                                                                  if(mDatabaseHelper.insertAccount(mAccount2)){
+                                                                  if(MyApp.billDao.insertAccount(mAccount2)){
                                                                       XToastUtils.success("添加账户成功");
                                                                       loadAccountData();
                                                                   }else{
@@ -375,11 +379,11 @@ public class TransferFragment extends BaseFragment {
                 showMemberPickerView(false);
             }
         });
-        mBtnNewMember = findViewById(R.id.btn_new_member);
+        ShadowImageView mBtnNewMember = findViewById(R.id.btn_new_member);
         mBtnNewMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(getContext())
+                new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                         .title("添加成员")
                         .inputType(
                                 InputType.TYPE_CLASS_TEXT)
@@ -398,6 +402,7 @@ public class TransferFragment extends BaseFragment {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                assert dialog.getInputEditText() != null;
                                 mMember = dialog.getInputEditText().getText().toString();
                                 mTvMember.setText(mMember);
 
@@ -407,7 +412,7 @@ public class TransferFragment extends BaseFragment {
                                     mTvMember.setTextColor(0xFF000000 );
                                 }
                                 //TODO:insert new member
-                                if(mDatabaseHelper.insertMember(mMember)){
+                                if(MyApp.billDao.insertMember(mMember)){
                                     XToastUtils.success("添加成员成功");
                                     loadMemberData();
                                 }else{
@@ -421,7 +426,7 @@ public class TransferFragment extends BaseFragment {
         });
 
         //记账属性——备注
-        mEtRemark = findViewById(R.id.et_remark);
+        MaterialEditText mEtRemark = findViewById(R.id.et_remark);
         mEtRemark.setFilters(new InputFilter[]{new LengthFilter(12)});
         mEtRemark.addTextChangedListener(new TextWatcher() {
             @Override
@@ -450,7 +455,8 @@ public class TransferFragment extends BaseFragment {
     //记账属性——时间
     private void showDatePicker() {
         if (mDatePicker == null) {
-            mDatePicker = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
+            mDatePicker = new TimePickerBuilder(Objects.requireNonNull(getContext()), new OnTimeSelectListener() {
+                @SuppressLint("SimpleDateFormat")
                 @Override
                 public void onTimeSelected(Date date, View v) {
                     mDate = date;
@@ -468,7 +474,7 @@ public class TransferFragment extends BaseFragment {
         if (mTimePicker == null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(DateUtils.getNowDate());
-            mTimePicker = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
+            mTimePicker = new TimePickerBuilder(Objects.requireNonNull(getContext()), new OnTimeSelectListener() {
                 @Override
                 public void onTimeSelected(Date date, View v) {
                     mTime = date;
@@ -499,7 +505,7 @@ public class TransferFragment extends BaseFragment {
     private void showOptionPickerView(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {options1Item.indexOf(mOption1), options2Item.get(options1Item.indexOf(mOption1)).indexOf(mOption2)};
 
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(getContext(), (v, options1, options2, options3) -> {
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(Objects.requireNonNull(getContext()), (v, options1, options2, options3) -> {
             //返回的分别是三个级别的选中位置
             mOption1 = options1Item.get(options1);
             mOption2 = options2Item.get(options1).get(options2);
@@ -530,14 +536,14 @@ public class TransferFragment extends BaseFragment {
     private void loadAccountData() {                        //仅重复一次
 //        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
 //        Accounts1Item = Arrays.asList(str1);
-        Accounts1Item = mDatabaseHelper.queryAccountList();
+        Accounts1Item = MyApp.billDao.queryAccountList();
 
     }
 
     private void showAccountPickerView1(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {Accounts1Item.indexOf(mAccount1)};
 
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(getContext(), (v, accounts1, accounts2, accounts3) -> {
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(Objects.requireNonNull(getContext()), (v, accounts1, accounts2, accounts3) -> {
             //返回的分别是三个级别的选中位置
             mAccount1 = Accounts1Item.get(accounts1);
             mTvAccount1.setText(mAccount1);
@@ -566,7 +572,7 @@ public class TransferFragment extends BaseFragment {
     private void showAccountPickerView2(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {Accounts1Item.indexOf(mAccount2)};
 
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(getContext(), (v, accounts1, accounts2, accounts3) -> {
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(Objects.requireNonNull(getContext()), (v, accounts1, accounts2, accounts3) -> {
             //返回的分别是三个级别的选中位置
             mAccount2 = Accounts1Item.get(accounts1);
             mTvAccount2.setText(mAccount2);
@@ -594,14 +600,14 @@ public class TransferFragment extends BaseFragment {
     private void loadMemberData() {
 //        String[] str1 = {"无成员","本人", "配偶", "子女"};
 //        MembersItem = Arrays.asList(str1);
-        MembersItem = mDatabaseHelper.queryMemberList();
+        MembersItem = MyApp.billDao.queryMemberList();
 
     }
 
     private void showMemberPickerView(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {MembersItem.indexOf(mMember)};
 
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(getContext(), (v, member1, member2, member3) -> {
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(Objects.requireNonNull(getContext()), (v, member1, member2, member3) -> {
             //返回的分别是三个级别的选中位置
             mMember = MembersItem.get(member1);
             mTvMember.setText(mMember);
@@ -635,7 +641,7 @@ public class TransferFragment extends BaseFragment {
     /**
      * 限制最大长度
      */
-    public class LengthFilter implements InputFilter {
+    public static class LengthFilter implements InputFilter {
         public LengthFilter(int max) {
             mMax = max;
         }
@@ -663,7 +669,7 @@ public class TransferFragment extends BaseFragment {
             }
         }
 
-        private int mMax;
+        private final int mMax;
 
     }
 }
