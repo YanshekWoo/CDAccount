@@ -18,16 +18,15 @@
 package com.xuexiang.cdaccount.fragment.home;
 
 import android.util.Log;
-import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xuexiang.cdaccount.MyApp;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AddBillActivity;
 import com.xuexiang.cdaccount.adapter.record.RecordAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
-import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
@@ -46,13 +45,12 @@ import java.util.List;
 public class HomeFragment extends BaseFragment {
 
     private RecyclerView mRvRecord;
-    private ShadowImageView mIbAdd;
     private List<String> mRecentDate, mRecentInfo;
     private List<Integer>mRecentType;
 
     private AutoFitTextView  mTvIn,mTvOut;
     private String mAmountIn, mAmountOut;
-    private BillDao mDataBaseHelper;
+//    private BillDao mDataBaseHelper;
 
 
     /**
@@ -65,8 +63,6 @@ public class HomeFragment extends BaseFragment {
 
     /**
      * 布局的资源id
-     *
-     * @return
      */
     @Override
     protected int getLayoutId() {
@@ -78,7 +74,7 @@ public class HomeFragment extends BaseFragment {
      */
     @Override
     protected void initViews() {
-        mDataBaseHelper = new BillDao(getContext());
+//        mDataBaseHelper = new BillDao(getContext());
 
         //加载数据
         loadData();
@@ -100,14 +96,11 @@ public class HomeFragment extends BaseFragment {
 
 
         //记账
-        mIbAdd = findViewById(R.id.ib_add);
-        mIbAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        ShadowImageView mIbAdd = findViewById(R.id.ib_add);
+        mIbAdd.setOnClickListener(view -> {
 //                Intent intent = new Intent(getContext(), AddBillActivity.class);
 //                startActivity(intent);
-                ActivityUtils.startActivity(AddBillActivity.class);
-            }
+            ActivityUtils.startActivity(AddBillActivity.class);
         });
     }
 
@@ -126,11 +119,11 @@ public class HomeFragment extends BaseFragment {
 
     private void loadData(){
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        mAmountIn = decimalFormat.format(mDataBaseHelper.queryMonthIncome());
-        mAmountOut = decimalFormat.format(mDataBaseHelper.queryMonthOutcome());
-        mRecentInfo = mDataBaseHelper.getRecentInformation();
-        mRecentDate = mDataBaseHelper.getRecentBillDate();
-        mRecentType = mDataBaseHelper.getRecentIO();
+        mAmountIn = decimalFormat.format(MyApp.billDao.queryMonthIncome());
+        mAmountOut = decimalFormat.format(MyApp.billDao.queryMonthOutcome());
+        mRecentInfo = MyApp.billDao.getRecentInformation();
+        mRecentDate = MyApp.billDao.getRecentBillDate();
+        mRecentType = MyApp.billDao.getRecentIO();
 
     }
 }

@@ -28,6 +28,8 @@ import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.MainActivity;
 import com.xuexiang.cdaccount.activity.RegiterNumberActivity;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.fragment.docs.PrivacyFragment;
+import com.xuexiang.cdaccount.fragment.docs.ProtocolFragment;
 import com.xuexiang.cdaccount.utils.RandomUtils;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.TokenUtils;
@@ -176,10 +178,10 @@ public class LoginNumberFragment extends BaseFragment {
                 openNewPage(FindPasswdFragment.class);
                 break;
             case R.id.tv_user_protocol:
-                XToastUtils.info("用户协议");
+                openNewPage(ProtocolFragment.class);
                 break;
             case R.id.tv_privacy_protocol:
-                XToastUtils.info("隐私政策");
+                openNewPage(PrivacyFragment.class);
                 break;
             default:
                 break;

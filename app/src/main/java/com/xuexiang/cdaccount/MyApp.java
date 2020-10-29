@@ -25,6 +25,7 @@ import android.util.Log;
 import androidx.multidex.MultiDex;
 
 import com.xuexiang.cdaccount.activity.LoginActivity;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.sdkinit.ANRWatchDogInit;
 import com.xuexiang.cdaccount.utils.sdkinit.UMengInit;
@@ -41,6 +42,8 @@ import static com.xuexiang.xui.XUI.getContext;
  */
 public class MyApp extends Application {
 
+    public static BillDao billDao;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -53,6 +56,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         initLibs();
+
         AppFrontBackHelper helper = new AppFrontBackHelper();
         helper.register(MyApp.this, new AppFrontBackHelper.OnAppStatusListener() {
             @Override
@@ -95,6 +99,7 @@ public class MyApp extends Application {
     private void initLibs() {
         // SQLcipher 加密库
         SQLiteDatabase.loadLibs(this);
+        billDao = new BillDao(this);
 
         XBasicLibInit.init(this);
         XUpdateInit.init(this);
@@ -114,6 +119,16 @@ public class MyApp extends Application {
      */
     public static boolean isDebug() {
         return BuildConfig.DEBUG;
+    }
+
+    /**
+     * APP生命周期结束
+     */
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        billDao.closeDataBase();
+        billDao =   null;
     }
 
 

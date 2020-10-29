@@ -31,7 +31,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.database.ChartDataEntry;
+import com.xuexiang.cdaccount.dbclass.ChartDataEntry;
 
 import org.jetbrains.annotations.NotNull;
 
