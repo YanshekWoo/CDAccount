@@ -225,6 +225,7 @@ public class TransferFragment extends BaseFragment {
         mTvAccount1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadAccountData();
                 showAccountPickerView1(false);
 
             }
@@ -236,7 +237,6 @@ public class TransferFragment extends BaseFragment {
                                                    if (mAcountDialog == null) {
                                                        initAccountDialog();
                                                    }
-                                                   mAcountDialog.show();
                                                    mAcountDialog.show();
 
                                                }
@@ -250,6 +250,7 @@ public class TransferFragment extends BaseFragment {
         mTvAccount2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadAccountData();
                 showAccountPickerView2(false);
 
             }
@@ -276,6 +277,7 @@ public class TransferFragment extends BaseFragment {
         mTvMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadMemberData();
                 showMemberPickerView(false);
             }
         });

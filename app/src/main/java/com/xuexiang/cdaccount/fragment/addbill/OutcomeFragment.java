@@ -227,7 +227,10 @@ public class OutcomeFragment extends BaseFragment {
         mOption2 = options2Item.get(0).get(0);
         mOption = mOption1 + '-' + mOption2;
         mTvType.setText(mOption);
-        mTvType.setOnClickListener(v -> showOptionPickerView(false));
+        mTvType.setOnClickListener(v -> {
+            loadOptionData();
+            showOptionPickerView(false);
+        });
 
         ShadowImageView mBtnNewType = findViewById(R.id.btn_new_type);
         mBtnNewType.setOnClickListener(new View.OnClickListener() {
@@ -294,6 +297,7 @@ public class OutcomeFragment extends BaseFragment {
         mTvAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadAccountData();
                 showAccountPickerView(false);
             }
         });
@@ -346,7 +350,10 @@ public class OutcomeFragment extends BaseFragment {
         mMember = MembersItem.get(0);
         mTvMember.setText(mMember);
         mTvMember.setTextColor(this.getResources().getColor(R.color.app_color_theme_10));
-        mTvMember.setOnClickListener(v -> showMemberPickerView(false));
+        mTvMember.setOnClickListener(v -> {
+            loadMemberData();
+            showMemberPickerView(false);
+        });
         ShadowImageView mBtnNewMember = findViewById(R.id.btn_new_member);
         mBtnNewMember.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,18 +381,18 @@ public class OutcomeFragment extends BaseFragment {
                                     assert dialog.getInputEditText() != null;
                                     mMember = dialog.getInputEditText().getText().toString();
                                     mTvMember.setText(mMember);
-                                if (mMember.equals(MembersItem.get(0))) {
-                                    mTvMember.setTextColor(0xFF6E6E6E);
-                                } else {
-                                    mTvMember.setTextColor(0xFF000000);
-                                }
-                                //TODO:insert new member
-                                if(MyApp.billDao.insertMember(mMember)){
-                                    XToastUtils.success("添加成员成功");
-                                    loadMemberData();
-                                }else{
-                                    XToastUtils.error("添加成员失败，该成员已存在");
-                                }
+                                    if (mMember.equals(MembersItem.get(0))) {
+                                        mTvMember.setTextColor(0xFF6E6E6E);
+                                    } else {
+                                        mTvMember.setTextColor(0xFF000000);
+                                    }
+                                    //TODO:insert new member
+                                    if (MyApp.billDao.insertMember(mMember)) {
+                                        XToastUtils.success("添加成员成功");
+                                        loadMemberData();
+                                    } else {
+                                        XToastUtils.error("添加成员失败，该成员已存在");
+                                    }
 
 
                                 }
@@ -496,7 +503,7 @@ public class OutcomeFragment extends BaseFragment {
 
     private void showAccountPickerView(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {Accounts1Item.indexOf(mAccount)};
-        if(mPvAccount == null) {
+        if (mPvAccount == null) {
             mPvAccount = new OptionsPickerBuilder(getContext(), (v, accounts1, accounts2, accounts3) -> {
                 //返回的分别是三个级别的选中位置
                 mAccount = Accounts1Item.get(accounts1);
@@ -526,7 +533,7 @@ public class OutcomeFragment extends BaseFragment {
 
     private void showMemberPickerView(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {MembersItem.indexOf(mMember)};
-        if(mPvMember == null) {
+        if (mPvMember == null) {
             mPvMember = new OptionsPickerBuilder(getContext(), (v, member1, member2, member3) -> {
                 //返回的分别是三个级别的选中位置
                 mMember = MembersItem.get(member1);

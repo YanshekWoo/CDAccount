@@ -232,6 +232,7 @@ public class IncomeFragment  extends BaseFragment {
         mTvType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadOptionData();
                 showOptionPickerView(false);
             }
         });
@@ -300,6 +301,7 @@ public class IncomeFragment  extends BaseFragment {
         mTvAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadAccountData();
                 showAccountPickerView(false);
 
             }
@@ -354,6 +356,7 @@ public class IncomeFragment  extends BaseFragment {
         mTvMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadMemberData();
                 showMemberPickerView(false);
             }
         });
