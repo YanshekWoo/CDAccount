@@ -13,8 +13,9 @@ import java.nio.channels.FileChannel;
 
 public class BackupTask extends AsyncTask<String, Void, Integer> {
 
-    private static final String COMMAND_BACKUP = "backupDatabase";
+    public static final String COMMAND_BACKUP = "backupDatabase";
     public static final String COMMAND_RESTORE = "restoreDatabase";
+
     @SuppressLint("StaticFieldLeak")
     private final Context mContext;
 
@@ -26,67 +27,61 @@ public class BackupTask extends AsyncTask<String, Void, Integer> {
     protected Integer doInBackground(String... params) {
         // TODO Auto-generated method stub
         // 获得正在使用的数据库路径，我的是 sdcard 目录下的 /dlion/db_dlion.db　　　　 // 默认路径是 /data/data/(包名)/databases/*.db
-        @SuppressLint("SdCardPath") File dbFile = mContext.getDatabasePath(
-                "/data/data/com.example.myapplication/databases/jile.db");
-        @SuppressLint("SdCardPath") File exportDir = mContext.getDatabasePath("/data/data/com.example.myapplication/files");
-        boolean tmp2 = true;
+
+        @SuppressLint("SdCardPath") File dbFile = mContext.getDatabasePath("/data/data/com.xuexiang.cdaccount/databases/cdaccount.db");
+        @SuppressLint("SdCardPath") File exportDir = mContext.getDatabasePath("/data/data/com.xuexiang.cdaccount/backup");
+
+        // 路径不存在，创建文件夹
         if (!exportDir.exists()) {
-            tmp2 =  exportDir.mkdirs();
-            Log.d("9","9"+tmp2);
+            boolean tmp =  exportDir.mkdirs();
         }
-        if(!exportDir.exists()){
-            System.out.println("1文件夹不存在------------"+exportDir);
-            System.out.println("2文件夹不存在------------"+dbFile);
-            Log.d("!!!!!!!!!!!!!!!!!!!!!!", "!");
-        }
-        String tmp = exportDir.getName();
-        boolean tmp1 = true;
-        Log.d("!!!","!!! "+tmp);
-        File backup = new File(exportDir, dbFile.getName());
-        // File backup = exportDir;
+
+        // 备份文件名
+        String BACKUP_NAME = "BACKUP.db";
+        File backup = new File(exportDir, BACKUP_NAME);
+
         String command = params[0];
         if (command.equals(COMMAND_BACKUP)) {
             try {
-                tmp1 = backup.createNewFile();
+                boolean tmp = backup.createNewFile();
                 Log.d("backup!!!", "!!!!!");
                 fileCopy(dbFile, backup);
-                return Log.d("backup!!", "ok");
+                return 0;
             } catch (Exception e) {
                 // TODO: handle exception
                 e.printStackTrace();
-                return Log.d("backup!!!", "fail    "+tmp1);
+                return 1;
             }
-        } else if (command.equals(COMMAND_RESTORE)) {
+        }
+        else if (command.equals(COMMAND_RESTORE)) {
+            Log.d("here", "hesr is ok");
             try {
                 fileCopy(backup, dbFile);
-                return Log.d("restore!!", "success");
+                return 0;
             } catch (Exception e) {
                 // TODO: handle exception
                 e.printStackTrace();
-                return Log.d("restore!!!", "fail");
+                return -1;
             }
         } else {
-            return null;
+            return -1;
         }
     }
 
+
+    /**
+     * 复制文件
+     * @param dbFile 源文件
+     * @param backup 目标文件
+     * @throws IOException IO异常
+     */
     private void fileCopy(File dbFile, File backup) throws IOException {
         // TODO Auto-generated method stub
-        FileChannel inChannel = new FileInputStream(dbFile).getChannel();
-        FileChannel outChannel = new FileOutputStream(backup).getChannel();
-        try {
+        try (FileChannel inChannel = new FileInputStream(dbFile).getChannel(); FileChannel outChannel = new FileOutputStream(backup).getChannel()) {
             inChannel.transferTo(0, inChannel.size(), outChannel);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            Log.d("trans error","!!!!");
-        } finally {
-            if (inChannel != null) {
-                inChannel.close();
-            }
-            if (outChannel != null) {
-                outChannel.close();
-            }
         }
     }
 

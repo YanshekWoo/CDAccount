@@ -58,7 +58,7 @@ public final class Utils {
     /**
      * 这里填写你的应用隐私政策网页地址
      */
-    private static final String PRIVACY_URL = "https://gitee.com/xuexiangjys/TemplateAppProject/raw/master/LICENSE";
+    private static final String PRIVACY_URL = "https://gitee.com/LaMeloBall/CDAccount/raw/master/DOCS/Privacy.md";
 
     /**
      * 显示隐私政策的提示

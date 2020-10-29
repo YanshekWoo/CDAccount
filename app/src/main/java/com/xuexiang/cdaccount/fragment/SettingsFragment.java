@@ -100,6 +100,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
         initBudgetSwitch();
 
         button_backup.setOnSuperTextViewClickListener(this);
+        button_restore.setOnSuperTextViewClickListener(this);
 
         menuChangeAccount.setOnSuperTextViewClickListener(this);
         menuLogout.setOnSuperTextViewClickListener(this);
@@ -170,12 +171,15 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     @SingleClick
     @Override
     public void onClick(@NotNull SuperTextView superTextView) {
+        BackupTask backupTask = new BackupTask(getContext());
         switch (superTextView.getId()) {
             case R.id.db_backup:
-                new BackupTask(getContext()).execute("backupDatabase");
+                backupTask.execute(BackupTask.COMMAND_BACKUP);
+                XToastUtils.success("备份成功");
                 break;
             case R.id.db_restore:
-                new BackupTask(getContext()).execute("restoreDatabase");
+                backupTask.execute(BackupTask.COMMAND_RESTORE);
+                XToastUtils.success("恢复成功");
                 break;
             case R.id.menu_change_passwd:
                 Intent intent = new Intent(getContext(), LoginActivity.class);
@@ -184,7 +188,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
 //                ActivityUtils.startActivity(ReLoginActivity.class);
             break;
             case R.id.menu_clear_data:
-                showInputDialog();
+                clearDataDialog();
                 break;
             default:
                 break;
@@ -195,7 +199,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     /**
      * 带输入框的对话框
      */
-    private void showInputDialog() {
+    private void clearDataDialog() {
         new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                 .iconRes(R.drawable.icon_warning)
                 .title(R.string.tip_warning)
