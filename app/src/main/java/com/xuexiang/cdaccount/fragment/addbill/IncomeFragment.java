@@ -273,7 +273,7 @@ public class IncomeFragment  extends BaseFragment {
                             mStrNewItem2 = mEtDialog.getText().toString();
                             if (mStrNewItem1.length() == 0 || mStrNewItem2.length() == 0) {
                                 XToastUtils.error("添加分类不可为空");
-                            } else if (mDatabaseHelper.insertCategory(mStrNewItem1, mStrNewItem2, 1)) {
+                            } else if (MyApp.billDao.insertCategory(mStrNewItem1, mStrNewItem2, 1)) {
                                 mOption1 = mStrNewItem1;
                                 mOption2 = mStrNewItem2;
                                 mOption = mOption1 + '-' + mOption2;
