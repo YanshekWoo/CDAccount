@@ -32,6 +32,7 @@ import com.xuexiang.cdaccount.activity.AddBillActivity;
 import com.xuexiang.cdaccount.adapter.record.RecordAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
+import com.xuexiang.cdaccount.utils.MMKVUtils;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
@@ -133,10 +134,11 @@ public class HomeFragment extends BaseFragment {
         if (SettingUtils.isConfirm()) {                   //记账后，检查是否超支
             SettingUtils.setIsConfirm(false);
             double budget = 0;                          //TODO：增加写入预算的接口
+            budget = (double)(int)MMKVUtils.get("Budget", -1);
             DecimalFormat decimalFormat = new DecimalFormat("0.00");
-            double surplus = (mDataBaseHelper.QueryMonthpay() - budget - mDataBaseHelper.QueryMonthIncome());
+            double surplus = (mDataBaseHelper.queryMonthOutcome() - budget);
             String Str_surplus = decimalFormat.format(surplus);
-            if (surplus > 0) {
+            if (budget > 0 && surplus > 0) {
 //                showSimpleTipDialog(Str_surplus);
                 SnackbarUtils.Long(getView(), "本月已超支" + surplus + "元。\n请合理安排收支。")
                         .backColor(Color.WHITE)
@@ -150,15 +152,6 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-    private void showSimpleTipDialog(String surplus) {
-
-        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
-                .iconRes(R.drawable.ic_warning)
-                .title("超支提醒")
-                .content("本月已超支" + surplus + "元。\n请合理安排收支。")
-                .positiveText("确认")
-                .show();
-    }
 
 
     private void loadData() {
