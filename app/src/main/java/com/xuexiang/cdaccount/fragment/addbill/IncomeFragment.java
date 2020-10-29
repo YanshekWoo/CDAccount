@@ -99,8 +99,18 @@ public class IncomeFragment  extends BaseFragment {
 
 //    private BillDao mDatabaseHelper;
 
+    private MaterialDialog.Builder mCategoryDialog = null;
+    private MaterialDialog.Builder mAcountDialog = null;
+    private MaterialDialog.Builder mMemberDialog = null;
+    private LayoutInflater mInflater;
+    private View mdialog;
 
-    public interface IncomeMessage{
+    private OptionsPickerView mPvCategory = null;
+    private OptionsPickerView mPvAccount = null;
+    private OptionsPickerView mPvMember = null;
+
+
+    public interface IncomeMessage {
         void InsertIncome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark);
         void getIncomeAmount(double Amount);
 
@@ -110,7 +120,7 @@ public class IncomeFragment  extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Income.InsertIncome(mAmount, mStrYear, mStrMonth, mStrDay, mStrTime,mOption2,mAccount,null,mMember,mRemark);
+        Income.InsertIncome(mAmount, mStrYear, mStrMonth, mStrDay, mStrTime, mOption2, mAccount, null, mMember, mRemark);
 
     }
 
@@ -119,7 +129,7 @@ public class IncomeFragment  extends BaseFragment {
         super.onAttach(context);
         try {
             Income = (IncomeMessage) context;
-        }catch (ClassCastException e){
+        } catch (ClassCastException e) {
             throw new ClassCastException("Activity必须实现");
         }
     }
@@ -139,7 +149,7 @@ public class IncomeFragment  extends BaseFragment {
     @Override
     protected void initViews() {
 
-        MyApp.billDao = new BillDao(getContext());
+//        MyApp.billDao = new BillDao(getContext());
 
         //记账金额
 
@@ -181,9 +191,7 @@ public class IncomeFragment  extends BaseFragment {
 
         //记账属性——时间
 
-//        Date cur_date = new Date();
-//        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        mTvDateTime.setText(dateFormat.format(cur_date));
+
         mTvDate = findViewById(R.id.tv_date);
         mTvTime = findViewById(R.id.tv_time);
         Calendar calendar = Calendar.getInstance();
@@ -219,11 +227,12 @@ public class IncomeFragment  extends BaseFragment {
         mTvType = findViewById(R.id.tv_type);
         mOption1 = options1Item.get(0);
         mOption2 = options2Item.get(0).get(0);
-        mOption = mOption1+'-'+mOption2;
+        mOption = mOption1 + '-' + mOption2;
         mTvType.setText(mOption);
         mTvType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadOptionData();
                 showOptionPickerView(false);
             }
         });
@@ -233,53 +242,53 @@ public class IncomeFragment  extends BaseFragment {
             @Override
             public void onClick(View v) {
 
-                LayoutInflater inflater = getLayoutInflater();
-                @SuppressLint("InflateParams") View dialog = inflater.inflate(R.layout.dialog_new, null);
-
-                MaterialDialog.Builder materialDialog = new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
-                        .customView(dialog, true)
-                        .title("添加分类")
-                        .positiveText("确定")
-                        .negativeText("取消")
-                        .autoDismiss(false);
-                mTvDialogItem1 = dialog.findViewById(R.id.item_title1);
-                mTvDialogItem2 = dialog.findViewById(R.id.item_title2);
-                mEsDialog = dialog.findViewById(R.id.es_item1);
-                mEtDialog = dialog.findViewById(R.id.et_item2);
-                mTvDialogItem1.setText("一级分类");
-                mTvDialogItem2.setText("二级分类");
-                mEsDialog.setHint("选择已有分类或新建");
-                mEsDialog.setItems(options1Item);
-                mEsDialog.getEditText().setFilters(new InputFilter[]{new LengthFilter(5)});
-                mEtDialog.setFilters(new InputFilter[]{new LengthFilter(5)});
-                materialDialog.onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                });
-                materialDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mStrNewItem1 = mEsDialog.getText();
-                        mStrNewItem2 = mEtDialog.getText().toString();
-                        //TODO:Insert_Category
-                        if(mStrNewItem1.length()==0 || mStrNewItem2.length()==0){
-                            XToastUtils.error("添加分类不可为空");
-                        }else if(MyApp.billDao.insertCategory(mStrNewItem1, mStrNewItem2, 1)){
-                            mOption1 = mStrNewItem1;
-                            mOption2 = mStrNewItem2;
-                            mOption = mOption1 + '-' + mOption2;
-                            mTvType.setText(mOption);
-                            XToastUtils.success("添加分类成功");
-                            loadOptionData();
+                mInflater = getLayoutInflater();
+                mdialog = mInflater.inflate(R.layout.dialog_new, null);
+                if (mCategoryDialog == null) {
+                    mCategoryDialog = new MaterialDialog.Builder(getContext());
+                    mCategoryDialog.customView(mdialog, true)
+                            .title("添加分类")
+                            .positiveText("确定")
+                            .negativeText("取消")
+                            .autoDismiss(false);
+                    mTvDialogItem1 = mdialog.findViewById(R.id.item_title1);
+                    mTvDialogItem2 = mdialog.findViewById(R.id.item_title2);
+                    mEsDialog = mdialog.findViewById(R.id.es_item1);
+                    mEtDialog = mdialog.findViewById(R.id.et_item2);
+                    mTvDialogItem1.setText("一级分类");
+                    mTvDialogItem2.setText("二级分类");
+                    mEsDialog.setHint("选择已有分类或新建");
+                    mEsDialog.setItems(options1Item);
+                    mEsDialog.getEditText().setFilters(new InputFilter[]{new LengthFilter(5)});
+                    mEtDialog.setFilters(new InputFilter[]{new LengthFilter(5)});
+                    mCategoryDialog.onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             dialog.dismiss();
-                        }else{
-                            XToastUtils.error("添加分类失败，该分类已存在");
                         }
-                    }
-                });
-                materialDialog.show();
+                    });
+                    mCategoryDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            mStrNewItem1 = mEsDialog.getText();
+                            mStrNewItem2 = mEtDialog.getText().toString();
+                            if (mStrNewItem1.length() == 0 || mStrNewItem2.length() == 0) {
+                                XToastUtils.error("添加分类不可为空");
+                            } else if (MyApp.billDao.insertCategory(mStrNewItem1, mStrNewItem2, 1)) {
+                                mOption1 = mStrNewItem1;
+                                mOption2 = mStrNewItem2;
+                                mOption = mOption1 + '-' + mOption2;
+                                mTvType.setText(mOption);
+//                            XToastUtils.success("添加分类成功");
+                                loadOptionData();
+                                dialog.dismiss();
+                            } else {
+                                XToastUtils.error("添加分类失败，该分类已存在");
+                            }
+                        }
+                    });
+                }
+                mCategoryDialog.show();
             }
         });
 
@@ -292,6 +301,7 @@ public class IncomeFragment  extends BaseFragment {
         mTvAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadAccountData();
                 showAccountPickerView(false);
 
             }
@@ -300,38 +310,38 @@ public class IncomeFragment  extends BaseFragment {
         mBtnNewAccount.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View v) {
-                                                  new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
-                                                          .title("添加账户")
-                                                          .inputType(
-                                                                  InputType.TYPE_CLASS_TEXT)
-                                                          .input(
-                                                                  "请输入新账户",
-                                                                  "",
-                                                                  false,
-                                                                  new MaterialDialog.InputCallback() {
-                                                                      @Override
-                                                                      public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                                  if (mAcountDialog == null) {
+                                                      mAcountDialog = new MaterialDialog.Builder(getContext())
+                                                              .title("添加账户")
+                                                              .inputType(
+                                                                      InputType.TYPE_CLASS_TEXT)
+                                                              .input(
+                                                                      "请输入新账户",
+                                                                      "",
+                                                                      false,
+                                                                      new MaterialDialog.InputCallback() {
+                                                                          @Override
+                                                                          public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                                                          }
+                                                                      })
+                                                              .inputRange(1, 5)
+                                                              .positiveText("确定")
+                                                              .negativeText("取消")
+                                                              .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                                  @Override
+                                                                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                                      mAccount = dialog.getInputEditText().getText().toString();
+                                                                      mTvAccount.setText(mAccount);
+                                                                      if (MyApp.billDao.insertAccount(mAccount)) {
+//                                                                          XToastUtils.success("添加账户成功");
+                                                                          loadAccountData();
+                                                                      } else {
+                                                                          XToastUtils.error("添加账户失败，该账户已存在");
                                                                       }
-                                                                  })
-                                                          .inputRange(1,5)
-                                                          .positiveText("确定")
-                                                          .negativeText("取消")
-                                                          .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                              @Override
-                                                              public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                                  assert dialog.getInputEditText() != null;
-                                                                  mAccount = dialog.getInputEditText().getText().toString();
-                                                                  mTvAccount.setText(mAccount);
-                                                                  //TODO:insert_new_account
-                                                                  if(MyApp.billDao.insertAccount(mAccount)){
-                                                                      XToastUtils.success("添加账户成功");
-                                                                      loadAccountData();
-                                                                  }else{
-                                                                      XToastUtils.error("添加账户失败，该账户已存在");
                                                                   }
-                                                              }
-                                                          })
-                                                          .show();
+                                                              });
+                                                  }
+                                                  mAcountDialog.show();
                                               }
                                           }
         );
@@ -346,6 +356,7 @@ public class IncomeFragment  extends BaseFragment {
         mTvMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadMemberData();
                 showMemberPickerView(false);
             }
         });
@@ -353,45 +364,46 @@ public class IncomeFragment  extends BaseFragment {
         mBtnNewMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
-                        .title("添加成员")
-                        .inputType(
-                                InputType.TYPE_CLASS_TEXT)
-                        .input(
-                                "请输入新成员",
-                                "",
-                                false,
-                                new MaterialDialog.InputCallback() {
-                                    @Override
-                                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                if (mMemberDialog == null) {
+                    mMemberDialog = new MaterialDialog.Builder(getContext())
+                            .title("添加成员")
+                            .inputType(
+                                    InputType.TYPE_CLASS_TEXT)
+                            .input(
+                                    "请输入新成员",
+                                    "",
+                                    false,
+                                    new MaterialDialog.InputCallback() {
+                                        @Override
+                                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                        }
+                                    })
+                            .inputRange(1, 5)
+                            .positiveText("确定")
+                            .negativeText("取消")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    mMember = dialog.getInputEditText().getText().toString();
+                                    mTvMember.setText(mMember);
+
+                                    if (mMember.equals(MembersItem.get(0))) {
+                                        mTvMember.setTextColor(0xFF6E6E6E);
+                                    } else {
+                                        mTvMember.setTextColor(0xFF000000);
                                     }
-                                })
-                        .inputRange(1,5)
-                        .positiveText("确定")
-                        .negativeText("取消")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                assert dialog.getInputEditText() != null;
-                                mMember = dialog.getInputEditText().getText().toString();
-                                mTvMember.setText(mMember);
 
-                                if(mMember.equals(MembersItem.get(0))){
-                                    mTvMember.setTextColor(0xFF6E6E6E);
-                                }else{
-                                    mTvMember.setTextColor(0xFF000000 );
+                                    if (MyApp.billDao.insertMember(mMember)) {
+//                                    XToastUtils.success("添加成员成功");
+                                        loadMemberData();
+                                    } else {
+                                        XToastUtils.error("添加成员失败，该成员已存在");
+                                    }
+
                                 }
-
-                                if(MyApp.billDao.insertMember(mMember)){
-                                    XToastUtils.success("添加成员成功");
-                                    loadMemberData();
-                                }else{
-                                    XToastUtils.error("添加成员失败，该成员已存在");
-                                }
-
-                            }
-                        })
-                        .show();
+                            });
+                }
+                mMemberDialog.show();
             }
         });
 
@@ -450,7 +462,8 @@ public class IncomeFragment  extends BaseFragment {
                 public void onTimeSelected(Date date, View v) {
                     mTime = date;
                     mStrTime = DateUtils.date2String(mTime, DateUtils.HHmm.get());
-                    mTvTime.setText(mStrTime);            }
+                    mTvTime.setText(mStrTime);
+                }
             })
                     .setType(false, false, false, true, true, false)     //只显示时分
                     .setDate(calendar)
@@ -461,14 +474,6 @@ public class IncomeFragment  extends BaseFragment {
 
     //记账属性——分类
     private void loadOptionData() {
-//        String[] str1 = {"餐饮", "交通", "购物"};
-//        String[] str2_1 = {"早餐", "午餐", "晚餐"};
-//        String[] str2_2 = {"公交", "火车", "飞机"};
-//        String[] str2_3 = {"服饰", "生活", "数码"};
-//        options1Item = Arrays.asList(str1);
-//        options2Item.add(Arrays.asList(str2_1));
-//        options2Item.add(Arrays.asList(str2_2));
-//        options2Item.add(Arrays.asList(str2_3));
         options1Item = MyApp.billDao.queryInTopCategory();
         options2Item = MyApp.billDao.queryInSubCategory();
 
@@ -477,72 +482,67 @@ public class IncomeFragment  extends BaseFragment {
     private void showOptionPickerView(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {options1Item.indexOf(mOption1), options2Item.get(options1Item.indexOf(mOption1)).indexOf(mOption2)};
 
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(Objects.requireNonNull(getContext()), (v, options1, options2, options3) -> {
-            //返回的分别是三个级别的选中位置
-            mOption1 = options1Item.get(options1);
-            mOption2 = options2Item.get(options1).get(options2);
-            mOption = mOption1 + "-" + mOption2;
-            mTvType.setText(mOption);
-            return false;
-        })
+        if (mPvCategory == null) {
+            mPvCategory = new OptionsPickerBuilder(getContext(), (v, options1, options2, options3) -> {
+                //返回的分别是三个级别的选中位置
+                mOption1 = options1Item.get(options1);
+                mOption2 = options2Item.get(options1).get(options2);
+                mOption = mOption1 + "-" + mOption2;
+                mTvType.setText(mOption);
+                return false;
+            })
 
-                .setTitleText("选择类别")
-                .setDividerColor(Color.BLACK)
-                //切换选项时，还原到第一项
-                .isRestoreItem(true)
-                //设置选中项文字颜色
-                .setTextColorCenter(Color.BLACK)
-                .setContentTextSize(20)
-                .isDialog(isDialog)
-                .setSelectOptions(defaultSelectOptions[0], defaultSelectOptions[1])
-                .build();
+                    .setTitleText("选择类别")
+                    .setDividerColor(Color.BLACK)
+                    //切换选项时，还原到第一项
+                    .isRestoreItem(true)
+                    //设置选中项文字颜色
+                    .setTextColorCenter(Color.BLACK)
+                    .setContentTextSize(20)
+                    .isDialog(isDialog)
+                    .build();
+        }
+        mPvCategory.setSelectOptions(defaultSelectOptions[0], defaultSelectOptions[1]);
 
-        /*pvOptions.setPicker(options1Items);//一级选择器*/
-        pvOptions.setPicker(options1Item, options2Item);//二级选择器
-        //pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
-        pvOptions.show();
+        mPvCategory.setPicker(options1Item, options2Item);//二级选择器
+        mPvCategory.show();
     }
 
 
     //记账属性——账户
     private void loadAccountData() {
-//        String[] str1 = {"现金账户", "银行卡账户", "信用卡账户"};
-//        Accounts1Item = Arrays.asList(str1);
         Accounts1Item = MyApp.billDao.queryAccountList();
-
     }
 
     private void showAccountPickerView(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {Accounts1Item.indexOf(mAccount)};
 
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(Objects.requireNonNull(getContext()), (v, accounts1, accounts2, accounts3) -> {
-            //返回的分别是三个级别的选中位置
-            mAccount = Accounts1Item.get(accounts1);
-            mTvAccount.setText(mAccount);
-            return false;
-        })
+        if (mPvAccount == null) {
+            mPvAccount = new OptionsPickerBuilder(getContext(), (v, accounts1, accounts2, accounts3) -> {
+                //返回的分别是三个级别的选中位置
+                mAccount = Accounts1Item.get(accounts1);
+                mTvAccount.setText(mAccount);
+                return false;
+            })
 
-                .setTitleText("选择账户")
-                .setDividerColor(Color.BLACK)
-                //切换选项时，还原到第一项
-                .isRestoreItem(true)
-                //设置选中项文字颜色
-                .setTextColorCenter(Color.BLACK)
-                .setContentTextSize(20)
-                .isDialog(isDialog)
-                .setSelectOptions(defaultSelectOptions[0])
-                .build();
+                    .setTitleText("选择账户")
+                    .setDividerColor(Color.BLACK)
+                    //切换选项时，还原到第一项
+                    .isRestoreItem(true)
+                    //设置选中项文字颜色
+                    .setTextColorCenter(Color.BLACK)
+                    .setContentTextSize(20)
+                    .isDialog(isDialog)
+                    .build();
+        }
+        mPvAccount.setSelectOptions(defaultSelectOptions[0]);
 
-        pvOptions.setPicker(Accounts1Item);//一级选择器
-//        pvOptions.setPicker(Accounts1Item, Accounts2Item);//二级选择器
-        //pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
-        pvOptions.show();
+        mPvAccount.setPicker(Accounts1Item);//一级选择器
+        mPvAccount.show();
     }
 
     //记账属性——成员
     private void loadMemberData() {
-//        String[] str1 = {"无成员","本人", "配偶", "子女"};
-//        MembersItem = Arrays.asList(str1);
         MembersItem = MyApp.billDao.queryMemberList();
 
     }
@@ -550,36 +550,34 @@ public class IncomeFragment  extends BaseFragment {
     private void showMemberPickerView(boolean isDialog) {// 弹出选择器
         int[] defaultSelectOptions = {MembersItem.indexOf(mMember)};
 
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(Objects.requireNonNull(getContext()), (v, member1, member2, member3) -> {
-            //返回的分别是三个级别的选中位置
-            mMember = MembersItem.get(member1);
-            mTvMember.setText(mMember);
-            if(member1 == 0){
-                mTvMember.setTextColor(this.getResources().getColor(R.color.app_color_theme_10));
-            }else{
-                mTvMember.setTextColor(this.getResources().getColor(R.color.black));
-            }
+        if (mPvMember == null) {
+            mPvMember = new OptionsPickerBuilder(getContext(), (v, member1, member2, member3) -> {
+                //返回的分别是三个级别的选中位置
+                mMember = MembersItem.get(member1);
+                mTvMember.setText(mMember);
+                if (member1 == 0) {
+                    mTvMember.setTextColor(this.getResources().getColor(R.color.app_color_theme_10));
+                } else {
+                    mTvMember.setTextColor(this.getResources().getColor(R.color.black));
+                }
 
-            return false;
-        })
+                return false;
+            })
 
-                .setTitleText("选择成员")
-                .setDividerColor(Color.BLACK)
-                //切换选项时，还原到第一项
-                .isRestoreItem(true)
-                //设置选中项文字颜色
-                .setTextColorCenter(Color.BLACK)
-                .setContentTextSize(20)
-                .isDialog(isDialog)
-                .setSelectOptions(defaultSelectOptions[0])
-                .build();
-
-        pvOptions.setPicker(MembersItem);//一级选择器
-        //pvOptions.setPicker(Accounts1Item, Accounts2Item);//二级选择器
-        //pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
-        pvOptions.show();
+                    .setTitleText("选择成员")
+                    .setDividerColor(Color.BLACK)
+                    //切换选项时，还原到第一项
+                    .isRestoreItem(true)
+                    //设置选中项文字颜色
+                    .setTextColorCenter(Color.BLACK)
+                    .setContentTextSize(20)
+                    .isDialog(isDialog)
+                    .build();
+        }
+        mPvMember.setSelectOptions(defaultSelectOptions[0]);
+        mPvMember.setPicker(MembersItem);//一级选择器
+        mPvMember.show();
     }
-
 
 
     /**
@@ -596,13 +594,13 @@ public class IncomeFragment  extends BaseFragment {
             int keep = mMax - (dest.length() - (dend - dstart));
 
             if (keep <= 0) {
-                XToastUtils.error("最多仅可输入"+mMax+"个字符");
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
                 return "";
             } else if (keep >= end - start) {
                 return null; // keep original
             } else {
                 keep += start;
-                XToastUtils.error("最多仅可输入"+mMax+"个字符");
+                XToastUtils.error("最多仅可输入" + mMax + "个字符");
                 if (Character.isHighSurrogate(source.charAt(keep - 1))) {
                     --keep;
                     if (keep == start) {
