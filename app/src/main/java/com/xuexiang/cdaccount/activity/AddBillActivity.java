@@ -35,10 +35,13 @@ import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.fragment.addbill.IncomeFragment;
 import com.xuexiang.cdaccount.fragment.addbill.OutcomeFragment;
 import com.xuexiang.cdaccount.fragment.addbill.TransferFragment;
+import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
+import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,6 +182,7 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
                             XToastUtils.error("请填写金额");
                         } else {
                             mBlConfirm = true;      //置为true，表示需要插入新数据
+                            SettingUtils.setIsConfirm(true);                //表面刚刚插入一笔数据
 //                            if(mDataBaseHelper.QueryMonthpay()-mDataBaseHelper.QueryMonthIncome()>5000){
 //                                showSimpleTipDialog();
 //                            }

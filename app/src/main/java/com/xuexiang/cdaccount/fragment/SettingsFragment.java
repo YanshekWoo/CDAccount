@@ -125,15 +125,16 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     private void initBudgetSwitch() {
         budget = (int)MMKVUtils.get("Budget", -1);
         budgetIsOpen = budget > 0;
-        if (budgetIsOpen){
-            switch_budget.setTooltipText("wahhh");
-        }
         switch_budget.setSwitchIsChecked(budgetIsOpen);
         switch_budget.setOnSuperTextViewClickListener(superTextView -> switch_budget.setSwitchIsChecked(!switch_budget.getSwitchIsChecked(),false));
         switch_budget.setSwitchCheckedChangeListener((compoundButton, b) -> {
             // 从关闭状态开启
             if(b) {
                 changeBudget();
+            }
+            else{
+                MMKVUtils.put("Budget", -1);
+                budgetIsOpen = false;
             }
         });
     }

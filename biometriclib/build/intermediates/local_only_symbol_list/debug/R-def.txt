@@ -1,0 +1,22 @@
+R_DEF: Internal format may change without notice
+local
+color bg_biometric_prompt_dialog
+color text_green
+color text_quaternary
+color text_red
+drawable ic_fingerprint
+id cancel_btn
+id root_view
+id state_tv
+id use_password_btn
+layout layout_biometric_prompt_dialog
+string app_name
+string biometric_dialog_cancel
+string biometric_dialog_state_error
+string biometric_dialog_state_error_enable_process
+string biometric_dialog_state_failed
+string biometric_dialog_state_normal
+string biometric_dialog_state_succeeded
+string biometric_dialog_subtitle
+string biometric_dialog_title
+string biometric_dialog_use_password

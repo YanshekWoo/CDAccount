@@ -22,8 +22,7 @@
     android:id="@+id/account_detail"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@drawable/xui_config_list_item_selector"
-    android:foreground="?selectableItemBackgroundBorderless"
+    android:background="#ffffff"
     android:orientation="horizontal">
 
     <LinearLayout
