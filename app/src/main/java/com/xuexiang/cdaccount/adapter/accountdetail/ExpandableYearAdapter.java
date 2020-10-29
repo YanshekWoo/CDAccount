@@ -152,8 +152,8 @@ public class ExpandableYearAdapter extends BaseRecyclerAdapter<BillDataYear> {
 
         //设置选择年的卡片样式
         if(item.ismYearSelected()){
-            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(20);
-            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(20);
+            holder.getTextView(R.id.account_expendable_year_maintime).setTextSize(15);
+            holder.getTextView(R.id.account_expendable_year_totalmoney).setTextSize(15);
 //            holder.getImageView(R.id.year_indicator).setMaxHeight(10);
             holder.getTextView(R.id.account_expendable_year_subtime).setVisibility(View.VISIBLE);
             holder.getTextView(R.id.account_expendable_year_income).setVisibility(View.VISIBLE);

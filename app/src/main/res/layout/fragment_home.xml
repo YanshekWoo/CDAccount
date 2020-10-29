@@ -34,7 +34,8 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:orientation="vertical"
-            android:paddingVertical="10dp">
+            android:paddingVertical="10dp"
+            android:layout_marginEnd="10dp">
 
 
 
@@ -145,9 +146,9 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:orientation="vertical"
-            android:paddingVertical="10dp">
-
-
+            android:paddingVertical="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -155,14 +156,6 @@
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 >
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_outcome" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -172,6 +165,14 @@
                     android:text="本月支出"
                     android:textColor="@color/colorAccent"
                     android:textSize="20sp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_outcome" />
 
             </LinearLayout>
             <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
