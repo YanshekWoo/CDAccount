@@ -17,7 +17,7 @@
 
 package com.xuexiang.cdaccount.utils;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,6 +54,7 @@ public final class Utils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
+
     /**
      * 这里填写你的应用隐私政策网页地址
      */
@@ -64,9 +65,8 @@ public final class Utils {
      *
      * @param context
      * @param submitListener 同意的监听
-     * @return
      */
-    public static Dialog showPrivacyDialog(Context context, MaterialDialog.SingleButtonCallback submitListener) {
+    public static void showPrivacyDialog(Context context, MaterialDialog.SingleButtonCallback submitListener) {
         MaterialDialog dialog = new MaterialDialog.Builder(context).title(R.string.title_reminder).autoDismiss(false).cancelable(false)
                 .positiveText(R.string.lab_agree).onPositive((dialog1, which) -> {
                     if (submitListener != null) {
@@ -110,7 +110,6 @@ public final class Utils {
         //开始响应点击事件
         dialog.getContentView().setMovementMethod(LinkMovementMethod.getInstance());
         dialog.show();
-        return dialog;
     }
 
     /**
@@ -137,6 +136,7 @@ public final class Utils {
         String privacyName = String.format(ResUtils.getString(R.string.lab_privacy_name), ResUtils.getString(R.string.app_name));
         SpannableString spannableString = new SpannableString(privacyName);
         spannableString.setSpan(new ClickableSpan() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onClick(@NonNull View widget) {
                 goWeb(context, privacyUrl);

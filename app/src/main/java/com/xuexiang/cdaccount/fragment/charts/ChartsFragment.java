@@ -42,6 +42,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
 import com.google.android.material.tabs.TabLayout;
+import com.xuexiang.cdaccount.MyApp;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.charts.ChartListAdapter;
@@ -50,8 +51,7 @@ import com.xuexiang.cdaccount.chartsclass.MyBarChart;
 import com.xuexiang.cdaccount.chartsclass.MyLineChart;
 import com.xuexiang.cdaccount.chartsclass.MyPieChart;
 import com.xuexiang.cdaccount.core.BaseFragment;
-import com.xuexiang.cdaccount.database.ChartDataEntry;
-import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
+import com.xuexiang.cdaccount.dbclass.ChartDataEntry;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.annotation.Page;
@@ -141,7 +141,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
     private List<ChartDataEntry> chartDataEntries = new ArrayList<>();
     private List<ChartDataEntry> lineEntries = new ArrayList<>();
-    private BillDao billDao;
+//    private BillDao billDao;
 
     //图表定义类
     MyBarChart myBarChart;
@@ -184,7 +184,7 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void initViews() {
-        billDao  = new BillDao(getContext());
+//        billDao  = new BillDao(getContext());
         initTab();
         initRecycleView();
         initTimePicker();
@@ -292,25 +292,25 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
         switch (tabSelected) {
             case 0:
                 if(tabInout==0) {
-                    chartDataEntries = billDao.getDataByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                    chartDataEntries = MyApp.billDao.getDataByOutTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 }
                 else if(tabInout==1) {
-                    chartDataEntries = billDao.getDataByInTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                    chartDataEntries = MyApp.billDao.getDataByInTopCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 }
                 break;
             case 1:
                 if(tabInout==0) {
-                    chartDataEntries = billDao.getDataByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                    chartDataEntries = MyApp.billDao.getDataByOutSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 }
                 else if(tabInout==1) {
-                    chartDataEntries = billDao.getDataByInSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
+                    chartDataEntries = MyApp.billDao.getDataByInSubCategory(start_year, start_month, start_day, end_year, end_month, end_day);
                 }
                 break;
             case 2:
-                chartDataEntries = billDao.getDataByMember(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
+                chartDataEntries = MyApp.billDao.getDataByMember(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
                 break;
             case 3:
-                chartDataEntries = billDao.getDataByAccount(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
+                chartDataEntries = MyApp.billDao.getDataByAccount(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
                 break;
         }
 
@@ -322,12 +322,11 @@ public class ChartsFragment extends BaseFragment implements TabLayout.OnTabSelec
 
 
         // 折线图数据
-        lineEntries = billDao.getSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
+        lineEntries = MyApp.billDao.getSumByDate(start_year, start_month, start_day, end_year, end_month, end_day, tabInout);
 
 
         // ARIMA预测 predict
         if(lineEntries.size() >= 14) {
-//            RunARIMA ra = new RunARIMA();
             int length = lineEntries.size();
             for(int i = length; i < (length + 3); i++) {
                 double predictData = RunARIMA.runPrediction(lineEntries);

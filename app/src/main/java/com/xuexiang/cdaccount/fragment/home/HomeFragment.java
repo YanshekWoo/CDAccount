@@ -26,6 +26,7 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xuexiang.cdaccount.MyApp;
 import com.google.android.material.snackbar.Snackbar;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AddBillActivity;
@@ -56,13 +57,12 @@ import java.util.Objects;
 public class HomeFragment extends BaseFragment {
 
     private RecyclerView mRvRecord;
-    private ShadowImageView mIbAdd;
     private List<String> mRecentDate, mRecentInfo;
     private List<Integer> mRecentType;
 
     private AutoFitTextView mTvIn, mTvOut;
     private String mAmountIn, mAmountOut;
-    private BillDao mDataBaseHelper;
+//    private BillDao mDataBaseHelper;
 
 
     /**
@@ -75,8 +75,6 @@ public class HomeFragment extends BaseFragment {
 
     /**
      * 布局的资源id
-     *
-     * @return
      */
     @Override
     protected int getLayoutId() {
@@ -88,7 +86,7 @@ public class HomeFragment extends BaseFragment {
      */
     @Override
     protected void initViews() {
-        mDataBaseHelper = new BillDao(getContext());
+//        mDataBaseHelper = new BillDao(getContext());
 
         //加载数据
         loadData();
@@ -110,14 +108,11 @@ public class HomeFragment extends BaseFragment {
 
 
         //记账
-        mIbAdd = findViewById(R.id.ib_add);
-        mIbAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        ShadowImageView mIbAdd = findViewById(R.id.ib_add);
+        mIbAdd.setOnClickListener(view -> {
 //                Intent intent = new Intent(getContext(), AddBillActivity.class);
 //                startActivity(intent);
-                ActivityUtils.startActivity(AddBillActivity.class);
-            }
+            ActivityUtils.startActivity(AddBillActivity.class);
         });
     }
 
@@ -136,7 +131,7 @@ public class HomeFragment extends BaseFragment {
             double budget = 0;                          //TODO：增加写入预算的接口
             budget = (double)(int)MMKVUtils.get("Budget", -1);
             DecimalFormat decimalFormat = new DecimalFormat("0.00");
-            double surplus = (mDataBaseHelper.queryMonthOutcome() - budget);
+            double surplus = (MyApp.billDao.queryMonthOutcome() - budget);
             String Str_surplus = decimalFormat.format(surplus);
             if (budget > 0 && surplus > 0) {
 //                showSimpleTipDialog(Str_surplus);
@@ -154,13 +149,13 @@ public class HomeFragment extends BaseFragment {
 
 
 
-    private void loadData() {
+    private void loadData(){
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        mAmountIn = decimalFormat.format(mDataBaseHelper.queryMonthIncome());
-        mAmountOut = decimalFormat.format(mDataBaseHelper.queryMonthOutcome());
-        mRecentInfo = mDataBaseHelper.getRecentInformation();
-        mRecentDate = mDataBaseHelper.getRecentBillDate();
-        mRecentType = mDataBaseHelper.getRecentIO();
+        mAmountIn = decimalFormat.format(MyApp.billDao.queryMonthIncome());
+        mAmountOut = decimalFormat.format(MyApp.billDao.queryMonthOutcome());
+        mRecentInfo = MyApp.billDao.getRecentInformation();
+        mRecentDate = MyApp.billDao.getRecentBillDate();
+        mRecentType = MyApp.billDao.getRecentIO();
 
     }
 }

@@ -31,7 +31,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.model.GradientColor;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.database.ChartDataEntry;
+import com.xuexiang.cdaccount.dbclass.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;

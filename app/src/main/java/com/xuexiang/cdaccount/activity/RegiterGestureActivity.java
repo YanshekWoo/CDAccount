@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,9 +33,12 @@ import com.andrognito.patternlockview.utils.PatternLockUtils;
 import com.andrognito.patternlockview.utils.ResourceUtils;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseActivity;
+import com.xuexiang.cdaccount.fragment.docs.PrivacyFragment;
+import com.xuexiang.cdaccount.fragment.docs.ProtocolFragment;
 import com.xuexiang.cdaccount.utils.SettingUtils;
 import com.xuexiang.cdaccount.utils.TokenUtils;
 import com.xuexiang.cdaccount.utils.XToastUtils;
+import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xaop.util.MD5Utils;
 import com.xuexiang.xui.utils.KeyboardUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
@@ -44,6 +48,7 @@ import com.xuexiang.xutil.display.Colors;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 登录页面
@@ -240,6 +245,22 @@ public class RegiterGestureActivity extends BaseActivity {
         }
     }
 
+
+    @SuppressLint("NonConstantResourceId")
+    @SingleClick
+    @OnClick({R.id.tv_user_protocol, R.id.tv_privacy_protocol})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_user_protocol:
+                openNewPage(ProtocolFragment.class);
+                break;
+            case R.id.tv_privacy_protocol:
+                openNewPage(PrivacyFragment.class);
+                break;
+            default:
+                break;
+        }
+    }
 
 
     /**

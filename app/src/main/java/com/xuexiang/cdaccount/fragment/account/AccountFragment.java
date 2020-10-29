@@ -34,12 +34,12 @@ import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.xuexiang.cdaccount.MyApp;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.AccountDetailsActivity;
 import com.xuexiang.cdaccount.adapter.base.delegate.SimpleDelegateAdapter;
 import com.xuexiang.cdaccount.core.BaseFragment;
-import com.xuexiang.cdaccount.database.AccountDataEntry;
-import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
+import com.xuexiang.cdaccount.dbclass.AccountDataEntry;
 import com.xuexiang.cdaccount.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
@@ -69,12 +69,13 @@ public class AccountFragment extends BaseFragment{
     @BindView(R.id.refreshLayout)
     RefreshLayout refreshLayout;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.total1)
     TextView total;
 
     ImageView img;
 
-    BillDao billDao;
+//    BillDao billDao;
 
     private SimpleDelegateAdapter<AccountDataEntry> adapter;
 //    private SmartRecyclerAdapter<AccountDataEntry> mAdapter;
@@ -112,7 +113,7 @@ public class AccountFragment extends BaseFragment{
     @Override
     protected void initViews() {
 
-        billDao = new BillDao(getContext());
+//        billDao = new BillDao(getContext());
         accountDataEntries = new ArrayList<>();
 
         VirtualLayoutManager virtualLayoutManager = new VirtualLayoutManager(Objects.requireNonNull(getContext()));
@@ -260,7 +261,7 @@ public class AccountFragment extends BaseFragment{
 //                                mTvAccount.setText(mAccount);
                         //TODO:insert_new_account
                         assert dialog.getInputEditText() != null;
-                        if(billDao.insertAccount(dialog.getInputEditText().getText().toString())){
+                        if(MyApp.billDao.insertAccount(dialog.getInputEditText().getText().toString())){
 //                            XToastUtils.success("添加账户成功");
                             refreshLayout.autoRefresh();
                         }else{
@@ -292,7 +293,7 @@ public class AccountFragment extends BaseFragment{
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         assert dialog.getInputEditText() != null;
-                        if(billDao.ChangeAccountName(item.getName(),dialog.getInputEditText().getText().toString())){
+                        if(MyApp.billDao.ChangeAccountName(item.getName(),dialog.getInputEditText().getText().toString())){
 //                            XToastUtils.success("修改账户成功");
                             refreshLayout.autoRefresh();
                         }else{
@@ -323,7 +324,7 @@ public class AccountFragment extends BaseFragment{
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 accountDataEntries.clear();
-                accountDataEntries = billDao.getBalanceByAccount();
+                accountDataEntries = MyApp.billDao.getBalanceByAccount();
                 adapter.refresh(accountDataEntries);
                 accountSum();
 

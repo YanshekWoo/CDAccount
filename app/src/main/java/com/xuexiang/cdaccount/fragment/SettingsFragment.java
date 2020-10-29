@@ -29,6 +29,7 @@ import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.activity.LoginActivity;
 import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
+import com.xuexiang.cdaccount.somethingDao.BackupTask;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
 import com.xuexiang.cdaccount.utils.MMKVUtils;
 import com.xuexiang.cdaccount.utils.SettingUtils;
@@ -59,8 +60,17 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     @BindView(R.id.stv_switch_custom_theme)
     SuperTextView stvSwitchBiometric;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.stv_switch_budget)
     SuperTextView switch_budget;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.db_backup)
+    SuperTextView button_backup;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.db_restore)
+    SuperTextView button_restore;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.menu_change_passwd)
@@ -88,6 +98,8 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     protected void initViews() {
         initBiometricSwitch();
         initBudgetSwitch();
+
+        button_backup.setOnSuperTextViewClickListener(this);
 
         menuChangeAccount.setOnSuperTextViewClickListener(this);
         menuLogout.setOnSuperTextViewClickListener(this);
@@ -160,6 +172,12 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
     @Override
     public void onClick(@NotNull SuperTextView superTextView) {
         switch (superTextView.getId()) {
+            case R.id.db_backup:
+                new BackupTask(getContext()).execute("backupDatabase");
+                break;
+            case R.id.db_restore:
+                new BackupTask(getContext()).execute("restoreDatabase");
+                break;
             case R.id.menu_change_passwd:
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 intent.putExtra("LogInTYPE", 1);

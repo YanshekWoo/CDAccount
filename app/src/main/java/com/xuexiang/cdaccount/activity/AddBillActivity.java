@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.xuexiang.cdaccount.MyApp;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.fragment.addbill.IncomeFragment;
@@ -56,20 +57,23 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
     private ViewPager mVpAdd;
     private Boolean mBlConfirm = false;     //标识变量
 
+    FragmentAdapter<BaseFragment> adapter;
+
     private double mIncomeAmount;
     private double mOutcomeAmount;
     private double mTransferAmount;
 
     boolean IsAmountFill = false;
 
-    private BillDao mDataBaseHelper;
+//    private BillDao mDataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addbill);
 
-        mDataBaseHelper = new BillDao(this);
+//        mDataBaseHelper = new BillDao(this);
+
 //        initDate();
 
         // 金额初始值
@@ -93,7 +97,7 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
                 new IncomeFragment(),
                 new TransferFragment()
         };
-        FragmentAdapter<BaseFragment> adapter = new FragmentAdapter<>(getSupportFragmentManager(), fragments);
+        adapter = new FragmentAdapter<>(getSupportFragmentManager(), fragments);
         adapter.setTitles(titles);
         mVpAdd.setAdapter(adapter);
         mTlAdd.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -256,7 +260,7 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
     public void InsertOutcome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
         if (mBlConfirm && mVpAdd.getCurrentItem() == 0) {
 //            Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
-            mDataBaseHelper.insertBill(0, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+            MyApp.billDao.insertBill(0, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
             XToastUtils.success("记账成功");
 
         }
@@ -271,8 +275,7 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
     @Override
     public void InsertIncome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
         if (mBlConfirm && mVpAdd.getCurrentItem() == 1) {
-//            Log.d("---InsertIncome---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
-            mDataBaseHelper.insertBill(1, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+            MyApp.billDao.insertBill(1, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
             XToastUtils.success("记账成功");
         }
     }
@@ -286,8 +289,7 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
     @Override
     public void InsertTransfer(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark) {
         if (mBlConfirm && mVpAdd.getCurrentItem() == 2) {
-//            Log.d("---InsertTransfer---", String.valueOf(Amount) + " " + Year + " " + Month + " " + Day + " " + Time + " " + Subcategory + " " + Account + " " + toAccount + " " + Member + " " + Remark);
-            mDataBaseHelper.insertBill(2, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
+            MyApp.billDao.insertBill(2, Subcategory, Account, toAccount, Member, Year, Month, Day, Time, Remark, Amount);
             XToastUtils.success("记账成功");
 
         }
@@ -299,7 +301,14 @@ public class AddBillActivity extends AppCompatActivity implements OutcomeFragmen
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        adapter = null;
+        mVpAdd  = null;
+
+    }
 }
 
 

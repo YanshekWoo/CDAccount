@@ -4,7 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.xuexiang.cdaccount.database.ChartDataEntry;
+import com.xuexiang.cdaccount.dbclass.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;

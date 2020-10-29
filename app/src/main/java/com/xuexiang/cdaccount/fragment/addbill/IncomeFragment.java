@@ -17,6 +17,7 @@
 
 package com.xuexiang.cdaccount.fragment.addbill;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.xuexiang.cdaccount.MyApp;
 import com.xuexiang.cdaccount.R;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.Dao.BillDao;
@@ -56,16 +58,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Page(anim = CoreAnim.none)
-public class IncomeFragment extends BaseFragment {
+public class IncomeFragment  extends BaseFragment {
 
     private Context mContext;
 
-    private EditText mEtAmount;
     private double mAmount = -1;    //负数作空标志
 
-    private TextView mTvDate, mTvTime;
+    private TextView mTvDate,mTvTime;
     private TimePickerView mDatePicker;
     private TimePickerView mTimePicker;
     private Date mDate, mTime;
@@ -76,19 +78,15 @@ public class IncomeFragment extends BaseFragment {
     private List<String> options1Item = new ArrayList<>();
     private List<List<String>> options2Item = new ArrayList<>();
     private String mOption1, mOption2, mOption;
-    private ShadowImageView mBtnNewType;
 
     private TextView mTvAccount;
     private List<String> Accounts1Item = new ArrayList<>();
     private String mAccount;
-    private ShadowImageView mBtnNewAccount;
 
     private TextView mTvMember;
     private List<String> MembersItem = new ArrayList<>();
     private String mMember;
-    private ShadowImageView mBtnNewMember;
 
-    private MaterialEditText mEtRemark;
     private String mRemark = "";
 
 
@@ -99,7 +97,7 @@ public class IncomeFragment extends BaseFragment {
 
     private IncomeMessage Income;
 
-    private BillDao mDatabaseHelper;
+//    private BillDao mDatabaseHelper;
 
     private MaterialDialog.Builder mCategoryDialog = null;
     private MaterialDialog.Builder mAcountDialog = null;
@@ -114,7 +112,6 @@ public class IncomeFragment extends BaseFragment {
 
     public interface IncomeMessage {
         void InsertIncome(double Amount, String Year, String Month, String Day, String Time, String Subcategory, String Account, String toAccount, String Member, String Remark);
-
         void getIncomeAmount(double Amount);
 
     }
@@ -148,14 +145,15 @@ public class IncomeFragment extends BaseFragment {
     }
 
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     protected void initViews() {
 
-        mDatabaseHelper = new BillDao(getContext());
+        MyApp.billDao = new BillDao(getContext());
 
         //记账金额
 
-        mEtAmount = findViewById(R.id.et_amount);
+        EditText mEtAmount = findViewById(R.id.et_amount);
         Drawable drawable1 = getResources().getDrawable(R.drawable.ic_yuan);
         drawable1.setBounds(0, 0, 50, 50);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
         mEtAmount.setCompoundDrawables(null, null, drawable1, null);//只放右边
@@ -238,7 +236,7 @@ public class IncomeFragment extends BaseFragment {
             }
         });
 
-        mBtnNewType = findViewById(R.id.btn_new_type);
+        ShadowImageView mBtnNewType = findViewById(R.id.btn_new_type);
         mBtnNewType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -306,7 +304,7 @@ public class IncomeFragment extends BaseFragment {
 
             }
         });
-        mBtnNewAccount = findViewById(R.id.btn_new_account);
+        ShadowImageView mBtnNewAccount = findViewById(R.id.btn_new_account);
         mBtnNewAccount.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View v) {
@@ -332,7 +330,7 @@ public class IncomeFragment extends BaseFragment {
                                                                   public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                                       mAccount = dialog.getInputEditText().getText().toString();
                                                                       mTvAccount.setText(mAccount);
-                                                                      if (mDatabaseHelper.insertAccount(mAccount)) {
+                                                                      if (MyApp.billDao.insertAccount(mAccount)) {
 //                                                                          XToastUtils.success("添加账户成功");
                                                                           loadAccountData();
                                                                       } else {
@@ -359,7 +357,7 @@ public class IncomeFragment extends BaseFragment {
                 showMemberPickerView(false);
             }
         });
-        mBtnNewMember = findViewById(R.id.btn_new_member);
+        ShadowImageView mBtnNewMember = findViewById(R.id.btn_new_member);
         mBtnNewMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -392,7 +390,7 @@ public class IncomeFragment extends BaseFragment {
                                         mTvMember.setTextColor(0xFF000000);
                                     }
 
-                                    if (mDatabaseHelper.insertMember(mMember)) {
+                                    if (MyApp.billDao.insertMember(mMember)) {
 //                                    XToastUtils.success("添加成员成功");
                                         loadMemberData();
                                     } else {
@@ -407,7 +405,7 @@ public class IncomeFragment extends BaseFragment {
         });
 
         //记账属性——备注
-        mEtRemark = findViewById(R.id.et_remark);
+        MaterialEditText mEtRemark = findViewById(R.id.et_remark);
         mEtRemark.setFilters(new InputFilter[]{new LengthFilter(12)});
         mEtRemark.addTextChangedListener(new TextWatcher() {
             @Override
@@ -436,7 +434,8 @@ public class IncomeFragment extends BaseFragment {
     //记账属性——时间
     private void showDatePicker() {
         if (mDatePicker == null) {
-            mDatePicker = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
+            mDatePicker = new TimePickerBuilder(Objects.requireNonNull(getContext()), new OnTimeSelectListener() {
+                @SuppressLint("SimpleDateFormat")
                 @Override
                 public void onTimeSelected(Date date, View v) {
                     mDate = date;
@@ -472,8 +471,8 @@ public class IncomeFragment extends BaseFragment {
 
     //记账属性——分类
     private void loadOptionData() {
-        options1Item = mDatabaseHelper.queryInTopCategory();
-        options2Item = mDatabaseHelper.queryInSubCategory();
+        options1Item = MyApp.billDao.queryInTopCategory();
+        options2Item = MyApp.billDao.queryInSubCategory();
 
     }
 
@@ -509,7 +508,7 @@ public class IncomeFragment extends BaseFragment {
 
     //记账属性——账户
     private void loadAccountData() {
-        Accounts1Item = mDatabaseHelper.queryAccountList();
+        Accounts1Item = MyApp.billDao.queryAccountList();
     }
 
     private void showAccountPickerView(boolean isDialog) {// 弹出选择器
@@ -541,7 +540,7 @@ public class IncomeFragment extends BaseFragment {
 
     //记账属性——成员
     private void loadMemberData() {
-        MembersItem = mDatabaseHelper.queryMemberList();
+        MembersItem = MyApp.billDao.queryMemberList();
 
     }
 
@@ -581,7 +580,7 @@ public class IncomeFragment extends BaseFragment {
     /**
      * 限制最大长度
      */
-    public class LengthFilter implements InputFilter {
+    public static class LengthFilter implements InputFilter {
         public LengthFilter(int max) {
             mMax = max;
         }
@@ -609,7 +608,7 @@ public class IncomeFragment extends BaseFragment {
             }
         }
 
-        private int mMax;
+        private final int mMax;
 
     }
 }
