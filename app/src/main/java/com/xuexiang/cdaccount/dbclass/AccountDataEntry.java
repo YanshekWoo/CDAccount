@@ -1,4 +1,4 @@
-package com.xuexiang.cdaccount.database;
+package com.xuexiang.cdaccount.dbclass;
 
 public class AccountDataEntry{
     private String Name;

@@ -28,7 +28,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.database.ChartDataEntry;
+import com.xuexiang.cdaccount.dbclass.ChartDataEntry;
 
 import java.util.ArrayList;
 import java.util.List;

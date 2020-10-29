@@ -1,4 +1,4 @@
-package com.xuexiang.cdaccount.database;
+package com.xuexiang.cdaccount.dbclass;
 public class Bill {
     private int Bill_ID, Bill_TYPE, Bill_SubCategory, Bill_Account, Bill_toAccount, Bill_Mumber;
     private double Bill_Money;

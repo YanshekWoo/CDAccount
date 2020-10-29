@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.database.ChartDataEntry;
+import com.xuexiang.cdaccount.dbclass.ChartDataEntry;
 import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 
