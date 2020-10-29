@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingVertical="10dp">
+        android:paddingVertical="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
         <ImageView
             android:layout_width="50dp"
@@ -33,14 +35,16 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="#000000"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:clickable="true"
             android:focusable="true"/>
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,8 +71,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
                     android:gravity="center"
-                    android:text="    时间    "
-                    android:textSize="18sp" />
+                    android:text="时间"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"/>
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -185,8 +190,9 @@
                     android:layout_marginHorizontal="5dp"
                     android:layout_toEndOf="@id/iv_account1"
                     android:gravity="center"
-                    android:text="转出账户"
-                    android:textSize="18sp" />
+                    android:text="出账"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"/>
 
                 <TextView
                     android:id="@+id/tv_account1"
@@ -209,8 +215,8 @@
 
                 <com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView
                     android:id="@+id/btn_new_account1"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
@@ -242,8 +248,9 @@
                     android:layout_marginHorizontal="5dp"
                     android:layout_toEndOf="@id/iv_account2"
                     android:gravity="center"
-                    android:text="转入账户"
-                    android:textSize="18sp" />
+                    android:text="入账"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"/>
 
                 <TextView
                     android:id="@+id/tv_account2"
@@ -266,8 +273,8 @@
 
                 <com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView
                     android:id="@+id/btn_new_account2"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
@@ -298,8 +305,9 @@
                     android:layout_marginHorizontal="5dp"
                     android:layout_toEndOf="@id/iv_member"
                     android:gravity="center"
-                    android:text="    成员    "
-                    android:textSize="18sp" />
+                    android:text="成员"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"/>
 
                 <TextView
                     android:id="@+id/tv_member"
@@ -322,8 +330,8 @@
 
                 <com.xuexiang.xui.widget.button.shadowbutton.ShadowImageView
                     android:id="@+id/btn_new_member"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
@@ -335,7 +343,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -354,8 +361,9 @@
                     android:layout_marginHorizontal="5dp"
                     android:layout_toEndOf="@id/iv_remark"
                     android:gravity="center"
-                    android:text="    备注    "
-                    android:textSize="18sp" />
+                    android:text="备注"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"/>
 
                 <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
                     android:id="@+id/et_remark"
@@ -369,6 +377,7 @@
                     android:gravity="center_vertical"
                     android:hint="商家/地点/项目/其他"
                     android:maxLines="1"
+                    android:paddingTop="15dp"
                     android:paddingLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:textColor="#000000"

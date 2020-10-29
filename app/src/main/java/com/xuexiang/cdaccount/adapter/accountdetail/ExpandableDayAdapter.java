@@ -136,8 +136,8 @@ public class ExpandableDayAdapter extends BaseRecyclerAdapter<BillDataDay> {
 
         //设置选择天的卡片样式
         if(item.ismDaySelected()){
-            holder.getTextView(R.id.account_expendable_day_maintime).setTextSize(20);
-            holder.getTextView(R.id.account_expendable_day_totalmoney).setTextSize(20);
+            holder.getTextView(R.id.account_expendable_day_maintime).setTextSize(15);
+            holder.getTextView(R.id.account_expendable_day_totalmoney).setTextSize(15);
 //            holder.getImageView(R.id.month_indicator).setMaxHeight(10);
             holder.getTextView(R.id.account_expendable_day_subtime).setVisibility(View.VISIBLE);
             holder.getTextView(R.id.account_expendable_day_income).setVisibility(View.VISIBLE);
