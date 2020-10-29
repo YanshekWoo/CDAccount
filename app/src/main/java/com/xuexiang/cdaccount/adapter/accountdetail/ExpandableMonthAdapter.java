@@ -138,8 +138,8 @@ public class ExpandableMonthAdapter extends BaseRecyclerAdapter<BillDataMonth> {
 
         //设置选择月的卡片样式
         if(item.ismMonthSelected()){
-            holder.getTextView(R.id.account_expendable_month_maintime).setTextSize(20);
-            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextSize(20);
+            holder.getTextView(R.id.account_expendable_month_maintime).setTextSize(15);
+            holder.getTextView(R.id.account_expendable_month_totalmoney).setTextSize(15);
 //            holder.getImageView(R.id.month_indicator).setMaxHeight(10);
             holder.getTextView(R.id.account_expendable_month_subtime).setVisibility(View.VISIBLE);
             holder.getTextView(R.id.account_expendable_month_income).setVisibility(View.VISIBLE);
