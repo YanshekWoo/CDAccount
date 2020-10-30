@@ -18,6 +18,7 @@
 package com.xuexiang.cdaccount.adapter.base.delegate;
 
 import com.alibaba.android.vlayout.LayoutHelper;
+import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 
 import java.util.Collection;
 
@@ -61,4 +62,7 @@ public abstract class SimpleDelegateAdapter<T> extends BaseDelegateAdapter<T> {
     public LayoutHelper onCreateLayoutHelper() {
         return mLayoutHelper;
     }
+
+
+
 }
