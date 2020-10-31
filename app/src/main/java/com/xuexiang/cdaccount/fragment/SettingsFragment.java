@@ -26,7 +26,7 @@ import android.text.InputType;
 import androidx.annotation.RequiresApi;
 
 import com.xuexiang.cdaccount.R;
-import com.xuexiang.cdaccount.activity.LoginActivity;
+import com.xuexiang.cdaccount.activity.ReLoginActivity;
 import com.xuexiang.cdaccount.biometriclib.BiometricPromptManager;
 import com.xuexiang.cdaccount.core.BaseFragment;
 import com.xuexiang.cdaccount.somethingDao.BackupTask;
@@ -155,7 +155,7 @@ public class SettingsFragment extends BaseFragment implements SuperTextView.OnSu
 
                 break;
             case R.id.menu_change_passwd:
-                Intent intent = new Intent(getContext(), LoginActivity.class);
+                Intent intent = new Intent(getContext(), ReLoginActivity.class);
                 intent.putExtra("LogInTYPE", 1);
                 startActivity(intent);
 //                ActivityUtils.startActivity(ReLoginActivity.class);

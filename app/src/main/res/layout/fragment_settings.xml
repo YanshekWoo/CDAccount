@@ -63,14 +63,14 @@
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
                     android:id="@+id/db_backup"
                     style="@style/InfoItem"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     app:sCenterTextString="数据备份"
                     app:sDividerLineType="none" />
 
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
                     android:id="@+id/db_restore"
                     style="@style/InfoItem"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     app:sCenterTextString="数据恢复"
                     app:sDividerLineType="none" />
 
@@ -78,7 +78,7 @@
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
                     android:id="@+id/menu_change_passwd"
                     style="@style/InfoItem"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     app:sCenterTextString="修改密码"
                     app:sDividerLineType="none" />
 
@@ -86,7 +86,7 @@
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
                     android:id="@+id/menu_clear_data"
                     style="@style/InfoItem"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     app:sCenterTextColor="@color/xui_config_color_red"
                     app:sCenterTextString="注销账号"
                     app:sDividerLineType="none" />
